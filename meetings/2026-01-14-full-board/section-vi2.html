@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VI-2. Transportation – Jason Froimowitz, Chair | Full Board - 2026-01-14</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    .breadcrumb { padding: 1rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-section-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .agenda-section-header h2 { font-size: 1.1rem; font-weight: 600; color: var(--primary); }
+    .agenda-section-header h2 a { color: var(--primary); text-decoration: none; }
+    .agenda-section-header h2 a:hover { color: var(--accent); text-decoration: underline; }
+    .agenda-items { padding: 1rem 1.5rem; list-style: none; }
+    .agenda-items li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    .agenda-items li:last-child { border-bottom: none; }
+    .timestamp-badge { font-size: 0.8rem; color: var(--text-light); background: var(--bg-alt); padding: 0.2rem 0.5rem; border-radius: 4px; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .toggle-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .toggle-tab { flex: 1; padding: 1rem; text-align: center; cursor: pointer; background: var(--bg-alt); border: none; font-size: 1rem; color: var(--text-light); }
+    .toggle-tab:hover { background: var(--border); }
+    .toggle-tab.active { background: white; color: var(--primary); font-weight: 600; }
+    .content-panel { padding: 1.5rem; display: none; }
+    .content-panel.active { display: block; }
+    .content-panel p { margin-bottom: 1rem; text-align: justify; }
+    .summary-text { font-size: 1.05rem; line-height: 1.8; }
+    .summary-list { list-style: none; padding: 0; margin: 0; }
+    .summary-list li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; border-bottom: 1px solid var(--border); }
+    .summary-list li:last-child { border-bottom: none; }
+    .summary-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Chapter cards - citymeetings.nyc style */
+    .chapters-list { display: flex; flex-direction: column; gap: 1rem; }
+    .chapter-card {
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      border-left: 4px solid var(--accent);
+    }
+    .chapter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .chapter-category {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .chapter-time {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-family: monospace;
+    }
+    .chapter-time:hover { text-decoration: underline; }
+    .chapter-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+    .chapter-description {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+    }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
+  <header>
+    <div class="container">
+      <h1 data-pagefind-meta="title">VI-2. Transportation – Jason Froimowitz, Chair</h1>
+      <div class="meta">Full Board · 2026-01-14 · 1:26:11</div>
+    </div>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="index.html">← Back to Agenda</a>
+  </div>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=5171" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p style="text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light);">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=5171" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
+      </div>
+      <div id="summary" class="content-panel active">
+        <div class="summary-text"><p>transportation. Jason from chair. Thank you very much. A lot of detail resolutions tonight. our first one on supporting a New York State Assembly Senate bill regarding intelligent speed assisted devices. basically this is a bill that would require drivers who have repeated speed violations to have a...</p></div>
+      </div>
+      <div id="transcript" class="content-panel">
+        <p>transportation. Jason from chair. Thank you very much. A lot of detail resolutions tonight. our first one on supporting a New York State Assembly Senate bill regarding intelligent speed assisted devices. basically this is a bill that would require drivers who have repeated speed violations to have a device [clears throat] installed on their vehicles that would limit the speed of their vehicle so not be able to go over the speed. Any questions? If there's no objection, we'll now vote on the resolution. Please mark your ballots.</p>
+        <p>And our next resolution is proposing</p>
+        <p>improvements to existing cross town protected bike lanes on 26th Street, 29th Street, 38th Street, 39th Street, 52nd Street, and 55th Street. we have protected bike lanes on those cross town streets today. we are working in conjunction with CVS four and five. S45 to pass this resolution asking for improvements and expansion of those backlings to be wider and that should all a better user friendly design my question about specifically not all of these these bike lanes on the streets that are outlined in the resolution are the same size. So those were some things that I was just curious if you had that information. Also in the reposition it said like I'm using the word study like a general term but it sounds like you were also asking for like prolonged study or you know to to maintenance for these techn the question was that the trees aren't the same width or the same</p>
+        <p>they're not the same. It's not universal. So I'm curious about the width if you're standing by what does that entail and then I guess part two is in the resolution itself reference attention to steady or like additional maintenance attention. Yeah. so I don't think we have</p>
+        <p>specific ask to what we want to happen with designs. so we ask basically for department of transportation to take a look at these cross bike lanes and come back with a proposal as to how they can how they can widen them. so I don't want to say that we have we purposely don't propose a path to follow that. We're asking for them to come back and make a proposal to the community board about how they can widen the bike lane given the different constraints on each of those cross streets. Gloria has a question.</p>
+        <p>Well, Gloria has a question, but I don't know if it's just want to play something on the record since that's what we do here. You know, New York City, the curb used to belong to the people and that was a big deal in New York that you could step down into a curve and not be in danger. So, I'm wondering to myself now, since we're just expanding and deepening bike lanes, can't we create a curb space for people and then put the bike lane a little farther off the the sidewalk? yeah, sure. I mean, so I think</p>
+        <p>Hispanic pedestrian space is something that we we talk a lot about the transportation committee. I don't know about those streets specifically. but I personally would be generally we're talking about tightening trains. So these side streets have as you only so much width and we're trying to make enough room for pedestrians, for cyclists, for vehicles moving, for parking. So there's only so much space to go around. I love the idea of having wider sidewalks and having less or even a small curved space for humans,</p>
+        <p>bicycles underneath them. Sure. Might be possible is what I'm saying now as I'm listening to all this because I'm not against the bike lanes and the whole thing. I'm just saying I think we need to think a little bit about that New York used to be a pedestrian city and a curve space was the pedestrian space and people could walk on the sidewalk without those little scooter motorized scooters and all that. So I think we kind of get everything together and I would appreciate your team. yeah, you know, I don't think it's something that we address in this resolution, but I think yeah, expanding the dedication is something Yeah, we're constantly looking to support and advocating for.</p>
+        <p>Appreciate it. Thanks. So, if there's no Oh, Brock, sorry, you wanted to So, yeah, we totally agree about more pedestrian space and we're I think everybody on the committee is all for that. just want to say these streets were chosen because they've been designated as protected bike lanes by the Department of Transportation. You go on Google Maps or the city bike map, these are protected bike lanes, but in reality, they're not. you know, cyclists will just go and then be veering into traffic because they're constantly blocked. So, we're just saying, listen, if you're going to designate them as protected, they should be protected. Great.</p>
+        <p>All right. If if there's no</p>
+        <p>objection, we'll [clears throat] please mark your digital ballot. I have a couple things I want to talk about. first off, I just want to acknowledge there was a serious cycle of injury, an accident on 57, the second day. and I think that's just important this context of everything we're talking about today and as we work to try to make our roadways safer and improve the design of our streets. and thoughts out to that injured cyclist. I want to address some things that were brought up on the third Avenue bike lane. first of all, we do plan to discuss the concerns raised around entry and exit from the garage of that building in our March transportation committee meeting. But I wanted to just sort of respond broadly about Third Avenue bike lane. CBD 6 has advocated for several years to ask for a bike lane and expand the pedestrian space and the bus lane on Third Avenue. this has been something that we've been very publicly advocating for for a very long time. I know personally I'm very excited to see the project having finally come to fruition in. and as a somebody who's walked and cycled on on the corridor, I think it's made a big improvement on on safety and and accessibility. we know from extensive data on protective bike lanes in Manhattan that they work to improve safety, improve safety for cyclists, improve safety for vehicles and pedestrians. we know that reactive bike lanes work great on First Avenue and Second Avenue within our district. and there's no reason why Third Avenue won't be a long-term success as is all of the other protected bike lanes in our community. And they grow close to growing majority of bike lanes in Manhattan North streets. and lastly, effectively this bike lane provides equity to the use of third avenue. Previously, we had five avenues, sorry, five lanes of traffic on Third Avenue, but an extensive amount of pedestrian traffic, legless traffic, and trans riders and buses on Third Avenue. And so this new configuration, is really just creating equity. Instead of having five lanes dedicated to just vehicles, we now have a much more equitable split of the use of the roadway. but again, we will be discussing their concerns about the the garage on on safety concerns. be with them in our merch [clears throat] game. and lastly, I just wanted to acknowledge last week we had a very exciting anniversary, the one-y year anniversary of Justin Rising.</p>
+        <p>I was just going to ask you, there was a there was a great New York Times article that I wanted to call attention to a couple of the points from it. where they were evaluating how the program has gone over the last year. and basically the data points to basically success on virtually all metrics. So, encourage everybody to take a look at the New York Times article, not just take my word for it, but they specifically called out that there are, on a daily basis 73,000 fewer vehicles entering the central business district each day, which is really substantial number. traffic is 4.5% faster within the zone and 2.2% faster in the area surrounding the zone. If you'll recall, that was a big push back around congestion that it was going to cause traffic getting into the zone, around the zone. that has not come to fruition. there have been 300,000 more people riding the subway each day. vehicle noise complaints are down on 31 17% within the congestion [clears throat] congestion zone. people seriously injured in vehicle collisions down 8.6%. The only thing that the Times article brings as inconclusive or potentially negative is that air quality improvements. there hasn't been a the data is a bit inconclusive on the benefits. so I think everyone should take a look at the article but I think they did a great job of summarizing how the brother's gone and I think exciting to see when you're in [clears throat]</p>
+        <p>Daniel go ahead. It's funny, I was just going to ask you about that because living in Midtown sometimes it doesn't feel like it has done much about the traffic, but I find that bike lanes are highly respected. You know, you don't see cars parked there. There's they're not blocking it. However, the bus lanes continue to be blocked. Yeah. And it is an absolute nightmare trying to get up and downtown with the bus lanes all blocked many times by actual police cars. Yeah. You know, so it is I [clears throat]</p>
+        <p>find that bike lanes are always free. No problem. But bus lanes are a problem. What are we going to do about that, Jason? [laughter] I I'll confess the narrative that the bike lanes are always clear. things are actually fairly frequently blocked and and cyclist have to access the bike lanes to be able to divert the roadway. but I definitely agree that there's a similar problem on the bus way bus lanes. I think solution like bus ways where we have the the roadway fully dedicated to buses. Those are one way in which we solve that problem. We have the resolution asking for that on 31st Street and 42nd Street. we supported it for Teen Street's bus way which I think is great. Obviously you can't do that everywhere.</p>
+        <p>You can't do it on the on the avenues. Yeah. I think some of the things that we have also done and supported is having offset bus lanes. So when you don't have the bus lane right at the curb</p>
+        <p>that helps to alleviate some of that. We're also seeing double bus lanes in some areas city. of Madison Avenue. We recently passed a resolution I think in the spring where we'll have two bus lanes on the west side of Madison Avenue north 42nd Street I believe. I think it's on the west side of the north at 34. It doesn't matter. So, I think there's a number of u different ways that we attack that problem, but I agree it's something that we need to keep seeing.</p>
+        <p>I like the idea of having space, you know, like the bus lane one space over. yeah, and we recently saw that implemented on Second, much of Second Avenue, where we didn't, it was previously curbside, now it's the offset. I've been meaning to look at the data since that change went in. and I [clears throat] haven't but I from my own observation I think it's made a big difference in the coming Friday. Absolutely. Sorry Ann and then Jerry and then we're</p>
+        <p>moving on. [laughter] So this isn't really our problem I have to tell you since like the third avenue bus lane is really getting used. It's It's so great to see and I don't feel like the Third Avenue traffic, car traffic is going slower. and like I said, it's not really our problem. So, we now have bus lanes on first, second, and third avenues and none on bike lanes on, you know, Lexington, Har, Madison, or Yeah. [laughter] again, but it's sort of absurd that like the east side of of the island is</p>
+        <p>so well served and the more central area is thought We asked for a bus lane on Park Avenue right at the [laughter] at the last meeting. Good luck. Yeah. Okay. That's that's a good thing to bring up. Okay. So, we had a resp from it's a redesign of Park Avenue Park.</p>
+        <p>Yeah. So, there's bus stops on Park Avenue for the cross town. okay. Well, anyway, we did ask there's some plans to redesign Park Avenue to redesign the medians. As we were talking through that, we were it came up in our our feedback that we'd love to see a bus lane, potentially a bike lane on Park Avenue. To that note, there was a survey that was sent around in our newsletter asking for feedback about what people want to see on Park Avenue. We encourage if you'd like to see a bus landing there to indicate that on that survey.</p>
+        <p>Yeah, Mine has a question.</p>
+        <p>Jerry and Jerry, sorry. I try not I'll try to keep it brief because I know we all want want to leave but we had this discussion last year about how difficult it is to enforce a biker responsibility. One of my concerns I have that [clears throat] a large population of bikers happens to be delivery guys. That rogue behavior continues unabashedly. I'm I live right at 1 Avenue. the bikes, the motorized scooters and even the, you know, the non-motorized bikes, they are always going the wrong direction. We have a lot of seniors in my neighborhood and I see accidents daily. So, has there been some thought about maybe continuing this dialogue with the DOT and trying to keep bringing awareness about it? Because I see the cop standing right there. The guy gets onto the sidewalk, takes his motorized pipe all the way through the pedestrians, and the cop does nothing. Doesn't even blink an eye. and you know aren't things search aren't supposed to be able to copy completely indifferent just wondering if there any thoughts on that</p>
+        <p>and mine just before actually there was discussion of this in the public safety committee and there I don't know if you had the opportunity to watch it but there was a pretty good discussion there and that's probably more where this would be discussed I'll briefly provide my thoughts on that</p>
+        <p>I think one of the ways in which we combat bicycle going the wrong way is by having better designated areas for cyclists to go the right way. So, I think having bike lanes on Third Avenue, we're we're providing a safe connection up town on Third Avenue, that's one way we're able to combat that. We're being in the zones that we want the cyclists in. and that helps to curb some of the bad behavior. And Jerry had a question then we're going to move on. In its first year, congestion pricing raised from tolling $550 million. Now, I just wanted to add that. [laughter]</p>
+        <p>Okay, great. Thanks. Next up, we have</p>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="section-vi1.html">← VI-1. Health & Education – Rupa...</a>
+      <a href="section-vi3.html">VI-3. Business Affairs & Licens... →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

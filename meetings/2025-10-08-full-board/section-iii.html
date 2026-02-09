@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>III. First Roll Call | Full Board - 2025-10-08</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    .breadcrumb { padding: 1rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-section-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .agenda-section-header h2 { font-size: 1.1rem; font-weight: 600; color: var(--primary); }
+    .agenda-section-header h2 a { color: var(--primary); text-decoration: none; }
+    .agenda-section-header h2 a:hover { color: var(--accent); text-decoration: underline; }
+    .agenda-items { padding: 1rem 1.5rem; list-style: none; }
+    .agenda-items li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    .agenda-items li:last-child { border-bottom: none; }
+    .timestamp-badge { font-size: 0.8rem; color: var(--text-light); background: var(--bg-alt); padding: 0.2rem 0.5rem; border-radius: 4px; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .toggle-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .toggle-tab { flex: 1; padding: 1rem; text-align: center; cursor: pointer; background: var(--bg-alt); border: none; font-size: 1rem; color: var(--text-light); }
+    .toggle-tab:hover { background: var(--border); }
+    .toggle-tab.active { background: white; color: var(--primary); font-weight: 600; }
+    .content-panel { padding: 1.5rem; display: none; }
+    .content-panel.active { display: block; }
+    .content-panel p { margin-bottom: 1rem; text-align: justify; }
+    .summary-text { font-size: 1.05rem; line-height: 1.8; }
+    .summary-list { list-style: none; padding: 0; margin: 0; }
+    .summary-list li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; border-bottom: 1px solid var(--border); }
+    .summary-list li:last-child { border-bottom: none; }
+    .summary-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Full Board - October 8, 2025">
+  <header>
+    <div class="container">
+      <h1 data-pagefind-meta="title">III. First Roll Call</h1>
+      <div class="meta">Full Board · 2025-10-08 · 0:20</div>
+    </div>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="index.html">← Back to Agenda</a>
+  </div>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/5h9a0tnqwCA?start=20" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p style="text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light);">
+      Video not loading? <a href="https://www.youtube.com/watch?v=5h9a0tnqwCA&t=20" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
+      </div>
+      <div id="summary" class="content-panel active">
+        <div class="summary-text"><ul class="summary-list"><li>full board meeting of Manhattan Community Board 6</li><li>My name is Sandy McKe and I am the chair of CB6</li><li>This meeting is called to order at 7:02 p</li><li>Tonight we are joined by First Vice Chair John Keller, Secretary Justin Goldberg, District Manager Jesus Perez, Assistant District Manager Brendan Berth, and community coordinator Brian Laferty</li><li>I think playing New York State law requires all community board members who are not able to attend the meeting in person to have their cameras on and their first and last name displayed from the time the meeting is called to order until the time the meeting is adjourned</li><li>We observe we observe the following ground rules</li></ul></div>
+      </div>
+      <div id="transcript" class="content-panel">
+        <p>full board meeting of Manhattan Community Board 6. My name is Sandy McKe and I am the chair of CB6. This meeting is called to order at 7:02 p.m. Tonight we are joined by First Vice Chair John Keller, Secretary Justin Goldberg, District Manager Jesus Perez, Assistant District Manager Brendan Berth, and community coordinator Brian Laferty. aren't at the door. I think playing New York State law requires all community board members who are not able to attend the meeting in person to have their cameras on and their first and last name displayed from the time the meeting is called to order until the time the meeting is adjourned. We observe we observe the following ground rules. Do not speak until granted the floor. Please raise your hand and wait for me to recognize you. We have microphones at the front. two microphones today and we'd like you to come to those to speak, please. it is important that only one person speaks at a time so that members of the public watching at home can understand what is being said. you will come to the microphone once you're recognized. The chat function should not be used for CB6 business or questions about agenda topics. Members of the public, if you wish to give remarks during the public session and have not already registered by filling out a form, you can register to speak in the public session on Zoom by using the Q&A feature and posting your name, your affiliation, and what topic you wish to speak about. or if you are here in person and want to speak in the public session, you need to fill out our public speaker form which is near the sign-in sheets for the for the CB6 newsletter and this needs to be done by 7:15. The agenda for tonight's meeting was distributed ahead of time by the board office was posted online and appears on the screen before you. If there is no objection, we will adopt the agenda as stated. If you object to adopting the agenda, you may raise your hand. Seeing no excuse me, seeing no objections, the agenda for tonight's meeting is adopted. Justin will now take attendance by roll call.</p>
+        <p>We'll now take attendance by roll call. Board members, when your name is called, please say present. Ready. Tanya Aras, present.</p>
+        <p>Kyle Tide. Neil Barklay, present. Marty Barrett, Elby Barroso, present.</p>
+        <p>Daniel Bernstein, present. Liz Burr, present. Jim Collins here.</p>
+        <p>Steuart Desert Beatatric Disman. Is she on? she's having issues with the Zoom link. Go back to her then.</p>
+        <p>Am I a Don? Robert Fairfan Bar Freriedman present. Jason Brmitz, present. Eric Goldberg,</p>
+        <p>Justin Goldberg, Gloria Hage, Rivia Hickball, present. Ha. Judge, present.</p>
+        <p>Ra, she's not here. John Keller, present. Kate Kennedy, present.</p>
+        <p>Katie Landa, present. Sandra Ltoff, present. Anton Molner, not here.</p>
+        <p>Not here. Sandra McKe, present. Alec Militic, present. Richard Mintz,</p>
+        <p>present. Kevin O'Keefe, present. Rashma Patel, present. Steven Perez, Will Perry, Omeishi,</p>
+        <p>Miriam Roth, Michael Anroe, absent. Lauren Shy, present. Anne Celigman</p>
+        <p>here. Sandra Sherrod. Mubin Sadiki. Letty Simon. She should be excused. I sent the letter in.</p>
+        <p>She's excused. Present. Gabriel Turtzo present. Cad Valero present.</p>
+        <p>James present. Jerry Weinstein present. Sarah Whittington present.</p>
+        <p>David Woods present. and Sha Zhao. All right, with 35 members duly present, we do have our elected officials sent in their</p>
+        <p>reports ahead of time and they are compiled on the CB6 website. The link to the reports was sent out ahead of time as well and for your convenience can be found in the chat on Zoom or by going to our websites page for full board meetings. I will call on each of the elected officials who have RSVP so that they can take questions from CB6 members and the public about their presubmitted reports. Each elected official will be able to field questions. If there are no questions, we will move to the next official on our list. if an elected official has a time-sensitive matter to report on that didn't make it into their presubmitted l report, they will have three minutes to do so. we do expect our congressman to join us this evening. maybe later. so we'll move on to Joanna Sanchez who's number one tonight.</p>
+        <p>Okay, great. Wendy Brennan from Senator Krueger's office. Hi, I just want to report on two quick things. We have an upcoming virtual event next week on October 14th from 2 to 3:30. It's on the federal impact to for older adults to cuts in Medicare and Medicaid. The link is in my report. And we do have a live event on October 28th, an older adult resource fair. It's from 11:30 to 2:30 at Lennox Hill Neighborhood House and the information is also in the newsletter. Thank you and good to see all of you.</p>
+        <p>Do we have any questions? Ann, if you</p>
+        <p>could please go to the microphone. Yeah. Hi, I just want to say I went to Hi. I just want to say I I attended the webinar yesterday on Medicare and it was great. So thank you very much for that and for those of us here who are eligible like this is a great resource and you should be aware and you can call the office we can send you a link if you didn't register. It is the guy from the department of for the aging is terrific. Great. Okay. Any other questions? All right. Thank you very much. next we have Payton Schultice from Senator Gonzalez's office.</p>
+        <p>Hi. I just have one quick thing I wanted to add to the report. I'm sure you're all aware. Last month the CAC voted down the proposed casino at Freedom Plaza. The senator feels similarly. the senator is very happy with this outcome. She, you know, is very aware of the immense community u opposition to this proposal is very happy that the CAC made this decision. Also, you know, thank you Sandy for serving on the CAC and and Rushma as well. Thank you and appreciate all of the board's work around this issue as well. happy to take any questions.</p>
+        <p>Do we have any questions for the senator's office? Great. Thank you very much. Thank you.</p>
+        <p>we have Christian Williams from the mayor's office. Hi Wendy. I'm so sorry. It should say Jasper Diaz. first of all, I want to thank you so much for having me. I'm the new Manhattan B director, the mayor's community affairs unit. Robin Forest, center of regards, and she's now with first deputy mayor Randy Mastro's office. some of you may not know me. I did put my contact information in the chat. If you ever need any assistance for the city regarding any issues, have any questions, please feel free to reach out to me and I will be sure to submit a report through the system for the next meeting. Okay. Do we have any questions for the mayor's office? All right. Thank you. Thanks very much.</p>
+        <p>Thanks so much. next we have Patrick Hill from</p>
+        <p>Council Member P's office. Good evening everyone. thank you for having me virtually. I don't have anything to add to our report. Just want to highlight that we have a free bike helmet fitting event happening on October 18th in Stytown from 11 to 2:30 p.m. 11 a.m. to 2:30 p.m. It'll be at playground 9. and we have info that we can send over to the to the community board staff as well in case they want to share it with folks. Do we have any any questions for for Keith P's office? Great. Okay. Thanks very much. Thank</p>
+        <p>you. next we have Curtis Young from the Public Advocates Office. Curtis has his hand raised. maybe having I Curtis, you're having issues with the Zoom. We can can Curtis, you may speak. Hello. Can you hear me?</p>
+        <p>Yes, we can. Thank you. Okay, perfect. Thank you. So, oh, you can hear me. Okay, but you can't see me. Let's see if I can start my video. His video is not permitted. We We had We We tried to promote you, but you kept declining. So, unless you unless you accept, we can't see your video. So, Oh, okay. Well, if you want to try</p>
+        <p>again, I can try, but I can also just wing it. no problem. Okay. Well, thank you all. once again, it's great to be here with CB6. Just a few updates. Some apologies for not submitting the report in advance. I'm trying to get better at that in advance. I will do my best for November. but I just wanted to share that this month the governor extended an executive order that allows pharmacists to continue administering CO 19 vaccines providing access to all New Yorkers who wish to be vaccinated. just information for the city, the executive order will be placed in place for another 30 days and is a part of Governor Hoku's first against first fight against Washington's new CO rules. So, that's very good news that we can share with all New Yorkers. also, New Yorkers can still sign up for their updated COVID 19 vaccination by visiting nyc.gov/co express. as far as legislative updates, recently the public advocate spoke at a hearing of the committee on mental health, disabilities, and addiction at city hall regarding the need for a robust 988 infrastructure, calling for improvements and investments that integrate with be heard and other intervention programs. he believes that the city must invest in crisis response hotline and expand its response services to New Yorkers. also currently at, as many of you have seen in the newspaper, currently at 26 Federal Plaza, ICE has been detaining immigrants in inhumane, abusive conditions and attacking individuals, including journalists inside the building. As you saw, elected officials were also arrested recently. And last month, the US court granted an injunction that would improve conditions for people detained by ICE at 26 Federal Plaza. and as you know, ne the next day after that injunction, the public advocate and others were arrested there. So, the fight continues. we have a few upcoming events. You can follow them by visiting our event page and also sign up for our newsletter and other information there. I'm happy to take any questions.</p>
+        <p>Do we have any questions for the public advocate? No, we don't this evening. Thank you very much.</p>
+        <p>Thank you. Jerry Nadler, our congressman has joined us. Please welcome to C6. Thank you very much. Thank you very much. as you know, they don't mean to shut down now. the Republicans, well, let me tell you what's at stake first. a trillion dollars in healthcare funds, a trillion dollars for Medicaid, leaving 16 million people uninsured. Hospitals, community health centers closing. And remember, we live in New York City. The hospital closes, we go to different hospital in Manhattan. If you're in a rural area and hospital 5 miles away closes, you may have to go 75 miles. and on the way there you could die because it's an if it's an emergency situation. Now the Republicans don't want to extend the Affordable Care Act tax credit and this means that tax that the cost would go up by 115%. So, a 60-year-old couple making $80,000 would have a medical a a a an insurance cost increase of $17,000 on an $8,000 couple's income. Now, this is ridiculous. Now, the Republicans say, "Well, you know, we'll work that out. vote to continue those with the continuing resolution, reopen the government will work that out except that the enrollment period starts November 1st and people are already getting their notices which include these huge increases. In addition to which the Republicans say, "Well, pass a clean CR." And we'll talk about it later. Besides the objection I just said, we passed the clean CR back in March. And Chuck Schub got a lot of criticism for that, but we passed the clean CR in March. It expired last week, September 30th. The president wouldn't negotiate until September 30th. And there's no way you're going to reach a five quarter deal. By a five quarter deal, I mean the president, the majority minority leaders, the Senate, the speaker, and minority of the House. And that's what you have to do. There's no way you're going to do that in less than one day. So this is going on. Propose are trying to say, well, you know, we'll take care of it. No, they won't take care of it. We tried that once and you know there's an old saying fool me once shame on you fool me twice shame on me we've been through that now the government shutdown aside they are administration is taking it out trying to hurt blue space so they have cancelled they say on grounds of deer d diversity, equity, inclusion, which they're opposing. They have cancelled the Second Avenue subway extension and the Gateway tunnel project. I take this personally because I did a lot of work to get funding for those. I'm on the transportation committee, but that's $18 billion. It's $300,000 commuters. And if one of those tunnels were to fail, the economic impact would spread throughout the country, starting with the Northeast, would spread throughout the country. Now, why are they doing this? They say it's DEI. That's not the real reason. They're cancelling projects all over the place in blue states only. So, we're dealing with people who are who behave dishonorably, and we have to stand our ground. There's no way around it and u that's all I can say. Are there any questions?</p>
+        <p>Tanya would like to go first the microphone over here. And thank you enough for all that you do</p>
+        <p>and thank you for being here. How does this end? I don't know. Nobody knows how this ends. and snake. Snake, but no one knows how it ends. Dave, thank you. In your opinion, is this a</p>
+        <p>tactic or the end game for them? They trying to kill the projects. I think they're trying to kill some of the projects. I don't know that they're trying to kill all of them. But it's unknowable. I It's just hard to believe they want to kill all the projects that they're threatening. It would really hurt the country in so many ways, but they do Jerry. Thank you so much. did you and your staff have a chance to read the Guardian Opus Monigan today about a blue state compact? It's generating a fair amount of discussion. No, I I haven't seen it.</p>
+        <p>just in grief is what what it sounds like massing and and everything from theatricality to having an oppositional framework about what to do for this moment. Well, sounds like a good idea. I have to look into it more. Sounds like a good idea. I mean, I hate to see the country split into two halves. We went through that in 1861. B, you have a question. Please go ahead.</p>
+        <p>I do. Yes. good evening, Congressman. I do have a question of two issues that have come up. One is the fact of firing some of the non-essential employees that are being threatened. And second is the threat not to uphold the law that provides the back pay for those that would, you know, working and deemed non-essential. Any comments or thoughts about those issues? People who are deemed essential by the president, by air traffic controllers have to work and will get paid later. people deemed non- essential stay home and get paid later. And the president's threat to deny some of the people pay is simply illegal. There's a law, I forget the title of the law, that says that the people must get paid, all of them. This law was signed into law by President Trump in his first term. Do we have any other questions for the congressman?</p>
+        <p>Well, in that case, thank you very much. Well, thank you so much for coming.</p>
+        <p>following our congressman, we now have Harvey Epsteinin, our assembly member. And and Jim, sorry if you don't mind. You know, really, we should just give the congress member. I mean, Congressman Nadler for decades has served our city and really he deserves a round of applause. Thank you for everything you do in Washington, you've done in Albany, and what you've done for our city. your leadership has been amazing. so I wanted to come this month because I know the casino was a big issue that we've been talking a lot. I want to thank my rent who happens to be sitting in the back. Thank you for all the work. There was a lot of work, but I know you did what you could to represent our community well and I think the outcome really rose to the values of what this community needed and really spoke for today. First, thank you for all your work. You know, we are, as the congress member said, in really troubling times. Let's be honest about that.</p>
+        <p>We are likely to see military, national guard, troops on our streets and we just need to be prepared for that. That is, it feels like an eventuality. So, I think we need to be thoughtful about what we do over the next couple months. We need to be caring about our neighbors and our friends and our loved ones. And we need to stick together to know that people of goodwill are going to do the best they can during difficult times. And think about this country and its history. Even over the last hundred years, we've and you know, people have lived through really difficult times before us. They got up every day. They did what they could to make the world a little less bad. And it's our responsibility in these difficult times to do the same thing. We have to be optimistic that the world's going to be a bit better place at some point. I'm just not sure in the next 3 years we'll see it. But it doesn't mean we can't keep fighting and standing up for what we believe in. The last thing I'll say is well it's October of 2025. This may be my last meeting as an asama member representing this community. I just wanted to thank you for your partnership, your friendship, your work, your commitment to this community. it really takes all of us. But the people know I've said that I served on my community board for 14 years, chair of lots of communities, including chair of the board. None of that is easy. Takes someone who cares deeply about their neighborhood to give them that right. So, I just want to know thank you all and thank you for your work. And if the chair says there's any questions, I'm happy to answer them. But you know, I just wanted to wish you a happy new year and thank you for for doing your work</p>
+        <p>and thank you. Yes. Yes. We have any questions for the assemblyman. All right. Well, thank you everyone. Have a good evening.</p>
+        <p>Thank you so much. Next we have Julie Roland from Assembly Member Bores's office. She's here. Oh, here. Oh, okay. Hi. I think hello everyone. first things first, I'm Julie Roland. I'm the new district director. I'm the new district director for Assembly Member Morris. So, maybe you've seen Sophia Miller, some other staff members. I'm going to be acting up.</p>
+        <p>I'm going to be getting acclimated, but</p>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="section-i.html">← I. Call to Order...</a>
+      <a href="section-iv.html">IV. Public Session... →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/5h9a0tnqwCA?si=vtxO1JiHaitn4Oe5" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

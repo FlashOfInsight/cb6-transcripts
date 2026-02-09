@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VI-1. Health & Education – Rupal Kakkad, Chair | Full Board - 2026-01-14</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    .breadcrumb { padding: 1rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-section-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .agenda-section-header h2 { font-size: 1.1rem; font-weight: 600; color: var(--primary); }
+    .agenda-section-header h2 a { color: var(--primary); text-decoration: none; }
+    .agenda-section-header h2 a:hover { color: var(--accent); text-decoration: underline; }
+    .agenda-items { padding: 1rem 1.5rem; list-style: none; }
+    .agenda-items li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    .agenda-items li:last-child { border-bottom: none; }
+    .timestamp-badge { font-size: 0.8rem; color: var(--text-light); background: var(--bg-alt); padding: 0.2rem 0.5rem; border-radius: 4px; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .toggle-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .toggle-tab { flex: 1; padding: 1rem; text-align: center; cursor: pointer; background: var(--bg-alt); border: none; font-size: 1rem; color: var(--text-light); }
+    .toggle-tab:hover { background: var(--border); }
+    .toggle-tab.active { background: white; color: var(--primary); font-weight: 600; }
+    .content-panel { padding: 1.5rem; display: none; }
+    .content-panel.active { display: block; }
+    .content-panel p { margin-bottom: 1rem; text-align: justify; }
+    .summary-text { font-size: 1.05rem; line-height: 1.8; }
+    .summary-list { list-style: none; padding: 0; margin: 0; }
+    .summary-list li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; border-bottom: 1px solid var(--border); }
+    .summary-list li:last-child { border-bottom: none; }
+    .summary-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Chapter cards - citymeetings.nyc style */
+    .chapters-list { display: flex; flex-direction: column; gap: 1rem; }
+    .chapter-card {
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      border-left: 4px solid var(--accent);
+    }
+    .chapter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .chapter-category {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .chapter-time {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-family: monospace;
+    }
+    .chapter-time:hover { text-decoration: underline; }
+    .chapter-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+    .chapter-description {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+    }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
+  <header>
+    <div class="container">
+      <h1 data-pagefind-meta="title">VI-1. Health & Education – Rupal Kakkad, Chair</h1>
+      <div class="meta">Full Board · 2026-01-14 · 1:18:03</div>
+    </div>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="index.html">← Back to Agenda</a>
+  </div>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=4683" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p style="text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light);">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=4683" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
+      </div>
+      <div id="summary" class="content-panel active">
+        <div class="summary-text"><p>ballot to all members. Please click on the link in your email. select your name from the drop-own list and select your vote on each resolution as presented. do not submit the ballot until the end of the meeting or until after all of the resolutions that are to be voted on have been discussed and pre...</p></div>
+      </div>
+      <div id="transcript" class="content-panel">
+        <p>ballot to all members. Please click on the link in your email. select your name from the drop-own list and select your vote on each resolution as presented. do not submit the ballot until the end of the meeting or until after all of the resolutions that are to be voted on have been discussed and presented. At the end of the meeting, please submit your ballot and you must vote on every resolution, otherwise you cannot submit it. And if you plan on abstaining, please select abstain and remember that this will count as a negative vote. Final vote counts will be announced after the second roll call. If any part of our voting procedure is unclear, please raise your hand and we will address your questions. first committee up is health and education. Ruple Kakad is chair.</p>
+        <p>So we have two resolution. First one is supporting Bel in their city and state budgets from the elected officials. a lot of the funding they're getting right now the higher rates slightly higher rates they're expiring in March 2026. So we want that to continue. So that's essentially what this is asking for is for city and state to to extend that beyond March 2026 especially since Bel is a safety hospital. any questions? The second resolution is any non-essential helicopter flights in Manhattan. so it's basically tours that people take in helicopters like private flights that people take to and from basically anything that's not essential that's not police or any emergency NYU organ donation or any medical related things. they would ban them from Manhattan. So, yeah, that's what the second solution is.</p>
+        <p>Stu has a question. Please wait for the mic or they won't hear you at home.</p>
+        <p>Thank you. Why does the reso include the downtown? which is not in our district. That's not in our district. we are happy to remove it. We just figure it's the helicopters flying in our district. They they they take off</p>
+        <p>from there. Now they actually go to Westchester. Yeah. So there are a lot of private flights that kind of go upstate and other places as well. A lot of them definitely do go to JFK. but a lot of them do go more upstate. Even Hampton.</p>
+        <p>Yeah. Hamptons and other places. Yeah. It's not a question, but it's just a clarification. there have been resolutions before targeting the finan area where that helipad is. This is to create a stronger awareness in a case. based on the presentation I think we had in November, goes into more detail if you're curious. this is in support of other legislation that's already at state level that we want to encourage being a fine burough issue not just with our district. So that point in resolution is signif [clears throat]</p>
+        <p>I just is there still the the helport on the west side? yeah there is. And why is it in the resolution as well? I mean it's the same issue.</p>
+        <p>Yeah, a lot of the the the tours also take off from there. So, when we have the presentation, what happens is a lot of the helicopters kind of come from Jersey, but a lot of them also come and they're all basically like tours, like the skyline tour of Manhattan, and they go all around like So, should we should we add that? If we're going to keep the financial district, should we add the west side as well? Is that a friendly amendment? Yes. Someone said there's no friendly</p>
+        <p>amendments, but they're all amendments, but but could we amend it to include that if we feel if we feel it's appropriate to have a I think part of the reason why we downtown and not the west side is because it's for a larger issue that they're attacking New Jersey state legislation and working on the west side. That's my understanding. But we</p>
+        <p>emphasize the downtown teleport in this resolution because it targets the east side which we are located and our teleport as it goes to. So they're also working with the west side and Jersey with us. So did you have a question? I actually just want to congratulate you on both of these resos that had I felt fairly shocking statistics both about the number of helicopter crashes and the emergency room visits at Belleview. So, I just want to thank you for doing your research and including in the residents.</p>
+        <p>Thank [laughter] you.</p>
+        <p>Thank you. So, if there's no objection, we'll now vote on these two res. we've we've bundled, I guess. so please mark your digital ballots or you want to and just quickly for our February meeting, we're going to have a presentation from Belleview about substance abuse and methadone program. We are also going to discuss the resolution on salt school. we're also going to have a NYU like so Gloria attended an NYU open house. so we're going to hear about more the more details about that from her. we're going to discuss the 2028 statement of district needs as well. And I just I think I saw a Virginiaian's text that her chief of staff will probably be there to discuss the city retirees health plan as well. So we might we will be adding that to the agenda for February as well. Anything else?</p>
+        <p>Daniel, hi quick question. What was the</p>
+        <p>resolution about the salt school? What actually was it? So, so Salt School is a middle school. it's a blue middle school that's in our district. It's part of a it's inside an elementary school and because of the class size mandates and everything, they have to relocate because the space is needed by the elementary school. the parents of the school the children who go to that school. One key well number one they they one of the things they said was they weren't informed by the DOE prior to them coming their kids to this school. So they want to make, you know, they are asking for these kids to complete before moving it. And when when it does move, they want to keep it nearby because the school has a relationship with NYU and a lot of so they want to kind of keep it nearby when when they do move it. So we're going to look at that.</p>
+        <p>Daniel, you may have missed the presentation by one of the students from the school. I guess that was in November. And the parents, too.</p>
+        <p>And the parents. Yeah. Yeah. And they also had been go have been going to the youth and education meeting last couple of months. So they also talked about it at those committee meetings. Okay. Thank you. Next we have</p>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="section-vi.html">← VI. Committee Reports and Res...</a>
+      <a href="section-vi2.html">VI-2. Transportation – Jason Fr... →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>III. First Roll Call | Full Board - 2026-01-14</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    .breadcrumb { padding: 1rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-section-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .agenda-section-header h2 { font-size: 1.1rem; font-weight: 600; color: var(--primary); }
+    .agenda-section-header h2 a { color: var(--primary); text-decoration: none; }
+    .agenda-section-header h2 a:hover { color: var(--accent); text-decoration: underline; }
+    .agenda-items { padding: 1rem 1.5rem; list-style: none; }
+    .agenda-items li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    .agenda-items li:last-child { border-bottom: none; }
+    .timestamp-badge { font-size: 0.8rem; color: var(--text-light); background: var(--bg-alt); padding: 0.2rem 0.5rem; border-radius: 4px; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .toggle-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .toggle-tab { flex: 1; padding: 1rem; text-align: center; cursor: pointer; background: var(--bg-alt); border: none; font-size: 1rem; color: var(--text-light); }
+    .toggle-tab:hover { background: var(--border); }
+    .toggle-tab.active { background: white; color: var(--primary); font-weight: 600; }
+    .content-panel { padding: 1.5rem; display: none; }
+    .content-panel.active { display: block; }
+    .content-panel p { margin-bottom: 1rem; text-align: justify; }
+    .summary-text { font-size: 1.05rem; line-height: 1.8; }
+    .summary-list { list-style: none; padding: 0; margin: 0; }
+    .summary-list li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; border-bottom: 1px solid var(--border); }
+    .summary-list li:last-child { border-bottom: none; }
+    .summary-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Chapter cards - citymeetings.nyc style */
+    .chapters-list { display: flex; flex-direction: column; gap: 1rem; }
+    .chapter-card {
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      border-left: 4px solid var(--accent);
+    }
+    .chapter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .chapter-category {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .chapter-time {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-family: monospace;
+    }
+    .chapter-time:hover { text-decoration: underline; }
+    .chapter-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+    .chapter-description {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+    }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
+  <header>
+    <div class="container">
+      <h1 data-pagefind-meta="title">III. First Roll Call</h1>
+      <div class="meta">Full Board · 2026-01-14 · 10:10</div>
+    </div>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="index.html">← Back to Agenda</a>
+  </div>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=610" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p style="text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light);">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=610" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
+      </div>
+      <div id="summary" class="content-panel active">
+        <div class="summary-text"><p>Howdy folks. Happy New Year. Tanya here. Present Barklay</p></div>
+      </div>
+      <div id="transcript" class="content-panel">
+        <p>Howdy folks. Happy New Year. Tanya here. Present Barklay Elvie Barroso.</p>
+        <p>Daniel Bernstein present. Liz Burr present. Jim Collins absent. Stuart Desert here.</p>
+        <p>Beatatric Disman present. Maya Donaf. Robert Faran present. Friedman. Jason from</p>
+        <p>Eric Goldberg. Yeah. Stand Justin Gloria. Hey, Rabia. Paige. Judge Rupal here. Don present.</p>
+        <p>Kate absent. Katie Landon present. Sandre Liftoff here.</p>
+        <p>Anton here. Sandra here. Alec present.</p>
+        <p>Richard Mintz. Kevin O'Keefe. Kevin O'Keema here. Steven Curtis, present. Will Perry present.</p>
+        <p>Mariam absent. Larry Sher. Larry Sherb an Sullivan present. Sandro Sherrod present. Sadik present.</p>
+        <p>Letty Simon present. Samir Badar. Mark Thompson present. Hey Mark, Gabe Tzo,</p>
+        <p>Cat Valero, James Vera, myself Weinstein, Sarah Whittington, David Woods, absent. Shuya Xiao,</p>
+        <p>present. You'll tell me how to pronounce that properly later. This concludes all right with 36 members. Julie present or you have no All right. Our elected officials sent in</p>
+        <p>their reports ahead of time and they are compiled on the CB6 website. The links to the the link to the reports was sent out ahead of time for your convenience and can be found in the chat on Zoom or by going to our website's page for full board meetings. I will call in each of the elected officials who have RSVPd so they can take questions from CB6 members and the public with about their reports. Each elected official will be able to field questions. If there are no questions, we will move on to our next official on our list. if there's a time-sensitive matter, they will report that didn't make it into their presubmitted their report, they will do so. We have the honor of having our new burough president, Brad Hoylman-Sigal Sigal, with us this evening. Thank you. Thank you. Good to see everyone. Thank you very much. Hello, Jerry. I text Brad Eagles. Good to see everyone. your 28th Manhattanboro president and I'm happy to be here to welcome everyone to the new year to my new year and give you a short report. First, I want to introduce a couple of colleagues who are here. we have a new director of community affairs, Marielle Ali, who is here. Say hello to Marielle.</p>
+        <p>Hello. And everyone knows the amazing Vera Rosenberg who's been our amaz. So say hello. the first and biggest news is that community board applications begin in earnest. They will start and go live this Friday, January 16th. that'll be due at the end of February, February 27th. So, look for that. We'll make sure that you get the link and the application is very similar to the past, but we'll help walk you through the process if any current or prospective board members have questions. secondly, we're planning an inauguration celebration and more important than that, a burough convention. It's our vision to gather community [clears throat] boards and other stakeholders together on February 22nd. That's a Sunday. from 1 to 4:00 p.m. It's going to be at Alice Tony Hall at Lincoln Center. That's Broadway and 65th Street. There's some little flags in the back, but [clears throat] it's going to be collective community agenda setting meeting. you know with the big postit notepads facilitators and an opportunity for people to let the new Manhattan president office know about what's on their mind and what they want to see us address. So I think it's an earnest attempt to really rely on our community partners to help drive the agenda out of office. So that's the way I see it and I welcome everyone to participate in that. And then finally just wanted to say that we've filled out a number of positions in our office and we'll be making announcements soon for deputy president and other posts including director of land use and planning which is a very important officer. So look forward [clears throat] to working with each and every one of you moving forward and happy new year again. Thank you so much.</p>
+        <p>Do we have time for any questions? I have a weird echo here. I don't really talk to any. So, as I'm sure you know, the city</p>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="section-ii.html">← II. Adoption of the Agenda...</a>
+      <a href="section-iv.html">IV. Public Session... →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VI-7. Budget & Governmental Affairs – Steve Perez, Chair | Full Board - 2026-01-14</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    .breadcrumb { padding: 1rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-section-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .agenda-section-header h2 { font-size: 1.1rem; font-weight: 600; color: var(--primary); }
+    .agenda-section-header h2 a { color: var(--primary); text-decoration: none; }
+    .agenda-section-header h2 a:hover { color: var(--accent); text-decoration: underline; }
+    .agenda-items { padding: 1rem 1.5rem; list-style: none; }
+    .agenda-items li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    .agenda-items li:last-child { border-bottom: none; }
+    .timestamp-badge { font-size: 0.8rem; color: var(--text-light); background: var(--bg-alt); padding: 0.2rem 0.5rem; border-radius: 4px; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .toggle-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .toggle-tab { flex: 1; padding: 1rem; text-align: center; cursor: pointer; background: var(--bg-alt); border: none; font-size: 1rem; color: var(--text-light); }
+    .toggle-tab:hover { background: var(--border); }
+    .toggle-tab.active { background: white; color: var(--primary); font-weight: 600; }
+    .content-panel { padding: 1.5rem; display: none; }
+    .content-panel.active { display: block; }
+    .content-panel p { margin-bottom: 1rem; text-align: justify; }
+    .summary-text { font-size: 1.05rem; line-height: 1.8; }
+    .summary-list { list-style: none; padding: 0; margin: 0; }
+    .summary-list li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; border-bottom: 1px solid var(--border); }
+    .summary-list li:last-child { border-bottom: none; }
+    .summary-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Chapter cards - citymeetings.nyc style */
+    .chapters-list { display: flex; flex-direction: column; gap: 1rem; }
+    .chapter-card {
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      border-left: 4px solid var(--accent);
+    }
+    .chapter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .chapter-category {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .chapter-time {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-family: monospace;
+    }
+    .chapter-time:hover { text-decoration: underline; }
+    .chapter-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+    .chapter-description {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+    }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
+  <header>
+    <div class="container">
+      <h1 data-pagefind-meta="title">VI-7. Budget & Governmental Affairs – Steve Perez, Chair</h1>
+      <div class="meta">Full Board · 2026-01-14 · 2:11:12</div>
+    </div>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="index.html">← Back to Agenda</a>
+  </div>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=7872" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p style="text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light);">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=7872" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
+      </div>
+      <div id="summary" class="content-panel active">
+        <div class="summary-text"><p>budget and government affairs Steve Perez chair very We passed two resolutions at our budget meeting on Monday. So you will see those next month. and then the next month we'll also be discussing or continuing the conversation about open the open meetings law. So, we may have we may have a resolution...</p></div>
+      </div>
+      <div id="transcript" class="content-panel">
+        <p>budget and government affairs Steve Perez chair very We passed two resolutions at our budget meeting on Monday. So you will see those next month. and then the next month we'll also be discussing or continuing the conversation about open the open meetings law. So, we may have we may have a resolution on that, but we'd also like to reassert the resolution that we passed previously that we would like the option to be able to do Zoom to that rather than requiring inperson attendance. So, we're going to see if we can take that open as as well as some potential amendments [clears throat] to meet law.</p>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="section-vi6.html">← VI-6. Land Use & Waterfront – G...</a>
+      <a href="section-vi8.html">VI-8. Housing & Homelessness – ... →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
