@@ -29,6 +29,12 @@
     header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
     header .header-nav a:hover { color: white; }
     h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
     .meta { opacity: 0.9; font-size: 0.95rem; }
     footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
     footer a { color: var(--accent); }
@@ -141,10 +147,16 @@
 <body data-pagefind-meta="meeting:Full Board - January 14, 2026">
   <header>
     <div class="container">
-      <div class="header-nav"><a href="index.html#iv">← Back to Meeting</a></div>
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="index.html">Full Board - January 14, 2026</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="index.html#iv">IV. Public Session</a>
+      </nav>
       <span class="chapter-category-header" style="background: #dc2626;">PUBLIC COMMENT</span>
       <h1 data-pagefind-meta="title">Public comment: our new</h1>
-      <div class="meta">IV. Public Session · 21:15 · 44 sec</div>
+      <div class="meta">21:15 · 44 sec</div>
     </div>
   </header>
 

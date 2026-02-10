@@ -29,6 +29,12 @@
     header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
     header .header-nav a:hover { color: white; }
     h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
     .meta { opacity: 0.9; font-size: 0.95rem; }
     footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
     footer a { color: var(--accent); }
@@ -141,7 +147,11 @@
 <body>
   <header>
     <div class="container">
-      <div class="header-nav"><a href="../../index.html">← All Meetings</a></div>
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Full Board - January 14, 2026</span>
+      </nav>
       <h1>Full Board</h1>
       <div class="meta">January 14, 2026 · Manhattan Community Board 6</div>
     </div>
