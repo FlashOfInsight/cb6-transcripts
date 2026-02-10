@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resolution supporting the Treatment Court Expansion Act | Full Board | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="index.html">Full Board - January 14, 2026</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="index.html#vi4">VI-4. Public Safety & Sanitation – S...</a>
+      </nav>
+      <h1 data-pagefind-meta="title">a) Resolution supporting the Treatment Court Expansion Act</h1>
+      <div class="meta">1:45:35</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=6335" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=6335" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="transcript-header">
+        <h3>Transcript</h3>
+        <p class="transcript-note">Timestamps are approximate.</p>
+      </div>
+      <div class="transcript-content">
+        <p><span class="transcript-time">1:45:35</span> Okay. next up, we have public safety</p>
+<p><span class="transcript-time">1:45:37</span> and sanitation. to desert chair that the resolution was so written that there's no need for elaboration but that's not my character. so the resolution support bill is aimed at reducing crime committed by people with mental illness. if their illness is deemed to have contributed to their criminal conduct. This law would divert many such defendants from incarceration to treatment. the premise which is supported by experiences that treatment potentially reduces the likelihood that such people will reaffend while at the same time it get them back on right course in their lives. in Rikers in generally about 50% of inmates in state prisons and federal prisons have some sort of mental illness. the statistics of Rikers is also about 20%, one out of five has a serious mental disorder. and we know that simply imprisoning people doesn't typically make them better human beings. and no [clears throat] one thinks anyone comes out of Breakers better than they go in. state prisons, prisoners have a median of five convictions on their records. so that if all we are going to do is send people to prison and cycle them back to the street and then cycle them back to prison, we're not accomplishing anything. if we if we treat their mental health in issues, we reduce we we interrupt the cycle, we reduce recidivism and we reduce the crime rate. there's there's something of a consensus behind [clears throat] diversion. Many prosecutors, judges, defense council are all behind it. the chief judge and the chief administrative judge in New York.</p>
+<p><span class="transcript-time">1:47:36</span> Use the mic, please. the chief judge and</p>
+<p><span class="transcript-time">1:47:40</span> chief administrative judge in New York is successively supported. our own district attorney Al Bragg has his own diversion program as many other prosecutors. I heard at the hearing for this bill few months ago, there was a former police officer who's now a Republican senator who was enthusiastic about it. so the reason our for our resolution is twofold. One is simply to support diversion and to support this bill. but the other is that while there is a diverse backing behind diversion and the coalition that backed the bill worked for two years to get buy in from a lot of different people, judges and prosecutors. there are still several issues that of disagreement that could end up derailing the whole bill. So we took positions on four of those issues which seem to be the core of disagreement with the hopes that you know by by taking these positions we would we would help inch the debate over too passive. and now I will subject myself to any question.</p>
+<p><span class="transcript-time">1:49:04</span> Marty has a question first.</p>
+<p><span class="transcript-time">1:49:07</span> The resolution doesn't show</p>
+<p><span class="transcript-time">1:49:09</span> statistics in so far as those people who had been in this program before have not gone back to jail. the it it nor does it indicate the specific crimes that would be allowable. Mo most you know [clears throat] the mental health and drug addiction causes a great deal or most of domestic violence and assault and muggings and robbing of toothbrushes from CVS. the I I I don't necessarily see how this how this really works. My wife had [clears throat] worked for 40 years the office of mental health at Greenmore at Manhattan psych at Queens County. They cut out hospitals in the 80s and built more prisons. so as to put the mental the individuals with mental health problems in prisons. I don't necessarily see that there will be funding and sufficient personnel to to [clears throat] do what they would like to do. There isn't even enough judges currently in in our system to handle their load. So, you know, this is kind of pie in the [clears throat] sky. So the some of the statistics which are buried in footnotes Vera did some analysis and found that that treatment reduced recidivism for the population they looked at by around 50%. the bill actually expands the number or the range of charges that a defendant could have and still be eligible for the program. So you're sort of extrapolating or they're sort of extrapolating what the S4 will be. Obviously the bill resolution asks [clears throat] for for Maloneyy for funding. the bill itself does not include anything about funding. The the advocates for the bill are very direct that this bill is not going anywhere unless it gets budgeted</p>
+<p><span class="transcript-time">1:51:44</span> [clears throat]</p>
+<p><span class="transcript-time">1:51:44</span> through the budgeting process before</p>
+<p><span class="transcript-time">1:51:46</span> the government. and they have specific asks. They actually ask a certain amount for the office of court administration, a specific amount to fund treatment programs. the off court administration in turn would expand the number of what are called problem solving courts. a number exist in New York state and New York City. Most of them are for drugs. A few of them are for psychiatric issues. so there there are specific dollars that they're asking for. They're not bill but the bill's not going any Maloneyy. and our second second operational u clause talks about budgeting and and that was an issue that the people who were concerned about the bill prosecutors and some of the judges raised they said it was like an unfunded mandate and there was agreement that there would have to be first did I miss everything that you said</p>
+<p><span class="transcript-time">1:52:50</span> that's good we're okay an an individual with mental health or drug drug problems commits domestic violence regularly. I don't know how that's going to stop. We we only know what the data about and and you know there will be more data collected with with the programs. I mean it's been down and successful</p>
+<p><span class="transcript-time">1:53:27</span> and Steve has a question and then John</p>
+<p><span class="transcript-time">1:53:32</span> I actually have a few comments about the</p>
+<p><span class="transcript-time">1:53:35</span> resolution. first kudos to the committee for all the time and effort they spent looking through some very thorny and complex issues. However, I do have a number of concerns as someone who supports jail diversion and alternatives restoration programs and who used to work for one of the service providers in the city. My first of standup point is that the entire expansion of the services relies on discretionary state funding.</p>
+<p><span class="transcript-time">1:54:04</span> Yeah. Given that we know what's</p>
+<p><span class="transcript-time">1:54:07</span> happening with the federal budget and how that's in fact impacting our state's budget, there's almost zero chance that there will be any resources available on the services in the bill. So this may all be moved. But going into the content of the resolution, the opening whereas clause presents diversion as the default solution whenever criminal conduct can be attributed to drug [clears throat] use or mental disorder, which simply is not true. Best practices in treatment courts emphasize validated risk assessments and careful eligibility screening to determine what types of individuals should be diverted into treatment. The last resolved clause is equally concerning because it mandates that the court must order a mental health assessment. whether or not that person is inappropriate for diversion or if the judge would even consider it. Which [clears throat] ties the hands of the people in the courtroom who are best able to determine whether a health assessment is appropriate or not and ignores the reality of very limited resources of clinicians who are doing these assessments which will have a negative impact on everyone who is waiting for admission into the treatment programs. The third resolved clause is problematic because it supports allowing admission to treatment without a guilty plea which raises accountability and leverage concerns and ignores perspectives of the victims of a crime. Prosecutors rely on structured leverage to ensure structured engagement sustained engagement particularly for individuals with long criminal histories. The resolution does not acknowledge the procedural complexity and the delay that can result from restarting prosecutions long after arrest. Best practices typically balance incentives with clear consequences, something that the resolution largely omits in favor of maximizing program enrollment. the second to last resolve clause is so also problematic because it explicitly prohibits the police from playing any role in a community supervision while the individual was participating in the program. Evidence-based diversion models rely on swift, certain, and proportional responses to violations, often coordinated among courts, supervising officers, and treatment providers. The resolution's [clears throat] language suggests that monitoring is inherently punitive rather than a public safety tool which may lead to under enforcement of conditions for program participation or delayed responses to relapse or sconding. Lastly, the DA's office, led by Alvin Bragg, who is widely considered to be the one of the most progressive DAs we've ever had in Manhattan, has voiced strong opposition to many of the elements of this bill, including the areas that I have already outlined. To summarize, there are concerns regarding availability of funding, question about the impact on public safety, capacity, and quality of existing treatment resources, and a lack of attention to best practices in diversion programming. Therefore, I urge my fellow board members to abstain from voting on the resolution. This is an incredibly complex bill, an issue that is outside of the expertise of the community board [clears throat] to opine with such specific recommendations. Thank you. So, first from the expertise portion going backwards, we're taking the expert testimony and we're balancing it. as a community, you sometimes have to decide what risks you're willing to take. that's not an expert opinion. That's a that's something that should be left to the community to decide. and what we're doing in this case is trying to balance that. when you talk about funding once again if it doesn't get funded it doesn't happen. So you know it's it's an important program and the hope is that not only will it succeed but if we put fewer people in prison we're saving huge sums of Maloneyy and some of that Maloneyy could end up being spent on mental health care. Not just for those who are in the system but those who who didn't get there yet. so funding funding will is is a a a requisite for the rest of the bill. the bill doesn't presume that people will end up going into diversion. they have to have the assessment then they go to a treatment court and a judge decides if they're eligible or not. and it's not just based on the report, but there is a risk assessment. and the assessment is done not by an independent psychologist, but by somebody who's actually employed by the court and therefore trusted by the court. the I think you were monitoring by police officers community. it was the committee sense that that we have seen lots of instances where police have escalated tensions. you have a population here that's been arrested that may already have awareness about police. There are still going to be subject to oversight in the community, just not by police officers. And there is an exception if there's no one available in the community other than the police. if I can read my handwriting which I can't but yes these are these four issues are issues which which Bragg's office weighed in on and we had to balance. So we in one instance we went with wear frags with his his office's objections with three others we decided that we we wanted to go the other way. I actually was not only one degree and it's one where I didn't agree and it's one that you raised and if I could read my writing I would know what it was. but it's it's I I mean I think in the end we can say this is too complex for us. This is this is an issue that involves experts. We're not experts and we're not. But that's what the community does. We look at what experts tell us and we balance them. the cost. So I think that's [snorts] where I'm going to conclude that</p>
+<p><span class="transcript-time">2:01:07</span> and John had a question here and then B</p>
+<p><span class="transcript-time">2:01:11</span> is there a hand please. Yeah, just very briefly Marty and Steve covered the water there, but just a very mundane question. Who were the co-sponsors of S4547 and assembly lady 4869?</p>
+<p><span class="transcript-time">2:01:26</span> I other than Ramos, I don't remember.</p>
+<p><span class="transcript-time">2:01:30</span> but is this currently on the docket?</p>
+<p><span class="transcript-time">2:01:32</span> Well, it's it was it's going to be</p>
+<p><span class="transcript-time">2:01:34</span> reintroduced this year.</p>
+<p><span class="transcript-time">2:01:36</span> Okay. We don't are any of our assembly</p>
+<p><span class="transcript-time">2:01:38</span> members who state senators supportive of this? I do not know. I'm sorry. I I fell.</p>
+<p><span class="transcript-time">2:01:46</span> I just also want to make sure I read all</p>
+<p><span class="transcript-time">2:01:48</span> that. Thanks.</p>
+<p><span class="transcript-time">2:01:49</span> B, please go ahead.</p>
+<p><span class="transcript-time">2:01:51</span> So, thank you. I actually have been</p>
+<p><span class="transcript-time">2:01:54</span> involved as Marty's wife has in the field of mental illness and probably ran one of the biggest disability programs dealing with mental illness. I think the resolution is idealistic and is an area that we should really not opine on. I think it's been an area that's struggled throughout the years. We don't even do well with mental illness people that are not in the criminal system. And I think at the time when there is no funding and funding will even be shrunk in mental health and health insurance, I will abstain because I think this is the wrong time for the community board to appine on something that we have no expertise in. Thanks Sandy. And I'll just point out that that first of all did do analysis and they did find that these programs have succeeded. they don't they they haven't looked at a banded program obviously because it doesn't exist yet but there did validate that there was success in treating people with these mental illnesses. and again if there's no funding this doesn't go through. what we're asking for is funding and then the program and remember that much of the mental most of these the the the benefits of clients are on Medicare or actually the numbers are most</p>
+<p><span class="transcript-time">2:03:22</span> medicaid Medicaid</p>
+
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="chapter-vi3f.html" class="nav-prev">← f) Report</a>
+      <a href="chapter-vi4b.html" class="nav-next">b) Report →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+</body>
+</html>

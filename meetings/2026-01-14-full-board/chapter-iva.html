@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Hearing: None | Full Board | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="index.html">Full Board - January 14, 2026</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="index.html#iv">IV. Public Session</a>
+      </nav>
+      <h1 data-pagefind-meta="title">a) Public Hearing: None</h1>
+      <div class="meta">21:15</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=1275" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=1275" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="transcript-header">
+        <h3>Transcript</h3>
+        <p class="transcript-note">Timestamps are approximate.</p>
+      </div>
+      <div class="transcript-content">
+        <p><span class="transcript-time">21:15</span> I'm sure we'll think of something. Thank you. See you soon. Thank you. Next we have our new council member Harvey.</p>
+<p><span class="transcript-time">21:35</span> Want me over there? You want me</p>
+<p><span class="transcript-time">21:37</span> whatever you like</p>
+<p><span class="transcript-time">21:39</span> being over here. So I'm gonna come over here.</p>
+<p><span class="transcript-time">21:42</span> Your hometown.</p>
+<p><span class="transcript-time">21:44</span> Want to thank our president Bradle. I know his presence is going to be missed in Albany. We'll be very very lucky to have our president. Thank you. But you went to Aldi yesterday. I didn't go.</p>
+<p><span class="transcript-time">21:59</span> And just so you know that, you know,</p>
+<p><span class="transcript-time">22:01</span> community boards, I think you should be really feel comfortable reaching out to his office. It's going to be an ally. We need to get replacements for our seats. I know Brad's committed to that. He and I both served on community boards very long time. Both former chairs of board, so we know how important community boards are. And if you do have to figure out this a legislative fix, it might just be trying to get it directly from the mayor's office and we try to push that as well. So there way we can figure that out together. Happy to. so I want to introduce [clears throat] Ben. Is this your first meeting?</p>
+<p><span class="transcript-time">22:36</span> Not yet.</p>
+<p><span class="transcript-time">22:37</span> Second meeting. Okay. I want to</p>
+<p><span class="transcript-time">22:39</span> introduce Ben from my team who's going to be our community board six lon. Ben is great. He really cares about this community, cares for these issues. Reach out to him in our newsletter. Everyone's email. it's in the back page of newsletter. I think there's they're on the back page. Yeah. So, if you need your questions, we're all there. Everyone's email. So, you can reach out to all of us. So, you have questions. Want to talk about things that are going on in the last month. It feels like you know when I was in the assembly I came in doesn't feel that much different but I'll just so I know earlier in the week we had a rally trying to con I don't know if people saw the con has proposed you know increases again this year in addition to the 25% increase they've got in the last 5 years we had over 110 elected officials sign on to this letter that we we sent to the public service commission they're voting later this month we're encouraging the mayor to oppose this increase, you know, the idea that, you know, people who are struggling right now are struggling. And my new colleague Virginia Maloneyy walked in the door. [laughter]</p>
+<p><span class="transcript-time">23:52</span> He started rocking today. Virginia.</p>
+<p><span class="transcript-time">23:55</span> so you know, Virginia and I were were at this kind of press conference and we're really hopeful that the mayor along with other elected officials can convince the governor and the public service commission to oppose the increase and review all we can do. Really appreciate that. also I don't know if you heard earlier this week staffer of the city council was by ICE who was at a press conference earlier in the week with the speaker Julie Menon and yesterday we had a press conference again with the the staff of the the council. it rang just that someone who's here legally, you know, has working papers, works for the city council, went for an appointment and was detained even though they have a job. They have connections here. It's really just another outrageous what's happening with ICE happened the other day on Seventh Street just you know 10 minutes from here. Someone's just picked up at their place and employment. So what I doing not just in New York but obviously around the country is really really despicable and it's you know I think we it's really incumbent upon us to stand up and speak out on these issues.</p>
+<p><span class="transcript-time">25:08</span> Yeah.</p>
+<p><span class="transcript-time">25:08</span> and we you know our inauguration</p>
+<p><span class="transcript-time">25:11</span> launch great things youth council you can read it if you want in the newsletter. yeah, had some fun times because we got multist, you know, if you haven't lost your tree yet, you still want to do it, I encourage you to do that. there's we spent a little time talking about you the last couple weeks because you know what the new mayor said is things we talked about this be her program deal with me pressures and where these holes are and I think it's really important to try to figure out how to fix those holes in the system. I know Senator Gonzalez and I have been talking a lot about this. So, there's there's some really important legislative fixes. If you [clears throat] pay attention to tomorrow, there'll be some announcements on the city council, by the way, where all the new members, all the committee assignments, chair assignments, all this stuff. So, that's going to go public tomorrow. And if you have questions, you know, please ask or please ask Ben, my office. We want to make sure we continue to be available for this community. And if the chair allows, I'll take a question,</p>
+<p><span class="transcript-time">26:16</span> please. Well, we've got three.</p>
+<p><span class="transcript-time">26:20</span> Tanya, do you want to go first?</p>
+<p><span class="transcript-time">26:22</span> Hi, Harvey. It's so great to see you.</p>
+<p><span class="transcript-time">26:24</span> what is the justification? What are they trying to explain as the increase, the double digits increase on utilities? Because oil is at $60 a barrel. I mean, it's it's not like we're going through an oil crisis. Is this the AI centers that's pushing this? What is it?</p>
+<p><span class="transcript-time">26:44</span> You know, it's interesting because we</p>
+<p><span class="transcript-time">26:45</span> haven't seen spikes in usage in New York City, you know, and honestly 70% of outside New York City connectors are to 9.4% profits. So like if they're getting their shareholders 9.4% profits of 150,000 New Yorkers last year the utility shut off in the balance. I'd rather get less profits and make sure people keep their utilities on. You know 500,000 New Yorkers are behind. It's just to me what we said is just really a Maloneyy grab by KED and I think we need to stop them in their tracks. We talked a lot about affordability. you know, it's rent and utilities and that's what affordability is about and I, you know, kind of shouldn't be able to get away with this.</p>
+<p><span class="transcript-time">27:38</span> How can we stop?</p>
+<p><span class="transcript-time">27:39</span> Well, we testify, we've written letters,</p>
+<p><span class="transcript-time">27:42</span> you encourage the mayor to support us. I think that would be really helpful. The board wants to pass resolutions and their exec committee. You know, it's really important to kind of fight this increase and to stop the service commission from allowing this to happen.</p>
+<p><span class="transcript-time">27:57</span> Thank you.</p>
+<p><span class="transcript-time">28:00</span> Ann and then Brook you had a question too. You can just</p>
+<p><span class="transcript-time">28:03</span> since you mentioned Bernard a couple of</p>
+<p><span class="transcript-time">28:06</span> months ago we did pass a resolution in support of it and expanding it but the earlier mayoral administration had frozen it like no funding no expansion. Are you saying that the new administration is working on expanding and how are they going to fund it? like any do you have any other details?</p>
+<p><span class="transcript-time">28:29</span> Yeah, we talked to the mayor about this</p>
+<p><span class="transcript-time">28:31</span> and he's deeply committed to doing it and moving towards a beard model and creating a new 911 system which you know allows people who need adult professionals to get those people who need social workers or the domestic violence situation and people who need police because of violence can get different people to come out. So, it's really restructuring 911. I've talked to the may personally about it. is very excited about doing it. I don't know the time frame to do it, but my expectations in in this year's budget, I think it'll be a commitment from all of us.</p>
+<p><span class="transcript-time">29:04</span> Great. Ann has has a question.</p>
+<p><span class="transcript-time">29:06</span> yeah, to just to follow up on</p>
+<p><span class="transcript-time">29:08</span> Tanya's question also, I mean, I don't even buy I have to buy buy energy distributed by K, [clears throat] but I do not buy their energy, right? Right. I use an ask and still they are like 60% of the expense. It's it's crazy. So I wonder if there are opportunities for restructuring of that as well. And I did not know about the</p>
+<p><span class="transcript-time">29:41</span> commitment to their shareholders. I feel</p>
+<p><span class="transcript-time">29:43</span> like damn I saw you.</p>
+<p><span class="transcript-time">29:46</span> You know we worked hard as you know in a</p>
+<p><span class="transcript-time">29:49</span> different hat when I was in worked hard in trying to restructure kind of and the public service commission and it was really really hard to do because I entrenched interest on the city level. We really have little oversight over kind so we can do [clears throat] what we can but it you know and I think it's is hard to do and kind basically has a monopoly</p>
+<p><span class="transcript-time">30:13</span> right</p>
+<p><span class="transcript-time">30:14</span> which is why we should be able to</p>
+<p><span class="transcript-time">30:16</span> regulate them as a higher standard than you know somebody that is operating in a theoretically</p>
+<p><span class="transcript-time">30:27</span> and that's what the public service</p>
+<p><span class="transcript-time">30:29</span> commission was set up to do to regulate them and as the understand increases.</p>
+<p><span class="transcript-time">30:34</span> My other question was actually about the</p>
+<p><span class="transcript-time">30:36</span> city council staffer that was detained still detained.</p>
+<p><span class="transcript-time">30:40</span> Still detained.</p>
+<p><span class="transcript-time">30:43</span> He's originally from Venezuela. He was steered legally. He, you know, worked and said he was [clears throat] showing up for a regular appointment. He's still detained. And the message coming out of the Trump administration is horrific. Never no criminal history, no nothing. And they're just saying we're keeping him. is dangerous.</p>
+<p><span class="transcript-time">31:01</span> Don't show up for an appointment.</p>
+<p><span class="transcript-time">31:02</span> Right. That's the message. If you show</p>
+<p><span class="transcript-time">31:04</span> up going actually to 26 photo tomorrow with a constituent who's got a 9:00 a.m. appointment,</p>
+<p><span class="transcript-time">31:11</span> they have they're in a tough spot. They</p>
+<p><span class="transcript-time">31:12</span> either show up and potentially get picked up or they don't show up and then they risk getting picked up. There's no winning.</p>
+<p><span class="transcript-time">31:19</span> So, I'm going to go with them tomorrow</p>
+<p><span class="transcript-time">31:20</span> morning at 9:00 a.m. because at least I can put my body in front of theirs. Awful. Cert has a question up here too.</p>
+<p><span class="transcript-time">31:34</span> You can have it. [laughter]</p>
+<p><span class="transcript-time">31:36</span> First of all, congratulations. And</p>
+<p><span class="transcript-time">31:38</span> switching gears a little bit. The mayor and the governor together this week have press conference or earlier what we call child early childhood education. And I was wondering whether any mechanisms [clears throat] for implementing that in its early days have been identified and also wondering whether there's room you know for a community board to play. I know Dan Garney and Ben Kalos are so active in getting seats</p>
+<p><span class="transcript-time">32:03</span> for [clears throat] this the district</p>
+<p><span class="transcript-time">32:05</span> you know years ago. Is there any role that the community board could play in that?</p>
+<p><span class="transcript-time">32:10</span> I I think people know that you know 3K</p>
+<p><span class="transcript-time">32:12</span> and 3K is pretty up and running in our neighborhood. So, it's really expanded to it'll be the two case seats that we're going to look to expand and whatever the board can do to help support council member Maloneyy, myself, Senator Gonzalez, you know, we'll have an assembly member soon, not yet, but you will and force to make sure that you know communities [clears throat] across the city get heard. It's going to be the state budget to be on how much Maloneyy we have and then we figure that out how we're going to allocate it on the city side. But I'm optimistic.</p>
+<p><span class="transcript-time">32:43</span> [clears throat]</p>
+<p><span class="transcript-time">32:44</span> All right, we have two more questions.</p>
+
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="chapter-imain.html" class="nav-prev">← Call to Order + Roll Call</a>
+      <a href="chapter-ivb.html" class="nav-next">b) Elected and Agency Representative R... →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+</body>
+</html>

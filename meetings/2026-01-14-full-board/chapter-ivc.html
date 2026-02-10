@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Members of the Public – Speakers who wish to speak must complete this form before 7:15 PM on the night of the meeting. | Full Board | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="index.html">Full Board - January 14, 2026</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="index.html#iv">IV. Public Session</a>
+      </nav>
+      <h1 data-pagefind-meta="title">c) Members of the Public – Speakers who wish to speak must complete this form before 7:15 PM on the night of the meeting.</h1>
+      <div class="meta">52:07</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=3127" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=3127" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="transcript-header">
+        <h3>Transcript</h3>
+        <p class="transcript-note">Timestamps are approximate.</p>
+      </div>
+      <div class="transcript-content">
+        <p><span class="transcript-time">52:07</span> Thank you.</p>
+<p><span class="transcript-time">52:09</span> we have one more question. Okay.</p>
+<p><span class="transcript-time">52:13</span> Hi, Virginia. this is not really a</p>
+<p><span class="transcript-time">52:15</span> question. This is just something to put on your radar. we spoke on Sunday. so it's related to that. I'm just going to email you and your staff about the the healthc care for the city retirees. You had a presentation at last month's and I think the office has been getting a lot of emails. So, I wanted to just email you and have some you or someone from your office come and also kind of give your side of or like present your position on that. So, yeah, just I'm going to be emailing your office. So, just wanted to put that on your radar. Great. Thank you. Yes. And we will set a date to come into that subcommittee and talk further about healthcare for the retirees. what I will say is that I'm relieved that the mayor has said you will not force retirees to med Medicare advantage or what I like to call Medicare disadvantage. so I'm I'm glad to see that. but more should be done to ensure that people don't lose access to health care that they were promised. so I firmly stand with the retirees on that front that if you're you've been promised healthcare plan A, you should not be forced onto a health care plan that is far far worse, especially when you're on a fixed income and unable to afford the shift in cost that will come with that. So, we can have a a longer conversation about that in that meeting. And I owe you a text.</p>
+<p><span class="transcript-time">53:51</span> Well, thank you very much. That's</p>
+<p><span class="transcript-time">53:55</span> I think that's all the questions we have.</p>
+<p><span class="transcript-time">54:02</span> Okay. all right. Next we have Mackie</p>
+<p><span class="transcript-time">54:05</span> Bentley from Congressman Nadler's office. Mackie. Okay. We're going to keep on moving because we're a little behind here. Wendy Brennan from State Senator Krueger's office. I just wanted to wish people a happy new year and our report is submitted online if you need to call our office for any reason and we do answer the phone too. 21249535. Thank you.</p>
+<p><span class="transcript-time">54:34</span> Great. Thank you very much. Reports are</p>
+<p><span class="transcript-time">54:36</span> always extensive. They're great exceptional.</p>
+<p><span class="transcript-time">54:40</span> Yeah.</p>
+<p><span class="transcript-time">54:41</span> Thank you. And now we have Payton Schultis from Senate state senator Gonzalez's office. said, but happy to take any questions.</p>
+<p><span class="transcript-time">54:59</span> Luckily, we don't have any questions.</p>
+<p><span class="transcript-time">55:01</span> [laughter]</p>
+<p><span class="transcript-time">55:02</span> We'll we'll do them online. next we</p>
+<p><span class="transcript-time">55:06</span> have Julie Roland from Assembly Member Bores's office. [clears throat]</p>
+<p><span class="transcript-time">55:13</span> Hey, hello everyone. I'm Julie Roland</p>
+<p><span class="transcript-time">55:15</span> from Alex Bores's office. Hope everyone had a wonderful new year. We got a bunch of events coming up. I'll try to make it quick. First is January 22nd, Thursday, January 22nd. We're having a state of the district. Come here. How we did last year, the assembly member's plans for the next year, his legislative agenda, and also come have some pizza. that's going to be he'll probably make his remarks starting at 6:30. Doors will be open by 5. Come hang out with us. We'll have lots of lit. help either, you know, just hang out with me casually outside of here. Okay, great. so please stay in the district, please come. You can RSVP. We really hope you do. We can help you do that if you call our office or it's bit.ly/or26 and that is also should be on the report. Other events we're having couple days later, January 26, we're working with NIL to offer free legal services. That could be for any of you, but also if you know anyone who's struggling with anything or they keep thinking, I got to call a lawyer, call our office. We'll make an appointment. we're doing that on January 26. All day there and these are remote appointments are available. We're also going to be working with Nile once every single month for the foreseeable future. So, if you're not available on January 26, call our office. We've got upcoming ones every month for months and months out now. And a couple week days later, we're doing a webinar on February 3rd with the MTA. If you or your friends, family have questions about Omni or anything MTA related, come to the webinar. You'll get a chance to ask questions of them directly. one month later, we're offering free mamog services. March 26th, my mom died breast cancer. I'm making an appointment. All of you should. If you know anyone, saw them, too. I put some flyers out on that table. But please make an appointment or encourage the women in your lives to make an appointment. Totally free. we also are going to be having shred trucks once a month on a Saturday starting in March. So just put I I'll make more announcements as we get closer, but start collecting all your papers that you want shredded. we're going to have those events as well. And then just quick legislative update. Right at the end of the year, the governor signed the raise act. For those of you who are here at the December meeting, Assembly Member Bores came to talk to you about it. This now having been passed is the most progressive legislation in the nation that's regulating AI. This is a huge win. Thanks for the support in it. But I'm really really excited to see how you know how other states follow suit. but that is big win. Wanted to share with you with that. I'll take any questions.</p>
+<p><span class="transcript-time">57:56</span> Yes.</p>
+<p><span class="transcript-time">57:57</span> Thanks for coming. Thanks. thanks</p>
+<p><span class="transcript-time">57:59</span> for speaking on with the state and the district. Is that open to, you know, everybody that wants to go or is that just the community board members or</p>
+<p><span class="transcript-time">58:09</span> Oh, totally open for everyone. Yeah.</p>
+<p><span class="transcript-time">58:11</span> Sorry, I don't know where going with that. They don't even have to live in the district. Okay.</p>
+<p><span class="transcript-time">58:15</span> It's interesting that they want to know</p>
+<p><span class="transcript-time">58:16</span> the state of our district, but yes, anyone can come, anyone interested. Then you register before</p>
+<p><span class="transcript-time">58:24</span> it would be great if you could RSVP also</p>
+<p><span class="transcript-time">58:26</span> because we have a couple days left to decide which auditorium within the venue we're going to use. It's all at the CUNI graduate center on 35th and 5th. They got they got a couple different sizes of auditorium. So you guys will get the right the right amount of space. We'll also order enough pizza. Any other questions?</p>
+<p><span class="transcript-time">58:45</span> Looks like that's it. Perfect.</p>
+<p><span class="transcript-time">58:47</span> Thank you guys so much. Thank you. Next we have Joanna Sanchez from office from the office of Assembly District 74.</p>
+<p><span class="transcript-time">59:01</span> Maybe not. who else do we</p>
+<p><span class="transcript-time">59:06</span> Oh, Alexander</p>
+<p><span class="transcript-time">59:08</span> Alexander Garcia from District Attorney</p>
+<p><span class="transcript-time">59:10</span> Bragg's office.</p>
+<p><span class="transcript-time">59:15</span> Okay.</p>
+<p><span class="transcript-time">59:19</span> is he online?</p>
+<p><span class="transcript-time">59:21</span> All right. next is Evelyn Colado, the from Controller Lavine's office.</p>
+<p><span class="transcript-time">59:28</span> Yes. good evening. Can you hear me?</p>
+<p><span class="transcript-time">59:31</span> Yes.</p>
+<p><span class="transcript-time">59:32</span> Yes. happy new year and thank you</p>
+<p><span class="transcript-time">59:35</span> for the opportunity to speak to you this evening. as you know, I serve as the Manhattan borrow director for the city comproller. We have a new controller, the Honorable Mark Leavine, but I will continue to be your direct contact with the office. So, keep those emails coming. I'm at e l a comroller.nyc.gov. Thank you.</p>
+<p><span class="transcript-time">1:00:03</span> Great. Thanks very much. And Marielle</p>
+<p><span class="transcript-time">1:00:05</span> Ali from she is the director of community affairs at our burough president's office wants to say a few words around. So from</p>
+<p><span class="transcript-time">1:00:24</span> good evening, community board six.</p>
+<p><span class="transcript-time">1:00:27</span> just wanted to follow up on what our VP has mentioned. I'm the new director of community affairs for the office. I'm going to share the contact details with you. Ronald will continue to be our main point of contact, but I'm also serve as official support and really looking forward to getting to know all of you and working closely with you. So my email is Marielle Ali. So that's M A R I E L L E A L I hat. I'll make sure that Sandy gets shared. Thank you. And please reapply if you're going to reapply.</p>
+<p><span class="transcript-time">1:01:10</span> Thank you.</p>
+<p><span class="transcript-time">1:01:10</span> Thank you.</p>
+<p><span class="transcript-time">1:01:12</span> All right. Has anyone signed up to speak</p>
+<p><span class="transcript-time">1:01:15</span> in the public session?</p>
+<p><span class="transcript-time">1:01:17</span> They have. first on the list, we</p>
+<p><span class="transcript-time">1:01:21</span> have Theo Chino, who wishes to speak on devesting the NYPD funds allocated to UN security during the general assembly and having the event organized at the backup site in Geneva, Switzerland. Mr. Chino, you have three minutes to make your remarks, but only three. You may begin your remarks now.</p>
+<p><span class="transcript-time">1:01:46</span> Thank you very much. Community board six</p>
+<p><span class="transcript-time">1:01:50</span> happy new year. I am here today to begin the process of asking the community board to pass a resolution recommending several action related to UN w and I'm the national first secretary of the social democrat of America 501c4 dedicated to teaching socialism. We are the socialist faction inside the democratic party. I have submitted my proposal in writing in which I request that NYPD diverse resource beyond normal police activity around the United Nation headquarter and that there be no street closure during UN week. As you have heard, our new mayor has said he will govern as a democratic socialist. I can affirm that he is not a socialist. Otherwise, I would not be here talking to you in person tonight. I would simply have it under Mayor Mamdani like me is a leftist but his type of governance is not socialism. It is closer to meism associated with the French leader Jean or the British Jeremy Corbin or the president of Mexico Claudia Shimmer. They belong to a broad governance current of progressive internationalism. I am not here to beat you apart [clears throat] from socialism but understanding this distinction can save a great deal of time when trying to understand how [clears throat] different form of governments operate. UN week is a nightmare for New Yorker. The United Nation was built with a contingency plan. A second general assembly facility identical in function to the one here on 42nd street is located in Geneva and it should not be a problem for world leader to meet there. New York City should not be required to indeed I would then subsidize the international institution at the expense of its own resident. For that reason, I'm asking this community board to begin a discussion and consider proposing alternative so that the entire tri-state area is not negatively impacted. I send a letter to the board. I hope they passed it. Global dependency should not require local disruption [clears throat] when viable alternative exist. I am here to answer any question. Thank you very much for your time and your</p>
+<p><span class="transcript-time">1:04:13</span> thank you Mr. Chuno. Next on the</p>
+<p><span class="transcript-time">1:04:16</span> speakers list is Fred Tricosh who is a resident manager at 3303rd Avenue and wishes to speak on the configuration the third avenue bike lane by his building. Mr. Trash, are you here? I do not see him online, nor do I see anyone stirring here. next we'll move on to an Surriano, the president of 333rd Avenue Owners Court, who wishes to speak on the configuration of the Third Avenue bike lane near her building. Miss Sriano, you have three minutes to make your remarks. You may begin now.</p>
+<p><span class="transcript-time">1:05:01</span> Okay. Good evening. thank you for</p>
+<p><span class="transcript-time">1:05:04</span> providing me with the opportunity to express my concerns about the new traffic and street organization on Third Avenue. I am an Serrianiano, president of the of 3303rd Avenue Owners Corp, overseeing a 204 unit co-op. Our residents include families with young children, professionals, and older adults, some with ADA, mobility, or other challenges. I have resided at 330 for almost five decades. Over the years, this neighborhood has experienced numerous transformations and face various challenges. Ne nevertheless, none of these developments have resulted in as much disruption as the current modifications to our streets and pattern traffic patterns. To be efficient, I'll I'm I'm putting everything in bullets. Number one, these are my concerns. When the number of of traffic lanes goes from four to two, a bottleneck forms across four at least four blocks. This leads to persistent honking and other greater air pollution from idling cars and affects the peaceful and healthy enjoyment of our homes. UN events will cause heavier traffic and more delays than usual. With the new lane new lane arrangements in front of our building, one designated for the extended sidewalk, a bike lane and a third for parking. It is difficult to hail a cab, get dropped off, unload groceries, or assist someone in a wheelchair. This creates a dangerous situation, particularly for families with young children, sick individuals, or those with mobility challenges. Bicycles now utilize the new bike lane for travel in both uptown and downtown directions. This situation poses safety concerns for residents as it can be difficult to observe traffic from both directions simultaneously. Additionally, it can be observed that some cyclists do not adhere to traffic laws such as exceeding spots, failing to stop at at traffic signals, or leaving the designated bike lanes. With 204 apartments, we receive many deliveries multiple times daily from DHL, UPS, Amazon, Federal Express, and UPS and USPS, which creates more problems. moving trucks used by residents to move in and move out increase traffic and when and when parking is unavailable, double parking for these vehicles as well as the delivery. previously mentioned creates bottlenecks by narrowing lane lanes even further to one lane. Due to the new street configuration and post office trucks parking in front of our building, we lose most of our parking spaces. The post office trucks also park in front of fire hydrants, which is a safety sat hazard for our residents, making it difficult for emergency vehicles to access our building.</p>
+<p><span class="transcript-time">1:08:23</span> Mr. Riano, your time has elapsed.</p>
+<p><span class="transcript-time">1:08:25</span> Okay.</p>
+<p><span class="transcript-time">1:08:27</span> All right. Thank you very much for your</p>
+<p><span class="transcript-time">1:08:28</span> remarks. the next person on the list is Alan Cyrunk. is Alan Cyrunk here? doesn't appear. So, next person on the list is Leonardo. you didn't give your last name, so you can give it to us when you get up here. wishes to speak to the board about urban mobility and herb intelligence. You will have three minutes to make your remarks. You will begin your remarks now, but please give your last name for the record.</p>
+<p><span class="transcript-time">1:09:03</span> I represent this project.</p>
+<p><span class="transcript-time">1:09:04</span> [clears throat] We have created a intelligence layer so we understand how legal and efficiently move in the city. Our core AI understand signs or the parking rules and let you know before you park or after you park what the rules are, when they will change and how this affect New Yorkers is that in 2025 there was 1 million dollars in tickets or parking tickets and violations. Our software helps the city move faster by helping the users understand and eliminate the uncertainty of when the rule is going to change and also alerts you when you are already part and this helps the community to understand better how to move legally and efficiently and also we have a a layer that lets you share your departure time. So nearby drivers can see when you are about to departure and they can arrive. So this facilitates the location of or filing of a legal spot and that's what our mission and we would like to link and collaborate with city officials in order to help users understand how AI can help them understand policy and rules. Thank you so much for your time.</p>
+<p><span class="transcript-time">1:10:41</span> Thank you very much for those remarks.</p>
+<p><span class="transcript-time">1:10:43</span> That concludes the speakers list for this evening.</p>
+<p><span class="transcript-time">1:10:47</span> Okay.</p>
+
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="chapter-ivb.html" class="nav-prev">← b) Elected and Agency Representative R...</a>
+      <a href="chapter-va.html" class="nav-next">a) Adoption of Previous Meeting’s Full... →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+</body>
+</html>
