@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build outputs (deployed via gh-pages)
+dist/
+_site/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
