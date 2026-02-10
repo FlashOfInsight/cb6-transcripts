@@ -1,0 +1,30 @@
+---
+layout: base.njk
+title: Meetings by Committee
+---
+
+<h1>Meetings by Committee</h1>
+
+{% set grouped = meetings | groupByCommittee %}
+{% for committee, committeeMeetings in grouped %}
+<section class="committee-section">
+  <h2 class="committee-name">{{ committee }}</h2>
+  <ul class="meeting-list">
+    {% set sorted = committeeMeetings | sortByDateDesc %}
+    {% for meeting in sorted %}
+    <li class="meeting-item">
+      <a href="/meetings/{{ meeting.slug }}/">
+        <div class="meeting-title">{{ meeting.date | dateFormat }}</div>
+        {% if meeting.topics.length > 0 %}
+        <div class="meeting-topics">
+          {% for topic in meeting.topics | slice(0, 3) %}
+          <span class="topic-tag">{{ topic }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endfor %}

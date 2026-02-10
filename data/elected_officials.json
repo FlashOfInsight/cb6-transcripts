@@ -1,0 +1,94 @@
+{
+  "last_updated": "2026-02-06",
+  "notes": "Reference file for name spelling correction in transcripts",
+
+  "citywide": [
+    {"name": "Zohran Mamdani", "title": "Mayor", "aliases": ["Mayor Mamdani"]},
+    {"name": "Mark Levine", "title": "Comptroller", "aliases": ["Comptroller Levine", "Mark D. Levine"]},
+    {"name": "Jumaane Williams", "title": "Public Advocate", "aliases": ["Public Advocate Williams"]}
+  ],
+
+  "manhattan_borough_president": [
+    {"name": "Brad Hoylman-Sigal", "title": "Manhattan Borough President", "aliases": ["Borough President Hoylman-Sigal", "BP Hoylman-Sigal", "Brad Hoylman"]}
+  ],
+
+  "city_council_manhattan": [
+    {"name": "Christopher Marte", "district": 1, "aliases": ["Chris Marte", "Council Member Marte"]},
+    {"name": "Harvey Epstein", "district": 2, "aliases": ["Council Member Epstein"], "notes": "Resigned Dec 2025"},
+    {"name": "Virginia Maloney", "district": 4, "aliases": ["Council Member Maloney", "Ginny Maloney"]},
+    {"name": "Julie Menin", "district": 5, "title": "Speaker", "aliases": ["Speaker Menin", "Council Member Menin"]},
+    {"name": "Gale Brewer", "district": 6, "aliases": ["Gale A. Brewer", "Council Member Brewer"]},
+    {"name": "Shaun Abreu", "district": 7, "title": "Majority Leader", "aliases": ["Council Member Abreu"]},
+    {"name": "Diana Ayala", "district": 8, "aliases": ["Council Member Ayala"]},
+    {"name": "Yusef Salaam", "district": 9, "aliases": ["Council Member Salaam"]},
+    {"name": "Carmen De La Rosa", "district": 10, "aliases": ["Council Member De La Rosa"]}
+  ],
+
+  "state_senate_manhattan": [
+    {"name": "Liz Krueger", "district": 28, "aliases": ["Senator Krueger", "State Senator Krueger"], "notes": "Covers CB6 area"},
+    {"name": "Kristen Gonzalez", "district": 59, "aliases": ["Senator Gonzalez", "State Senator Gonzalez"], "notes": "Parts of Queens, Manhattan, Brooklyn"},
+    {"name": "Brian Kavanagh", "district": 27, "aliases": ["Senator Kavanagh", "State Senator Kavanagh"]},
+    {"name": "Brad Hoylman-Sigal", "district": 47, "aliases": ["Senator Hoylman-Sigal"], "notes": "Former, now Manhattan BP"},
+    {"name": "Jose Serrano", "district": 29, "aliases": ["Senator Serrano"]},
+    {"name": "Cordell Cleare", "district": 30, "aliases": ["Senator Cleare"]}
+  ],
+
+  "state_assembly_manhattan": [
+    {"name": "Keith Powers", "district": 74, "aliases": ["Assembly Member Powers", "Assemblyman Powers"], "notes": "CB6 area, won Feb 2026 special election"},
+    {"name": "Harvey Epstein", "district": 74, "aliases": ["Assembly Member Epstein"], "notes": "Former, resigned Dec 2025"},
+    {"name": "Deborah Glick", "district": 66, "aliases": ["Assembly Member Glick"]},
+    {"name": "Tony Simone", "district": 75, "aliases": ["Assembly Member Simone"]},
+    {"name": "Rebecca Seawright", "district": 76, "aliases": ["Assembly Member Seawright"]},
+    {"name": "Alex Bores", "district": 73, "aliases": ["Assembly Member Bores"]}
+  ],
+
+  "us_congress_manhattan": [
+    {"name": "Jerry Nadler", "title": "Representative", "district": 12, "aliases": ["Congressman Nadler", "Rep. Nadler"]},
+    {"name": "Adriano Espaillat", "title": "Representative", "district": 13, "aliases": ["Congressman Espaillat", "Rep. Espaillat"]},
+    {"name": "Chuck Schumer", "title": "Senator", "aliases": ["Senator Schumer", "Sen. Schumer"]},
+    {"name": "Kirsten Gillibrand", "title": "Senator", "aliases": ["Senator Gillibrand", "Sen. Gillibrand"]}
+  ],
+
+  "common_misspellings": {
+    "holeman": "Hoylman-Sigal",
+    "holeman sigel": "Hoylman-Sigal",
+    "holeman siegel": "Hoylman-Sigal",
+    "holman": "Hoylman-Sigal",
+    "hoyman": "Hoylman-Sigal",
+    "hoyman seagull": "Hoylman-Sigal",
+    "hoyman sigel": "Hoylman-Sigal",
+    "bradman hoyman seagull": "Brad Hoylman-Sigal",
+    "bradman": "Brad",
+    "seagull": "Sigal",
+    "julie mennin": "Julie Menin",
+    "mennen": "Menin",
+    "minen": "Menin",
+    "cruger": "Krueger",
+    "kroger": "Krueger",
+    "kruger": "Krueger",
+    "cooper": "Krueger",
+    "cavanaugh": "Kavanagh",
+    "kavana": "Kavanagh",
+    "epstien": "Epstein",
+    "epsteen": "Epstein",
+    "epste": "Epstein",
+    "seawrite": "Seawright",
+    "sewright": "Seawright",
+    "boors": "Bores",
+    "borres": "Bores",
+    "boris": "Bores",
+    "simoni": "Simone",
+    "gillebrand": "Gillibrand",
+    "gillabrand": "Gillibrand",
+    "espiat": "Espaillat",
+    "espayat": "Espaillat",
+    "naedler": "Nadler",
+    "naidler": "Nadler",
+    "schummer": "Schumer",
+    "shoomer": "Schumer",
+    "mandani": "Mamdani",
+    "mamdoni": "Mamdani",
+    "money": "Maloney",
+    "malone": "Maloney"
+  }
+}

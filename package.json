@@ -1,0 +1,14 @@
+{
+  "name": "cb6-transcripts",
+  "version": "1.0.0",
+  "description": "Searchable archive of Manhattan Community Board 6 meeting transcripts",
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve",
+    "index": "pagefind --site _site"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "pagefind": "^1.3.0"
+  }
+}

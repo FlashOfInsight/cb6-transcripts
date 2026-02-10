@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} | CB6 Transcripts</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">CB6 Transcripts</a>
+      <ul>
+        <li><a href="/">Recent</a></li>
+        <li><a href="/committees/">By Committee</a></li>
+        <li><a href="/search/">Search</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    {{ content | safe }}
+  </main>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://www.youtube.com/channel/UCVn0y_oPVdX0vvRFl70YAig" target="_blank">Manhattan CB6 YouTube</a>.</p>
+    <p>Data sourced from CB6 meeting records. Not an official CB6 website.</p>
+  </footer>
+
+  <script src="/pagefind/pagefind-ui.js"></script>
+</body>
+</html>

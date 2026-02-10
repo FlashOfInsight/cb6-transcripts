@@ -1,0 +1,28 @@
+---
+layout: base.njk
+title: Recent Meetings
+---
+
+<h1>Recent Meetings</h1>
+<p style="color: var(--text-light); margin-bottom: 2rem;">Searchable transcripts from Manhattan Community Board 6 meetings.</p>
+
+<ul class="meeting-list">
+  {% set sortedMeetings = meetings | sortByDateDesc %}
+  {% for meeting in sortedMeetings | slice(0, 20) %}
+  <li class="meeting-item">
+    <a href="/meetings/{{ meeting.slug }}/">
+      <div class="meeting-title">{{ meeting.committee }} Meeting</div>
+      <div class="meeting-meta">{{ meeting.date | dateFormat }}</div>
+      {% if meeting.topics.length > 0 %}
+      <div class="meeting-topics">
+        {% for topic in meeting.topics | slice(0, 4) %}
+        <span class="topic-tag">{{ topic }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+<p style="margin-top: 2rem;"><a href="/committees/">View all meetings by committee →</a></p>

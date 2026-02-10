@@ -1,0 +1,22 @@
+---
+layout: base.njk
+title: Search Transcripts
+---
+
+<div class="search-container">
+  <h1>Search Transcripts</h1>
+  <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+    Search across all meeting transcripts, agendas, and topics.
+  </p>
+  <div id="search"></div>
+</div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    new PagefindUI({
+      element: "#search",
+      showSubResults: true,
+      showImages: false
+    });
+  });
+</script>
