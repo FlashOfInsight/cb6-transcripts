@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CB6 Meeting Transcripts | Manhattan Community Board 6</title>
+  <title>Agenda adopted | Full Board | CB6 Transcripts</title>
   <style>
     :root {
       --primary: #1a365d;
@@ -136,53 +136,66 @@
     .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
     .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
     .nav-links a:hover { text-decoration: underline; }
-
-  </style>
-  <link href="pagefind/pagefind-ui.css" rel="stylesheet">
+</style>
 </head>
-<body>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
   <header>
     <div class="container">
-      <h1>CB6 Meeting Transcripts</h1>
-      <div class="meta">Manhattan Community Board 6</div>
+      <div class="header-nav"><a href="index.html">← Back to Meeting</a></div>
+      <span class="chapter-category-header" style="background: #64748b;">REMARKS</span>
+      <h1 data-pagefind-meta="title">Agenda adopted</h1>
+      <div class="meta">I. Call to Order · 8:24 · 1 min</div>
     </div>
   </header>
 
   <div class="container">
-    <div class="hero">
-      <p>Searchable transcripts of Community Board 6 meetings. Find and share the specific discussion, vote, or public comment you care about.</p>
-      <div class="search-container">
-        <div id="search"></div>
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=504" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=504" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
+      </div>
+      <div id="summary" class="content-panel active">
+        <h3>Key Points</h3>
+        <ul class="summary-list">
+  <li>objection, we will adopt the agenda as stated</li>
+  <li>Board members, if you object to adopt the agenda, you may raise your hand</li>
+  <li>Seeing no objections, the agenda for tonight's</li>
+</ul>
+      </div>
+      <div id="transcript" class="content-panel">
+        <p class="transcript-note">Timestamps are approximate. <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=504" target="_blank">Watch on YouTube</a> for exact timing.</p>
+        <p><span class="transcript-time">8:22</span> All right. Welcome to the January 14th,</p>
+<p><span class="transcript-time">8:24</span> 2026 full board meeting of Manhattan Community Board 6. My name is Sandy McKe and I'm the chair of CB6. This meeting is called to order at 7:02 p.m. And tonight we are joined by First Vice Chair John Keller, Secretary Jerry Weinstein, District Manager Jesus Perez, and Assistant District Manager Brennan Bur. As a reminder, New York State law requires all community board members who are not able to attend the meeting in person have their cameras on and their first and last names displayed from the time the meeting is called to order until the time the meeting is adjourned. Ground rules, do not speak until granted the floor. Please raise your hand and wait for me to recognize you. It is important that only one person speaks at a time so that members of the public watching at home can understand what is being said. You will be given a microphone if you are recognized to speak. The chat function should not be used for CB6 business or questions about agenda topics. Members of the public, if you wish to give remarks during the public session and have not already registered by filling out a form, you can register to speak in the public session on Zoom by using the Q&A feature and posting your name, your affiliation, and what specific topic you wish to speak about. Or if you're here in person and want to speak in the public session, you need to fill out our public speaker form which is near the signins for the CB6 newsletter. This needs to be done by 7:15. The night the agenda for tonight's meeting was distributed ahead of time by the board office was posted online and appears on the screen before you. If there's no objection, we will adopt the agenda as stated. Board members, if you object to adopt the agenda, you may raise your hand. Seeing no objections, the agenda for tonight's meeting is adopted. Jerry will now take attendance by Warhol.</p>
+
       </div>
     </div>
-    <script src="pagefind/pagefind-ui.js"></script>
-    <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        new PagefindUI({ element: "#search", showSubResults: true });
-      });
-    </script>
 
-    <h2 class="section-heading">Latest Meetings</h2>
-
-    <a href="meetings/2026-01-14-full-board/index.html" class="meeting-card">
-      <div class="meeting-header">
-        <span class="meeting-type">FULL BOARD MEETING</span>
-        <span class="meeting-date">January 14, 2026</span>
-      </div>
-      <h3>Full Board</h3>
-      <p class="meeting-desc">17 agenda sections · 34 indexed chapters</p>
-      <ul class="meeting-topics">
-        <li>Housing affordability</li>
-        <li>Vote: on</li>
-        <li>Vote: as presented. do not submit the ballot until the e</li>
-        <li>Vote: on</li>
-      </ul>
-    </a>
-
+    <div class="nav-links">
+      <a href="chapter-i1.html" class="nav-prev">← Meeting called to order...</a>
+      <a href="chapter-i3.html" class="nav-next">Roll call... →</a>
+    </div>
   </div>
 
   <footer>
-    <p>Auto-generated transcripts from CB6 YouTube. Not an official CB6 website.</p>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
   </footer>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
 </body>
 </html>

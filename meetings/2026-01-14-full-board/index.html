@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Full Board Meeting - 2026-01-14 | CB6 Transcripts</title>
+  <title>Full Board - January 14, 2026 | CB6 Transcripts</title>
   <style>
     :root {
       --primary: #1a365d;
@@ -30,19 +30,91 @@
     header .header-nav a:hover { color: white; }
     h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
     .meta { opacity: 0.9; font-size: 0.95rem; }
-    .breadcrumb { padding: 1rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-    .breadcrumb a { color: var(--accent); text-decoration: none; }
-    .agenda-section { background: white; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
-    .agenda-section-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-    .agenda-section-header h2 { font-size: 1.1rem; font-weight: 600; color: var(--primary); }
-    .agenda-section-header h2 a { color: var(--primary); text-decoration: none; }
-    .agenda-section-header h2 a:hover { color: var(--accent); text-decoration: underline; }
-    .agenda-items { padding: 1rem 1.5rem; list-style: none; }
-    .agenda-items li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
-    .agenda-items li:last-child { border-bottom: none; }
-    .timestamp-badge { font-size: 0.8rem; color: var(--text-light); background: var(--bg-alt); padding: 0.2rem 0.5rem; border-radius: 4px; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-desc { font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem; }
+    .meeting-topics { list-style: none; font-size: 0.85rem; }
+    .meeting-topics li { padding: 0.25rem 0; padding-left: 1rem; position: relative; }
+    .meeting-topics li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 1rem; }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
     .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
     .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
     .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
     .toggle-tabs { display: flex; border-bottom: 1px solid var(--border); }
     .toggle-tab { flex: 1; padding: 1rem; text-align: center; cursor: pointer; background: var(--bg-alt); border: none; font-size: 1rem; color: var(--text-light); }
@@ -50,226 +122,669 @@
     .toggle-tab.active { background: white; color: var(--primary); font-weight: 600; }
     .content-panel { padding: 1.5rem; display: none; }
     .content-panel.active { display: block; }
-    .content-panel p { margin-bottom: 1rem; text-align: justify; }
-    .summary-text { font-size: 1.05rem; line-height: 1.8; }
-    .summary-list { list-style: none; padding: 0; margin: 0; }
+    .content-panel h3 { font-size: 1rem; margin-bottom: 1rem; color: var(--primary); }
+    .content-panel p { margin-bottom: 1rem; }
+
+    .summary-list { list-style: none; }
     .summary-list li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; border-bottom: 1px solid var(--border); }
     .summary-list li:last-child { border-bottom: none; }
     .summary-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
-    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
-    .nav-links a { color: var(--accent); text-decoration: none; }
-    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
-    footer a { color: var(--accent); }
 
-    /* Chapter cards - citymeetings.nyc style */
-    .chapters-list { display: flex; flex-direction: column; gap: 1rem; }
-    .chapter-card {
-      background: var(--bg-alt);
-      border-radius: 8px;
-      padding: 1rem 1.25rem;
-      border-left: 4px solid var(--accent);
-    }
-    .chapter-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-    .chapter-category {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: white;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .chapter-time {
-      font-size: 0.8rem;
-      color: var(--accent);
-      text-decoration: none;
-      font-family: monospace;
-    }
-    .chapter-time:hover { text-decoration: underline; }
-    .chapter-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--primary);
-      margin-bottom: 0.4rem;
-      line-height: 1.4;
-    }
-    .chapter-description {
-      font-size: 0.95rem;
-      color: var(--text);
-      line-height: 1.6;
-      margin: 0;
-    }
+    .transcript-note { font-size: 0.85rem; color: var(--text-light); font-style: italic; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
   <header>
     <div class="container">
       <div class="header-nav"><a href="../../index.html">← All Meetings</a></div>
-      <h1>Full Board Meeting</h1>
-      <div class="meta">Manhattan Community Board 6 · 2026-01-14</div>
+      <h1>Full Board</h1>
+      <div class="meta">January 14, 2026 · Manhattan Community Board 6</div>
     </div>
   </header>
 
   <div class="container">
-    <p style="margin-bottom: 1.5rem; color: var(--text-light);">
-      Click on any section to view the video and transcript.
-    </p>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-i.html">I. Call to Order</a></h2>
-        <span class="timestamp-badge">0:00</span>
+    <div class="meeting-summary">
+      <p>This meeting contains <strong>17 agenda sections</strong> and <strong>34 indexed chapters</strong>. Click on any section to expand and see the chapters within.</p>
+    </div>
+
+    <h2 class="section-heading">Agenda</h2>
+
+    <div class="agenda-section" id="section-i">
+      <div class="agenda-header" onclick="toggleSection('i')">
+        <div class="agenda-header-left">
+          <span class="section-type">OPENING</span>
+          <h3>I. Call to Order</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">5 chapters</span>
+          <span class="timestamp">0:00</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-i">
+
+        <a href="chapter-i1.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #ca8a04;">ANNOUNCEMENT</span>
+            <span class="chapter-timing">8:24 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Meeting called to order</h4>
+          <p class="chapter-desc">B6. This meeting is called to order at 7:02 p.m. And tonight we are joined by First Vice Chair John Keller, Secretary Jerry Weinstein, District Manage...</p>
+        </a>
+
+        <a href="chapter-i2.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #64748b;">REMARKS</span>
+            <span class="chapter-timing">8:24 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Agenda adopted</h4>
+          <p class="chapter-desc">objection, we will adopt the agenda as stated. Board members, if you object to adopt the agenda, you may raise your hand. Seeing no objections, the ag...</p>
+        </a>
+
+        <a href="chapter-i3.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #7c3aed;">REPORT</span>
+            <span class="chapter-timing">8:24 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Roll call</h4>
+          <p class="chapter-desc">ted. Jerry will now take attendance by Warhol.</p>
+        </a>
+
+        <a href="chapter-i4.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #64748b;">REMARKS</span>
+            <span class="chapter-timing">8:24 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Meeting ground rules</h4>
+          <p class="chapter-desc">eting is adjourned. Ground rules, do not speak until granted the floor. Please raise your hand and wait for me to recognize you. It is important that ...</p>
+        </a>
+
+        <a href="chapter-i5.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #ca8a04;">ANNOUNCEMENT</span>
+            <span class="chapter-timing">8:24 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Meeting adjourned</h4>
+          <p class="chapter-desc">time the meeting is adjourned. Ground rules, do not speak until granted the floor. Please raise your hand and wait for me to recognize you. It is impo...</p>
+        </a>
+
       </div>
     </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-ii.html">II. Adoption of the Agenda</a></h2>
-        <span class="timestamp-badge">0:00</span>
+
+    <div class="agenda-section" id="section-ii">
+      <div class="agenda-header" onclick="toggleSection('ii')">
+        <div class="agenda-header-left">
+          <span class="section-type">AGENDA ITEM</span>
+          <h3>II. Adoption of the Agenda</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">0 chapters</span>
+          <span class="timestamp">0:00</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-ii">
+
+        <div class="no-chapters">No indexed chapters for this section.</div>
+
       </div>
     </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-iii.html">III. First Roll Call</a></h2>
-        <span class="timestamp-badge">10:10</span>
+
+    <div class="agenda-section" id="section-iii">
+      <div class="agenda-header" onclick="toggleSection('iii')">
+        <div class="agenda-header-left">
+          <span class="section-type">ROLL CALL</span>
+          <h3>III. First Roll Call</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">1 chapter</span>
+          <span class="timestamp">10:10</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-iii">
+
+        <a href="chapter-iii1.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #64748b;">REMARKS</span>
+            <span class="chapter-timing">10:10 · 2 min</span>
+          </div>
+          <h4 class="chapter-title">First Roll Call</h4>
+          <p class="chapter-desc">Howdy folks. Happy New Year. Tanya here. Present Barklay Elvie Barroso. Daniel Bernstein present. Liz Burr present. Jim Collins absent. Stuart Desert ...</p>
+        </a>
+
       </div>
     </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-iv.html">IV. Public Session</a></h2>
-        <span class="timestamp-badge">17:31</span>
+
+    <div class="agenda-section" id="section-iv">
+      <div class="agenda-header" onclick="toggleSection('iv')">
+        <div class="agenda-header-left">
+          <span class="section-type">PUBLIC SESSION</span>
+          <h3>IV. Public Session</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">10 chapters</span>
+          <span class="timestamp">17:31</span>
+          <span class="expand-icon">▼</span>
+        </div>
       </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Public Hearing: None</li>
-        <li><strong>b)</strong> Elected and Agency Representative Reports</li>
-        <li><strong>c)</strong> Members of the Public – Speakers who wish to speak must complete this form before 7:15 PM on the night of the meeting.</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-v.html">V. Business Session</a></h2>
-        <span class="timestamp-badge">1:10:49</span>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Adoption of Previous Meeting’s Full Board Minutes</li>
-        <li><strong>b)</strong> Chair’s Report – Sandy McKee, Chair</li>
-        <li><strong>c)</strong> District Manager’s Report – Jesús Pérez</li>
-        <li><strong>d)</strong> Treasurer’s Report – Tania Arias</li>
-        <li><strong>e)</strong> Borough President’s Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vi.html">VI. Committee Reports and Resolutions</a></h2>
-        <span class="timestamp-badge">1:17:48</span>
-      </div>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vi1.html">VI-1. Health & Education – Rupal Kakkad, Chair</a></h2>
-        <span class="timestamp-badge">1:18:03</span>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Resolution to support Bellevue Hospital in State and City Budgets from elected officials</li>
-        <li><strong>b)</strong> Resolution in support of banning nonessential helicopter flights in Manhattan Community District Six and New York City Metropolitan Area</li>
-        <li><strong>c)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vi2.html">VI-2. Transportation – Jason Froimowitz, Chair</a></h2>
-        <span class="timestamp-badge">1:26:11</span>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Resolution Supporting NYS S4045/A2299B (2025), regarding intelligent speed assistance devices</li>
-        <li><strong>b)</strong> Proposing improvements to existing crosstown protected bicycle lanes at 26th, 29th, 38th, 39th, 52nd, and 55th Streets</li>
-        <li><strong>c)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vi3.html">VI-3. Business Affairs & Licensing – Anton Mallner, Chair</a></h2>
-        <span class="timestamp-badge">1:42:29</span>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Resolution of no objection for a New Application and Temporary Retail Permit for Wine, Beer & Cider license for Triboro Cake, LLC dba TFS Burger Works at 401 East 50th Street</li>
-        <li><strong>b)</strong> Resolution recommending approval for a Sidewalk Cafe 4-year license for Brooklyn DT LLC doing business as TIPSY TURTLE at 1003 2nd Avenue</li>
-        <li><strong>c)</strong> Resolution recommending approval for a Sidewalk Cafe 4-year license for Grupo Animo LLC dba ANIMO! at 1004 2nd Avenue</li>
-        <li><strong>d)</strong> Resolution recommending approval with modifications for a Sidewalk Cafe 4-year license for East 39 Rest Inc dba CITY BEER at 200 East 39th Street</li>
-        <li><strong>e)</strong> Resolution of no objection for a New Cannabis Application for Retail Dispensary license for Brooklyn Buds Dispensary Inc dba Dan Pando at 318 Lexington Avenue</li>
-        <li><strong>f)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vi4.html">VI-4. Public Safety & Sanitation – Stu Desser, Chair</a></h2>
-        <span class="timestamp-badge">1:45:35</span>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Resolution supporting the Treatment Court Expansion Act</li>
-        <li><strong>b)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vi5.html">VI-5. Parks, Landmarks & Cultural     Affairs – Neil Barclay, Chair</a></h2>
-        <span class="timestamp-badge">2:09:24</span>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vi6.html">VI-6. Land Use & Waterfront – Gabe Turzo, Chair</a></h2>
-        <span class="timestamp-badge">2:10:17</span>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vi7.html">VI-7. Budget & Governmental Affairs – Steve Perez, Chair</a></h2>
-        <span class="timestamp-badge">2:11:12</span>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vi8.html">VI-8. Housing & Homelessness – Alek Miletic, Chair</a></h2>
-        <span class="timestamp-badge">2:12:03</span>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vii.html">VII. Old/new Business</a></h2>
-        <span class="timestamp-badge">0:00</span>
+      <div class="agenda-chapters" id="chapters-iv">
+
+        <a href="chapter-iv5.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #7c3aed;">REPORT</span>
+            <span class="chapter-timing">17:31 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Council Member Harvey Epstein</h4>
+          <p class="chapter-desc">question about our council member Harvey Epsteinin is here. I'd love to work with the council member on perhaps a legislative response to making certa...</p>
+        </a>
+
+        <a href="chapter-iv11.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #dc2626;">PUBLIC COMMENT</span>
+            <span class="chapter-timing">21:15 · 44 sec</span>
+          </div>
+          <h4 class="chapter-title">our new: public comment</h4>
+          <p class="chapter-desc">Next we have our new council member Harvey. Want me over there? You want me whatever you like being over here. So I'm gonna come over here. Your homet...</p>
+        </a>
+
+        <a href="chapter-iv9.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #7c3aed;">REPORT</span>
+            <span class="chapter-timing">25:11 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Senator Gonzalez update</h4>
+          <p class="chapter-desc">the system. I know Senator Gonzalez and I have been talking a lot about this. So, there's there's some really important legislative fixes. If you [cle...</p>
+        </a>
+
+        <a href="chapter-iv3.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #0891b2;">DISCUSSION</span>
+            <span class="chapter-timing">26:45 · 53 sec</span>
+          </div>
+          <h4 class="chapter-title">Utility rate concerns</h4>
+          <p class="chapter-desc">9.4% profits of 150,000 New Yorkers last year the utility shut off in the balance. I'd rather get less profits and make sure people keep their utiliti...</p>
+        </a>
+
+        <a href="chapter-iv7.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #7c3aed;">REPORT</span>
+            <span class="chapter-timing">32:12 · 31 sec</span>
+          </div>
+          <h4 class="chapter-title">Assembly Member report</h4>
+          <p class="chapter-desc">know, we'll have an assembly member soon, not yet, but you will and force to make sure that you know communities [clears throat] across the city get h...</p>
+        </a>
+
+        <a href="chapter-iv6.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #7c3aed;">REPORT</span>
+            <span class="chapter-timing">35:24 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Council Member Virginia Maloney</h4>
+          <p class="chapter-desc">ng. And now we have council member Virginia Maloneyy. Thank you. I'm glad we had Barbie go before me and all the tough questions. I'm in the clear. Bu...</p>
+        </a>
+
+        <a href="chapter-iv2.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #0891b2;">DISCUSSION</span>
+            <span class="chapter-timing">35:37 · 56 sec</span>
+          </div>
+          <h4 class="chapter-title">Con Edison rate increase</h4>
+          <p class="chapter-desc">mmunity which where we share border including the coned press conference earlier this week or was it last it was last week this week Monday. So all th...</p>
+        </a>
+
+        <a href="chapter-iv4.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #0891b2;">DISCUSSION</span>
+            <span class="chapter-timing">43:43 · 4 min</span>
+          </div>
+          <h4 class="chapter-title">Housing affordability</h4>
+          <p class="chapter-desc">so we can break that issue down further. There's housing as a large part of that and I think it needs to be a big part of the conversation. increasing...</p>
+        </a>
+
+        <a href="chapter-iv8.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #7c3aed;">REPORT</span>
+            <span class="chapter-timing">54:05 · 31 sec</span>
+          </div>
+          <h4 class="chapter-title">Senator Krueger update</h4>
+          <p class="chapter-desc">Brennan from State Senator Krueger's office. I just wanted to wish people a happy new year and our report is submitted online if you need to call our ...</p>
+        </a>
+
+        <a href="chapter-iv10.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #7c3aed;">REPORT</span>
+            <span class="chapter-timing">59:21 · 42 sec</span>
+          </div>
+          <h4 class="chapter-title">City Controller update</h4>
+          <p class="chapter-desc">yn Colado, the from Controller Lavine's office. Yes. good evening. Can you hear me? Yes. Yes. happy new year and thank you for the opportunity to spea...</p>
+        </a>
+
       </div>
     </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-viii.html">VIII. Second Roll Call</a></h2>
-        <span class="timestamp-badge">0:00</span>
+
+    <div class="agenda-section" id="section-v">
+      <div class="agenda-header" onclick="toggleSection('v')">
+        <div class="agenda-header-left">
+          <span class="section-type">BUSINESS</span>
+          <h3>V. Business Session</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">1 chapter</span>
+          <span class="timestamp">1:10:49</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-v">
+
+        <a href="chapter-v1.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #0891b2;">DISCUSSION</span>
+            <span class="chapter-timing">1:12:18 · 40 sec</span>
+          </div>
+          <h4 class="chapter-title">Housing affordability</h4>
+          <p class="chapter-desc">how do reimagine our waterfront? We're exploring housing opportunities with the department of city planning. which was one of the requirements of the ...</p>
+        </a>
+
       </div>
     </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-ix.html">IX. Adjournment</a></h2>
-        <span class="timestamp-badge">0:00</span>
+
+    <div class="agenda-section" id="section-vi">
+      <div class="agenda-header" onclick="toggleSection('vi')">
+        <div class="agenda-header-left">
+          <span class="section-type">COMMITTEE REPORTS</span>
+          <h3>VI. Committee Reports and Resolutions</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">1 chapter</span>
+          <span class="timestamp">1:17:48</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-vi">
+
+        <a href="chapter-vi1.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #64748b;">REMARKS</span>
+            <span class="chapter-timing">1:17:48 · 2 min</span>
+          </div>
+          <h4 class="chapter-title">Committee Reports and Resolutions</h4>
+          <p class="chapter-desc">committee reports and resolutions. reminder that the same rules that stated at the beginning of the meeting still apply. Members of the public, please...</p>
+        </a>
+
       </div>
     </div>
+
+    <div class="agenda-section" id="section-vi1">
+      <div class="agenda-header" onclick="toggleSection('vi1')">
+        <div class="agenda-header-left">
+          <span class="section-type">AGENDA ITEM</span>
+          <h3>VI-1. Health & Education – Rupal Kakkad, Chair</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">3 chapters</span>
+          <span class="timestamp">1:18:03</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-vi1">
+
+        <a href="chapter-vi12.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #059669;">VOTE</span>
+            <span class="chapter-timing">1:18:03 · 48 sec</span>
+          </div>
+          <h4 class="chapter-title">Vote: on</h4>
+          <p class="chapter-desc">vote on each resolution as presented. do not submit the ballot until the end of the meeting or until after all of the resolutions that are to be voted...</p>
+        </a>
+
+        <a href="chapter-vi13.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #2563eb;">RESOLUTION</span>
+            <span class="chapter-timing">1:18:03 · 48 sec</span>
+          </div>
+          <h4 class="chapter-title">Vote: as presented. do not submit the ballot until the e</h4>
+          <p class="chapter-desc">resolution as presented. do not submit the ballot until the end of the meeting or until after all of the resolutions that are to be voted on have been...</p>
+        </a>
+
+        <a href="chapter-vi11.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #2563eb;">RESOLUTION</span>
+            <span class="chapter-timing">1:18:54 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Non-essential helicopter flight ban</h4>
+          <p class="chapter-desc">tions? The second resolution is any non-essential helicopter flights in Manhattan. so it's basically tours that people take in helicopters like privat...</p>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="agenda-section" id="section-vi2">
+      <div class="agenda-header" onclick="toggleSection('vi2')">
+        <div class="agenda-header-left">
+          <span class="section-type">AGENDA ITEM</span>
+          <h3>VI-2. Transportation – Jason Froimowitz, Chair</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">3 chapters</span>
+          <span class="timestamp">1:26:11</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-vi2">
+
+        <a href="chapter-vi22.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #059669;">VOTE</span>
+            <span class="chapter-timing">1:26:49 · 47 sec</span>
+          </div>
+          <h4 class="chapter-title">Vote: on</h4>
+          <p class="chapter-desc">vote on the resolution. Please mark your ballots. And our next resolution is proposing improvements to existing cross town protected bike lanes on 26t...</p>
+        </a>
+
+        <a href="chapter-vi23.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #2563eb;">RESOLUTION</span>
+            <span class="chapter-timing">1:26:55 · 41 sec</span>
+          </div>
+          <h4 class="chapter-title">Vote: is proposing improvements to existing cross town p</h4>
+          <p class="chapter-desc">resolution is proposing improvements to existing cross town protected bike lanes on 26th Street, 29th Street, 38th Street, 39th Street, 52nd Street, a...</p>
+        </a>
+
+        <a href="chapter-vi21.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #dc2626;">PUBLIC COMMENT</span>
+            <span class="chapter-timing">1:26:57 · 39 sec</span>
+          </div>
+          <h4 class="chapter-title">Third Avenue bike lane concerns</h4>
+          <p class="chapter-desc">ing improvements to existing cross town protected bike lanes on 26th Street, 29th Street, 38th Street, 39th Street, 52nd Street, and 55th Street. we h...</p>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="agenda-section" id="section-vi3">
+      <div class="agenda-header" onclick="toggleSection('vi3')">
+        <div class="agenda-header-left">
+          <span class="section-type">AGENDA ITEM</span>
+          <h3>VI-3. Business Affairs & Licensing – Anton Mallner, Chair</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">3 chapters</span>
+          <span class="timestamp">1:42:29</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-vi3">
+
+        <a href="chapter-vi31.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #0891b2;">DISCUSSION</span>
+            <span class="chapter-timing">1:42:43 · 2 min</span>
+          </div>
+          <h4 class="chapter-title">Cannabis licensing</h4>
+          <p class="chapter-desc">lutions as well. Last one is a new dispensary for cannabis. we've checked them very carefully. They do comply with all the new the distance rules whic...</p>
+        </a>
+
+        <a href="chapter-vi33.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #2563eb;">RESOLUTION</span>
+            <span class="chapter-timing">1:42:43 · 2 min</span>
+          </div>
+          <h4 class="chapter-title">Vote: of no objection for wine beer sign license to the </h4>
+          <p class="chapter-desc">resolution of no objection for wine beer sign license to the restaurant opening on 50th street is part of a chain that's coming to Long Island. They o...</p>
+        </a>
+
+        <a href="chapter-vi32.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #059669;">VOTE</span>
+            <span class="chapter-timing">1:45:22 · 2 min</span>
+          </div>
+          <h4 class="chapter-title">Vote: on</h4>
+          <p class="chapter-desc">vote on these resolutions. Please mark your ballot. You've just jinxed yourself. [laughter] You're not gonna You're not going to have 40. You've just ...</p>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="agenda-section" id="section-vi4">
+      <div class="agenda-header" onclick="toggleSection('vi4')">
+        <div class="agenda-header-left">
+          <span class="section-type">AGENDA ITEM</span>
+          <h3>VI-4. Public Safety & Sanitation – Stu Desser, Chair</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">5 chapters</span>
+          <span class="timestamp">1:45:35</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-vi4">
+
+        <a href="chapter-vi41.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #2563eb;">RESOLUTION</span>
+            <span class="chapter-timing">1:45:37 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Mental health diversion program</h4>
+          <p class="chapter-desc">t accomplishing anything. if we if we treat their mental health in issues, we reduce we we interrupt the cycle, we reduce recidivism and we reduce the...</p>
+        </a>
+
+        <a href="chapter-vi42.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #0891b2;">DISCUSSION</span>
+            <span class="chapter-timing">1:45:37 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Criminal justice diversion bill</h4>
+          <p class="chapter-desc">s something of a consensus behind [clears throat] diversion. Many prosecutors, judges, defense council are all behind it. the chief judge and the chie...</p>
+        </a>
+
+        <a href="chapter-vi45.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #2563eb;">RESOLUTION</span>
+            <span class="chapter-timing">1:45:37 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Vote: was so written that there's no need for elaboratio</h4>
+          <p class="chapter-desc">resolution was so written that there's no need for elaboration but that's not my character. so the resolution support bill is aimed at reducing crime ...</p>
+        </a>
+
+        <a href="chapter-vi43.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #0891b2;">DISCUSSION</span>
+            <span class="chapter-timing">1:54:07 · 7 min</span>
+          </div>
+          <h4 class="chapter-title">Treatment court expansion</h4>
+          <p class="chapter-desc">rder, which simply is not true. Best practices in treatment courts emphasize validated risk assessments and careful eligibility screening to determine...</p>
+        </a>
+
+        <a href="chapter-vi44.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #7c3aed;">REPORT</span>
+            <span class="chapter-timing">2:01:36 · 1 min</span>
+          </div>
+          <h4 class="chapter-title">Assembly Member report</h4>
+          <p class="chapter-desc">on't are any of our assembly members who state senators supportive of this? I do not know. I'm sorry. I I fell. I just also want to make sure I read a...</p>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="agenda-section" id="section-vi5">
+      <div class="agenda-header" onclick="toggleSection('vi5')">
+        <div class="agenda-header-left">
+          <span class="section-type">AGENDA ITEM</span>
+          <h3>VI-5. Parks, Landmarks & Cultural     Affairs – Neil Barclay, Chair</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">2 chapters</span>
+          <span class="timestamp">2:09:24</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-vi5">
+
+        <a href="chapter-vi51.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #0891b2;">DISCUSSION</span>
+            <span class="chapter-timing">2:10:19 · 53 sec</span>
+          </div>
+          <h4 class="chapter-title">Housing affordability</h4>
+          <p class="chapter-desc">ng to be talking again about the face faith based housing pertaining to how it comes out of housing accounts and our next meeting on Monday January 26...</p>
+        </a>
+
+        <a href="chapter-vi52.html" class="chapter-card">
+          <div class="chapter-meta">
+            <span class="chapter-category" style="background: #2563eb;">RESOLUTION</span>
+            <span class="chapter-timing">2:11:19 · 44 sec</span>
+          </div>
+          <h4 class="chapter-title">Vote: on that, but we'd also like to reassert the resolu</h4>
+          <p class="chapter-desc">resolution on that, but we'd also like to reassert the resolution that we passed previously that we would like the option to be able to do Zoom to tha...</p>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="agenda-section" id="section-vi6">
+      <div class="agenda-header" onclick="toggleSection('vi6')">
+        <div class="agenda-header-left">
+          <span class="section-type">AGENDA ITEM</span>
+          <h3>VI-6. Land Use & Waterfront – Gabe Turzo, Chair</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">0 chapters</span>
+          <span class="timestamp">0:00</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-vi6">
+
+        <div class="no-chapters">No indexed chapters for this section.</div>
+
+      </div>
+    </div>
+
+    <div class="agenda-section" id="section-vi7">
+      <div class="agenda-header" onclick="toggleSection('vi7')">
+        <div class="agenda-header-left">
+          <span class="section-type">AGENDA ITEM</span>
+          <h3>VI-7. Budget & Governmental Affairs – Steve Perez, Chair</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">0 chapters</span>
+          <span class="timestamp">0:00</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-vi7">
+
+        <div class="no-chapters">No indexed chapters for this section.</div>
+
+      </div>
+    </div>
+
+    <div class="agenda-section" id="section-vi8">
+      <div class="agenda-header" onclick="toggleSection('vi8')">
+        <div class="agenda-header-left">
+          <span class="section-type">AGENDA ITEM</span>
+          <h3>VI-8. Housing & Homelessness – Alek Miletic, Chair</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">0 chapters</span>
+          <span class="timestamp">0:00</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-vi8">
+
+        <div class="no-chapters">No indexed chapters for this section.</div>
+
+      </div>
+    </div>
+
+    <div class="agenda-section" id="section-vii">
+      <div class="agenda-header" onclick="toggleSection('vii')">
+        <div class="agenda-header-left">
+          <span class="section-type">AGENDA ITEM</span>
+          <h3>VII. Old/new Business</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">0 chapters</span>
+          <span class="timestamp">0:00</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-vii">
+
+        <div class="no-chapters">No indexed chapters for this section.</div>
+
+      </div>
+    </div>
+
+    <div class="agenda-section" id="section-viii">
+      <div class="agenda-header" onclick="toggleSection('viii')">
+        <div class="agenda-header-left">
+          <span class="section-type">ROLL CALL</span>
+          <h3>VIII. Second Roll Call</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">0 chapters</span>
+          <span class="timestamp">0:00</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-viii">
+
+        <div class="no-chapters">No indexed chapters for this section.</div>
+
+      </div>
+    </div>
+
+    <div class="agenda-section" id="section-ix">
+      <div class="agenda-header" onclick="toggleSection('ix')">
+        <div class="agenda-header-left">
+          <span class="section-type">CLOSING</span>
+          <h3>IX. Adjournment</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">0 chapters</span>
+          <span class="timestamp">0:00</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-ix">
+
+        <div class="no-chapters">No indexed chapters for this section.</div>
+
+      </div>
+    </div>
+
   </div>
+
   <footer>
     <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
   </footer>
+
+  <script>
+    function toggleSection(id) {
+      const chapters = document.getElementById('chapters-' + id);
+      const section = document.getElementById('section-' + id);
+      chapters.classList.toggle('expanded');
+      section.classList.toggle('expanded');
+    }
+
+    // Expand first section by default
+    document.addEventListener('DOMContentLoaded', function() {
+      const first = document.querySelector('.agenda-section');
+      if (first) {
+        first.classList.add('expanded');
+        first.querySelector('.agenda-chapters').classList.add('expanded');
+      }
+    });
+  </script>
 </body>
 </html>

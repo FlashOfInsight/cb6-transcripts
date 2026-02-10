@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CB6 Meeting Transcripts | Manhattan Community Board 6</title>
+  <title>Vote: on | Full Board | CB6 Transcripts</title>
   <style>
     :root {
       --primary: #1a365d;
@@ -136,53 +136,70 @@
     .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
     .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
     .nav-links a:hover { text-decoration: underline; }
-
-  </style>
-  <link href="pagefind/pagefind-ui.css" rel="stylesheet">
+</style>
 </head>
-<body>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
   <header>
     <div class="container">
-      <h1>CB6 Meeting Transcripts</h1>
-      <div class="meta">Manhattan Community Board 6</div>
+      <div class="header-nav"><a href="index.html">← Back to Meeting</a></div>
+      <span class="chapter-category-header" style="background: #059669;">VOTE</span>
+      <h1 data-pagefind-meta="title">Vote: on</h1>
+      <div class="meta">VI-2. Transportation – Jason Froimowitz, Chair · 1:26:49 · 47 sec</div>
     </div>
   </header>
 
   <div class="container">
-    <div class="hero">
-      <p>Searchable transcripts of Community Board 6 meetings. Find and share the specific discussion, vote, or public comment you care about.</p>
-      <div class="search-container">
-        <div id="search"></div>
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=5209" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=5209" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
+      </div>
+      <div id="summary" class="content-panel active">
+        <h3>Key Points</h3>
+        <ul class="summary-list">
+  <li>vote on the resolution</li>
+  <li>Please mark your ballots</li>
+  <li>And our next resolution is proposing improvements to existing cross town protected bike lanes on 26th Street, 29th Street, 38th Street, 39th Street, 5</li>
+</ul>
+      </div>
+      <div id="transcript" class="content-panel">
+        <p class="transcript-note">Timestamps are approximate. <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=5209" target="_blank">Watch on YouTube</a> for exact timing.</p>
+        <p><span class="transcript-time">1:26:47</span> Any questions?</p>
+<p><span class="transcript-time">1:26:49</span> If there's no objection, we'll now vote on the resolution. Please mark your ballots.</p>
+<p><span class="transcript-time">1:26:55</span> And our next resolution is proposing</p>
+<p><span class="transcript-time">1:26:57</span> improvements to existing cross town protected bike lanes on 26th Street, 29th Street, 38th Street, 39th Street, 52nd Street, and 55th Street. we have protected bike lanes on those cross town streets today. we are working in conjunction with CVS four and five. S45 to pass this resolution asking for improvements and expansion of those backlings to be wider and that should all a better user friendly design</p>
+<p><span class="transcript-time">1:27:36</span> my question about</p>
+<p><span class="transcript-time">1:27:39</span> specifically not all of these these bike lanes on the streets that are outlined in the resolution are the same size. So those were some things that I was just curious if you had that information. Also in the reposition it said like I'm using the word study like a general term but it sounds like you were also asking for like prolonged study or you know to to maintenance for these techn the question was that the trees aren't the same width or the same</p>
+
       </div>
     </div>
-    <script src="pagefind/pagefind-ui.js"></script>
-    <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        new PagefindUI({ element: "#search", showSubResults: true });
-      });
-    </script>
 
-    <h2 class="section-heading">Latest Meetings</h2>
-
-    <a href="meetings/2026-01-14-full-board/index.html" class="meeting-card">
-      <div class="meeting-header">
-        <span class="meeting-type">FULL BOARD MEETING</span>
-        <span class="meeting-date">January 14, 2026</span>
-      </div>
-      <h3>Full Board</h3>
-      <p class="meeting-desc">17 agenda sections · 34 indexed chapters</p>
-      <ul class="meeting-topics">
-        <li>Housing affordability</li>
-        <li>Vote: on</li>
-        <li>Vote: as presented. do not submit the ballot until the e</li>
-        <li>Vote: on</li>
-      </ul>
-    </a>
-
+    <div class="nav-links">
+      <span></span>
+      <a href="chapter-vi23.html" class="nav-next">Vote: is proposing improvements to exist... →</a>
+    </div>
   </div>
 
   <footer>
-    <p>Auto-generated transcripts from CB6 YouTube. Not an official CB6 website.</p>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
   </footer>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CB6 Meeting Transcripts | Manhattan Community Board 6</title>
+  <title>Vote: on | Full Board | CB6 Transcripts</title>
   <style>
     :root {
       --primary: #1a365d;
@@ -136,53 +136,66 @@
     .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
     .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
     .nav-links a:hover { text-decoration: underline; }
-
-  </style>
-  <link href="pagefind/pagefind-ui.css" rel="stylesheet">
+</style>
 </head>
-<body>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
   <header>
     <div class="container">
-      <h1>CB6 Meeting Transcripts</h1>
-      <div class="meta">Manhattan Community Board 6</div>
+      <div class="header-nav"><a href="index.html">← Back to Meeting</a></div>
+      <span class="chapter-category-header" style="background: #059669;">VOTE</span>
+      <h1 data-pagefind-meta="title">Vote: on</h1>
+      <div class="meta">VI-1. Health & Education – Rupal Kakkad, Chair · 1:18:03 · 48 sec</div>
     </div>
   </header>
 
   <div class="container">
-    <div class="hero">
-      <p>Searchable transcripts of Community Board 6 meetings. Find and share the specific discussion, vote, or public comment you care about.</p>
-      <div class="search-container">
-        <div id="search"></div>
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=4683" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=4683" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
+      </div>
+      <div id="summary" class="content-panel active">
+        <h3>Key Points</h3>
+        <ul class="summary-list">
+  <li>vote on each resolution as presented</li>
+  <li>do not submit the ballot until the end of the meeting or until after all of the resolutions that are to be voted on have been discussed and presented</li>
+</ul>
+      </div>
+      <div id="transcript" class="content-panel">
+        <p class="transcript-note">Timestamps are approximate. <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=4683" target="_blank">Watch on YouTube</a> for exact timing.</p>
+        <p><span class="transcript-time">1:18:03</span> ballot to all members. Please click on the link in your email. select your name from the drop-own list and select your vote on each resolution as presented. do not submit the ballot until the end of the meeting or until after all of the resolutions that are to be voted on have been discussed and presented. At the end of the meeting, please submit your ballot and you must vote on every resolution, otherwise you cannot submit it. And if you plan on abstaining, please select abstain and remember that this will count as a negative vote. Final vote counts will be announced after the second roll call. If any part of our voting procedure is unclear, please raise your hand and we will address your questions. first committee up is health and education. Ruple Kakad is chair.</p>
+<p><span class="transcript-time">1:18:51</span> So we have two resolution. First one is</p>
+<p><span class="transcript-time">1:18:54</span> supporting Bel in their city and state budgets from the elected officials. a lot of the funding they're getting right now the higher rates slightly higher rates they're expiring in March 2026. So we want that to continue. So that's essentially what this is asking for is for city and state to to extend that beyond March 2026 especially since Bel is a safety hospital. any questions? The second resolution is any non-essential helicopter flights in Manhattan. so it's basically tours that people take in helicopters like private flights that people take to and from basically anything that's not essential that's not police or any emergency NYU organ donation or any medical related things. they would ban them from Manhattan. So, yeah, that's what the second solution is.</p>
+
       </div>
     </div>
-    <script src="pagefind/pagefind-ui.js"></script>
-    <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        new PagefindUI({ element: "#search", showSubResults: true });
-      });
-    </script>
 
-    <h2 class="section-heading">Latest Meetings</h2>
-
-    <a href="meetings/2026-01-14-full-board/index.html" class="meeting-card">
-      <div class="meeting-header">
-        <span class="meeting-type">FULL BOARD MEETING</span>
-        <span class="meeting-date">January 14, 2026</span>
-      </div>
-      <h3>Full Board</h3>
-      <p class="meeting-desc">17 agenda sections · 34 indexed chapters</p>
-      <ul class="meeting-topics">
-        <li>Housing affordability</li>
-        <li>Vote: on</li>
-        <li>Vote: as presented. do not submit the ballot until the e</li>
-        <li>Vote: on</li>
-      </ul>
-    </a>
-
+    <div class="nav-links">
+      <span></span>
+      <a href="chapter-vi13.html" class="nav-next">Vote: as presented. do not submit the ba... →</a>
+    </div>
   </div>
 
   <footer>
-    <p>Auto-generated transcripts from CB6 YouTube. Not an official CB6 website.</p>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
   </footer>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
 </body>
 </html>

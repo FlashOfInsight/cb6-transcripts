@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CB6 Meeting Transcripts | Manhattan Community Board 6</title>
+  <title>Vote: on | Full Board | CB6 Transcripts</title>
   <style>
     :root {
       --primary: #1a365d;
@@ -136,53 +136,72 @@
     .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
     .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
     .nav-links a:hover { text-decoration: underline; }
-
-  </style>
-  <link href="pagefind/pagefind-ui.css" rel="stylesheet">
+</style>
 </head>
-<body>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
   <header>
     <div class="container">
-      <h1>CB6 Meeting Transcripts</h1>
-      <div class="meta">Manhattan Community Board 6</div>
+      <div class="header-nav"><a href="index.html">← Back to Meeting</a></div>
+      <span class="chapter-category-header" style="background: #059669;">VOTE</span>
+      <h1 data-pagefind-meta="title">Vote: on</h1>
+      <div class="meta">VI-3. Business Affairs & Licensing – Anton Mallner, Chair · 1:45:22 · 2 min</div>
     </div>
   </header>
 
   <div class="container">
-    <div class="hero">
-      <p>Searchable transcripts of Community Board 6 meetings. Find and share the specific discussion, vote, or public comment you care about.</p>
-      <div class="search-container">
-        <div id="search"></div>
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=6322" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=6322" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
+      </div>
+      <div id="summary" class="content-panel active">
+        <h3>Key Points</h3>
+        <ul class="summary-list">
+  <li>vote on these resolutions</li>
+  <li>Please mark your ballot</li>
+  <li>You've just jinxed yourself</li>
+  <li>[laughter] You're not gonna You're not going to have 40</li>
+  <li>You've just jinxed yourself</li>
+</ul>
+      </div>
+      <div id="transcript" class="content-panel">
+        <p class="transcript-note">Timestamps are approximate. <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=6322" target="_blank">Watch on YouTube</a> for exact timing.</p>
+        <p><span class="transcript-time">1:45:19</span> Okay. So, if there's no objection, we'll</p>
+<p><span class="transcript-time">1:45:22</span> vote on these resolutions. Please mark your ballot.</p>
+<p><span class="transcript-time">1:45:24</span> You've just jinxed yourself.</p>
+<p><span class="transcript-time">1:45:27</span> [laughter]</p>
+<p><span class="transcript-time">1:45:28</span> You're not gonna You're not going to</p>
+<p><span class="transcript-time">1:45:30</span> have 40. You've just jinxed yourself.</p>
+
       </div>
     </div>
-    <script src="pagefind/pagefind-ui.js"></script>
-    <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        new PagefindUI({ element: "#search", showSubResults: true });
-      });
-    </script>
 
-    <h2 class="section-heading">Latest Meetings</h2>
-
-    <a href="meetings/2026-01-14-full-board/index.html" class="meeting-card">
-      <div class="meeting-header">
-        <span class="meeting-type">FULL BOARD MEETING</span>
-        <span class="meeting-date">January 14, 2026</span>
-      </div>
-      <h3>Full Board</h3>
-      <p class="meeting-desc">17 agenda sections · 34 indexed chapters</p>
-      <ul class="meeting-topics">
-        <li>Housing affordability</li>
-        <li>Vote: on</li>
-        <li>Vote: as presented. do not submit the ballot until the e</li>
-        <li>Vote: on</li>
-      </ul>
-    </a>
-
+    <div class="nav-links">
+      <a href="chapter-vi33.html" class="nav-prev">← Vote: of no objection for wine beer sign...</a>
+      <span></span>
+    </div>
   </div>
 
   <footer>
-    <p>Auto-generated transcripts from CB6 YouTube. Not an official CB6 website.</p>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
   </footer>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
 </body>
 </html>
