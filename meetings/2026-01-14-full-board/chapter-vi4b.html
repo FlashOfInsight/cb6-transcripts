@@ -169,7 +169,17 @@
     .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
     .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
     .nav-links a:hover { text-decoration: underline; }
-</style>
+
+    .toggle-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .toggle-tab { flex: 1; padding: 1rem; text-align: center; cursor: pointer; background: var(--bg-alt); border: none; font-size: 1rem; color: var(--text-light); }
+    .toggle-tab:hover { background: var(--border); }
+    .toggle-tab.active { background: white; color: var(--primary); font-weight: 600; }
+    .content-panel { padding: 1.5rem; display: none; }
+    .content-panel.active { display: block; }
+    .summary-content { }
+    .summary-content .chapter-category { display: inline-block; margin-bottom: 1rem; }
+    .summary-text { font-size: 1rem; line-height: 1.7; color: var(--text); }
+  </style>
 </head>
 <body data-pagefind-meta="meeting:Full Board - January 14, 2026">
   <header>
@@ -197,11 +207,19 @@
     </p>
 
     <div class="content-card">
-      <div class="transcript-header">
-        <h3>Transcript</h3>
-        <p class="transcript-note">Timestamps are approximate.</p>
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
       </div>
-      <div class="transcript-content">
+      <div id="summary" class="content-panel active">
+        
+        <div class="summary-content">
+          <span class="chapter-category" style="background: #7c3aed;">REPORT</span>
+          <p class="summary-text">which is what I meant Medicaid and so there is actually funding in through that means okay and just comment on that Sandy Medicaid was one of the biggest programs cut in the big beautiful bill. So you can't even rely on the Medicaid funding. Yes, totally agreed. And and I have to</p>
+        </div>
+    
+      </div>
+      <div id="transcript" class="content-panel">
         <p><span class="transcript-time">2:03:23</span> which is what I meant Medicaid and so</p>
 <p><span class="transcript-time">2:03:27</span> there is actually funding in through that means</p>
 <p><span class="transcript-time">2:03:34</span> okay and just comment on that Sandy</p>
@@ -247,5 +265,13 @@
     <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
   </footer>
 
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
 </body>
 </html>

@@ -169,7 +169,17 @@
     .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
     .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
     .nav-links a:hover { text-decoration: underline; }
-</style>
+
+    .toggle-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .toggle-tab { flex: 1; padding: 1rem; text-align: center; cursor: pointer; background: var(--bg-alt); border: none; font-size: 1rem; color: var(--text-light); }
+    .toggle-tab:hover { background: var(--border); }
+    .toggle-tab.active { background: white; color: var(--primary); font-weight: 600; }
+    .content-panel { padding: 1.5rem; display: none; }
+    .content-panel.active { display: block; }
+    .summary-content { }
+    .summary-content .chapter-category { display: inline-block; margin-bottom: 1rem; }
+    .summary-text { font-size: 1rem; line-height: 1.7; color: var(--text); }
+  </style>
 </head>
 <body data-pagefind-meta="meeting:Full Board - January 14, 2026">
   <header>
@@ -182,34 +192,35 @@
         <a href="index.html#iv">IV. Public Session</a>
       </nav>
       <h1 data-pagefind-meta="title">c) Members of the Public – Speakers who wish to speak must complete this form before 7:15 PM on the night of the meeting.</h1>
-      <div class="meta">52:07</div>
+      <div class="meta">54:05</div>
     </div>
   </header>
 
   <div class="container">
     <div class="video-container">
-      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=3127" referrerpolicy="no-referrer-when-downgrade"
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=3245" referrerpolicy="no-referrer-when-downgrade"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
     </div>
     <p class="video-fallback">
-      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=3127" target="_blank">Watch on YouTube</a>
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=3245" target="_blank">Watch on YouTube</a>
     </p>
 
     <div class="content-card">
-      <div class="transcript-header">
-        <h3>Transcript</h3>
-        <p class="transcript-note">Timestamps are approximate.</p>
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
       </div>
-      <div class="transcript-content">
-        <p><span class="transcript-time">52:07</span> Thank you.</p>
-<p><span class="transcript-time">52:09</span> we have one more question. Okay.</p>
-<p><span class="transcript-time">52:13</span> Hi, Virginia. this is not really a</p>
-<p><span class="transcript-time">52:15</span> question. This is just something to put on your radar. we spoke on Sunday. so it's related to that. I'm just going to email you and your staff about the the healthc care for the city retirees. You had a presentation at last month's and I think the office has been getting a lot of emails. So, I wanted to just email you and have some you or someone from your office come and also kind of give your side of or like present your position on that. So, yeah, just I'm going to be emailing your office. So, just wanted to put that on your radar. Great. Thank you. Yes. And we will set a date to come into that subcommittee and talk further about healthcare for the retirees. what I will say is that I'm relieved that the mayor has said you will not force retirees to med Medicare advantage or what I like to call Medicare disadvantage. so I'm I'm glad to see that. but more should be done to ensure that people don't lose access to health care that they were promised. so I firmly stand with the retirees on that front that if you're you've been promised healthcare plan A, you should not be forced onto a health care plan that is far far worse, especially when you're on a fixed income and unable to afford the shift in cost that will come with that. So, we can have a a longer conversation about that in that meeting. And I owe you a text.</p>
-<p><span class="transcript-time">53:51</span> Well, thank you very much. That's</p>
-<p><span class="transcript-time">53:55</span> I think that's all the questions we have.</p>
-<p><span class="transcript-time">54:02</span> Okay. all right. Next we have Mackie</p>
-<p><span class="transcript-time">54:05</span> Bentley from Congressman Nadler's office. Mackie. Okay. We're going to keep on moving because we're a little behind here. Wendy Brennan from State Senator Krueger's office. I just wanted to wish people a happy new year and our report is submitted online if you need to call our office for any reason and we do answer the phone too. 21249535. Thank you.</p>
+      <div id="summary" class="content-panel active">
+        
+        <div class="summary-content">
+          <span class="chapter-category" style="background: #7c3aed;">REPORT</span>
+          <p class="summary-text">Bentley from Congressman Nadler's office. Mackie. Okay. We're going to keep on moving because we're a little behind here. Wendy Brennan from State Senator Krueger's office. I just wanted to wish people a happy new year and our report is submitted online if you need to call our office for any reason ...</p>
+        </div>
+    
+      </div>
+      <div id="transcript" class="content-panel">
+        <p><span class="transcript-time">54:05</span> Bentley from Congressman Nadler's office. Mackie. Okay. We're going to keep on moving because we're a little behind here. Wendy Brennan from State Senator Krueger's office. I just wanted to wish people a happy new year and our report is submitted online if you need to call our office for any reason and we do answer the phone too. 21249535. Thank you.</p>
 <p><span class="transcript-time">54:34</span> Great. Thank you very much. Reports are</p>
 <p><span class="transcript-time">54:36</span> always extensive. They're great exceptional.</p>
 <p><span class="transcript-time">54:40</span> Yeah.</p>
@@ -281,5 +292,13 @@
     <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
   </footer>
 
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
 </body>
 </html>
