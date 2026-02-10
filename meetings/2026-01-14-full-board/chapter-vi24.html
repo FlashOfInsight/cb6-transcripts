@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Treatment court expansion | Full Board | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-desc { font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem; }
+    .meeting-topics { list-style: none; font-size: 0.85rem; }
+    .meeting-topics li { padding: 0.25rem 0; padding-left: 1rem; position: relative; }
+    .meeting-topics li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 1rem; }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .toggle-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .toggle-tab { flex: 1; padding: 1rem; text-align: center; cursor: pointer; background: var(--bg-alt); border: none; font-size: 1rem; color: var(--text-light); }
+    .toggle-tab:hover { background: var(--border); }
+    .toggle-tab.active { background: white; color: var(--primary); font-weight: 600; }
+    .content-panel { padding: 1.5rem; display: none; }
+    .content-panel.active { display: block; }
+    .content-panel h3 { font-size: 1rem; margin-bottom: 1rem; color: var(--primary); }
+    .content-panel p { margin-bottom: 1rem; }
+
+    .summary-list { list-style: none; }
+    .summary-list li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; border-bottom: 1px solid var(--border); }
+    .summary-list li:last-child { border-bottom: none; }
+    .summary-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+
+    .transcript-note { font-size: 0.85rem; color: var(--text-light); font-style: italic; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Full Board - January 14, 2026">
+  <header>
+    <div class="container">
+      <div class="header-nav"><a href="index.html#vi2">← Back to Meeting</a></div>
+      <span class="chapter-category-header" style="background: #0891b2;">DISCUSSION</span>
+      <h1 data-pagefind-meta="title">Treatment court expansion</h1>
+      <div class="meta">VI-2. Transportation – Jason Froimowitz, Chair · 1:54:07 · 7 min</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/PWkHww58GFk?start=6847" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=6847" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card">
+      <div class="toggle-tabs">
+        <button class="toggle-tab active" onclick="showPanel('summary')">Summary</button>
+        <button class="toggle-tab" onclick="showPanel('transcript')">Full Transcript</button>
+      </div>
+      <div id="summary" class="content-panel active">
+        <h3>Key Points</h3>
+        <ul class="summary-list">
+  <li>rder, which simply is not true</li>
+  <li>Best practices in treatment courts emphasize validated risk assessments and careful eligibility screening to determine what types of individuals should be diverted into treatment</li>
+  <li>The last resolved clause is equally co</li>
+</ul>
+      </div>
+      <div id="transcript" class="content-panel">
+        <p class="transcript-note">Timestamps are approximate. <a href="https://www.youtube.com/watch?v=PWkHww58GFk&t=6847" target="_blank">Watch on YouTube</a> for exact timing.</p>
+        <p><span class="transcript-time">1:54:04</span> Yeah. Given that we know what's</p>
+<p><span class="transcript-time">1:54:07</span> happening with the federal budget and how that's in fact impacting our state's budget, there's almost zero chance that there will be any resources available on the services in the bill. So this may all be moved. But going into the content of the resolution, the opening whereas clause presents diversion as the default solution whenever criminal conduct can be attributed to drug [clears throat] use or mental disorder, which simply is not true. Best practices in treatment courts emphasize validated risk assessments and careful eligibility screening to determine what types of individuals should be diverted into treatment. The last resolved clause is equally concerning because it mandates that the court must order a mental health assessment. whether or not that person is inappropriate for diversion or if the judge would even consider it. Which [clears throat] ties the hands of the people in the courtroom who are best able to determine whether a health assessment is appropriate or not and ignores the reality of very limited resources of clinicians who are doing these assessments which will have a negative impact on everyone who is waiting for admission into the treatment programs. The third resolved clause is problematic because it supports allowing admission to treatment without a guilty plea which raises accountability and leverage concerns and ignores perspectives of the victims of a crime. Prosecutors rely on structured leverage to ensure structured engagement sustained engagement particularly for individuals with long criminal histories. The resolution does not acknowledge the procedural complexity and the delay that can result from restarting prosecutions long after arrest. Best practices typically balance incentives with clear consequences, something that the resolution largely omits in favor of maximizing program enrollment. the second to last resolve clause is so also problematic because it explicitly prohibits the police from playing any role in a community supervision while the individual was participating in the program. Evidence-based diversion models rely on swift, certain, and proportional responses to violations, often coordinated among courts, supervising officers, and treatment providers. The resolution's [clears throat] language suggests that monitoring is inherently punitive rather than a public safety tool which may lead to under enforcement of conditions for program participation or delayed responses to relapse or sconding. Lastly, the DA's office, led by Alvin Bragg, who is widely considered to be the one of the most progressive DAs we've ever had in Manhattan, has voiced strong opposition to many of the elements of this bill, including the areas that I have already outlined. To summarize, there are concerns regarding availability of funding, question about the impact on public safety, capacity, and quality of existing treatment resources, and a lack of attention to best practices in diversion programming. Therefore, I urge my fellow board members to abstain from voting on the resolution. This is an incredibly complex bill, an issue that is outside of the expertise of the community board [clears throat] to opine with such specific recommendations. Thank you. So, first from the expertise portion going backwards, we're taking the expert testimony and we're balancing it. as a community, you sometimes have to decide what risks you're willing to take. that's not an expert opinion. That's a that's something that should be left to the community to decide. and what we're doing in this case is trying to balance that. when you talk about funding once again if it doesn't get funded it doesn't happen. So you know it's it's an important program and the hope is that not only will it succeed but if we put fewer people in prison we're saving huge sums of Maloneyy and some of that Maloneyy could end up being spent on mental health care. Not just for those who are in the system but those who who didn't get there yet. so funding funding will is is a a a requisite for the rest of the bill. the bill doesn't presume that people will end up going into diversion. they have to have the assessment then they go to a treatment court and a judge decides if they're eligible or not. and it's not just based on the report, but there is a risk assessment. and the assessment is done not by an independent psychologist, but by somebody who's actually employed by the court and therefore trusted by the court. the I think you were monitoring by police officers community. it was the committee sense that that we have seen lots of instances where police have escalated tensions. you have a population here that's been arrested that may already have awareness about police. There are still going to be subject to oversight in the community, just not by police officers. And there is an exception if there's no one available in the community other than the police. if I can read my handwriting which I can't but yes these are these four issues are issues which which Bragg's office weighed in on and we had to balance. So we in one instance we went with wear frags with his his office's objections with three others we decided that we we wanted to go the other way. I actually was not only one degree and it's one where I didn't agree and it's one that you raised and if I could read my writing I would know what it was. but it's it's I I mean I think in the end we can say this is too complex for us. This is this is an issue that involves experts. We're not experts and we're not. But that's what the community does. We look at what experts tell us and we balance them. the cost. So I think that's [snorts] where I'm going to conclude that</p>
+<p><span class="transcript-time">2:01:07</span> and John had a question here and then B</p>
+<p><span class="transcript-time">2:01:11</span> is there a hand please. Yeah, just very briefly Marty and Steve covered the water there, but just a very mundane question. Who were the co-sponsors of S4547 and assembly lady 4869?</p>
+<p><span class="transcript-time">2:01:26</span> I other than Ramos, I don't remember.</p>
+<p><span class="transcript-time">2:01:30</span> but is this currently on the docket?</p>
+<p><span class="transcript-time">2:01:32</span> Well, it's it was it's going to be</p>
+<p><span class="transcript-time">2:01:34</span> reintroduced this year.</p>
+<p><span class="transcript-time">2:01:36</span> Okay. We don't are any of our assembly</p>
+
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="chapter-vi23.html" class="nav-prev">← Criminal justice diversion bill...</a>
+      <a href="chapter-vi27.html" class="nav-next">Assembly Member report... →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://youtu.be/PWkHww58GFk" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
