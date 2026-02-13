@@ -25,6 +25,11 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install Deno (for yt-dlp YouTube extraction)
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
       - name: Install Python dependencies
         run: pip install yt-dlp modal numpy
 

@@ -38,7 +38,6 @@ def download_audio(video_id, output_dir="audio"):
             "--postprocessor-args", "ffmpeg:-ar 16000 -ac 1",
             "--output", str(wav_path),
             "--no-playlist",
-            "--js-runtimes", "node",
             url,
         ]
 
@@ -48,7 +47,7 @@ def download_audio(video_id, output_dir="audio"):
         )
 
         if result.returncode != 0:
-            print(f"    yt-dlp error: {result.stderr[:500]}")
+            print(f"    yt-dlp error: {result.stderr[:2000]}")
             return None
 
         if wav_path.exists():
@@ -87,7 +86,6 @@ def get_video_metadata(video_id):
             "--dump-json",
             "--no-download",
             "--no-playlist",
-            "--js-runtimes", "node",
             url,
         ]
         result = subprocess.run(
