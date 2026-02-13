@@ -133,20 +133,12 @@ def process_video(video_info, meetings, processed_videos):
     audio_path = download_audio(video_id, str(PROJECT_ROOT / "audio"))
     if not audio_path:
         print(f"    FAILED: Could not download audio")
-        processed_videos[video_id] = {
-            "processed_at": datetime.now().isoformat(),
-            "status": "download_failed",
-        }
         return False
 
     # 2. Transcribe with Modal
     result = transcribe_with_modal(audio_path)
     if not result or not result.get("segments"):
         print(f"    FAILED: Transcription returned no results")
-        processed_videos[video_id] = {
-            "processed_at": datetime.now().isoformat(),
-            "status": "transcription_failed",
-        }
         return False
 
     # 3. Save WhisperX JSON
@@ -273,10 +265,6 @@ def main():
                 success_count += 1
         except Exception as e:
             print(f"    ERROR processing {video_info['video_id']}: {e}")
-            processed_videos[video_info["video_id"]] = {
-                "processed_at": datetime.now().isoformat(),
-                "status": f"error: {str(e)[:100]}",
-            }
 
         # Save progress after each video (in case of crash)
         save_json(DATA_DIR / "processed_videos.json", processed_videos)

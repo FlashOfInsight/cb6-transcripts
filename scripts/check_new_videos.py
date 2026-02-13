@@ -171,7 +171,10 @@ def check_new_videos(channel_id, processed_videos):
     """
     all_videos = fetch_channel_videos(channel_id)
     new_videos = [
-        v for v in all_videos if v["video_id"] not in processed_videos
+        v
+        for v in all_videos
+        if v["video_id"] not in processed_videos
+        or processed_videos.get(v["video_id"], {}).get("status") != "complete"
     ]
     return new_videos
 
