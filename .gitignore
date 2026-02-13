@@ -9,6 +9,9 @@ _site/
 __pycache__/
 *.pyc
 
+# Audio files (ephemeral, downloaded for transcription)
+audio/
+
 # OS
 .DS_Store
 

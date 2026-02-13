@@ -1,5 +1,17 @@
 [
   {
+    "slug": "2026-02-11-full-board",
+    "date": "2026-02-11",
+    "committee": "Full Board",
+    "topics": [],
+    "youtubeUrl": "https://www.youtube.com/watch?v=rd39F4LGPtw",
+    "videoId": "rd39F4LGPtw",
+    "agenda": null,
+    "minutesPdf": null,
+    "hasTranscript": true,
+    "transcriptSource": "whisperx"
+  },
+  {
     "slug": "2026-01-14-full-board",
     "date": "2026-01-14",
     "committee": "Full Board",

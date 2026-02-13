@@ -16,6 +16,57 @@ import urllib.request
 from pathlib import Path
 
 
+def load_whisperx_transcript(json_path):
+    """Load WhisperX JSON and convert to paragraph format.
+
+    Reads WhisperX output (segments with speaker labels and timestamps)
+    and groups consecutive same-speaker segments into paragraphs.
+
+    Returns list of dicts: {time: "HH:MM:SS", text: str, speaker: str}
+    """
+    with open(json_path, 'r') as f:
+        data = json.load(f)
+
+    segments = data.get('segments', [])
+    if not segments:
+        return []
+
+    # Group consecutive same-speaker segments into paragraphs
+    paragraphs = []
+    current = None
+
+    for seg in segments:
+        speaker = seg.get('speaker', 'UNKNOWN')
+        text = seg.get('text', '').strip()
+        if not text:
+            continue
+
+        # Convert seconds to HH:MM:SS
+        start_seconds = seg.get('start', 0)
+        hours = int(start_seconds // 3600)
+        minutes = int((start_seconds % 3600) // 60)
+        secs = int(start_seconds % 60)
+        time_str = f"{hours:02d}:{minutes:02d}:{secs:02d}"
+
+        if current is None or current['speaker'] != speaker:
+            # New speaker — start a new paragraph
+            if current:
+                paragraphs.append(current)
+            current = {
+                'time': time_str,
+                'text': text,
+                'speaker': speaker,
+            }
+        else:
+            # Same speaker — append to current paragraph
+            current['text'] += ' ' + text
+
+    if current:
+        paragraphs.append(current)
+
+    return paragraphs
+
+
 def download_captions(video_id, output_dir):
     """Download YouTube captions for a video."""
     output_path = output_dir / f"{video_id}.vtt"
@@ -920,25 +971,35 @@ def process_meeting(meeting, project_root, misspellings):
     transcripts_dir = project_root / 'transcripts'
     transcripts_dir.mkdir(exist_ok=True)
 
+    transcript_source = 'vtt'
+    has_speaker_labels = False
+
+    # Transcript source routing:
+    # 1. WhisperX JSON (best quality, has speaker labels)
+    # 2. Existing VTT file
+    # 3. Download VTT from YouTube (fallback)
+    whisperx_path = transcripts_dir / f"{video_id}.json"
     vtt_path = transcripts_dir / f"{video_id}.vtt"
-    if not vtt_path.exists():
+
+    if whisperx_path.exists():
+        print(f"    Using WhisperX transcript")
+        paragraphs = load_whisperx_transcript(whisperx_path)
+        transcript_source = 'whisperx'
+        has_speaker_labels = True
+    elif vtt_path.exists():
+        print(f"    Using VTT transcript")
+        segments = clean_vtt_with_timestamps(vtt_path)
+        paragraphs = consolidate_segments(segments)
+    else:
         print(f"    Downloading captions...")
         vtt_path = download_captions(video_id, transcripts_dir)
         if not vtt_path:
             return None
-
-    segments = clean_vtt_with_timestamps(vtt_path)
-    paragraphs = consolidate_segments(segments)
+        segments = clean_vtt_with_timestamps(vtt_path)
+        paragraphs = consolidate_segments(segments)
 
     if not paragraphs:
         return None
-
-    sections = parse_agenda(meeting.get('agenda', ''))
-    if not sections:
-        sections = [{'id': 'I', 'title': 'Meeting', 'items': []}]
-
-    boundaries = find_section_boundaries(paragraphs, sections)
-    paragraphs = apply_sections(paragraphs, boundaries, sections)
 
     # Apply name corrections
     for para in paragraphs:
@@ -948,36 +1009,59 @@ def process_meeting(meeting, project_root, misspellings):
             text = pattern.sub(right, text)
         para['text'] = text
 
-    # Group transcript by section
-    sections_content = {}
-    for para in paragraphs:
-        sec_id = para.get('section', 'I')
-        if sec_id not in sections_content:
-            sections_content[sec_id] = []
-        sections_content[sec_id].append(para)
+    has_agenda = bool((meeting.get('agenda') or '').strip())
 
-    # Create chapters from agenda items (not auto-extracted)
-    sections_chapters = {}
-    for section in sections:
-        sec_id = section['id']
-        content = sections_content.get(sec_id, [])
-        chapters = create_chapters_from_agenda(section, content, paragraphs)
-        sections_chapters[sec_id] = chapters
+    if has_agenda:
+        sections = parse_agenda(meeting['agenda'])
+        if not sections:
+            sections = [{'id': 'I', 'title': 'Meeting', 'items': []}]
+
+        boundaries = find_section_boundaries(paragraphs, sections)
+        paragraphs = apply_sections(paragraphs, boundaries, sections)
+
+        # Group transcript by section
+        sections_content = {}
+        for para in paragraphs:
+            sec_id = para.get('section', 'I')
+            if sec_id not in sections_content:
+                sections_content[sec_id] = []
+            sections_content[sec_id].append(para)
+
+        # Create chapters from agenda items
+        sections_chapters = {}
+        for section in sections:
+            sec_id = section['id']
+            content = sections_content.get(sec_id, [])
+            chapters = create_chapters_from_agenda(section, content, paragraphs)
+            sections_chapters[sec_id] = chapters
+
+        boundaries_result = boundaries
+    else:
+        # No agenda — single-section transcript (auto-detected meetings)
+        sections = [{'id': 'I', 'title': meeting.get('committee', 'Meeting'), 'items': []}]
+        sections_content = {'I': paragraphs}
+        sections_chapters = {}
+        boundaries_result = {}
+
+    youtube_url = meeting.get('youtubeUrl', f"https://www.youtube.com/watch?v={video_id}")
 
     return {
         'meeting': {
             'slug': meeting['slug'],
             'date': meeting['date'],
             'committee': meeting['committee'],
-            'youtubeUrl': meeting['youtubeUrl'],
+            'youtubeUrl': youtube_url,
             'videoId': video_id,
-            'topics': meeting.get('topics', [])
+            'topics': meeting.get('topics', []),
+            'transcriptSource': transcript_source,
+            'hasAgenda': has_agenda,
         },
         'sections': sections,
         'transcript': paragraphs,
         'sections_content': sections_content,
         'sections_chapters': sections_chapters,
-        'section_boundaries': boundaries
+        'section_boundaries': boundaries_result,
+        'has_speaker_labels': has_speaker_labels,
     }
 
 
@@ -989,6 +1073,11 @@ def generate_meeting_pages(data, output_dir):
     sections_chapters = data['sections_chapters']
 
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    # For meetings without an agenda, generate a simpler full-transcript page
+    if not meeting.get('hasAgenda', True):
+        generate_transcript_only_page(data, output_dir)
+        return
 
     # Build a global chronological list of all chapters for cross-section navigation
     all_chapters = []
@@ -1221,13 +1310,23 @@ def generate_chapter_page(meeting, section, chapter, section_content, prev_item,
         para = section_content[i]
         para_time_display = format_time_display(para['time'])
         text = para['text']
-        transcript_html += f'<p><span class="transcript-time">{para_time_display}</span> {text}</p>\n'
+        speaker = para.get('speaker', '')
+        if speaker:
+            speaker_class = f"speaker-{speaker.lower().replace('_', '-')}"
+            transcript_html += f'<div class="transcript-paragraph"><span class="speaker-label {speaker_class}">{speaker}</span><span class="transcript-time">{para_time_display}</span><p>{text}</p></div>\n'
+        else:
+            transcript_html += f'<p><span class="transcript-time">{para_time_display}</span> {text}</p>\n'
 
     if not transcript_html and section_content:
         # Fallback to first 10 paragraphs of section
         for para in section_content[:10]:
             para_time_display = format_time_display(para['time'])
-            transcript_html += f'<p><span class="transcript-time">{para_time_display}</span> {para["text"]}</p>\n'
+            speaker = para.get('speaker', '')
+            if speaker:
+                speaker_class = f"speaker-{speaker.lower().replace('_', '-')}"
+                transcript_html += f'<div class="transcript-paragraph"><span class="speaker-label {speaker_class}">{speaker}</span><span class="transcript-time">{para_time_display}</span><p>{para["text"]}</p></div>\n'
+            else:
+                transcript_html += f'<p><span class="transcript-time">{para_time_display}</span> {para["text"]}</p>\n'
 
     # Build prev/next links from global chapter list
     prev_link = ''
@@ -1343,6 +1442,105 @@ def generate_chapter_page(meeting, section, chapter, section_content, prev_item,
 '''
 
     with open(output_dir / f'chapter-{ch_slug}.html', 'w') as f:
+        f.write(html)
+
+
+def generate_transcript_only_page(data, output_dir):
+    """Generate a full-transcript page for meetings without agendas.
+
+    Shows YouTube embed at top, then full transcript with speaker labels.
+    No chapter splitting — just a continuous, searchable transcript.
+    """
+    meeting = data['meeting']
+    transcript = data['transcript']
+    has_speaker_labels = data.get('has_speaker_labels', False)
+
+    css = get_css()
+    video_id = meeting['videoId']
+    embed_url = f"https://www.youtube.com/embed/{video_id}"
+    direct_url = f"https://www.youtube.com/watch?v={video_id}"
+
+    # Build transcript HTML
+    transcript_html = ''
+    for para in transcript:
+        para_time = format_time_display(para['time'])
+        text = para['text']
+        speaker = para.get('speaker', '')
+        time_seconds = get_time_seconds(para['time'])
+
+        if speaker and has_speaker_labels:
+            speaker_class = f"speaker-{speaker.lower().replace('_', '-')}"
+            transcript_html += f'''<div class="transcript-paragraph">
+  <span class="speaker-label {speaker_class}">{speaker}</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo({time_seconds})">{para_time}</a>
+  <p>{text}</p>
+</div>\n'''
+        else:
+            transcript_html += f'<p><a class="transcript-time" href="javascript:void(0)" onclick="seekTo({time_seconds})">{para_time}</a> {text}</p>\n'
+
+    source_badge = ''
+    if meeting.get('transcriptSource') == 'whisperx':
+        source_badge = '<span class="transcript-source-badge">WhisperX + Speaker Diarization</span>'
+
+    html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{meeting['committee']} - {format_date_display(meeting['date'])} | CB6 Transcripts</title>
+  <style>{css}</style>
+</head>
+<body data-pagefind-meta="meeting:{meeting['committee']} - {format_date_display(meeting['date'])}">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">{meeting['committee']} - {format_date_display(meeting['date'])}</span>
+      </nav>
+      <h1 data-pagefind-meta="title">{meeting['committee']}</h1>
+      <div class="meta">{format_date_display(meeting['date'])} · Manhattan Community Board 6</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe id="ytplayer" src="{embed_url}?enablejsapi=1" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="{direct_url}" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card" data-pagefind-body>
+      <div class="transcript-header">
+        <h3>Full Transcript</h3>
+        {source_badge}
+      </div>
+      <div class="transcript-content transcript-full">
+        {transcript_html}
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="{meeting['youtubeUrl']}" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function seekTo(seconds) {{
+      const iframe = document.getElementById('ytplayer');
+      if (iframe) {{
+        iframe.src = '{embed_url}?start=' + seconds + '&autoplay=1&enablejsapi=1';
+      }}
+    }}
+  </script>
+</body>
+</html>
+'''
+
+    with open(output_dir / 'index.html', 'w') as f:
         f.write(html)
 
 
@@ -1627,6 +1825,45 @@ def get_css():
     .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
     .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
     .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
 '''
 
 
