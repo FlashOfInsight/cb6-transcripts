@@ -38,6 +38,7 @@ def download_audio(video_id, output_dir="audio"):
             "--postprocessor-args", "ffmpeg:-ar 16000 -ac 1",
             "--output", str(wav_path),
             "--no-playlist",
+            "--js-runtimes", "nodejs",
             url,
         ]
 
@@ -86,6 +87,7 @@ def get_video_metadata(video_id):
             "--dump-json",
             "--no-download",
             "--no-playlist",
+            "--js-runtimes", "nodejs",
             url,
         ]
         result = subprocess.run(
