@@ -3,9 +3,29 @@
 Audio downloader — downloads YouTube audio as 16kHz mono WAV for Whisper.
 """
 
+import os
 import subprocess
 import sys
 from pathlib import Path
+
+
+def get_cookies_path():
+    """Return the path to a YouTube cookies file if available.
+
+    Checks for YOUTUBE_COOKIES env var (base64-encoded Netscape cookie file)
+    and writes it to a temp file.
+    """
+    cookies_env = os.environ.get("YOUTUBE_COOKIES", "")
+    if not cookies_env:
+        return None
+
+    import base64
+    import tempfile
+
+    cookies_path = Path(tempfile.gettempdir()) / "yt_cookies.txt"
+    if not cookies_path.exists():
+        cookies_path.write_bytes(base64.b64decode(cookies_env))
+    return str(cookies_path)
 
 
 def download_audio(video_id, output_dir="audio"):
@@ -38,9 +58,14 @@ def download_audio(video_id, output_dir="audio"):
             "--postprocessor-args", "ffmpeg:-ar 16000 -ac 1",
             "--output", str(wav_path),
             "--no-playlist",
-            "--extractor-args", "youtube:player_client=mediaconnect",
             url,
         ]
+
+        # Add cookies if available (needed for CI environments blocked by YouTube)
+        cookies_path = get_cookies_path()
+        if cookies_path:
+            cmd.insert(1, "--cookies")
+            cmd.insert(2, cookies_path)
 
         print(f"    Downloading audio for {video_id}...")
         result = subprocess.run(
@@ -87,9 +112,13 @@ def get_video_metadata(video_id):
             "--dump-json",
             "--no-download",
             "--no-playlist",
-            "--extractor-args", "youtube:player_client=mediaconnect",
             url,
         ]
+
+        cookies_path = get_cookies_path()
+        if cookies_path:
+            cmd.insert(1, "--cookies")
+            cmd.insert(2, cookies_path)
         result = subprocess.run(
             cmd, capture_output=True, text=True, timeout=30
         )
