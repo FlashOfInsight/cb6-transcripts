@@ -21,7 +21,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from check_new_videos import check_new_videos, make_slug
-from download_audio import download_audio
 
 
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -41,24 +40,23 @@ def save_json(path, data):
         f.write("\n")
 
 
-def transcribe_with_modal(audio_path):
-    """Send audio to Modal for WhisperX transcription.
+def transcribe_with_modal(video_id):
+    """Download and transcribe a YouTube video on Modal.
+
+    Downloads audio on Modal's infrastructure (avoids YouTube bot detection)
+    and transcribes with WhisperX + speaker diarization.
 
     Returns WhisperX result dict or None on failure.
     """
     try:
         import modal
 
-        transcribe_fn = modal.Function.from_name("cb6-transcribe", "transcribe")
+        transcribe_yt = modal.Function.from_name(
+            "cb6-transcribe", "transcribe_youtube"
+        )
 
-        print(f"    Sending audio to Modal for transcription...")
-        with open(audio_path, "rb") as f:
-            audio_bytes = f.read()
-
-        size_mb = len(audio_bytes) / 1024 / 1024
-        print(f"    Audio size: {size_mb:.1f} MB")
-
-        result = transcribe_fn.remote(audio_bytes)
+        print(f"    Sending to Modal for download + transcription...")
+        result = transcribe_yt.remote(video_id)
         num_segments = len(result.get("segments", []))
         print(f"    Got {num_segments} segments from WhisperX")
         return result
@@ -129,14 +127,8 @@ def process_video(video_info, meetings, processed_videos):
     print(f"\n  Processing: {video_info['title']}")
     print(f"    Video ID: {video_id}")
 
-    # 1. Download audio
-    audio_path = download_audio(video_id, str(PROJECT_ROOT / "audio"))
-    if not audio_path:
-        print(f"    FAILED: Could not download audio")
-        return False
-
-    # 2. Transcribe with Modal
-    result = transcribe_with_modal(audio_path)
+    # 1. Download + transcribe on Modal (avoids YouTube bot detection on GH Actions)
+    result = transcribe_with_modal(video_id)
     if not result or not result.get("segments"):
         print(f"    FAILED: Transcription returned no results")
         return False
@@ -155,12 +147,6 @@ def process_video(video_info, meetings, processed_videos):
         "processed_at": datetime.now().isoformat(),
         "status": "complete",
     }
-
-    # 6. Clean up audio file (ephemeral)
-    try:
-        audio_path.unlink()
-    except OSError:
-        pass
 
     return True
 

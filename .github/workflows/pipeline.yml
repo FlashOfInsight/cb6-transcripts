@@ -25,13 +25,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Deno (for yt-dlp YouTube extraction)
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
       - name: Install Python dependencies
-        run: pip install yt-dlp modal numpy
+        run: pip install modal numpy
 
       - name: Install Node dependencies
         run: npm ci
@@ -41,7 +36,6 @@ jobs:
         env:
           MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
           MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
-          YOUTUBE_COOKIES: ${{ secrets.YOUTUBE_COOKIES }}
 
       - name: Commit updated data files
         run: |

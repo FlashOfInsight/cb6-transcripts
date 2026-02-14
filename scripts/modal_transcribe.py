@@ -21,6 +21,7 @@ whisperx_image = (
         "pyannote.audio>=3.1",
         "transformers",
         "accelerate",
+        "yt-dlp",
     )
     # Pre-download model weights at image build time (cached across runs)
     .run_commands(
@@ -129,6 +130,58 @@ def transcribe(audio_bytes: bytes, num_speakers: int = None) -> dict:
 
     finally:
         os.unlink(audio_path)
+
+
+@app.function(
+    image=whisperx_image,
+    gpu="T4",
+    timeout=1800,
+    secrets=[modal.Secret.from_name("huggingface-secret")],
+)
+def transcribe_youtube(video_id: str, num_speakers: int = None) -> dict:
+    """Download audio from YouTube and transcribe with WhisperX.
+
+    Downloads audio using yt-dlp on Modal's infrastructure (avoids
+    YouTube bot detection that blocks GitHub Actions IPs), then
+    transcribes with WhisperX + speaker diarization.
+
+    Args:
+        video_id: YouTube video ID
+        num_speakers: Optional hint for number of speakers
+
+    Returns:
+        dict with 'segments' list
+    """
+    import subprocess
+    import tempfile
+
+    url = f"https://www.youtube.com/watch?v={video_id}"
+    with tempfile.TemporaryDirectory() as tmpdir:
+        wav_path = f"{tmpdir}/{video_id}.wav"
+
+        # Download audio as 16kHz mono WAV
+        result = subprocess.run(
+            [
+                "yt-dlp",
+                "--extract-audio",
+                "--audio-format", "wav",
+                "--postprocessor-args", "ffmpeg:-ar 16000 -ac 1",
+                "--output", wav_path,
+                "--no-playlist",
+                url,
+            ],
+            capture_output=True,
+            text=True,
+            timeout=600,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(f"yt-dlp failed: {result.stderr[:1000]}")
+
+        with open(wav_path, "rb") as f:
+            audio_bytes = f.read()
+
+    print(f"Downloaded {len(audio_bytes) / 1024 / 1024:.1f} MB audio")
+    return transcribe.local(audio_bytes, num_speakers=num_speakers)
 
 
 # For testing: modal run scripts/modal_transcribe.py
