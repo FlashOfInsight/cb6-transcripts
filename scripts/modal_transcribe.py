@@ -141,13 +141,15 @@ def transcribe(audio_bytes: bytes, num_speakers: int = None) -> dict:
     image=whisperx_image,
     gpu="T4",
     timeout=1800,
-    secrets=[modal.Secret.from_name("huggingface-secret")],
+    secrets=[
+        modal.Secret.from_name("huggingface-secret"),
+        modal.Secret.from_name("youtube-cookies"),
+    ],
 )
 def transcribe_youtube(video_id: str, num_speakers: int = None) -> dict:
     """Download audio from YouTube and transcribe with WhisperX.
 
-    Downloads audio using yt-dlp on Modal's infrastructure (avoids
-    YouTube bot detection that blocks GitHub Actions IPs), then
+    Downloads audio using yt-dlp on Modal's infrastructure, then
     transcribes with WhisperX + speaker diarization.
 
     Args:
@@ -157,6 +159,8 @@ def transcribe_youtube(video_id: str, num_speakers: int = None) -> dict:
     Returns:
         dict with 'segments' list
     """
+    import base64
+    import os
     import subprocess
     import tempfile
 
@@ -164,17 +168,29 @@ def transcribe_youtube(video_id: str, num_speakers: int = None) -> dict:
     with tempfile.TemporaryDirectory() as tmpdir:
         wav_path = f"{tmpdir}/{video_id}.wav"
 
+        # Build yt-dlp command
+        cmd = [
+            "yt-dlp",
+            "--extract-audio",
+            "--audio-format", "wav",
+            "--postprocessor-args", "ffmpeg:-ar 16000 -ac 1",
+            "--output", wav_path,
+            "--no-playlist",
+        ]
+
+        # Write cookies file if available
+        yt_cookies = os.environ.get("YT_COOKIES", "")
+        if yt_cookies:
+            cookies_path = f"{tmpdir}/cookies.txt"
+            with open(cookies_path, "wb") as f:
+                f.write(base64.b64decode(yt_cookies))
+            cmd.extend(["--cookies", cookies_path])
+
+        cmd.append(url)
+
         # Download audio as 16kHz mono WAV
         result = subprocess.run(
-            [
-                "yt-dlp",
-                "--extract-audio",
-                "--audio-format", "wav",
-                "--postprocessor-args", "ffmpeg:-ar 16000 -ac 1",
-                "--output", wav_path,
-                "--no-playlist",
-                url,
-            ],
+            cmd,
             capture_output=True,
             text=True,
             timeout=600,
