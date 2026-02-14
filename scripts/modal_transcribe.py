@@ -13,7 +13,7 @@ app = modal.App("cb6-transcribe")
 # Build image with all dependencies and pre-downloaded model weights
 whisperx_image = (
     modal.Image.debian_slim(python_version="3.11")
-    .apt_install("ffmpeg", "git")
+    .apt_install("ffmpeg", "git", "curl", "unzip")
     .pip_install(
         "torch",
         "torchaudio",
@@ -22,6 +22,11 @@ whisperx_image = (
         "transformers",
         "accelerate",
         "yt-dlp",
+    )
+    # Install deno (required by yt-dlp for YouTube JS challenge solving)
+    .run_commands(
+        "curl -fsSL https://deno.land/install.sh | sh",
+        "ln -s /root/.deno/bin/deno /usr/local/bin/deno",
     )
     # Pre-download model weights at image build time (cached across runs)
     .run_commands(
