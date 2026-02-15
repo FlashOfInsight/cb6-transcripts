@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Full Board Meeting - 2025-06-11 | CB6 Transcripts</title>
+  <title>Full Board - June 11, 2025 | CB6 Transcripts</title>
   <style>
     :root {
       --primary: #1a365d;
@@ -29,220 +29,276 @@
     header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
     header .header-nav a:hover { color: white; }
     h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
     .meta { opacity: 0.9; font-size: 0.95rem; }
-    .breadcrumb { padding: 1rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-    .breadcrumb a { color: var(--accent); text-decoration: none; }
-    .agenda-section { background: white; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
-    .agenda-section-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-    .agenda-section-header h2 { font-size: 1.1rem; font-weight: 600; color: var(--primary); }
-    .agenda-section-header h2 a { color: var(--primary); text-decoration: none; }
-    .agenda-section-header h2 a:hover { color: var(--accent); text-decoration: underline; }
-    .agenda-items { padding: 1rem 1.5rem; list-style: none; }
-    .agenda-items li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
-    .agenda-items li:last-child { border-bottom: none; }
-    .timestamp-badge { font-size: 0.8rem; color: var(--text-light); background: var(--bg-alt); padding: 0.2rem 0.5rem; border-radius: 4px; }
-    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
-    .video-container iframe { width: 100%; height: 100%; border: none; }
-    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
-    .toggle-tabs { display: flex; border-bottom: 1px solid var(--border); }
-    .toggle-tab { flex: 1; padding: 1rem; text-align: center; cursor: pointer; background: var(--bg-alt); border: none; font-size: 1rem; color: var(--text-light); }
-    .toggle-tab:hover { background: var(--border); }
-    .toggle-tab.active { background: white; color: var(--primary); font-weight: 600; }
-    .content-panel { padding: 1.5rem; display: none; }
-    .content-panel.active { display: block; }
-    .content-panel p { margin-bottom: 1rem; text-align: justify; }
-    .summary-text { font-size: 1.05rem; line-height: 1.8; }
-    .summary-list { list-style: none; padding: 0; margin: 0; }
-    .summary-list li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; border-bottom: 1px solid var(--border); }
-    .summary-list li:last-child { border-bottom: none; }
-    .summary-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
-    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
-    .nav-links a { color: var(--accent); text-decoration: none; }
     footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
     footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
 </style>
 </head>
 <body>
   <header>
     <div class="container">
-      <div class="header-nav"><a href="../../index.html">← All Meetings</a></div>
-      <h1>Full Board Meeting</h1>
-      <div class="meta">Manhattan Community Board 6 · 2025-06-11</div>
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Full Board - June 11, 2025</span>
+      </nav>
+      <h1>Full Board</h1>
+      <div class="meta">June 11, 2025 · Manhattan Community Board 6</div>
     </div>
   </header>
 
   <div class="container">
-    <p style="margin-bottom: 1.5rem; color: var(--text-light);">
-      Click on any section to view the video and transcript.
-    </p>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>I. Call to Order</h2>
+    <div class="meeting-summary">
+      <p>This meeting contains <strong>1 agenda sections</strong> and <strong>1 indexed chapters</strong>. Click on any section to expand and see the chapters within.</p>
+    </div>
+
+    <h2 class="section-heading">Agenda</h2>
+
+    <div class="agenda-section" id="section-viii">
+      <div class="agenda-header" onclick="toggleSection('viii')">
+        <div class="agenda-header-left">
+          <span class="section-type">ROLL CALL</span>
+          <h3>VIII. Second Roll Call</h3>
+        </div>
+        <div class="agenda-header-right">
+          <span class="chapter-count">1 chapter</span>
+          <span class="timestamp">0:04</span>
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="agenda-chapters" id="chapters-viii">
+
+        <a href="chapter-viiimain.html" class="agenda-item">
+          <span class="agenda-item-letter">)</span>
+          <span class="agenda-item-title">Second Roll Call</span>
+          <span class="agenda-item-time">0:04</span>
+        </a>
+
       </div>
     </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>II. Adoption of the Agenda</h2>
-      </div>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>III. First Roll Call</h2>
-      </div>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>IV. Public Session</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Public Hearing: None</li>
-        <li><strong>b)</strong> Elected and Agency Representative Reports</li>
-        <li><strong>c)</strong> Members of the Public – Speakers who wish to speak must complete this form before 7:15 PM on the night of the meeting.</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>V. Business Session</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Adoption of Previous Meeting’s Full Board Minutes</li>
-        <li><strong>b)</strong> Chair’s Report – Sandy McKee, Chair</li>
-        <li><strong>c)</strong> District Manager’s Report – Jesús Pérez</li>
-        <li><strong>d)</strong> Treasurer’s Report – Beatrice Disman</li>
-        <li><strong>e)</strong> Borough President’s Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2><a href="section-vi.html">VI. Committee Reports and Resolutions</a></h2>
-        <span class="timestamp-badge">0:04</span>
-      </div>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VI-1. Parks, Landmarks & Cultural Affairs – Neil Barclay, Chair</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VI-2. Public Safety & Sanitation – Stu Desser, Chair</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Resolution supporting bills that would improve efficiency of the criminal discovery process and opposing amendments to discovery law that could undercut justice</li>
-        <li><strong>b)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VI-3. Business Affairs & Licensing – Anton Mallner, Chair</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Resolution of objection for a New Cannabis Application for Retail Dispensary license for Dany Kogan, Bellerose Migrant Center doing business as CANNABIS NYC at 223 East 14th Street</li>
-        <li><strong>b)</strong> Resolution of no objection for a New Cannabis Application for Retail Dispensary license for JOSEPH SMITH doing business as THE YETTI CLUB CORP. at 317 1ST AVENUE</li>
-        <li><strong>c)</strong> Resolution recommending approval for a Sidewalk Café license for 513 Restaurant Operating Corp. doing business as AUNT BERNIE'S at 513 3rd Avenue</li>
-        <li><strong>d)</strong> Resolution recommending approval for a Sidewalk Cafe license for Park Avenue Hospitality LLC, IN GOOD CO PARK AVE INC doing business as PARK AVENUE TAVERN at 99 Park Avenue</li>
-        <li><strong>e)</strong> Resolution recommending approval for a Sidewalk Café license for KJUN LLC doing business as KJUN at 154 East 39th Street</li>
-        <li><strong>f)</strong> Resolution recommending approval for a Sidewalk Café license for Marc Shariff Restaurant Inc doing business as FRIDA MIDTOWN at 214 East 52nd Street</li>
-        <li><strong>g)</strong> Resolution recommending approval for a Sidewalk Café license for Shannon Cafe LLC doing business as THE HORNY RAM at 951 2nd Avenue</li>
-        <li><strong>h)</strong> Resolution recommending approval for a Sidewalk Café license for Posto, Inc. doing business as POSTO THIN CRUST PIZZA at 310 2nd Avenue</li>
-        <li><strong>i)</strong> Resolution recommending approval for a Sidewalk Café license for SOTTOLIO INC doing business as NORMA at 438 3rd Avenue</li>
-        <li><strong>j)</strong> Resolution recommending approval for a Sidewalk Café license for 523 Restaurant Corp doing business as TED'S CORNER TAVERN at 523 3rd Avenue</li>
-        <li><strong>k)</strong> Resolution recommending approval for a Sidewalk Café license for 415 THIRD AVE RESTAURANT GROUP LLC doing business as FUMO at 415 3rd Avenue</li>
-        <li><strong>l)</strong> Resolution recommending approval for a Sidewalk Café license for JOSHMART INC doing business as GRILL 21 at 346 East 21st Street</li>
-        <li><strong>m)</strong> Resolution recommending approval for a Sidewalk Café license for 179 3rd Avenue LLC doing business as FOLLIA at 179 3rd Avenue</li>
-        <li><strong>n)</strong> Resolution recommending approval for a Sidewalk Café license for ESS-A-BAGEL,TOO, INC doing business as ESS-A-BAGEL at 324 1st Avenue</li>
-        <li><strong>o)</strong> Resolution recommending approval for a Sidewalk Café license for C&K Grocery Corporation doing business as Malt & Mold at 362 2nd Avenue</li>
-        <li><strong>p)</strong> Resolution recommending approval for a Sidewalk Café license for Independent of 23rd Street LLC doing business as THE GLOBE BAR & GRILL at 158 East 23rd Street</li>
-        <li><strong>q)</strong> Resolution recommending approval with modifications for a Sidewalk Café license for Grouben Food Corp. doing business as BuBo at 515 3rd Avenue</li>
-        <li><strong>r)</strong> Resolution recommending approval with modifications for a Sidewalk Café license and no comment for an alteration to an On Premises Liquor license for CUS MF Powerhouse LLC doing business as COYOTE UGLY SALOON at 233 East 14th Street</li>
-        <li><strong>s)</strong> Resolution recommending approval with modifications for a Sidewalk Café license for Elevated Entertainment Restaurants LLC doing business as CORNERSTONE TAVERN, THE STAG'S HEAD at 961 2nd Avenue</li>
-        <li><strong>t)</strong> Resolution recommending approval for a Sidewalk Café license and no comment for an alteration to an On Premises Liquor license for Kips Bay Hospitality LLC doing business as TARA ROSE at 384 3rd Avenue</li>
-        <li><strong>u)</strong> Resolution recommending approval for a Sidewalk Café license and no comment for an alteration to an On Premises Liquor license for Turtle Bay Hospitality LLC doing business as TACO VISION at 244 East 53rd Street</li>
-        <li><strong>v)</strong> Resolution recommending approval with modifications for a Sidewalk Café license and no comment for an alteration to a Wine, Beer & Cider license for SICANIA LLC doing business as NORMA at 930 2nd Avenue</li>
-        <li><strong>w)</strong> Resolution of no objection for a Corporate Change for an On Premises liquor license for Sachi Asian Bistro I Inc. doing business as Sachi at 713 2nd Avenue</li>
-        <li><strong>x)</strong> Resolution of no comment on an alteration to an On Premises Liquor license for 380 East Ventures LLC doing business as The Factory 380 at 380 Third Avenue</li>
-        <li><strong>y)</strong> Resolution of NO Objection for a New Application and Temporary Retail Permit for a Wine, Beer & Cider license for AKUMARITA249, LLC doing business as TBD at 249 East 49th Street</li>
-        <li><strong>z)</strong> Resolution of NO OBJECTION for a New Application and Temporary Retail Permit for a Wine, Beer & Cider license for RMCBGNY Inc doing business as BUKHARA GRILL at 120 East 39th Street</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VI-4. Land Use & Waterfront – Gabe Turzo, Chair</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Resolution requesting repairs to Captain Patrick J. Brown Walk be included in Phase 2 of the East Side Coastal Resiliency (ESCR) Project</li>
-        <li><strong>b)</strong> Resolution urging thorough environmental review of the Freedom Plaza proposal in the Draft Environmental Impact Statement (DEIS)</li>
-        <li><strong>c)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VI-5. Budget & Governmental Affairs – Steve Perez, Vice Chair</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Resolution supporting moving municipal elections in New York City to even-numbered years</li>
-        <li><strong>b)</strong> Resolution opposing Int. No. 1065 regarding terms of employment for District Managers</li>
-        <li><strong>c)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VI-6. Transportation – Jason Froimowitz, Chair</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Resolution supporting a 34th Street Busway from Third Avenue to Ninth Avenue</li>
-        <li><strong>b)</strong> Resolution supporting an Open Street for the Washington Irving Education Campus</li>
-        <li><strong>c)</strong> Resolution supporting the implementation of a double bus lane on Madison Avenue Between East 23rd Street and East 42nd Street</li>
-        <li><strong>d)</strong> Resolution in support of a complete street redesign of Third Avenue from 24th Street to 59th Street in Manhattan</li>
-        <li><strong>e)</strong> Resolution calling upon the New York City Council to enact legislation to mandate that cyclist traffic violations be treated as non-criminal summonses</li>
-        <li><strong>f)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VI-7. Health & Environment – Rupal Kakkad, Chair</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VI-8. Housing & Homelessness – Alek Miletic, Chair</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VI-9. Youth & Education – Vacant, Chair</h2>
-      </div>
-      <ul class="agenda-items">
-        <li><strong>a)</strong> Report</li>
-      </ul>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VII. Old/new Business</h2>
-      </div>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>VIII. Second Roll Call</h2>
-      </div>
-    </div>
-    <div class="agenda-section">
-      <div class="agenda-section-header">
-        <h2>IX. Adjournment</h2>
-      </div>
-    </div>
+
   </div>
+
   <footer>
     <p>Transcripts auto-generated from <a href="https://youtu.be/bJVwduAphgY?si=hWHRS_GRSr8F-szu" target="_blank">CB6 YouTube</a>.</p>
   </footer>
+
+  <script>
+    function toggleSection(id) {
+      const chapters = document.getElementById('chapters-' + id);
+      const section = document.getElementById('section-' + id);
+      const wasExpanded = section.classList.contains('expanded');
+
+      // Close all sections
+      document.querySelectorAll('.agenda-section').forEach(s => s.classList.remove('expanded'));
+      document.querySelectorAll('.agenda-chapters').forEach(c => c.classList.remove('expanded'));
+
+      // Toggle clicked section
+      if (!wasExpanded) {
+        chapters.classList.add('expanded');
+        section.classList.add('expanded');
+        // Update URL hash
+        history.replaceState(null, null, '#' + id);
+      } else {
+        history.replaceState(null, null, window.location.pathname);
+      }
+    }
+
+    // Expand section from URL hash, or first section by default
+    document.addEventListener('DOMContentLoaded', function() {
+      const hash = window.location.hash.substring(1);
+      let targetSection = null;
+
+      if (hash) {
+        targetSection = document.getElementById('section-' + hash);
+      }
+
+      if (!targetSection) {
+        targetSection = document.querySelector('.agenda-section');
+      }
+
+      if (targetSection) {
+        targetSection.classList.add('expanded');
+        const chapters = targetSection.querySelector('.agenda-chapters');
+        if (chapters) chapters.classList.add('expanded');
+      }
+    });
+  </script>
 </body>
 </html>

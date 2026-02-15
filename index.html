@@ -170,6 +170,45 @@
     .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
     .nav-links a:hover { text-decoration: underline; }
 
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
+
   </style>
   <link href="pagefind/pagefind-ui.css" rel="stylesheet">
 </head>
@@ -197,6 +236,24 @@
 
     <h2 class="section-heading">Latest Meetings</h2>
 
+    <a href="meetings/2026-02-11-full-board/index.html" class="meeting-card">
+      <div class="meeting-header">
+        <span class="meeting-type">FULL BOARD MEETING</span>
+        <span class="meeting-date">February 11, 2026</span>
+      </div>
+      <h3>Full Board</h3>
+      
+    </a>
+
+    <a href="meetings/2026-02-05-public-safety-and-sanitation/index.html" class="meeting-card">
+      <div class="meeting-header">
+        <span class="meeting-type">FULL BOARD MEETING</span>
+        <span class="meeting-date">February 5, 2026</span>
+      </div>
+      <h3>Public Safety & Sanitation</h3>
+      
+    </a>
+
     <a href="meetings/2026-01-14-full-board/index.html" class="meeting-card">
       <div class="meeting-header">
         <span class="meeting-type">FULL BOARD MEETING</span>
@@ -204,6 +261,24 @@
       </div>
       <h3>Full Board</h3>
       <div class="meeting-topics"><strong>Topics:</strong> Legislation, Bellevue Hospital, Heliport, Bike Lanes</div>
+    </a>
+
+    <a href="meetings/2025-06-11-full-board/index.html" class="meeting-card">
+      <div class="meeting-header">
+        <span class="meeting-type">FULL BOARD MEETING</span>
+        <span class="meeting-date">June 11, 2025</span>
+      </div>
+      <h3>Full Board</h3>
+      <div class="meeting-topics"><strong>Topics:</strong> Legislation, East Side Coastal Resiliency Project, Soloviev Site, Proposed Soloviev Casino, Community Boards, Busway, Washington Irving Campus, Bus Lane, Bike Lanes, E-Mobility</div>
+    </a>
+
+    <a href="meetings/2025-05-14-full-board/index.html" class="meeting-card">
+      <div class="meeting-header">
+        <span class="meeting-type">FULL BOARD MEETING</span>
+        <span class="meeting-date">May 14, 2025</span>
+      </div>
+      <h3>Full Board</h3>
+      <div class="meeting-topics"><strong>Topics:</strong> Legislation, The Water Club, Innovation East</div>
     </a>
 
   </div>
