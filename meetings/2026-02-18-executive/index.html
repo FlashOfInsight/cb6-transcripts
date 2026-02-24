@@ -1,0 +1,2495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive - February 18, 2026 | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Executive - February 18, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Executive - February 18, 2026</span>
+      </nav>
+      <h1 data-pagefind-meta="title">Executive</h1>
+      <div class="meta">February 18, 2026 · Manhattan Community Board 6</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe id="ytplayer" src="https://www.youtube.com/embed/TPUR6IOZdpE?enablejsapi=1" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=TPUR6IOZdpE" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card" data-pagefind-body>
+      <div class="transcript-header">
+        <h3>Full Transcript</h3>
+        <span class="transcript-source-badge">WhisperX + Speaker Diarization</span>
+      </div>
+      <div class="transcript-content transcript-full">
+        <div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1)">0:01</a>
+  <p>Okay, we are ready.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(21)">0:21</a>
+  <p>Welcome to the February 18th, 2026 meeting of the executive committee. My name is Sandy McKee, and I'm chair of the committee. Tonight, we are joined by Assistant District Manager Brendan Berth. And this meeting is called to order at 630. As a reminder, New York State law requires all committee members who are not able to attend in person to have the cameras on and their first and last names display from the time the meeting is called to order until the time the meeting is adjourned. Members of the public who are attending virtually, you can raise any questions or comments that you have through the Q&A feature of Zoom. We don't have anyone from the public. We do have a board member though. Justin Goldberg will take the minutes tonight. Is Justin online?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(67)">1:07</a>
+  <p>No? No, Elsie has.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(70)">1:10</a>
+  <p>He's on the train, apparently. We will now take attendance by roll call. Brendan will conduct the roll call.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(78)">1:18</a>
+  <p>Committee members, I will call your name. Your name is called. Please say present. I'll announce if there is quorum. Tanya Arias. Present. Neil Barclay. I do not see. Stu Dessor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(91)">1:31</a>
+  <p>I am here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(92)">1:32</a>
+  <p>Jason Frommack. Presence. Justin Goldberg, I do not see. Ripple Kakad. Present. John Keller. Present. Anthony Mulner. Present. Sandy McKee. Present. Ale Kamilitt. President. Steve Perez. Present. Gabe Perzo, I do not see yet. Pat Valero. I also. Cat Valero. I don't see Kat yet. Uh, Jerry Weinstein is on his way.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(127)">2:07</a>
+  <p>Victor, who's here?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(130)">2:10</a>
+  <p>Okay. Um, we have a quorum.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(133)">2:13</a>
+  <p>All right. The agenda for tonight's meeting is reflected on the screen before you. If there's no objection, we will adopt the agenda. Uh, raise your hand if you have any objections to adopting the agenda. Seeing none, the, um, Seeing no objections, the gender for tonight's meeting is adopted. The minutes from January's meeting are still being drafted?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(159)">2:39</a>
+  <p>Yes, there are. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(162)">2:42</a>
+  <p>Once they're ready for your review, they will be sent to you. Ground rules, please don't speak until granted the floor. If you raise your hand and I will identify you so you can speak. If you're on Zoom, I will identify you so that you're able to speak. Please have only one person speak at a time. It's extremely difficult to hear on Zoom if two people are talking. Don't use the chat faction for committee business. Chair's reporting, excuse me. A borough board meeting is tomorrow and on the agenda is the community board needs. So big item is space and enough Maloneyy to rent space if we don't have space. I think that's an issue for all the boards. But- Office space or meeting space? Meeting space because the decas highly controls how much all the space. We're trying to get rid of what's behind this wall, We have to do it through $0.50. So even that takes Maloneyy to get it working. So it's a problem.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(237)">3:57</a>
+  <p>What are the chances of getting in the current budget?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(241)">4:01</a>
+  <p>Probably very slim.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(243)">4:03</a>
+  <p>Very slim.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(244)">4:04</a>
+  <p>Yeah. That's my guess.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(246)">4:06</a>
+  <p>Student. Wouldn't it make sense to get rid of this rather than try anything else? Meanwhile, we could just shift it someplace. I mean, there's space there. You can move stuff back.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(257)">4:17</a>
+  <p>Do you know how to take it apart? We have to give it back to D.K.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(264)">4:24</a>
+  <p>I was looking with issues and how it's put together. It's tricky, but it can be done.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(269)">4:29</a>
+  <p>Why do we need to wait for D-Cast? Isn't there just a bunch of old junk back there?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(274)">4:34</a>
+  <p>All file cabinets and just this system.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(279)">4:39</a>
+  <p>Oh.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(280)">4:40</a>
+  <p>So we'd really like to. get it out of here, but if we have people who'd be interested in taking it apart, we could certainly.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(287)">4:47</a>
+  <p>So it's not like stuff that can be thrown away, it's stuff that has to be. It has to be stored. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(293)">4:53</a>
+  <p>Is there stored? We would have to pay for it. We have to pay for it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(300)">5:00</a>
+  <p>It's a bit of a catch.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(303)">5:03</a>
+  <p>We can try. We can try taking it for and stacking it and what things we can try to do. So maybe we are.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(311)">5:11</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(312)">5:12</a>
+  <p>I've actually never looked back there. How much paper is back there?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(315)">5:15</a>
+  <p>Renton, it's mostly empty now, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(318)">5:18</a>
+  <p>The file cabinets are empty. There is paper in boxes. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(325)">5:25</a>
+  <p>Is it possible to digitize that or is that legal? Or can we throw it out? Or can we throw it? Or can we throw it attached?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(332)">5:32</a>
+  <p>On that, I would prefer behaviors when I know it's not here tonight, but yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(339)">5:39</a>
+  <p>All right. Well, I'm not positive on. Anyway, there's definitely space available if we wanted to do that. So why don't, Stu, do you want to set up a time to do that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(349)">5:49</a>
+  <p>Why is it every time I speak? I sing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(353)">5:53</a>
+  <p>It's your leadership skills coming through.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(359)">5:59</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(363)">6:03</a>
+  <p>And I think everybody got the memo that the borough president put out about some of the rules for attendance. Apparently, that's been a big issue with a lot of boards. We seem to be doing all right with the hybrid models, so I don't think there's any concern to keep that. But one thing that was interesting is trainings and task forces do not have to meet open meetings law, so they do not have to be recorded in public. But we should be careful if the entire committee is there and you're actually discussing future agendas, that's probably a meeting. So just, you know, be careful. District needs, how is that going, the new process?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(420)">7:00</a>
+  <p>Good response, I saw from transportation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(425)">7:05</a>
+  <p>Anybody else? I mean, has everybody has everybody gone through the process so far.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(431)">7:11</a>
+  <p>Yeah. Next week. Yeah. Land use will go through it next week. And actually, there's something I'll mention during my, I guess, assistant district manager report related to that where I should consult the committee. It's a, it's a section of the district needs statement where we can have a claim to it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(452)">7:32</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(452)">7:32</a>
+  <p>So we need to sort. So that's something to sort out. I'll bring that up during. my report.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(457)">7:37</a>
+  <p>And RuPaul, didn't your committee decide on their district needs?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(462)">7:42</a>
+  <p>Yeah. In the Health and Human Services, we agreed on mental health. And before our next meeting, Gloria and I are going to work on the blurb. I just got sick in my head is just too foggy to do anything right now. But hopefully by this weekend, my brain will be back and I can work on it. But next month, we do have it on the agenda to look at the blurb and have the resolution ready. Brendan is also going to then also start the process for the youth education and child welfare to start the process of like, picking the most important issue and then working through it. So we're kind of going to, as we complete the health and human services at part of district needs, then we're going to start on the other part of it next month.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(511)">8:31</a>
+  <p>And it doesn't have to be the chair and vice chair.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(514)">8:34</a>
+  <p>Get sick.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(515)">8:35</a>
+  <p>Yeah, so this one, Gloria and I are going to do it, but I'm hoping that for the education part of it that I might be able to ask Katie to kind of take more of a lead on it, especially when it comes to writing the blurb in that. So yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(532)">8:52</a>
+  <p>I mean, you can select anyone from the committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(534)">8:54</a>
+  <p>Well, I volunteer to write the blurb, and then Gloria agreed to help me with it. So it just ended up being the two of us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(542)">9:02</a>
+  <p>Okay. When do we need to complete this back?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(545)">9:05</a>
+  <p>Um, it's not until the fall.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(547)">9:07</a>
+  <p>Oh.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(548)">9:08</a>
+  <p>But I keep getting, sliding off the agenda. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(555)">9:15</a>
+  <p>You only have three meetings left before we going somewhere. That's a point. Yeah. Yeah. Yeah. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(561)">9:21</a>
+  <p>So sooner rather than later. Exactly. Budget requests. How that the new, the new way to do budget requests, how is that working? We make one in terms of vision. And it worked well. This is 50. Did you fill out the form?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(583)">9:43</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(584)">9:44</a>
+  <p>So did you fill it the form before you brought it before the committee or after? After. That makes it. Yeah. I think there was some concern you have to fill up the form first. You have to. It's not a big deal. Just fill up the form. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(602)">10:02</a>
+  <p>It's the same form as whatever we had last year, right? That form isn't changed or it's not a new form, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(608)">10:08</a>
+  <p>I don't think, I think it's the same form, yeah. And so that brings up, we're actually, one of the things that the borough president really told us we need to do is advocate for our budget requests. So we're going to meet with our elected officials and go through our budget request list and say, What, you know, how do we get these things? What's, it's not the city budget or how do we make sure we get them? So yeah, Steve, Stephen Rushmore are kind of spearheading that from the budget and government affairs. Um, one thing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(641)">10:41</a>
+  <p>Do you mean, sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(644)">10:44</a>
+  <p>Sorry, Justin, go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(645)">10:45</a>
+  <p>I was saying, you're advocating, you'd be advocating at the meetings or when you, when you say we, we should advocate, who do you, who's, well, now that we have our district needs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(656)">10:56</a>
+  <p>We as a board are advocating for them. And it's a budget and government affairs committee that's doing that since they marshal the district needs and the budget request. Okay. One of the other things we've talked about doing is speaking to local community groups to get their feedback and maybe doing that quarterly. Sometimes the local community groups are not, I mean, it would be good to know what their concerns are, let's put it that way. It's something we have not done. Yeah, I know. You're not facing the camera, so it's okay. But it does seem a responsible thing to do.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(707)">11:47</a>
+  <p>When we say community groups, are we talking about community groups that are already formed like the Murray Hill neighbors and Turtle Bay and Sack.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(720)">12:00</a>
+  <p>And going south, I guess there's the Rose Hill Initiative. There's some established groups in our district. And how do we go about it? Well, do we invite them here? Do we go there? We would invite them here for a half hour, 45 minute discussion. And we have them all at the same time.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(739)">12:19</a>
+  <p>Yeah, I think that's a great idea. Will they go to committees to each committee or how do you want to handle that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(744)">12:24</a>
+  <p>I think we just have them come together once we compile what the concerns are and give it to the committee that's the appropriate committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(752)">12:32</a>
+  <p>My suggestion, syntax aside, we'd be to organize it as a town hall and have the beginning of the cycle rather than the end where it seems as though we're just doing lip service. I mean, it's all ugly, but no, but the town hall is a big.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(769)">12:49</a>
+  <p>production.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(769)">12:49</a>
+  <p>Well, if we don't like, that's why a caveat, that we don't have the name and so forth, but something really in the process so that we could circle back and it doesn't feel like.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(778)">12:58</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(778)">12:58</a>
+  <p>Well, if we do it once a quarter, I mean, or so maybe twice and throughout the year, that's we don't, as we will, I recommend research about people who haven't been heard who aren't coming because they have a specific issue to rebut, but who have ongoing issues whether or not it's around homelessness or anything else, because there's</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(798)">13:18</a>
+  <p>countless groups so if that's the case i suggest maybe then they go to committee committee yeah if they would like if they have an issue with homelessness they should go to the homelessness committee housing ethics uh would we try to reach out to as many different groups as possible not just neighborhood associations right but maybe representatives of the hospitals or other kinds of advocates that Well, actually... Or would it just be tailored to the neighborhood?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(826)">13:46</a>
+  <p>Just to the community groups so far, because we actually have bids. We have a cab for... Right. We're trying to restart the cab for Bellevue because it was closed during the pandemic. We have one for that... Sorry? Sorry? What is a cab? A community advisory board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(845)">14:05</a>
+  <p>Uh, for that's a AA.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(847)">14:07</a>
+  <p>Um, and we have one for the children's shelter. Right. Um, so we do have</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(854)">14:14</a>
+  <p>various ones groups that we can reach out to but i think this is more to hear about the community what they're concerned okay Cindy have you done this before or the or is this a new initiative it's a new initiative so we should at least try to program it in such a way that it that we can handle it exactly because otherwise it gets yeah and we don't like it gets really crazy up tell town halls um so um maybe the thing to do is to set up a sort of strategy or format of how we're going to do this we're going to reach out to and they come to us to the executive committee and then we are set out to the committees or how does it think i think we're going to just have a meeting with one representative from each group to start out and so we get all the committee you all of the people from the community here they speak to one or two representatives of the board and then we</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(911)">15:11</a>
+  <p>i mean it's a great idea we just have to formulate probably and decide on who the groups are i have a rough name and i can send that out if people want to add or okay um we can do that okay um and i think that's that's it for my chair's report i guess um brend do you have your or do we don't you not to discuss the um</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(940)">15:40</a>
+  <p>the resolution for George James and the email policy before then?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(946)">15:46</a>
+  <p>I'm not sure what follows on the agenda. I want to do that first?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(952)">15:52</a>
+  <p>Yeah, the land use consulting services. Okay. So yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(956)">15:56</a>
+  <p>And then my report. Let's do that. Well, we have the discussion of they, I'm sorry, I'm not following it. So the resolution of the continuation of land use consulting services by George James. And do we have the resolution was sent out?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(973)">16:13</a>
+  <p>And I'll share it on screen shortly. It's very short.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(981)">16:21</a>
+  <p>And one of the reasons that we're doing this is because we did have Maloneyy set aside and they've run out. So that's Steve.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(992)">16:32</a>
+  <p>So I presume it's here because of the Maloneyy, but normally, If it's an issue that I'm not familiar with, I want to trust the committee that actually deals with it, which would be land use.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1006)">16:46</a>
+  <p>It's not solely land use, it's housing as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1011)">16:51</a>
+  <p>So I just feel like I know nothing about this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1015)">16:55</a>
+  <p>I'd be happy to speak. Well, you're a huge fan of this. Yeah. I think from a land use perspective, he is incredibly reliable. subject matter expert. He's both personable, but also extremely knowledgeable. He's come through for us when we've had any number of questions and he breaks things down in a way that is regular, but accessible for the lay people. And so I think he has a lot of value and is an asset to the community board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1048)">17:28</a>
+  <p>I agree with him 100%. He's great.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1052)">17:32</a>
+  <p>Just maybe a legal question. We're going to be spending Maloneyy. My question is, should this add to go on to some kind of bidding process?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1064)">17:44</a>
+  <p>No, we're under the amount that requires open rating. It's 20,000. Wait, it's only, it's 20,000.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1072)">17:52</a>
+  <p>I have a question about why we're even needing to pass a resolution for this in first class.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1077)">17:57</a>
+  <p>Because it's a fair amount of Maloneyy for the board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1081)">18:01</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1081)">18:01</a>
+  <p>And it's, I believe it's coming from our street fare funds.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1085)">18:05</a>
+  <p>Oh, okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1087)">18:07</a>
+  <p>it's discretionary funding. Gotcha.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1089)">18:09</a>
+  <p>So it's enough Maloneyy we have to bring it to a resolution, but not enough Maloneyy to have a bid. Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1098)">18:18</a>
+  <p>I do have a question, though, how long do we expect this to last? Because he had been on retainer since I've got to land use, so I'm curious about how long we can expect this to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1110)">18:30</a>
+  <p>Brendan, do you know how long there retainer's been, it was 20,000 before, and I think it's five years. That's, oh.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1119)">18:39</a>
+  <p>It doesn't February, 20, 2017 and May 2020. So I'm guessing close to six years based on that. But obviously that can be shorter or longer depending on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1133)">18:53</a>
+  <p>Oh, we're pretty ignorant. So it could go up. But he's it terrific for that. I think he's terrific.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1139)">18:59</a>
+  <p>That's a real deal, actually.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1141)">19:01</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1141)">19:01</a>
+  <p>He does a lot of research.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1144)">19:04</a>
+  <p>I have a question. Having been planning consultant myself, does he bill us hourly or does he bill us by task or is this just on retainer and then when this Maloneyy is exhausted, then we have to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1156)">19:16</a>
+  <p>So the way it's set up now, we gave, previously we gave him a lump of Maloneyy and then when it ran out. Okay. But now we're going to pay him by the hour. Okay. And his rates are very recent. Right. He has a community board. Do we know what the hourly is? I don't know off the top of my head. I mean, I was told, but I don't remember.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1179)">19:39</a>
+  <p>Okay. So does everyone who's not me feel comfortable that they have enough knowledge to vote on this?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1188)">19:48</a>
+  <p>George also goes before a lot of other community boards. So it's not just ours. He's sort of a liaison, if you will, too.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1195)">19:55</a>
+  <p>I mean, I will trust everyone's voice here if that's the same.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1201)">20:01</a>
+  <p>Oh, Kat has her answers.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1203)">20:03</a>
+  <p>Go ahead, Kat. Yeah, hi. Just kind of echoing another question that was already asked, but asking from our specificity, if we are going to be paying hourly, however we're going to facilitate the payment, that probably should be included in this just for transparency, since there are questions coming up regardless of the long tenure and relationship and working relationship we've had. Just so that we can kind of do our due diligence that it's in writing somewhere, especially since Tanya and I are also watching the Maloneyy of the street fair Maloneyy as well as other things.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1247)">20:47</a>
+  <p>So do you want to propose a whereas to add to the?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1253)">20:53</a>
+  <p>Whereas to add what the hourly figure is and the amount of like the tenure, the year.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1260)">21:00</a>
+  <p>I'm not sure it's fair to put an hourly amount.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1266)">21:06</a>
+  <p>Those also change.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1269)">21:09</a>
+  <p>They go up, theoretically go up every year.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1271)">21:11</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1274)">21:14</a>
+  <p>Right. But do we have in this, I'm sorry if I didn't see it outlined, like how long this is supposed to be active for?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1285)">21:25</a>
+  <p>Well, I have a question that might help answer. would we enter into a contract with george or is this just like we can include that we are retaining him on an hourly rate at this rate and he should notice us if it will notify us if it changes and plus rates and we can have him on retainer for certain tasks that we were very explicit with what we want to use him for as opposed to just saying here's twenty thousand dollars and we'll use you know</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1312)">21:52</a>
+  <p>And the problem with that has always been, we're not very clear on the tasks until they come up. And then who actually says, and we, who says George, here's the task. Is it the chair of the land use, chair of housing? We've had cases where people ask him things randomly and he very nicely answers. I don't think he charges for it. Sure. So we don't have a very rigid process right now. All right. Maybe we should.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1345)">22:25</a>
+  <p>I mean, if I were to make a suggestion, that's what I would suggest to include as aware as is that we would enter into sort of a contract with him. That would we count on everything and the expectations that we have. So that way the hourly rate that you brought up cat could be easily codified in that contract.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1361)">22:41</a>
+  <p>Okay. So let's add that to our.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1363)">22:43</a>
+  <p>So would the wording be and where? maybe whereas community board six intends to enter into a on-call retainer contract or something with call retainer contract with george jane's to be finalized with approval of i don't just spitball in here x y z so whereas authorized to would intend to maybe or just say would would offer would would would or manhattan community board six would i think you could just say would enter into a contract agreement with with with george james and associates to be finalized. I don't know, is that something that we got to be.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1433)">23:53</a>
+  <p>We could say when entering to a contract with George James and Associates based on hourly rates. Yeah. Based on their hourly rate. Hour rates, sure.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1449)">24:09</a>
+  <p>Sandy there. Is the 20,000 sort of the maximum we're willing to spend? Because in hourly rate, you know, Yeah, tiles up. Is 20,000 RMX?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1462)">24:22</a>
+  <p>I'm trying to remember why we put that in if that was over 20,000 requires multiple, multiple, going up to multiple groups. You know, for some things, over a certain amount, you have to put out an RFP. I really need to pile up. And amazingly, he's given us a lot for what we had for 20,000.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1488)">24:48</a>
+  <p>So yeah, that's what, you know, so we went from 20,000 as a fixed rate, right, as opposed to an hourly rate now. Is that one?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1497)">24:57</a>
+  <p>No, no. He's always been on an hour.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1498)">24:58</a>
+  <p>He's always been on an hourly rate. Yes, yes. But it's been within the 20,000. Right. So maybe that's the limit.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1505)">25:05</a>
+  <p>Yes. And so once we. Once we get past 20,000, we do this again.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1512)">25:12</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1515)">25:15</a>
+  <p>I think, Kat, go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1519)">25:19</a>
+  <p>Yeah, just to follow, I was like to raise my physical hand in case you can see what I made in emoji. This is a little bit more clear. I guess the only other question I have since we have been, for lack of other words, loose in our tracking and I think this would be helpful for new board members in the future as well as historical reference to the relationship, the ongoing relationship with this vendor to maybe put in the resolution how we as the community board is going to track the work facilitated. Is that going to be in other resolutions with land use, for example, or whatever other committees George Tons associates touches.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1574)">26:14</a>
+  <p>Brendan. Yeah, I will say, like, I don't have as intimate of knowledge as Jesus and, like, part of people just hear, here's like it answers on these questions, but I do get this because that Jesus is pretty diligent about.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1588)">26:28</a>
+  <p>And it is, it is tracked. And the way it's been set up is that right now is that land use or housing has an issue come up. it's discussed and then i authorized going forward so whether that's a good strategy i don't know who contacts him um does it go through the office you i must say recently it's gone through me okay and i always you know i copy the office so maybe that should be yeah so we'll just say that um i mean if we want to make it a more crisp a clearer way to actually engage him</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1628)">27:08</a>
+  <p>like committee committee chairs will speak to the board chair i think that's that and it's then we clarify the task for for them to go bold that there should be some sort of protocol yeah if it's going on an hourly rate so it is sounds like it should go in the chair's handbook the chairs yeah yeah i would say that i would i can't speak for mezes but um my guess is that he wouldn't in the favor like that sort of yeah because we apparently there have been a few issues with like individual members just just randomly reaching out which does cost Maloneyy yeah yeah and we slapped their hands but that's yeah yeah that's why you need you know the kind of do it so let's put another whereas yeah so</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1689)">28:09</a>
+  <p>Whereas tasks will be approved by the board chair and forwarded to the consultant.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1711)">28:31</a>
+  <p>I would just say that he's the consultant will only engage in tasks that are approved by the board chair.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1719)">28:39</a>
+  <p>That sounds better.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1721)">28:41</a>
+  <p>So I'll be reword again.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1724)">28:44</a>
+  <p>The consultant, whereas the consultant will only be authorized to engage in tasks approved. Only be.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1734)">28:54</a>
+  <p>I don't need this. Authorized. Authorized to engage. And tasks approved by the board chair. Okay. Okay. Anything else you want to add? All right, so if there's no more discussion.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1771)">29:31</a>
+  <p>Wait, Sandy, did you hear what I don't did you catch what I said? My internet's going in now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1775)">29:35</a>
+  <p>No. Sorry, no, we can.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1777)">29:37</a>
+  <p>What I said is, is that I would also constrain it to the scope approved by the board chair. It's not just specific tasks. Scope is, it's tasks are more like deliverables. I would use the word scope as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1788)">29:48</a>
+  <p>Okay, in tasks and scope. Yeah. Perfect. Okay. And I think, do we have to do roll call? Yeah, unless we can, what's what's on what to say it to bulk now by unanimous consent.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1806)">30:06</a>
+  <p>Acclamation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1809)">30:09</a>
+  <p>Acclamation, yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1812)">30:12</a>
+  <p>The agenda is pretty short. One Canada's application.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1817)">30:17</a>
+  <p>No, no, sorry. What do you say for acclamation when you don't want to vote?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1826)">30:26</a>
+  <p>The tiny is nitpicky thing. To my ear, it sounds a little agro. I would prefer be authorized only to only be authorized, especially with an ongoing relationships. It's like, now we're going to get serious. So I think that takes down a degree or two. I'm sorry, I didn't. Instead of only be authorized, be authorized only. Yeah. There's an answer. Every little grammar.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1852)">30:52</a>
+  <p>American is blind. Okay, all right, but I guess we can do it by show of hands. All those in favor?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1866)">31:06</a>
+  <p>Okay, on screen. On screen, anybody? Race hands.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1874)">31:14</a>
+  <p>Easier to say, who's opposed?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1876)">31:16</a>
+  <p>Okay. Neal, we don't see your hand.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1884)">31:24</a>
+  <p>Also, please read your zoom.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1886)">31:26</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1886)">31:26</a>
+  <p>as physical hands are hard to count hard to count okay okay we have it's it's then unanimous yes okay um so the executive man unanimously uh pass this revolution and it will be before board okay next up is discussion of cb6 email policy and uh</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1915)">31:55</a>
+  <p>Jason was good enough to put together the policy and I think it was everybody's had a chance to look at it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1921)">32:01</a>
+  <p>Yeah, I will share it on screen in just a moment.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1926)">32:06</a>
+  <p>And this is something that was actually discussed at Borough Board and CB5 shared their policy with us. And so maybe did that go around to everybody as well, the CB5? See, I don't think you have that actually. Okay. I don't have the last. So what they do is, can you show that one and two, Brenda, please? Do you work for one? Yes. So each committee has its own dedicated Google Drive folder and committee email address, where they put committee related documents, etc. And so it's again something that the chair needs to monitor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1980)">33:00</a>
+  <p>So I'm sorry, rather than individuals or the chairs, you're saying the committee has its own email, I've said anyone on the committee can you?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1989)">33:09</a>
+  <p>No.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1990)">33:10</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1990)">33:10</a>
+  <p>It's the repository for information.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1993)">33:13</a>
+  <p>Well, that's not the email either. So that's just a repository. Right. So that's a drive.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1999)">33:19</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2000)">33:20</a>
+  <p>There is an email address.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2001)">33:21</a>
+  <p>There is an email address.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2002)">33:22</a>
+  <p>That everybody can access and use.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2006)">33:26</a>
+  <p>I believe. Well, let's continue down.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2009)">33:29</a>
+  <p>Go back up. Send it right there. So it says members and chairs branded access to the email. Which theory, I mean,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2027)">33:47</a>
+  <p>Perhaps by policy they don't send, but they would have access to say, I don't know. Those too comfortable. I don't either. I don't like that either.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2037)">33:57</a>
+  <p>I do like, well, it's a possibility that rather than having us be assigned by our name that each committee chair could get an email address. So it's as they do here, land use or public safety, And then as human being changes, it's still the same email. Yeah. And you can, you can still, with the, whatever it's called, the individual person's name associated to the address. And that way also, because I think where you have it is that when somebody leaves the board, then you disable that email address. And that means so if somebody sends an email there, either they're going to get a balance or you're going to forward it to someone else, which it's kind of messy. It seems to make better sense to me to just have it by committee, share whoever that human being has to be.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2098)">34:58</a>
+  <p>All uh, I will offer the counter argument, although I'm not necessarily opposed to committee. I love your character. Yeah, uh, most of think that was I get, but, um, I think like that's the pattern. The name address is a typical like corporate professional pattern. Same concerns apply in the corporate world and in government offices as well. Actually in some cases, the city council, for example, has an inbox, but like staffers at city council offices have individual email addresses. There's not like chief of staff that. council district, whatever, something, something. So I think it follows a typical pattern to have like a name. My concern with like, uh, sends, like, Frums, uh, coming from like a generic inbox. I think those are just like, I think that comes off as less like professional and direct to like receive an email from transportation at 6.org. Uh, like, I think if you're reaching out to like an agency, I think it conveys a better professionalism to have like a name and like a proper email address rather than like an inbox. But yes, I agree that it has the outsides.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2172)">36:12</a>
+  <p>But I agree with that. I'm just saying, except I don't know what it's called, but when you have your name label. Yeah. Before, so you can change the label and keep the same that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2183)">36:23</a>
+  <p>You could do that. Yeah. Uh, it's not true. Or you could also just copy. the committee email to an email that you would send from your own personal account or your own community court account. If the purpose of it is to be used as an archive and that's a repository, then the expectation is that there are going to be several chairs that will be on the committee over, you know, however many years. If somebody who is chair of that committee is emailing things to agencies or other committee members and they copy that repository, then there's a record and, you know,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2220)">37:00</a>
+  <p>I don't think that was the intention to create a repository, but I think that may make sense if that is the intention.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2227)">37:07</a>
+  <p>Yeah, I mean, because I think we want to have like an archive of sort of, you know, past emails and precedent. So that way there's a continuation when we have new chairs of it is going forward.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2238)">37:18</a>
+  <p>And I mean, the other thing is that there could be quite a bit of turnover. So that the problem of having to change names and constantly is that a warning? No, no, it's just... We've had several people leave the board recently. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2255)">37:35</a>
+  <p>Because we're probably entities, so to speak, do we not have to keep an archive these types of emails or any communication? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2266)">37:46</a>
+  <p>And how long? Yeah, that's... Because I've discussed this with Hesus and that we've never been clear.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2274)">37:54</a>
+  <p>No, but that's the problem. I mean, if we are, if this community board is foiled, even though we're sending stuff on our personal account, that stuff is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2285)">38:05</a>
+  <p>They'll foil your account.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2286)">38:06</a>
+  <p>Absolutely. So, so, yeah. So, I mean, and it does have to be retained. So if I leave and you disable my mailbox, you still have to keep copies of the stuff that I send. Right. Which is beautifully written, so I'm not a terrorist bias.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2304)">38:24</a>
+  <p>The trouble is right now, we don't have access to it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2307)">38:27</a>
+  <p>The board doesn't have access.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2309)">38:29</a>
+  <p>Exactly. Which is, you know, I mean, it's part of a bigger concern. We don't want people randomly. mail emailing stuff to agencies either it's like george james we want to have it sort of under some guidance in some way to keep it that sounds like a policy yeah yeah so but the the emails should reinforce the policy they should be related to jason something i really don't like about tv5 uh sorry this apology it's tv5 but i think use of gmail is</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2346)">39:06</a>
+  <p>shady and unprofessional.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2347)">39:07</a>
+  <p>I hate Gmail. It's not good.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2350)">39:10</a>
+  <p>I like Gmail, fine. I just, not to disparage Gmail.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2354)">39:14</a>
+  <p>But I find it hard to maneuver.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2357)">39:17</a>
+  <p>Gmail. I just think the domain, using the domain. The domain is not using Gmail. Yeah. It's free. It's free.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2367)">39:27</a>
+  <p>It's, yeah, which is part of another, you know, nice thing. And we've already, I mean, the reason this came up is we have some people who have, I mean, Molly Hollister has a CB6 email address and it's like, no need.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2384)">39:44</a>
+  <p>Yeah, so that's one of the things that I attempted to address. And theoretically, we could drop the committee part and just use the focus on the chairs, the board chair if we wanted to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2396)">39:56</a>
+  <p>Yeah. Or we could have these instead of being at Gmail, we could have them at CB6.org. Right. And that's what I would. Yeah, for one of them. So it's nine additional, you know, email addresses. We probably have those already.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2413)">40:13</a>
+  <p>And I should just say that when I send email out sometimes, people are too trusting, but I usually, I will often copy someone in the office just so they see that I actually, so this is really, the Gmail doesn't do it for me, CB6.org. does legitimize us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2434)">40:34</a>
+  <p>Yeah, and I agree that like when I've reached out to like, I don't know, people at times about CB6 business, I think it's like, it's odd, you know, my personal ad Gmail and it's in CB6 related business. Right. There should be a way to do it. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2452)">40:52</a>
+  <p>Yeah. So who's. Okay. Please go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2458)">40:58</a>
+  <p>Okay. It's the disadvantage of being virtually no friends. Thank you, Steve. I agree that you can change the domain name to whatever you wish. I actually just did this with a company that I'm working with remotely at the moment. So that can be a change. I think what I'm also hearing. I have two questions. One, do we have a policy in place or like kind of like a decision tree of best practices already when it comes to email. Maybe this is a Brandon staff kind of question. And two, since there would be a cost with this, it sounds like with this proposal and I might be missing this. But where would that be budgeted? Where would that Maloneyy be? taking out of what account?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2514)">41:54</a>
+  <p>Yeah, with regards to the cost. So if we use the ad cb6.org domain, I think we're paying around $150 per account. Is that annual? Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2526)">42:06</a>
+  <p>Can we do aliases?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2528)">42:08</a>
+  <p>You can do aliases, but then each, like, inbox would have to be, is one, one in one account. So you get multiple aliases going to one inbox. but you can't i thought you could filter that with an alias i've never used alias but i thought you could filter it back so it looks like they're all individual accounts and i'm wrong uh yeah i guess in theory you can game it by having everything go to one account and having multiple aliases and then filtering the and you don't like emails uh but then you'd have everybody having access to that one account to do my concern</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2566)">42:46</a>
+  <p>And there would be a ton of emails coming in all at once to that one account.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2570)">42:50</a>
+  <p>And do we know how many we have right now? How many accounts?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2577)">42:57</a>
+  <p>Isouz would know that. I do not.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2582)">43:02</a>
+  <p>Okay. But I thought we were trying to reduce the number of accounts. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2586)">43:06</a>
+  <p>Not achieving our goal. Well, my proposal was creating the member specific emails was that we would have any separate domain that would not be using Gmail. So this gets a little bit complicated and technical, so I apologize. But if we use a subdomain, like member.cb6.org, we could use a different email provider for that subject separate subdomain. We could use a much lower cost one. That's somewhere around the lines of $15 a year. It wouldn't have all the robust $10 a year. It wouldn't have all the robust functionality of Gmail, but I don't think that's needed for it. most of our members, I think we would keep the Gmail robust functionality for board staff and like for general inboxes, but I think for more, less heavy use.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2635)">43:55</a>
+  <p>Would pop POP3 and IMAP still be enabled? Yes. And the web, the interest, but yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2644)">44:04</a>
+  <p>So Jason, that's a pretty reliable platform?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2647)">44:07</a>
+  <p>Yeah, they've been around for a long time and did some research.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2652)">44:12</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2652)">44:12</a>
+  <p>I mean, if it's all $10 a year. Yeah, that's for them. It's basically a similar system.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2661)">44:21</a>
+  <p>It's not as pretty, but it's a, you log, you enter using and password, there's a list of emails.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2668)">44:28</a>
+  <p>What about the storage limit?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2671)">44:31</a>
+  <p>I believe it is like unofficially unlimited, which basically is like if they basically will let you know if you're abusing it. Um, I'm going to say, uh, it's just a little weird that emails don't always often have a subdomain. So that's sort of the con is like that we would have a subdomain. It's, you don't see that a lot, but you know, members dot. You do see it in some official like New York City ones, uh, really by council that m.c.gov is an email. So it's not that at normal, but it's a little bit at normal. Instead of memory, you could could board. Yeah, something one of those lines on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2709)">45:09</a>
+  <p>So is it something we should, at late, at least investigate further, go down that route. Everybody's sort of, it's true, we do need a policy for how long do we keep this stuff and what happens when people, when we switch chairs or when.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2723)">45:23</a>
+  <p>Do we still want the chair to have a separate named account or do we want chair to be chair at?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2727)">45:27</a>
+  <p>I don't think they, I don't, I think it's just chair of, well, if you use transportation, for instance, transportation chair.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2735)">45:35</a>
+  <p>No, I mean, board chair for your email.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2738)">45:38</a>
+  <p>Oh, I don't know. I don't particularly care what how it i mean it would be hard to change it now but um yes for the new chair could be i think the chair have their own email the board chair i think so too and the board i mean the board office does and yes yeah and i think i did address that on here that like you would keep uh the board office each one of those staff we have a regular it's more committee chairs and board officers yeah should we at least you know, go down this road and try it out.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2775)">46:15</a>
+  <p>And so we'll change everything to instead of by name, we'll do it by committee. Committee. And then the chair of the committee will have access to that. In transitioning, if there's a new chair, would we, we would give them, they would have access to the account and the history.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2793)">46:33</a>
+  <p>And they changed the password.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2795)">46:35</a>
+  <p>Okay. I think it probably makes sense of revised this to reflect that. Yeah. And so we have it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2800)">46:40</a>
+  <p>Um, or this maybe we don't need to represent it, but, uh, well, it's probably something that we need, we need written documentation of it. I don't know if we need to go pass it at full board, but at least if we have a clear description of how it's going to work. Um, Kat has her and raised.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2817)">46:57</a>
+  <p>Oh, it's actually just a point of reference further down and Jason thinks for putting this together. Um, there is some more. information on how to approach if we do move forward in terms of legacy accounts. I think I saw some setting those and a protocol. I'm just, we just talked about, uh, whatever guidelines. I think last month for chairs and training, I feel like this is something along the same lines that we would have to consider from a policy or guideline perspective as well. But there is some information already here to kind of set us up for success if we go down this road.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2860)">47:40</a>
+  <p>And I think we just need to make it, we need to sort of codify it. But RuPaul, go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2866)">47:46</a>
+  <p>Yeah, so just a clarifying question. So when you say board committee chairs will have access to it, but you also said all the committee members will also have access to it as well. So like everybody will have access to some email account.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2882)">48:02</a>
+  <p>I think this, the pearly mail option, the board members don't have access to it. No, because you have to have the committee chairs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2891)">48:11</a>
+  <p>Okay, it would be just the committee chairs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2893)">48:13</a>
+  <p>Okay. That's CV-5's approach is that everybody has access. I think that's, yeah, then everybody would have a password and yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2903)">48:23</a>
+  <p>Yeah, I was going to say that gets too complicated.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2905)">48:25</a>
+  <p>It's complicated, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2907)">48:27</a>
+  <p>This doesn't solve the drive issue. No, they wouldn't be dry in. repository is looking with this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2914)">48:34</a>
+  <p>And right now, the office has a drive and it can be divided up. Right now, it's a little amorphous, but it could be the transportation. Each committee has a portion of the drive or is subdivided into folders.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2929)">48:49</a>
+  <p>I don't think the drive thing is a problem today. Like, I think the office does a pretty good job of putting materials together with the meeting agendas. That's for the most part where I see the minutes, the minutes of the agendas. That's where I see most of our artifacts living. I think that works quite well. Yeah, the air table. So what did I say, here go. I just heard drive.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2953)">49:13</a>
+  <p>The presentations, for instance. some of the old presentations. You can see them on Zoom, but that's also you have to watch two hour meeting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2961)">49:21</a>
+  <p>But they're generally added on the on the air table tied to the meeting agenda.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2966)">49:26</a>
+  <p>Not always, but that's, and there's other, sometimes there's other documentation, but maybe it's not a, maybe it's not an issue. Maybe it's just not.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2974)">49:34</a>
+  <p>I think it, I mean, I distribute documents to the committee. I'd like to be able to do that myself directly. I mean, I do it by email now, but it would be nice if we had it on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2985)">49:45</a>
+  <p>A drive that we could, everybody could go back and take a look at. But maybe that's just the office, the CB6 drive. And we've set up a folder that's for you, for your committee. And sorry, Justin wanted to present something and he's running, he's on a train, he's running at a battery, so. Are you still there, Justin? Are you ready?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3013)">50:13</a>
+  <p>Can you guys hear me?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3015)">50:15</a>
+  <p>Yeah, yeah, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3016)">50:16</a>
+  <p>Yeah, somewhere in Connecticut right now, so on my hot spot. So yeah, so everyone should have received an email earlier today about creating a comprehensive knowledge guide that went out to all the CP6 committee chairs. You'll be receiving follow-up for me directly. The notion is, I don't know, Sandy, if you had the opportunity to discuss with the committee chairs, but the ideas we, with, you know, with the changes in, or with the eight-year limit, term limit, as well as just in general, we're looking to capture all institutional knowledge that everyone brings. This would be an opportunity to build out for each committee, really a kind of go-to guide. whether for new members or people that are interested to learn about it or for future committee chairs as well as future committee members. This isn't just about knowledge itself. This is also about processes. So I think we want to think about what works, what doesn't work, and capturing all of that. I'm definitely excited. Yeah, so that's my first thought was saying.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3090)">51:30</a>
+  <p>And who you're going to assist chairs to put this together. Yes. So are you going to send out some kind of a document that they fill out or? I mean, I know some of the other community boards, one of the things they've done is they start off each meeting of the committee and say, what do you think is the most, you know, what's important to know as a member of this committee?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3112)">51:52</a>
+  <p>I think I think that the best way to do this is to discuss with the committee chairs individually, have a template, start out the process, and then bring it to each committee and see what other members want to bring to. I'm worried about too much, just an open-ended question like that. I think that we need some structure first, and then we can go into that later. But I'm going to work with each committee member to with a template, start developing it, and then we can refine it with input from everyone.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3140)">52:20</a>
+  <p>And we have only three meetings until, is that right, until summer break?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3145)">52:25</a>
+  <p>Or it depends on your committee, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3149)">52:29</a>
+  <p>So there's some urgency to sort of, you know, run this effort. We're losing some long-term members this year.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3157)">52:37</a>
+  <p>So yeah, and I would like all the committee chairs to really get some thought about what is it, you know, what is it that kind of the knowledge and lessons that they really would like to share?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3168)">52:48</a>
+  <p>And what's important to know when you join the committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3172)">52:52</a>
+  <p>Is this the same thing as the committee handbooks that we talked about like two meetings ago? Yes. Okay. It's not a, it's the same thing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3180)">53:00</a>
+  <p>You know, it's another task.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3182)">53:02</a>
+  <p>Just want to make sure we weren't duplicates. I was actually going to work online, but now that you're doing it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3187)">53:07</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3187)">53:07</a>
+  <p>It's on my agenda this one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3190)">53:10</a>
+  <p>Yes. I mean, maybe Justin, you want to send something out for as soon as possible. Steve's ahead of you. Oops, okay. I think the conductors. All right, we'll keep moving then if that's, is that everything? Any questions? Okay, thank you, Justin. And now Brendan has his report.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3214)">53:34</a>
+  <p>Yes. So yeah, I'm studying in for Jesus tonight due to a personal matter that he has to deal with. That said, I'll give a report despite the fact that I am not the district manager. So first, I want to give the reminder that some of you have to reapply for membership on the board. Applications are due on Friday, February 27th at 5 p.m. So if you are supposed to reapply, want to reapply, if I haven't done so yet, make sure to do so by then. If you are not sure whether you're due to reapply, go to do resources for 3B6 members page of our website. And under the membership status section of that page, there is a link you can click on to see if it is your reapplication.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3267)">54:27</a>
+  <p>Does anybody here not know if they need to reapply?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3270)">54:30</a>
+  <p>What if we haven't decided? I already have to reply.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3273)">54:33</a>
+  <p>How do you know if they received it or not? They applied like the first day it came out.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3279)">54:39</a>
+  <p>I don't know if you should have gotten an email confirmation. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3283)">54:43</a>
+  <p>You're going to get the confirmation reapply. Okay. And so really you're not sure.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3292)">54:52</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3293)">54:53</a>
+  <p>Okay. So that's, just to let you know, there are some, I mean, Mark Thompson won't be on the board after this year. Maybe B. Kyle is leaving. So. There are some, you know, we've got to grab this knowledge while we can.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3313)">55:13</a>
+  <p>Sorry, go ahead. Yeah, thank you. Yeah, perfectly fine. Yeah, speaking of applications and board membership and all that, if you do, if you choose not to reapply, do let the board office know. And relate to all this, I know Justin brought up term limits, which is time rate. Because if you are not sure when you will reach your term limit, you can also check that on the resource for the system page on the website. A few of our members will be term limited as soon as next year. So this is something this is the resource to be aware of. The next thing I should bring up is regarding requests to attend virtually. As much as possible, Please try to let the board office know in advance of the meeting that you need to attend virtually. Obviously, last minute circumstances come up and life happens, so sometimes things pop up at the last minute, but unless something genuinely pops up at the last minute, try as best as you can to send your request to attend virtually in advance the meeting. Because once a meeting starts, the board office staff is busy making sure the meeting gets off to a good start and stays rolling along. And therefore, it's a lot harder to, it's a lot harder to respond to those requests once the meeting gets started. The last thing I want to talk about is regarding the district needs statement. Several committees have been working on that. Others will be working on that soon. But there is a district need statement matter that we should consult the executive committee on. And the reason for that is there is one section of the district needs statement, the section for court infrastructure, city services, and resiliency, where not one, not two, but three different committees could have some sort of claim to this section. If you look at the section of, if you look at the section here that is relevant to select in the most important issue for this section, there are certain sections such as, such as environmental concerns affecting citizens, that could be relevant to how Rebels committee. There are certain sections that are relevant to sanitation, which is dues committee, such as cleanliness and trash collection. And then there were even a couple of selections here that are relevant to Gabe's committee, landings, such as protective infrastructure. So I was talking about this with Jesus recently in terms of how to navigate this. And we sort of wanted to consult the executive committee as to how to handle this. One idea I have potentially is for this to be discussed at exact that way. all of the committee chairs relevant to this section are present. But that's just an idea I had that you all don't have to necessarily go with that. But I do at least want to bring this to exact attention. And that's it for me, but I do want to consult exec.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3533)">58:53</a>
+  <p>So we could treat this the same way that other committees do and everybody puts in there what they think is the most important and then we assign someone on accept to write it we could do it that way yeah if that's if that's what exactly like to do we can do that so that means we need everybody on exec needs to get this you you pick the one that you think is the most important we send it back to the office and next exec we talk about Yeah, with the front thing. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3564)">59:24</a>
+  <p>Yeah, I'll also send an email. Like, since some committees have not necessarily started this process yet, some committee, some of you might not be as familiar with this process as others of you. So I'll send an email. I'm hoping tomorrow explaining all this. Okay. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3584)">59:44</a>
+  <p>All right. Committee agendas. Hopefully we can race right through this. Transportation first.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3594)">59:54</a>
+  <p>All right. I will share. I can, off a memory, start talking about it. So first, we're talking about two things from request from NYU, some changes to parking around the orthopedic hospital and Lingo and ER as separate items. Then we have Third Avenue. concerns around 330 3rd Avenue, the parking garage, the bike land. Uh, less not, but lastly, uh, talking about, we're continuing our conversation on clear sidewalk paths, uh, which is establishing basically a minimum, uh, with, uh, for clear sidewalks and making legislation, urging for legislation to keep sidewalks clear, but you're, and creating penalties for not having that clear. Uh, and then lastly, Statement issues.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3653)">1:00:53</a>
+  <p>Jason, ask question. Who's responsible for crosswalks?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3658)">1:00:58</a>
+  <p>DOT. Brendan? Just a question, like crosswalks with regards to snow clearance or just crosswalks in general? No crosswalks with regards to snow clearing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3670)">1:01:10</a>
+  <p>Fantastic.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3671)">1:01:11</a>
+  <p>Have been an issue. So did you hear that, Tanya? What was I'm sorry? What was? Crosswalks in general crosswalks, but simply with regards to snow clearance.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3679)">1:01:19</a>
+  <p>Just no clearance.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3680)">1:01:20</a>
+  <p>Just no clearance. So that is the responsibility actually of the adjacent property.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3686)">1:01:26</a>
+  <p>That's what I thought.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3688)">1:01:28</a>
+  <p>That said, the Department of Sanitation can issue summonses to non-compliant property. So our office has gotten two or three considerate requests after the big snowstorm about that particular issue and invests the Department of Sanitation to take a look and issue summons if necessary.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3710)">1:01:50</a>
+  <p>Yeah, I found that this year in particular was particularly bad. We had other years had a lot of snow. No, but you, I was here in 1996.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3720)">1:02:00</a>
+  <p>No melting. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3721)">1:02:01</a>
+  <p>I definitely interested. Let's keep going here. One of our committee members also noted that bus stops are an issue. The MTA, I guess, shovels out the shelter and a pathway to the shelter. But for those who exit at the back with the buzz, it's a serious problem. And that would probably be, well, is that sanitation or is that transportation? It could be there. It must be transportation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3759)">1:02:39</a>
+  <p>It's not transportation because it's MTA, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3761)">1:02:41</a>
+  <p>No, no. The street part of it, though, is the snow plow from the sanitation. sanitation, but it sounds like transportation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3771)">1:02:51</a>
+  <p>It's a sanitation does the streets.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3773)">1:02:53</a>
+  <p>I will say that they had, they did shuffle out back to sections of at least I noticed on 3rd Avenue for buses. So there was a big snowstorm. It was a lot of snow. We haven't got a lot of snowed a long time. I think the city should have some leeway on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3788)">1:03:08</a>
+  <p>Are you old enough to remember the 1996 snowstorm?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3791)">1:03:11</a>
+  <p>Old enough it was not living here. Oh, okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3794)">1:03:14</a>
+  <p>Let's let's move on. It's not a problem now. Um, um, parks, landmarks and cultural affairs, Neil.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3803)">1:03:23</a>
+  <p>Okay. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3806)">1:03:26</a>
+  <p>Uh, if you're okay with everything there, you don't need to read it. We'll just, is there anything in addition you want to add? Nope.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3815)">1:03:35</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3816)">1:03:36</a>
+  <p>Perfect. Um, any questions for Neil? The host, and I, do you have, is somebody from landmarks going to come and talk to you about the residents, about landmarks?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3829)">1:03:49</a>
+  <p>No, I mean, that's not the plan because we did have a meeting when HDC, oh, wait a second, okay. So I was just thinking about that. So yeah, so we wanted someone from HDC to come in and talk about the landmark process, but we've had so many things that have been coming up, right? So, you know, we had the dog run that took up, you know, pretty much the meetings for December and then January. And then now we have all of these things here. So we're looking possibly for April, but we're also balancing different things. But that's what we're hoping maybe April. We would have liked to, you know, that they could have been here sooner, but, you know, we just have the air table. We have the district needs. We have to do the resolution. We have to park some report.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3880)">1:04:40</a>
+  <p>And do you want the office to reach out to landmarks and see if they have someone who could come?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3887)">1:04:47</a>
+  <p>So my understanding like with landmarks because I have reached out is that they're just they're not really well staffed and that they said that sometimes they do things with a borough board. I think they may come in from time to time and that they said that that may be the best way to get, you know, information from the borough board just because they're so limited. But I do think HDC, because they work so closely with LPC. I think that's kind of second best, you know, that what we get in HDC, they're really good.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3924)">1:05:24</a>
+  <p>Okay, so that's April.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3926)">1:05:26</a>
+  <p>Yeah, yep, we're projecting for April. That's right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3930)">1:05:30</a>
+  <p>Thank you. Can I ask the other question? Neil, what is it that you're trying to figure out on the landmark process? Because I just had a two-year mud fight with them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3939)">1:05:39</a>
+  <p>We want it from the landmarks commission. We don't want to hear the nasty bits. We want to hear the process. You want to hear how the process goes? Believe me, I know the process too. But I think they just want some kind of a presentation about how the process is meant to go, to get landmark. Oh, to get landmarks. Not to follow the landmarks. Not to follow the landmark commission. Okay. Public safety and sanitation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3966)">1:06:06</a>
+  <p>So the short. That is the Stuyvesant, the assault that occurred in Stuyvesantown. The community, the people I heard, including at the 13th Precinct Community Council are feeding. Next week there is going to be a Stuy Town tenant association meeting. So I'm waiting to hear what happens there and I'm waiting to hear from some things from the city. But my aim right now is to split the meeting up in two ways. The first is just generic guidance on how as individuals we should respond when we think we're about to be assaulted, both verbal, how we respond verbally and physically. And there is some guidance on that, and I'm looking for any like the D to add to that and so on. And I'm going to go into detail now because- So my PD is going to come? I don't know. I'm talking to them, but there's actually some national groups, and there's some academic work that seems to support it, but I'm still looking for more validation before I invite them in. And then the other side is that after hearing the residents last night especially, I think there needs to be some communication between the Stuyvesant Town public safety people and NYPD. I visited the Stuy Town Command Center and I talked with Assistant Chief there. I mean, it's, These are real operations. It's not a toy, you know, a Chimsy operation, but, but the tenants are just demanding more. I don't think they know what they want more of, just more people, get rid of the homeless. So there needs to be, and the NYPD was sort of, was on the defensive. And I think there needs to just be a conversation. It's a little, Talk, but anyway, it'll be.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4106)">1:08:26</a>
+  <p>Has her hand traced?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4109)">1:08:29</a>
+  <p>Yeah. No, one of the things is the Stytown did have like a town hall, which really wasn't a town hall. It was essentially, I don't know if anybody else attended or not, but I did attend since I live in Stytown. It was basically eight people. One of them was NYPD officer, the other seven worked for Steytown. And they all just repeated the same information over and over again in different ways. just to kill the time. It wasn't really a town hall because there were no questions. You had to submit the questions ahead of time. And they just pre-selected a few easy ones to answer. And that was kind of it. It was very, whenever they spoke, it was very corporate lawyerly speak. There was really no compassion or nothing else. And I think that kind of upset the residents more if that helps to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4164)">1:09:24</a>
+  <p>that they were definitely accepted that was that was um sponsored by beam right that wasn't um the tenant association yeah that was beam and tenants association wasn't invited to speak at that event either specific for susan's going to get back to me so we'll i mean i i i everything's going to depend on what happens then is there anything else on the agenda No, if that doesn't happen, in fact, I'd probably cancel a meeting. But if it does happen, then we'll probably talk about district needs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4201)">1:10:01</a>
+  <p>And your budget requests, because everybody's responses came in today. Everyone's. All committees got their responses.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4210)">1:10:10</a>
+  <p>Yes. Really?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4211)">1:10:11</a>
+  <p>It's posted online, so.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4214)">1:10:14</a>
+  <p>Yeah. You have to look at it. It's a clarifying question for now. This agenda item wording, I guess, pending what you hear from Susan and the Tenants Association. Yeah. Also make a note here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4239)">1:10:39</a>
+  <p>But I mean, that's not to be published anyplace, right? That's just for us, what you write in? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4244)">1:10:44</a>
+  <p>Yeah. And it's right because it's sensitive. So it's not going to be published anywhere.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4250)">1:10:50</a>
+  <p>Okay. Um, budget and government affairs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4255)">1:10:55</a>
+  <p>So mayor, um, don't agree to release the city budget yesterday afternoon. So, um, and all of our budget requests have now been responded to. There's a big PDF file. So I'm assuming in the office usually like just picks up our section and then sends it out. So. I'm not to that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4273)">1:11:13</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4273)">1:11:13</a>
+  <p>Yeah, but assuming that's going to be happening sometime in the near few days, next few days, or just go online and. scroll through the 900 pages and find you can look at it now if you want to get a head start but everyone should sort of keep in mind that budget requests now need to be looked out put under your agendas responded to with the agencies so our first thing is we're going to be looking at the whole budget so be able to see you see so we have to submit a response on behalf of cb6 to the city budget and so sandy has to write something and i have to vote on it at borough board</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4308)">1:11:48</a>
+  <p>And quite often, I must say the rest of the city has different district needs than we do. So it's just good to keep that in mind. All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4322)">1:12:02</a>
+  <p>So yeah, and then we're going to, we'll talk about our own budget requests. And then I had the our committee handbook also on there. So I guess if Justin's working on that, then hopefully to be ready for that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4334)">1:12:14</a>
+  <p>Yeah. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4337)">1:12:17</a>
+  <p>all right health and education yeah so we're going to have um a council member uh Maloneyy come and uh give her views on the uh city retirees um health care benefits back in january we had somebody from the uh retirees benefits come and speak to us. So we wanted to invite the council member to kind of give her take on it. So she's going to come. I feel like it's that meeting, it might go on for a while because I've already heard some of the retirees might be coming to join that meeting. because they are interested, obviously. So it might take some time. And then after that, we're going to discuss the statement of district needs. Like I said, but Gloria and I will have the blurb ready for the Health and Human Services portion of it. And then Brendan will kind of go over the the youth education and child welfare services part of it so that's going to be uh the march meeting by the quick question for um steve the budget request is it going to be on the budget page like on the cb6 website budget and government affairs page committee page is that where it's posted it will be okay it's not there yet but okay if you google it you can find it</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4423)">1:13:43</a>
+  <p>All right, thank you. Okay, housing and homelessness.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4429)">1:13:49</a>
+  <p>We're actually meeting tomorrow because of the holiday on Monday, we had to push it. But there's nothing out of the ordinary here. It's just continuing to talk about the findings from the housing research that several members of the committee have done, Steve being one of them, which is great. So March's agenda, I haven't discussed yet, but I Guest district needs statement will be on the March agenda, as well as the presentation from our community planning fellow.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4459)">1:14:19</a>
+  <p>Okay, so I'm going to make note of that. Yeah. So district needs statement and presentation on community planning. Yes. As that has the fellow been invited yet, just for my identification.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4475)">1:14:35</a>
+  <p>I told her a few weeks ago that she'll have to come and present. So you're going to have to be available. But yeah, but I've seen a couple of drafts of the material and the work that she's done and it looks really great and I'm excited to share the rest of the committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4499)">1:14:59</a>
+  <p>Okay, that's good. We're going to talk again by email, probably, just try and solidify that. Land you some water.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4508)">1:15:08</a>
+  <p>Okay, so. The only things that are not on there, well, we're going to finish our budget request on the harms of road and sidewalks all. We're going to have a budget request to fix the Patrick Brown walk since DDC unceremoniously rejected our attempt to do it last year. We're going to study and submit comments on the Manhattan Plan as a committee. And I suppose we should be reviewing our budget request answers. So that should be a new client item.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4545)">1:15:45</a>
+  <p>Is somebody going to come and talk about salt?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4547)">1:15:47</a>
+  <p>Because we're just asking them to study. I mean, because the reason we don't have.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4554)">1:15:54</a>
+  <p>My only concern is there were a lot of people talking about their salt experiences and very little. concrete, well, you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4564)">1:16:04</a>
+  <p>But the reason it is very concrete in terms of like we have, there's a lot of data out there from the MTA, for upstate legislators. So the point is simply an aggregation of it, not for our anecdotal stories. The expertise is already out there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4579)">1:16:19</a>
+  <p>So you're going to give that information to the committee before the meeting or?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4584)">1:16:24</a>
+  <p>Well, we gave that where we're already have. Yeah, we're just asking for them to put it all in one place and quantify the harms. MTA is like very open on the harms, right? Upstate legislators are very open on the harms. We want one depository of the harm.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4600)">1:16:40</a>
+  <p>So it's not going to be a long discussion because it's not.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4602)">1:16:42</a>
+  <p>That's a two minute. We already did. And then we are going to assign a, I'm going to get some volunteers to start a task force, so no email concerns to site possible locations for schools in the district, including these songs. Great.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4625)">1:17:05</a>
+  <p>So there's one agenda item for Monday, and that's a discussion of budget requests.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4630)">1:17:10</a>
+  <p>Right. And then the chairs report. I'll do the school task course and the chairs report.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4637)">1:17:17</a>
+  <p>Probably that's fine.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4638)">1:17:18</a>
+  <p>Yeah. Okay, then yeah, that's good. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4642)">1:17:22</a>
+  <p>Business affairs and licensing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4646)">1:17:26</a>
+  <p>Anton. uh so far it's simple usual normal stuff for liquor authority but number one which i think is the 831 third avenue cannabis application uh i thought it would be easy since they fell within a thousand feet of another cannabis location and 280 feet of two schools then i got an email with the summary of what the governor signed off on. And it said 500 feet on the same street for schools that doesn't work in New York City. And I think you saw the email my sense on that. I don't know how that snuck in because that was a problem we had. for months and months and then there was supposedly resolved that there was a reinterpretation by the Canada's control board and it was a 500 feet radius or 200 foot radius now they're saying on the same street why doesn't that work listen pardon why doesn't that work so around the block you can you can have the kind of a shop here at the corner and the school on the other side of the corner, 50 feet away. Yeah, that was literally the case with the Montessori school. Right. Literally. Yeah. So. Maybe 150, but. But it certainly was within 500 feet. They have a submitted an application to the kind of his control board. which is similar to the 500-foot rule application that the SLA requires if you open liquor shop or sell liquor within 500 feet of another establishment of sells liquor. So they're well aware that they're within the thousand feet. My feeling is that the reason the thousand-foot rule was put in is so we don't have a kind of a shop on every corner. And I would hope that the community would be out full force to support, at least for me, not speaking to the committee because we haven't met on this, support us and not giving a positive resolution for new cannabis shop, given the schools and the 1,000 football.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4811)">1:20:11</a>
+  <p>But you're reinterpreting the thousand-foot rule yourself, then, as opposed to what the governor is intended.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4817)">1:20:17</a>
+  <p>No, the governor says a thousand. The rule is 1,000 feet. Just like the rules for the SLA 500 feet of liquor establishments, you can petition the office council's management on a form called a community convenience form that recognizes that you are attempting to set up the cannabis shop within a thousand feet of another can of the shop.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4844)">1:20:44</a>
+  <p>Right, but I'm sorry, didn't you say the governor reinterpreted the, um, whether it's linear or, that's 500 foot, that's 500 liberal.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4856)">1:20:56</a>
+  <p>Anyway, so, um, have any community, I guess we should say this, but of any community organizations, shown interest with, I just, you know, just got</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4868)">1:21:08</a>
+  <p>And by the way, supposedly this 831 3rd Avenue is the Asa Bagel shop. They're moving. They're moving to 66th Street or something. A little further south. Oh, south. Yeah. Anyway, so they're moving. It's a pretty big place, almost as big as Flintstones.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4891)">1:21:31</a>
+  <p>Oh, God, we're always hitting me with that. So are there only four? There are only four items? so far and i mean there are a few others i say it at the top because that's where the canvas and do you have any budget requests no but yes not yet but it is something you're going to discuss okay is that hopefully</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4920)">1:22:00</a>
+  <p>If we have time and there's not a lot of community discussion.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4925)">1:22:05</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4926)">1:22:06</a>
+  <p>And by the way, we do meet over the summer. Yeah, do you have time to address it. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4934)">1:22:14</a>
+  <p>I think that's it. If any member of the committee has any older new business, please raise your hand.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4941)">1:22:21</a>
+  <p>Stoop. I actually had four things, but since Jesus is But there is one issue that I, the fourth one. The motion to move the previous question, I think it's a motion which has been abused. It is not supposed to be used to shut people up or to cut off debate before there's fair deliberation. And I, I, the, The way Roberts rules does it, you need a two thirds or three-quarter vote, I guess in two-thirds, a super majority that kind of protects people. So I don't want to be the gap fly that objects and forces a roll call vote. I would suggest, and I'd like to propose, but I want to hear where people feel about this. that we modify the bylaws in a way that's a little bit awkward. That says that if motion for the previous question is seconded, made it seconded, that someone can instantly move to extend debate. uh and if the motion for this to extend debate is accepted unanimously then we continue talking if it's rejected then debate ends that's right and what you what you're referring to is when someone says call the question and seconds it that shouldn't end the debate if someone still wants to talk they should be able to right and what we've just um i mean historically and certainly before your time that was as a vote it was just understood is okay now everyone shuts up you've been um i use the language that you gave you've been you've been but and no one should i don't think is objected yeah uh but there are a few times that i thought to uh and i'm so rather than change the bylaws why don't we just make sure that the chairs the chairs are all here that</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5081)">1:24:41</a>
+  <p>we don't cut off debate at that point.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5083)">1:24:43</a>
+  <p>You have to ask if there's... First, and I did not know this at the last time we admitted committee, but in fact, under Roberts rules, the motion for the previous question is not allowed. So that's not, that's not permitted in a committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5101)">1:25:01</a>
+  <p>I think maybe you should use the description that most of the committees use. You're talking about calling.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5107)">1:25:07</a>
+  <p>Fine. You're not allowed to call the question. it's not permitted in the committee meeting under Robert's rules. So the only place it's an issue. And in committees most of the time, we're a friendly bunch. And the chair manages it. But full board, I think it's an issue. And I mean, we're always trying to get through the full board. And I don't want to force a roll call vote, but I think we need some procedure. So I drafted a change, an amendment to the bylaws, which is a little complex, but I'd rather hear what people feel about this. And what's your proposal? What's your proposal for how we handle? My proposal is that if somebody calls the question in seconds it, then another member has the right to immediately move to extend debate, which counters that. The motion to extend debate can then be accepted unanimously, in other words, without objection. Or if somebody objects to that, then we do have to have a vote, which is what we would have had to do with somebody just objected anyway. If people vote to extend debate, then debates extended. If they vote not to, then the motion, then calling the question is adopted. Is that Robert's rule of law? This is outside. No, Roberts just has you can call the question. And I've stepped under Robert to two thirds vote. So it's a super majority. We can't do that at a board because the city charter requires that all votes are by majority. So and the idea of my idea is that I don't want to be, I don't want to have to object and then have a roll call vote every time. But I want some way to object. So I think the way to do it is to basically, instead of saying I object, to say, I move to extend debate.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5230)">1:27:10</a>
+  <p>So you're not allowed to say, to call the question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5235)">1:27:15</a>
+  <p>You're allowed to call the question and someone seconds it, but then if someone objects.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5241)">1:27:21</a>
+  <p>If someone objects.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5242)">1:27:22</a>
+  <p>It someone objects. So instead of objecting, saying, making a motion to extend debate. And if that's accepted unanimously, in other words, no one objects to that, then</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5254)">1:27:34</a>
+  <p>You mentioned before that this call the question was abused. You know, at least for four or five years, I've been on the board and the committees are very rarely.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5267)">1:27:47</a>
+  <p>Not a committee. I'm not saying a committee, but I'm only for board here. Oh, cold questions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5276)">1:27:56</a>
+  <p>I mean, sometimes people call the question right away. Like the 34th Street busway, we heard tons of debate and somebody stood up and called the question immediately when it came. And there was no problem. Nobody wanted to debate it. But it was pretty instantaneous.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5296)">1:28:16</a>
+  <p>And sometimes, I mean, even I have a certain reservation about objecting But the fact that no one rises and objects doesn't mean that no one feels that way.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5310)">1:28:30</a>
+  <p>So I would rather it become part of our policy, like part of our general how we deal with things than revising the bylaws. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5319)">1:28:39</a>
+  <p>So how would? I also think, why isn't that what we have a chair? You know, the chair is there to decide. No, the chair. Is it appropriate to because I could envision where someone was like, no, I just want to discuss this. And one other person will say, yeah, I want to discuss it too. And then we're going to be there, even though it really isn't in the interest of everyone to have a 50-person discussion. So the chair really has the authority and also the- The chair has no authority to do the bylaws.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5352)">1:29:12</a>
+  <p>If somebody calls the question and someone seconds it, then you have to either, you either take a vote or you accept it by acclamation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5365)">1:29:25</a>
+  <p>I'd have to go back to the tape, but I think Steve's right. I think that in a recent meeting, I forget what the topic was. Someone called the question and someone seconded it, but Sandy saw that there were people who wanted to speak and she let it continue. So I think that's what Steve's getting at. I forget the issue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5382)">1:29:42</a>
+  <p>And I think, Steve, you're referring, you're talking about the health and education meeting where someone called the question of the second and there was still someone wanted to debate.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5390)">1:29:50</a>
+  <p>And I objected. And the debate went home. And I was, well, but two things again. One is that it was out of order in the committee anyway. And secondly, you don't want to be the one of check. I don't mind if it's me. I'd rather feel bored that we don't have to get, go into that, though. Well, Perth Roberts rules, it's a vote, not a, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5416)">1:30:16</a>
+  <p>Right. There's not a five words. Roberts says there should be a two-thirds vote after a second it called the question, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5422)">1:30:22</a>
+  <p>No, it's if someone ejects, then you need the two-thirds vote to go forward.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5427)">1:30:27</a>
+  <p>Well, that's on my understanding.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5429)">1:30:29</a>
+  <p>Is that what you just sense to?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5430)">1:30:30</a>
+  <p>Like it, yeah, no, what, what we normally do is somebody moves Somebody calls the questions, only seconds it. Sandy says, without objection, it's adopted or something like that. And because that's unanimous consent. But if one person objects, which could be me, then you have to vote. Then you have to vote on it. And Robert says it's the two-thirds vote. We don't do two-thirds vote because that's what the city charter prohibits. It says we have to do a majority vote. But the 230 vote is used to protect the minority. What is the city charter for all votes requires majority votes? My understanding, my reading of the city charter, we can only all of our votes have to pass by.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5478)">1:31:18</a>
+  <p>I know you had your hand up. Sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5481)">1:31:21</a>
+  <p>Listen, I'd like debate. I think debate is healthy for everyone. And it really is part of the interchange in what we're trying to get to here. I have felt one or two times when You know, somebody's been wanting to debate a little more and then all of a sudden, I'll call up the question. And it was a little jarring a couple of times, but it's not, it's the exception, not the rule. But I think Steve is right. That's what the chair's role is. Because sometimes I feel that if the opinion of someone we don't like, we don't want to hear it. You know, and it's called the question and that's not right. And so I think that it's common sense, really. It's more common sense than anything else. I don't think we need to go as far as to put it in the bylaws. And that's going to create a real issue because at full board, if someone falls the question, another one second said, and then someone objects, now you have to go, you know, do the whole vote. And that's, we don't want filibusters for sure, but we want the healthy debate. Yeah. And just because we don't like someone's opinion doesn't mean we need to call the question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5550)">1:32:30</a>
+  <p>But you're saying that the chair can violate Robert's rules. Because once somebody moves to question and second it, you have to vote. You either vote or we take a due by unanimous consent. The chair doesn't have the discretion to say, well, let's continue debate. I mean, we could write that into the bylaws. We can say the chair can continue debate. Can, you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5575)">1:32:55</a>
+  <p>I just, I really don't think it's required. I really would prefer it to be the chair's I think so. Have lead the meeting. And they lead it in a way that they feel as appropriate for the committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5588)">1:33:08</a>
+  <p>And I'm not talking about committee meeting. I'm only talking about full board. At committee meetings, you cannot, committee meetings moving, calling the question is out of order. It's not permitted by under Robert's rule, only at full board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5603)">1:33:23</a>
+  <p>Oh, so because people call the question that committee meeting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5606)">1:33:26</a>
+  <p>They do, and it's a violation of Roberts, which was another issue that I was going to bring it, but I'm not going to do that right now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5613)">1:33:33</a>
+  <p>I mean, we know CBA only has remote meetings. It's a violation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5618)">1:33:38</a>
+  <p>It's just like I asked about a line between or bylaws.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5622)">1:33:42</a>
+  <p>Look, I'm not, I'm not a formal, very formal person for the most part. I mean, I shouldn't do everything to demonstrate. But I do want to see a way. I mean, the purpose of the rules is often to be fair.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5639)">1:33:59</a>
+  <p>Well, and then let's put it another way. How do committee chairs and debate when it's become, and when it's become debate that's not meaningful?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5652)">1:34:12</a>
+  <p>Do you stop recognizing speakers, which is the power of the chair, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5658)">1:34:18</a>
+  <p>Yeah. But that's, again, probably against Robert's rules, right? Don't you have to recognize everybody?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5664)">1:34:24</a>
+  <p>I don't think so. Chair, the committees are informal.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5667)">1:34:27</a>
+  <p>I mean, Robert. So, but even in full board, I don't think the chair has to recognize. I think the chair's discretion as to whether or not to recognize something to speak.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5677)">1:34:37</a>
+  <p>Uh, what, full board?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5678)">1:34:38</a>
+  <p>And yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5680)">1:34:40</a>
+  <p>No, it's, if somebody stands, everyone is entitled to speak and they're entitled to speak twice. I mean, if you're going to get that formal about it. I'm not trying to get that formal about it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5690)">1:34:50</a>
+  <p>I think we should be. Has anyone complained recently to you, Stu or do you, Sandy, about not being able to get a word in?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5697)">1:34:57</a>
+  <p>No.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5697)">1:34:57</a>
+  <p>So it hasn't been an issue from anyone else.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5700)">1:35:00</a>
+  <p>Well, there's, there was a, and it came up at a meeting this month.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5704)">1:35:04</a>
+  <p>Oh, I see. But it's question was, but I mean, I know people at full board who are been upset. Uh, and I've been upset at full board sometimes. I, you know, we're all kind of trying to not. be too obnoxious about it, especially because if you object that it means another three minutes of roll-hole voting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5727)">1:35:27</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5729)">1:35:29</a>
+  <p>So I'm just looking for a way to be able to object without doing a roll-ho vote, basically.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5735)">1:35:35</a>
+  <p>Well, and I would hope that people at full board, if they really do want to continue talking, that they can put up their hand and say, I'd like this to be acknowledged. Like, that's all they have to do.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5748)">1:35:48</a>
+  <p>I don't think that's clear to people, but then I think I believe once called the question is called. I think most people understand that to me that that ends debate isn't. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5759)">1:35:59</a>
+  <p>Historically, that's exactly before Sandy's time. I was going to say that's BS, but that's next year. Before Sandy. That is what happened is that it was when someone called a question, there was never even a question of whether anyone could object. It was, you know, any two people could just stop debate.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5786)">1:36:26</a>
+  <p>That's my understanding. Until I recently looked into this, that was my understanding about the question works. I agree with you, Stu, that we should be following Robert's rules ultimately. And if we procedurally been violating Robert's roles, we should Correct for that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5803)">1:36:43</a>
+  <p>Well, you know, it would be easy to follow the rules by just saying, wait, I want to talk. Yeah, I know the question's been called, but I still have more debate.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5811)">1:36:51</a>
+  <p>But then you have, then we have to vote. That person is officially objecting to the motion.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5822)">1:37:02</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5823)">1:37:03</a>
+  <p>And if you object to the motion, that forces a vote.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5826)">1:37:06</a>
+  <p>I don't think the chair says we'll continue the discussion.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5829)">1:37:09</a>
+  <p>I don't mean this is a criticism by Eddie Bates, but I don't think it's clear that we're asking for objection when called the question has come. I think you're just like a call the question. And so now we're going to vote. I think if we, I think you're correctly raising a flag that we're not following the call, the Robert's rules of calling the question, and we need to make it clearer that it's, that that motion is debatable or objectionable and the... It's objectionable. It's objectionable.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5855)">1:37:35</a>
+  <p>It's objectional. It's actually not debatable, but it is objection.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5857)">1:37:37</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5858)">1:37:38</a>
+  <p>And what happens if there's an objection?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5860)">1:37:40</a>
+  <p>Then you take a roll call, then...</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5863)">1:37:43</a>
+  <p>Yeah, I think I guess technically we should be asking this. Does anybody object to? We now have a motion of calling to question. Does anybody have to do that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5871)">1:37:51</a>
+  <p>Yes, he does that. I don't think that. Not, not, I don't use those words. It's, it's something about if they're just going to. But she, that's can't do that. Okay. I mean, maybe if we put that, you know, we have a script. Everybody has, we just add it to the script and say, listen, or, you know, if there are, if anyone has objected any objections to voting at this point or we'll come up with something.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5897)">1:38:17</a>
+  <p>But then you're forcing a roll call vote.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5900)">1:38:20</a>
+  <p>No. I think it doesn't force it. You just, the chair goes ahead. Well, okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5907)">1:38:27</a>
+  <p>In terms of rules of order. Yeah. I mean, you know, we have. We adopted Roberts. We adopted the bylaws. We're not really following them. We wrote the bylaws. You know, there are our rules. So I just think, you know, we wrote, we haven't for a reason. And rules, for the most part, are designed for fairness. I mean, they're not designed to be obnoxious.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5935)">1:38:55</a>
+  <p>Yeah. So we have.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5938)">1:38:58</a>
+  <p>at the next full board meeting we explain what the rules are and we just follow that if they if some if anyone objects we'll have a vote it's not i think that'd be helping i've had my hand up a couple of minutes so i just wanted to interject it's okay i'm not there again privilege of being in the room or is being bedroom um i'm looking at justin this could also be something fully input uh uh emphasized in the data that he's collecting to, I think Steve talking about the guidelines or whatever rubric or training manuals that we're creating that could be emphasized there. There are multiple ways to reinforce the things that we already created in addition to in lifetime at full board meetings. Just to emphasize the point, the rules we have, what is the protocol? Because if someone who's new, I don't know. I'm ignorant. So yeah, that would be helpful. And also in the anticipation of when people roll off and new members come in, this is a good protocol to revisit anyway.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6008)">1:40:08</a>
+  <p>I'm sorry. Justin, did you have your hand up? No. It's getting darker, darker.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6016)">1:40:16</a>
+  <p>It's battery still.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6017)">1:40:17</a>
+  <p>I think that, you know, Stewart's basically sensitizing us to something that he feels we should be aware of. And I think that's a good thing. And I think to me, the logical process would be to follow what you just suggested in terms of how we go ahead. And then, you know, there is a process that we can go into to revise the bylaws, you know, which we have to start, you know, and sometimes a three-month process. I mean, two months. Well, it takes a month.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6048)">1:40:48</a>
+  <p>It takes a month and then it has to pass. And to be honest, I think there are other things that are bylaws that we should change.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6055)">1:40:55</a>
+  <p>Well, that's, excuse me, the point I was going to make was, that could that be rolled in what you're suggested to do other things in the bylaws that people want to change. I'm trying to say that positive was.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6070)">1:41:10</a>
+  <p>You're now signing up for the bylaws.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6072)">1:41:12</a>
+  <p>It was the last one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6074)">1:41:14</a>
+  <p>He can't be on the next one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6075)">1:41:15</a>
+  <p>Let's be clear. No, I wasn't honored. I just spoke a lot. Let's speak through that when I speak, it's not equivalence to volunteer.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6087)">1:41:27</a>
+  <p>I</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6088)">1:41:28</a>
+  <p>You've been here long enough to know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6091)">1:41:31</a>
+  <p>I have made this same.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6092)">1:41:32</a>
+  <p>Let's do your master of your silence or is late to your words.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6095)">1:41:35</a>
+  <p>I have made this declaration and I will have a warm on to my shirt if I need to. I'd like to revise this. I have other things when, when, Hey, Zeus is here anyway. So we can bring them all together at one shy. But I'd like to revise this conversation next month.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6118)">1:41:58</a>
+  <p>I, okay, so you don't want an Expo board to go to talk about, to explain what the process is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6127)">1:42:07</a>
+  <p>I'm willing to defer for a month. Maybe it would be easier just to put this little couple of senses in the script saying that's what was my suggestion, yeah. But then we are following while Robbins rules the border and If there is a call to, sorry. Our question. Call the question. And seconded on the Roberts Rules order.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6162)">1:42:42</a>
+  <p>If there's an objection, we can vote.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6165)">1:42:45</a>
+  <p>I would sort of oppose that only because there's a lot of Robert's rules and why choose that to be the tutorial on Robert's Rules.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6175)">1:42:55</a>
+  <p>well because it's come up as an issue oh i think you should bring it up as sorry you mean at every meeting or like as an introduction as a reminder no is at every meeting when we when we go to vote because basically we are following robert's rules of orders i haven't read the whole manual but we are what i understand it supposedly yeah one we we</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6199)">1:43:19</a>
+  <p>Let's bring this up next to Mike, the next executive. I know you want to discuss it month after month. There were some other issues I wanted to raise and, hey, Zeus, we'll be here then. Why are we deferring? I'm sorry. Why defer it? What's going to happen next month? I have other issues that I want to bring. You guys are all going to think about it and you're going to come out and come back and realize that I was right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6226)">1:43:46</a>
+  <p>But give us a teasing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6227)">1:43:47</a>
+  <p>I mean, if you want, we can finish. Your motion at the table is what you do it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6234)">1:43:54</a>
+  <p>That's probably not a rubber reference.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6236)">1:43:56</a>
+  <p>Is it?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6237)">1:43:57</a>
+  <p>Yeah. Okay. So you don't want to, you don't want to mention what your other issues are?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6242)">1:44:02</a>
+  <p>No, it's not fair to Hesu's.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6246)">1:44:06</a>
+  <p>All right. All right. If there are no objections, we will be during the meeting. Uh, save no further business. The meeting is adjourned at 814. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6260)">1:44:20</a>
+  <p>Thank you.</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://www.youtube.com/watch?v=TPUR6IOZdpE" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function seekTo(seconds) {
+      const iframe = document.getElementById('ytplayer');
+      if (iframe) {
+        iframe.src = 'https://www.youtube.com/embed/TPUR6IOZdpE?start=' + seconds + '&autoplay=1&enablejsapi=1';
+      }
+    }
+  </script>
+</body>
+</html>

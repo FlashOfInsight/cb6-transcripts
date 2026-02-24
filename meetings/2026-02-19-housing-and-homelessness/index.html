@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Housing & Homelessness - February 19, 2026 | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Housing & Homelessness - February 19, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Housing & Homelessness - February 19, 2026</span>
+      </nav>
+      <h1 data-pagefind-meta="title">Housing & Homelessness</h1>
+      <div class="meta">February 19, 2026 · Manhattan Community Board 6</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe id="ytplayer" src="https://www.youtube.com/embed/cz3lFlpV4Sw?enablejsapi=1" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=cz3lFlpV4Sw" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card" data-pagefind-body>
+      <div class="transcript-header">
+        <h3>Full Transcript</h3>
+        <span class="transcript-source-badge">WhisperX + Speaker Diarization</span>
+      </div>
+      <div class="transcript-content transcript-full">
+        <div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(32)">0:32</a>
+  <p>Good morning. Great. Thanks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(38)">0:38</a>
+  <p>Welcome everyone to the February 19th, 2026 meeting of the Housing and Homeless Committee. My name is Alec Miletic and I am the chair of the committee. Tonight we are joined by community coordinator Brian Lafferty. The meeting is called to order at 6.33 p.m. Members of the public who are attending virtually, you may raise any questions or comments that you have through the Q&A feature of Zoom. Members of the public who are here in person, you may raise any questions that you have by raising your hand. If there is time following the committee's discussion, we will field questions from the public. We will need a volunteer to take minutes tonight. If you were able to take minutes, please let us know. I can do so. I don't think I've housing committee at this year's wrong. We will now take attendance by roll call. Brian will conduct the roll call.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(102)">1:42</a>
+  <p>Thanks, Al. Committee members, I'll call your name. When your name is called, please say presence. I'll announce if there is corn. Kyle the side. Don't see Kyle. Liz Burr, I know she was showing us virtually, but I don't see who yet. Eric Goldberg can be with us this evening. Sandra Leptoff.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(133)">2:13</a>
+  <p>Here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(133)">2:13</a>
+  <p>Thank you. Alex Milliken. Present. Thank you. Rich needs. Present. Here. Hugh Perez. Present. Thank you. Bill Perez. Present. Thank you. Will Perry. James Severe. I don't see here on her. Jerry Weinstein is present. Thank you. Sure you is out.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(165)">2:45</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(165)">2:45</a>
+  <p>Thank you. Okay. We're at 6 of 11 present. We have coin.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(172)">2:52</a>
+  <p>Great.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(173)">2:53</a>
+  <p>Thank you. The agenda for tonight's meeting was distributed ahead of time by the board office and is reflected on the screen for you. If there is no objection, we will adopt the agenda. Members of the committee, if you object to adopting the agenda, please raise your hand. Seeing no objections, the agenda for tonight's meeting is adopted. The minutes from the January 20th 2026 meeting were distributed ahead of time by the board office. If there is no objection, we will adopt the minutes as drafted. Members of the committee, if you object to adopting the minutes, please raise your hand. Seeing no objections, the minutes from the January 20th, 2026 meeting are adopted. They will be available on the CB6 website. In order to conduct an efficient meeting, let's observe the following Brown rules. No one may speak until granted the floor. Committee members who are here in person, if you have a question about committee business or we wish to make a motion, please raise your hand and I will identify you so you may speak. Committee members unable to attend in person. If you have a question about committee business, you may raise your hand through Zoom and I will identify you so you may speak. All committee members, it is extremely important that only one person speak at a time so that members of the public watching at home can understand what is being said by each committee member. The chat function for committee members present via Zoom, which I don't think we have any tonight, should not be used for committee business or questions about agenda topics. All such remarks should be made on the record by raising your hand through Zoom. Chat should only be used to alert us to any technical difficulties that you are having or to state in writing information that was already stated aloud on the record during the meeting. So with that, we can hop into the agenda this evening. And I'm very excited to talk and learn more about the housing data research that members of this committee have taken on. Um, so with that, I will pass it to Sondra and Tria and Stephen who are here's evening and who have done some really tremendous work, guys. Um, to get some great details and information. I just have to afford.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(329)">5:29</a>
+  <p>Amazing. All right. That's what I can say it's amazing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(332)">5:32</a>
+  <p>And yeah, incredibly speedy too. Oh my gosh. It's like a month. Last than a month. It's awesome.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(339)">5:39</a>
+  <p>They don't sleep at nothing. Or they're on drugs. I'm sorry. But it really has been amazing. I've loved sort of the, not being observer on the process, but I just think you and the coordination has been worked so well. So, you know, all will be about like just give you so much credit to what you've got a way you've sort of moved us in a very short period. That's it. Um, that's it. I'm not talking about felony. Um, I just want to put the only thing out where I really put in the ones back later is that this study is really about, um, um, documenting the nature of affordable housing in our community. So we have one of those specific categories. Um, and in terms of both protecting what exists. and then becoming as with his board in moving forward. So that's the frame we, and I know we took out, that's how we focus on race stabilization because it is the largest category and quite significant. And so, and Steve really went to town or went to work on, I guess, using the DAP and maybe, and I'm going to ask you guys to, to, you know, to read us through what you do and I know you have also slides. And maybe just briefly talk about the VAT as the resource, how you'll be using it, and what you found. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(437)">7:17</a>
+  <p>Okay. And if Brian could share the website and I shared it with you earlier, and so right now we can go to the RAN stabilize the RJB's website first. So as So I noticed that several weeks ago, our housing research team had a meeting, and after the discussion, we decided to go from the, we decided to begin by collecting data on run, stabilize the units and subsidize the units in our district. And on the RAND guidelines sports website, which is this one. You can see the screen, and can you go up? I'll go up all the way up. Yes, you can see that on this website, they have a special page for the Run Stabilize the Building List. And I really recommend everyone take a look at this page as it provides lots of very useful information. And when you go down, you can see that they have a PDF version of the Run Stabilize the Building Listings for each furrow. you can go down go down you can see Manhattan go down go down go down you still go yes here you see they have the PDF listing for each borough but the problem here is that they only show the buildings with run stabilized the units and not every unit in these buildings are run stabilized.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(542)">9:02</a>
+  <p>They only show the buildings, not the units.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(544)">9:04</a>
+  <p>Yes, they show the buildings, but they didn't show the units. So if we want to know the number of the stabilized units, we need more detailed data resources. And then also on this website and then can we go back and then maybe go up a little bit more or Yes, here. You can see that I found and then I found that the RGB website has a hyperlink to ANHD-CAB portal, yeah, which is this link. And it is a very comprehensive portal and which aggregates information from multiple sources regarding buildings and which include run, stabilize the unit, HPD violations, complaints, and so much more. And on this portal, the good, can you go up? The good thing is that you can search by building and you can also search by district. So if we, if we search by district and you can click Community District, then you can click Community Board 6. And then you can go to this side. And the good thing is that you can look at the right part. And they provide both GIS map. And they also provide the Excel data. And so we can use the Excel table to do more research.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(635)">10:35</a>
+  <p>And then, and the, could you just make that map a little bit larger so people can see it happen? It's incredible. amount of information just on the map itself.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(649)">10:49</a>
+  <p>And so they're actually showing all the bills with rent stable. Then you click the run stabilized one. You see?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(665)">11:05</a>
+  <p>And then just make it a lot. If you can large a little bit, you can see the incredible detail that yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(670)">11:10</a>
+  <p>It's amazing. And if you want to know the exact number of the amount of run-stabilizer units in this building, and then you can go to the table. And then you can see that they show the run-stabilizer units in this building.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(687)">11:27</a>
+  <p>Oh, that's awesome.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(689)">11:29</a>
+  <p>Yes. And when you also, like, can you go up?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(695)">11:35</a>
+  <p>If you click on one, then you can show all the, well, do it to be a way.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(699)">11:39</a>
+  <p>But it also has the total number of units and then you can calculate.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(703)">11:43</a>
+  <p>Well, they actually show you and how it declines or increases, but if you have your own way you presenting it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(709)">11:49</a>
+  <p>Yeah, then also, if you click the question mark here, if you click the second one, the second one here, and this tells you the raw data resources and the data sources, And then here you can... What did you just click on? You can go back to the DP portal and you click this question mark. And then they have the data source. And then this one provides the historical data for all the ramps they go like the units in New York. And it is from 2007. And then you can play play with this Excel table and Steve did the cleaning work for this table and he will introduce more. One is his time. And before they, so this is the run stabilized data sources. And you go back to the DAP again. This one. So we know now we know the run-stabilized one and you can use the number here. And if you want to use the historical data and you go to the raw data. And then we can go to the subsidized housing here. And also what you need to be aware is that this, and then also this unit's number. Okay, we'll go to this one, the run-stabilized one. And this unit shows the whole apartment apartment units in this building with run-stabilized units. And this is not the exact rent-stabilized units. This is the whole unit. So you really need to use the number here. And you download the table and you summarize the number here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(825)">13:45</a>
+  <p>I understand. So it's saying that of the 777 properties, there is a total of 61,000 units. And then you need to determine what number of stabilized units from that. It's mislead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(842)">14:02</a>
+  <p>When I first set the data around, I did it wrong. You look at that, you said, oh, you look like you're selecting rent stabilized. And it's showing you the number of units. So you just assume. But then when you look at the table, you're like, oh, wait a minute. All these.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(858)">14:18</a>
+  <p>That is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(860)">14:20</a>
+  <p>The 61,000, all the units were total units windows within with that might have a stabilized right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(866)">14:26</a>
+  <p>So it's basically all the units.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(868)">14:28</a>
+  <p>But it doesn't mean that they're all right. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(871)">14:31</a>
+  <p>And then you'll go to the subsidized that you, uh, the housing this one and then you can go to the math, the map.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(880)">14:40</a>
+  <p>And that's the same thing too, right? Um, 200, what is that 23,000 different number?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(886)">14:46</a>
+  <p>Yeah, then. Why would they be different if they're all the buildings? It's the first one with 61,000.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(891)">14:51</a>
+  <p>In each category.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(893)">14:53</a>
+  <p>Well, no. Is that, you mean, any, it's the total number of units in which there might be, which is at least one rent stabilized apartment. Is that how that's working?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(906)">15:06</a>
+  <p>And so I guess this is saying that there are some buildings that have rent stabilized units that don't have subsidized units, right? Is that the conclusion that we can reach?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(916)">15:16</a>
+  <p>Yes, and also this is, this one actually this data set is not really good because when you click the table here, and it is, it is exactly the same as the last one and this, this part doesn't provide more details. And if you want more detail, you need to click here, this question mark, you think this one. Here, you need to go to this platform. New York NYU Furman Center's core data. And you need to go to enter, enter here. You need to go to this platform to determine, you can also, we can do it later, but you can drag the map a little bit down and we can just select one building our district. And then you can, you want to, Maybe not Snitown, you want to pick another one. Yeah, then go down. And here they have, they provide you with the financial condition information and the tax information. and then you determine from here what kind of subsidize the building it is. And also Steve did the amazing work to use that table and then search it from this platform to make that amazing tables.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1002)">16:42</a>
+  <p>Wow.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1002)">16:42</a>
+  <p>And Steve can introduce more about our preliminary findings and how he precise those data.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1018)">16:58</a>
+  <p>Any questions about that? Why? I actually do have question, but I'll wait.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1023)">17:03</a>
+  <p>Are you going to show them how you can click on each one on the rent stable? You can click on each building that has to rentables and find out how it changes between 2007. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1035)">17:15</a>
+  <p>So if you want to do the historical data, you'll need to go to that big table. You remember, I click the question mark and then it goes, it leads you to another website and it provides all the original information, the original raw data. Yes, the second link. there and it is a very big Excel and it has information that runs stabilize the units information dating back to 2007 and they have every each year and you also you need to clean up that table and then you summarize the run stabilized the units in different years well and they do it for each building just that list right if you do it</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1081)">18:01</a>
+  <p>Yeah, she means the web interface. If you just click on the building, you can look at it and it will show you every year.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1087)">18:07</a>
+  <p>Yes, yes. It's just a very easy, quick way. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1091)">18:11</a>
+  <p>If you know at a specific building, you know, that's right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1097)">18:17</a>
+  <p>Yeah. You go back to this data portal here, this one. So can we go back to this map? And we choose one building and whatever it is. And yes, real property. And here, you have the rent stabilized information here. And it tells you the stabilized units in each year. And it is based on the big table I just mentioned. But it also shows the condition for each building here on this page.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1136)">18:56</a>
+  <p>Where is historical data prior to 20 and 7?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1140)">19:00</a>
+  <p>I have no idea. Data has that data. And I don't know why they to stop doing that, but they did.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1150)">19:10</a>
+  <p>I wonder if the reporting for some of these buildings was different. Oh, you know, 20 plus years ago. They just had different ways of the recordings. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1161)">19:21</a>
+  <p>For the most part, what Steve said earlier about the community board is true of housing. It is basically voluntary as far as listing. What I've just got to read.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1172)">19:32</a>
+  <p>I'm not. That wasn't. Shouldn't it be with the new housing rent stabilization state law that after 2019, there shouldn't be any more. So Brent State law performance is then?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1183)">19:43</a>
+  <p>That was a sale where they bought somebody out.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1189)">19:49</a>
+  <p>I didn't know they could do that. Anyhow, that was my, you know, here it's at least constantly using 2019 and it doesn't change. I was. At least that was my understanding of the law. I don't know if anybody.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1201)">20:01</a>
+  <p>Okay. It is lost before and it is, it doesn't, it is not subjected to some tax incentives. And I think it is just, if it's gone, it's gone. And if it is have, it has some conflicts between the tax incentives and the rent civil license conditions and the, and maybe they will, they can, they can go back. And this is the status for side town.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1228)">20:28</a>
+  <p>That's a really interesting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1231)">20:31</a>
+  <p>Yeah, and Steve will tell you more about- What was the hardest part about finding this data? Well, I, for whatever reason, I know that RJB has the, has the, has the, PDF listing and I was not, I didn't mean to find this portal and I just click and for fun, yeah, just a fun day.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1262)">21:02</a>
+  <p>Oh, wow, so you found almost by accident, really.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1265)">21:05</a>
+  <p>That's true. I know that it provides the PDF version and I didn't, and I was planning to, clean this table myself and to see what I can find. But I just play with that website and I found that portal by accident.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1282)">21:22</a>
+  <p>That's interesting because it goes back to something that you brought up last month, Sandra, about how it's really inaccessible and really difficult to find this information easily. And I've been thinking about that since. I think that that's really something that we as a committee should think about.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1298)">21:38</a>
+  <p>thinking of a resolution. I think that's a great idea. When guidelines for data has to be some of data, but they've got the data, and we know that. Yeah. And there's some justification to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1308)">21:48</a>
+  <p>I mean, I'd even go as far as to say that all this information should be publicly and easily accessible to a late person. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1319)">21:59</a>
+  <p>That is a website and that runs the goal listing website really has lots of information and I recommend that everyone take a look at that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1329)">22:09</a>
+  <p>Yeah. Well, did you notice that there was inconsistencies or maybe like how were the tables that you found structured? Was there's some?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1341)">22:21</a>
+  <p>It is not conflicting because it doesn't. Yeah, and it used that fake table as the raw data and it is almost the same and because it is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1351)">22:31</a>
+  <p>So there is some consistent.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1352)">22:32</a>
+  <p>Yeah, yeah, it is pretty consistent.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1355)">22:35</a>
+  <p>I mean, one thing I've been personally curious because it affects me is that while a friend of mine, Aaron Carr, who has sued larger buildings and collected millions and damages, New York and New Jersey, there is very little to know oversight about small buildings, I'm a six unit. that allows people to really work under the radar. I think because they're not the resources. You don't have the same return on investment that if you're helping 100 tenants versus two here, one here, three here. When I saw the discrepancies between the way it was sorted, 100 plus units and three stabilized, my antenna is like, no. There's probably 15 in that building. Sure. And they're not registering them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1412)">23:32</a>
+  <p>Well, one of the difficult is just how to say he gets collected. It is that landlord confesses to his sentence, not yet. He's supposed to say how many apartments there are. And but then just fixed and does this key, they go to the tax records to get what they then assume on the number of rents, it's pretty confusing. And then what came up with us and you'll get to see this. that in that rent stable, because suddenly buildings, which had five rent stabilized, suddenly have 12, and you think what they do rent stable, like the apartments. But then we would be, they put the 421A and the J51's in there. So actually going through the data gets to be quite a challenge. And I think at least we got to that of, and then how we approach it. So all of this is pretty, you know, pretty dense.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1464)">24:24</a>
+  <p>That's a, One of the rare good use cases for an AI, if you've trained it with all of the timelines and the laws and asked it, why is this discrepancy? Why might have this gone from 5 to 7 to 10 to 2 to 5? Because you'd save hours. You'd need to double check everything, but at least you'd have connection with what's gone on over these last decades.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1495)">24:55</a>
+  <p>Yeah, I mean, my understanding is that the data does come from the Department of Finance property records. So I'm not sure that it's not just relying on the land boards to somehow report this. It's pulling some of that information directly from what's decline. I mean, fine, maybe they're a tax evaders that they should be going to jail. Right. But like they're not just randomly relying on someone's like filling out a survey to figure out where how many units, what kind of, you know, so.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1525)">25:25</a>
+  <p>I'm not here to speak to, but I don't think that there's a complete marriage. There's too much siloing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1530)">25:30</a>
+  <p>And this question before I would just fix, then specialize them in those and tax circuits. In fact, it was an accessible. It's just a question. I don't think you need to get into it at this one. Well, I, but there are too many questions in this one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1544)">25:44</a>
+  <p>Yeah. I think maybe it is from DHCR because the only way for you to find if your unit is a run-stabilized unit is to send a request to DHCR and then they will tell you. And you can also search on the DHCR's website to see if your unit is run stabilized. So maybe this comprehensive listing is provided by them and to show up on RJV's website. I'm not sure about it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1572)">26:12</a>
+  <p>So the landlord is not obligated to tell of prospective tenant, the status of an apartment, right? If they have a rent regulated apartment.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1581)">26:21</a>
+  <p>I think as of January, 2026, they are. In fact, I was going to ask, they're supposed to post it on buildings now, are they? I haven't seen it anywhere, anecdotally, as I. Yeah, but unfortunately, we're not going to have that data for, but I believe a lot of year and have reaching out even in the newsletter to ask if anyone has had a sign on, on facing their building, confirming that they have stabilized units.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1609)">26:49</a>
+  <p>I think that there's going to be a listing of all run, stabilized units or a listing of available and sending what I think in 2020.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1621)">27:01</a>
+  <p>As of the new administration, the guidance was that if there was a stabilized unit, one or more in a building, it should be posted on the apartment building itself. probably where they have when you enter the lobby like a contractor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1637)">27:17</a>
+  <p>Yeah. Yeah. Actually, it is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1639)">27:19</a>
+  <p>No, it's kind of figuring it is about so many people not being properly informed. So I haven't seen whether or not that that is gone from this jury to de facto.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1653)">27:33</a>
+  <p>The other part is, is there a listing someplace of available and stable as a bar. And anybody know that? Because I try to. find where that would be. It seems like such an obvious obligation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1666)">27:46</a>
+  <p>Seems like another project found her.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1669)">27:49</a>
+  <p>Well, I agree because the lottery, the lottery seems to be piecemeal that you're like waiting for something to like appear on the horizon rather than working from, you know, like when I looked in Cambridge, that was the case that there was a list and you could add.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1690)">28:10</a>
+  <p>Well, that's another. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1692)">28:12</a>
+  <p>And anyway, we could keep going on, but I want to turn to Steve to talk about this a little bit more. So Steve, I'll turn it over to sure.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1700)">28:20</a>
+  <p>So the reason why we, it's kind of very preliminary. That's why we don't have like a slide show to show with like all the final numbers because also the numbers are a little tricky and the data sets are a little bit tricky. Okay. When I realized as I was working more in them, you realize they're not quite. set up correctly or they're missing information and there are discrepancies between what the Furman Center has and what the DAC portal has. So there was kind of like, oh, why is this different than there was a lot of cleaning would have to happen. And so I'm sort of 90% confident with the numbers that we have, but like if we were gonna, I wouldn't publish an academic paper without going back in like really redoing the work, but for for the community board's purposes, it's accurate. So it's not, I would say. But anyway, so basically what happened was there were three different data sets, as she pointed out there. So one comes from the DAP portal. And if you, that bridge that portal that you show the website of, if you download the data set from directly from there, it's just current. Okay. It doesn't have all the historical. That's why you had to go to that other thing, but I used the one that Seema.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1777)">29:37</a>
+  <p>That's the same thing. Okay. That's the same thing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1780)">29:40</a>
+  <p>So here's the problem, though. That only goes to 2017. It's not all the way to 2025, at least from what I could say.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1789)">29:49</a>
+  <p>2007.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1790)">29:50</a>
+  <p>No, from 2007 to 2017. Yeah. Doesn't go to 2025.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1796)">29:56</a>
+  <p>Yes, I found that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1798)">29:58</a>
+  <p>So. It's, but I was like, oh, but this is great because what we want, we know what we have today. I can just download it. Right. I had that data. And then I had this historical one that only went from 2000 and the 2017. So then I had to match the two different datasets. Interesting. And you have a unique code, which is the building blah. The BBL code. So I use that to match the match the two data sets. Here's another problem. When you look at the DAP portal data and you download that, If there was a new building that came online with rent, they didn't code, they left the community district field blank. So when I first filtered it, I was like, oh, here's, I just want CB6, right? So I filtered out and I took all that and I started doing all the data. So then I went back and I was like, wait a minute, why are there some blank cells? And then I realized the address is in our district, but it didn't come out in my data set. So then I had to go through the entire thing and clean say and enter the correct community district for our actually didn't fill up. There weren't that many new buildings. So I actually just did them all for the whole city.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1867)">31:07</a>
+  <p>Gotcha.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1867)">31:07</a>
+  <p>So now the data set we have has them all so you could actually filter by community district and you will get the properties in your district, you know, missing ones that were not there. Then the other problem is the other problem with the data sets was the DAP portal will tell you that it's a subsidized building. but they don't tell you what subsidies. So, and there's like, I didn't realize there's like 25 different subsidies that a building can have or more. And the other problem is that the Furman Center data does tell you what the specific subsidies are, but buildings can have multiple subsidies. So what would you, how do you kind of, like you can't just pick one. It's, so then you have to do another match between that data set on the BBL numbers and create unique BBLs because, you know, it repeats the firm and center data will repeat a building seven times and tell you it has 421A and it has inclusionary housing and it has this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1929)">32:09</a>
+  <p>Oh, interesting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1930)">32:10</a>
+  <p>So then it was the little trick. But thing is we don't have that many buildings with subsidies and CB6. So I just kind of did a notch and then kind of did it by hand mostly. to fill in subsidy one, subsidy two, subsidy three, subsidy four.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1947)">32:27</a>
+  <p>So did you see one by one and then throw it on the Excel?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1951)">32:31</a>
+  <p>Yeah, because there weren't that many. So yeah, it took me some time, but like for me to create the program to actually, it just wasn't worth it given how many, well, there's like 80 buildings, right? So it's it wasn't worth it. I mean, if you're going to do a whole city, I would create a Python program better with that, you know, but anyway, so that was kind of what we did. If you go to the, which one is this? Is this the subsidy table?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1979)">32:59</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1979)">32:59</a>
+  <p>There's, isn't there a, I think there's another sheet in there. Oh, no, I think maybe I just. yeah i just included the broad data but anyway yeah this i didn't i did more i did some pivot tables off of this so i have the numbers and those are the numbers that i sent in the table via email to all of you who received the information but basically you know we can show what type of subsidized housing but before i did more analysis i want to know what does the committee think is the most important subsidies because right now um you know i have l i h tc 4 percent i have 421 a j 51 i have project based section 8 um and then we have uh story town which was a subsidy too and that has federal programs and all of that Maloneyy that went into that so the and the the overall picture here is that we the sub like we have the most subsidized housing of the most proMenint subsidized housing we have, probably no surprise to everyone is Stoley Town Peter Kruegerville. Sure. Like that accounts for half of all of the subsidized housing in our district or more. So that's kind of like, that's a huge chunk of it. And then what we also discovered was that, okay, there's the other problem is that the rent stabilized sheet, what they count as subsidies subsidized housing is different than what firm counter accounts are subsidized housing. So then you also have to see one of the different discrepancies between those two datasets and then kind of clean it out. And then so this is the raw data that we're looking at here for yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2090)">34:50</a>
+  <p>So I'm curious how you capture things that may be city or statewide opportunities. So for example, older folks, the SRIE program, which is by application. And I think just overrides, I think definitely if you're in stabilized, I don't know if it's probably not market rate, but in any case, that's not driven and it all identified from how the building is zoned. except maybe in the subcategory of stabilized. You're talking about like individual rent. That is a, you know, I don't know if it's a matching subsidy, but it's absolutely a rent freeze cap. So like you're talking about like a minimum age.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2135)">35:35</a>
+  <p>Rental subsidies as opposed to building subsidies.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2140)">35:40</a>
+  <p>Yeah. So this is not going to capture any of that. This is data tied to the building itself or they learn it itself.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2147)">35:47</a>
+  <p>So combine both. But if it's, I'm a little confused.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2152)">35:52</a>
+  <p>He's talking about some subsidies for the person. Yeah, yeah. That person can live anywhere. It can be market right housing. Yes, but as it being applied to the unit. Yeah, but how would we know where that person lives?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2169)">36:09</a>
+  <p>Depending on the record keeping. I don't know if that's a. HBD program.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2175)">36:15</a>
+  <p>I'm not. And it's not tied to the unit. So that person can move with their voucher. Well, it's a good point. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2184)">36:24</a>
+  <p>The numbers would plug for it. Yes, but I think, I think when it is confirmed, it is tied to the unit and then tied to another unit because it is, it is a percentage based on income and rent. So I'm wondering if anyone is capturing that. If they even know some percentage of the people who are eligible for the program are aware, and then if they are accepted in tour, if there is a high rate of fail, you know, whether it's because of any number of reasons. And just map that to many, many, many programs. Of course.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2224)">37:04</a>
+  <p>I just want this, two things. When you said that there were a few buildings, inclusionary housing, Those new buildings being put up, if that was talking about that had the, there were however, a percentage of a affordable housing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2240)">37:20</a>
+  <p>Well, yeah, it's just one of the subsidy category called inclusionary housing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2245)">37:25</a>
+  <p>Was it like what I counted at some point? Where was, was it like 11 buildings, which it seemed much less than i would have well i don't have the for inclusionary housing in our district i have rent stabilized you know total units are 381 that's total units not will be right i was just counting your business and then it wins the it's in mandatory inclusion are just being the and some of those are rent stabilized and some of them are not and that's the other all because they they have to be they have to be get zoning blah blah okay that's part one the other one Because as you pointed out, the Peter Krueger becomes the major, the nature of affordable housing. And you all seem to know that. I didn't know any, I didn't know that. I didn't realize I put two rents, or I think this, you know, straightforward rent stable. And then 421A pops up in J51. So there's a history then. I found it very confusing because I realize these days,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2308)">38:28</a>
+  <p>destabilized certain apartments and suddenly everything is 421 and j could you folks can you explain so let's go back let's go to the other spreadsheet because that one actually shows some of the pivot tables and the calculations go to the pivot table page not the raw data page it's the top at the bottom yeah so this shows some of the calculations for this is now we're going back just as rent stabilized in our district and you can see some of the other districts so the first tells you how many units are rent-stabilized versus total units, and then what percent of the total within each district? And then the other one, and that's current. And then it shows the rest rent-stabilized units in 2007, and then the change in rent-stabilized units over from 2007 to current.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2357)">39:17</a>
+  <p>And where are we with second from the bottom? Right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2361)">39:21</a>
+  <p>Is it? Yeah, the road. But so what it looks like here's, but here's what Sondra was pointing out because I was like, oh, wow, CB6 has preserved somewhat more housing than any other district because we've only lost 12% versus, you know, all the other districts, 40% 42. But the problem is story time. what happened was there was a big deregulation and all the units got taken out of stem stabilization and there was a lawsuit by the tenants association in 2007 and they forced them to put it back so it looks like we were growing this giant amount of but it's actually no we're just getting back the ones that were lost that doesn't so it's so then if you look Below, I pulled out Stoy Town piece and Peter Krueger and then not Stoy Town and Peter Krueger. And then you can see we actually lost, if you look at not Stoy Town, we lost 37% of rent-stabilized housing from 2007 to 2025 in our district, which then reflects more or less what was happening in other districts.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2427)">40:27</a>
+  <p>So like the headline.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2429)">40:29</a>
+  <p>That is, yeah. So, but this kind of just gives you a picture of what that book looks like. But also as Sandra was pointing out, she was looking at the rents in Stuyatown. It was like, how can you have rents at 5,000? So what also happened was, well, you can explain because you lived there. how the units, they're not coming back to what they used to be.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2451)">40:51</a>
+  <p>Yes, because before 19, before 2019 and the city has a, it is called a vacancy, it has a rule, it is called the regulation. And after this unit becomes vacant or, and the rent has reached a certain threshold and it can be deregulated from the, the run-stabilized status and for the for stytown and there are so it was built in 1947 and lots of there are we have lots of long-term residents and some people have lived there for 40 years when some have some people have lived there for their whole life and some people were born there and are still living there from 1947 or in 1948 and we have lots of long-term residents and the rent for those people are really low and it can be as low as 2000 because of rent civilization and the rent control. And for those people and the rent is good and they always stay there and there is no chance for management to risk the rent. But after some people move out or people may just pass away and then it becomes vacant and then the management can do really good renovation work and then they have the chance to apply for MCI and also the individual apartment improvement fee from the government and also the site and The apartments inside and the Peter Krueger Village are pretty spacious and the smallest one in Steytown is about 750 square feet. And the smallest one in Peter Krueger Village is 950 square feet. So those apartments are pretty spacious so they can put lots of Maloneyy to renovate the units.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2573)">42:53</a>
+  <p>Well, that was a whole thing where people, even, you know, marble counters, everything to drive, there's a function of $40,000 increase that puts you over. And it was a whole thing whether or not even those expenditures were.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2590)">43:10</a>
+  <p>Well, I thought that they put a cap on the amount of Maloneyy that a landlord can invest into... That is the law of 2019.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2598)">43:18</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2600)">43:20</a>
+  <p>Yeah, that... Like $15,000 or something, right? Or $20,000?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2602)">43:22</a>
+  <p>Yes, and that is the current number. But lots of units have already been renovated or again and again. It really depends on how many, how many, how many roles you have and if you like if before i live here and someone has someone had lived here for 60 years and then i moved in and so i'm the lucky person because management couldn't increase the rent so much but if there are 10 residents there are lots of roles in that unit and then you can be the bad lucky person oh so you're saying that they can</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2641)">44:01</a>
+  <p>continue to use the system every time a unit becomes vacant. So over the course of, you know, if they have five different tenants over the course of five or six years, they can continue to use that system to improve or maybe even write it off as an improvement.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2659)">44:19</a>
+  <p>I mean, it justifies the vehicle from moving things out of stabilization. That's interesting. I didn't know that. Oh, wow. And they have some in different public service.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2670)">44:30</a>
+  <p>They can increase in that. Yeah, a certain amount. That's interesting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2674)">44:34</a>
+  <p>Right. Wow. Why is this apartment that is $1,000 for two bedroom getting a marble door?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2681)">44:41</a>
+  <p>Oh. So I just, you can also, you can also search your apartments run history from DHS. And I did it for my apartment. And I found that it was crazy that my unit, the rent of my unit was only 1387 in 2019. And then that person, whoever knows where she is. And then someone, and then it is a great chance for, and that person has been there no later than 1984. And she has lived there for more than 40 years. And then it is a great chance for management to have a very comprehensive renovation for my unit And then for the person living there from 2019, and it goes up to more than 4,000 or 5,000. And after this person moves out, there's another chance for management to increase a little bit. Yeah. And so it really how many people have lived there, have lived there in your apartment before you moved in.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2755)">45:55</a>
+  <p>How many times that the landlord can use that system in order to raise the rate?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2760)">46:00</a>
+  <p>Yeah, that's... It seems almost impossible to go from 1,300 to 5,000 over a six year period.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2767)">46:07</a>
+  <p>Well, she's saying that the landlord will improve... Sure, but... After it falls out.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2774)">46:14</a>
+  <p>Yeah, yeah. There's no cap. After it's true, after it's deregulated, but you're not talking about... Yeah, but it was a little bit tricky because it happens in...</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2784)">46:24</a>
+  <p>2019, I'm not sure it is, it was before the, the Tenants Protection Act, or it is after that. But unfortunately, and it increased, crazy, I was if I were you, I think to that council and somebody, I would, but it tells you, but that VHCR tells you that it is a legal rent. That's very, yeah, yeah, all right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2810)">46:50</a>
+  <p>That's great. I think you could question it. Yeah, I definitely, can I talk?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2817)">46:57</a>
+  <p>Because what also happened before the new law came in place was that when someone moved out of a rent stabilized department, it was something called vacancy decontrolled. That was already a 20% buck just before any renovation, whatever. And then these renovations, you know, are they proving, are they proving that they spent $50,000 to renovate this apartment. You know, the new law, I think, holds them to account a little bit more. But otherwise, I mean, I could just see what happened in my own building. And of course, once you break that barrier, if it's $2,500 or whatever it is now, used to be 2000. And there was also a caveat that not only did the rent have to break a certain amount, but your income had to be over a certain amount. 100,000, I can remember what it was. I don't know what happened to that because I could just see what happens in my building. Once the units are destabilized, they just ask for the market rent, whatever they think they can achieve. And that's it. You're not to the races.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2893)">48:13</a>
+  <p>My understanding, we all should read the 2019. more yeah very significant yeah there's a lot of research it's two things we need to understand is um good cause eviction because that's a really significant legislation passed about a year ago but the 2019 were changed the issue rent stabilization that's why i said let's look at the 2019 we should no longer see rent stable as apartments disappearing my understanding of that war is you no longer can decontrol them um it gone that issue is gone it doesn't matter what the rent goes up to but there is no longer the ability of the landlord to take the other way back the rent increase the rent increase and they can't look at your um they can't get your sat and your income right they used to be that they could get your own uh every year right that's gone so yeah so that freeze is basically the loss of rent stable as apartments um so that's a general point uh theoretically well they can drive you insane but that's another issue well i i don't want to get up too off topic yeah i'll go back to the one yes yeah i want to get back to because what we're saying in our district is what are we doing here right we're trying to figure out what is affordable where the affordable apartments um and uh and so we have to find affordable apartments in rent stable apartments in quote rent stabilized apartments i was totally thrown off when i realized First of all, that this $5,000 rent, but that aside, that they were putting the 421A's and the J-51s in that. So I thought traditional rents day was. That's not the case, right? Something else that's in that basket. And again, my assumption is that if it's like the 421A's, they can go up to that issue of up to 165% of the AMI, right? That's considered uh on on the 421 a dependent uh acceptable as a as a middle income you know it's the middle class well i think we're still getting a little off topic i know so i want to know let me finish which is what do we if we want to look at affordable apartments so in our district and we took peter Krueger as the example what we're finding out is it doesn't look so affordable so where so if we take a deep look at the data what do we actually, I got very confused about what is it we want to take a look at.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3041)">50:41</a>
+  <p>That's, that's a, and I think, I think we can turn to back to Stephen True to kind of talk about sort of your, the conclusion is that you guys have reached from this and the next steps that you anticipate are needed, right? And something that I mentioned via email is sort of, how do we convey this information? How do we share it so that it's something that we can, share with the other members of the community board and also so that we can start making some actionable changes. And work with other community boards and work with other community boards who may so choose to work on this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3075)">51:15</a>
+  <p>So my preliminary thought is that we need to compare this building data with the demographics data and to see the people's economical status and to see like how much Maloneyy people the salary increase, the income increase or the income decrease and also the distribution of the different income and salaries and the way the distribution of the buildings and to see.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3107)">51:47</a>
+  <p>And do we know what percentage of the total number of buildings or total number of units is represented as a whole for the community district? Do we know that, right, like I guess what I'm trying to say is what is the total number of units and total number of buildings that we have in our community history? We know that information and do we know what percentage of that total Is rent stabilized or rent regulated here?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3136)">52:16</a>
+  <p>Yep. That's what that numbers. That's the number. Yeah. CB6 has 22% that's the, see, we have total units 102,409,000. Gotcha. 22,000 are rents on this and 22% are stable.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3152)">52:32</a>
+  <p>So less than that, what's when I and J 151? Is that, would that taken out?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3158)">52:38</a>
+  <p>No, because those buildings, if they have rent stabilized units, they can. They can't because the unit can be run stabilized even if it's in 421. And that total number of units is as of... And I'm just assuming that's, I mean, they're permanently run stabilized.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3174)">52:54</a>
+  <p>That's why they're in the data site. Right? It's a time limit.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3180)">53:00</a>
+  <p>Well, sometimes it depends, but also because we're collected, this is current data. It means they are now. As of as of right. So they are.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3190)">53:10</a>
+  <p>It's comfortable with using the High rents, you know, some of these 421A's are going to be high rent in that. Are we comfortable including that? It's just really- I would simply stay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3203)">53:23</a>
+  <p>I mean, because they do have rent controls and their rent would increase. It's because it's not market rated, it would be tied into it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3211)">53:31</a>
+  <p>I mean, I would just want to know, you know. I mean, so to give you an idea, 4.5% of the rent stabilized units are, so i don't know do you care if it's a five four percent you know that's we can take them out if you want but i don't think it's important did i misread i was a little surprised that uh what was it was it five percent or one-half of one percent is public housing in our district we have very few we don't have yeah yeah we have we have very few there are 547 units of public housing there are only four bBL codes So if you are Strauss houses. One is a different name. I don't remember. Yeah. Jason. Yeah. And then another one, I actually don't know if it's, it's technically public housing, but I think it belongs to NYU dental school. And that's where like dental students live. I think. But it's, it's technically owned by nature. So somehow there was an arrangement. But anyway, that's included in that 547 units of public housing that we have.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3285)">54:45</a>
+  <p>That was every few. By what you said. You said it was 4% was 421A, but in your day where you take out the 421A's, it's a huge difference.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3296)">54:56</a>
+  <p>No, this has everything. What you're looking at here is every top.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3302)">55:02</a>
+  <p>When you did that line there was 11,11,141. That's story town. Yeah, right. I understand that. Oh, right. Just looking at.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3313)">55:13</a>
+  <p>That's, okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3314)">55:14</a>
+  <p>And you, okay, I got them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3318)">55:18</a>
+  <p>So I think this is great. I mean, I've learned a lot just in this conversation this evening. I think it's important to think about sort of next steps and what other research might be needed or how to convey this more broad. And as you mentioned, Sandra, how if there are community boards that would want to work on this. Well, see, I mean, but I don't want to do the work for community board seven. They, and they, they said they're going to try to wrestle up some people to try to do it. But yeah, you know, now that we kind of have like a tried and true way to do it, I think that we really have to go back to, um, uh, shoot you, your point of, um, the getting census.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3363)">56:03</a>
+  <p>They don't get into demographics. It would be very helpful, um, here. Uh, even in, um, so we can understand what we're looking at in terms of who's who's here in the community, who seems to be meeting. I'm going to take a little bit of that, or impossible, thank you very much, article we said. Yeah, that was a very difficult article about what happened in Peter Krueger. But what they did say was the demographics have changed tremendously and there aren't a lot of kids anymore. It's not families anymore. It's unrelated individuals living together. That tells you a great deal about The affordability, right? So although we may promote Peter Krueger as a model for middle class, it ain't middle class anymore. Right? So I can't, I think that the demographics would be very significant in helping us understand what we try to attain in affordability.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3416)">56:56</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3416)">56:56</a>
+  <p>Right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3417)">56:57</a>
+  <p>And so I would go on that. Yeah. To make it simple, I would just say, like, half of, off of all of our subsidized housing and rent-stabilized housing is Sturitana Peter. So can we just ask them for the demographics of?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3431)">57:11</a>
+  <p>Oh, it is, it is very, it is on a department of planning website and also the, Open, open, open data and YC also has lots of data. It is very easy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3442)">57:22</a>
+  <p>It probably has its own census track, too.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3445)">57:25</a>
+  <p>It is very, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3447)">57:27</a>
+  <p>So that would be a good proxy rather than trying to like match every BBL with, right? I mean, are you going to, it's going to turn it up with the same information. Yeah, I think that's definitely important information.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3459)">57:39</a>
+  <p>So just take, just take Peter Krueger style down as, as are sort of representative.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3464)">57:44</a>
+  <p>Let's see what it looks like. Yeah. about first. It's great. Yeah, so that sounds like a great next step.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3469)">57:49</a>
+  <p>I mean, I don't need to only, we don't need to only focus on site and Peter Krueger Village because the own those demographics data is, it's based on census tract. And so we can, we can process it together and we can take, we can focus on several samples and to see what we.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3489)">58:09</a>
+  <p>I mean, if there's, you know, like a lot of these buildings that you've identified are going to be on census tracts that have some market rate buildings, right? So I'm not really sure how you'd be able to sort of convey and make the connection between the, like, the demographic data that you find and related to the number of affordable units that we have. But I think what we're saying is that the definitive that we would know for sure would be Peter Krueger and Stuyton because they are probably represented by their own census tract and their own</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3524)">58:44</a>
+  <p>census data and so i think it'd be really easy at least initially to reach a conclusion that way and then branch off from there and if we could take a look also at what the rest look like right and and then who are we really who is it really being marketed to um and what we really mean by affordability right i think you could raise those issues yeah in a really in a really good way yeah</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3547)">59:07</a>
+  <p>can i just make one point sure i've noticed again from my own building sure that um the new people that live in there they're young and they have co-signers so that their income is not the best indication of whose can afford the rent so in my building they want your income to be 40 times the rent And these are starting out people. So they have co-signers.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3580)">59:40</a>
+  <p>So it's a little misleading. I think that's where historical data might come in. Andy or even thinking of other ways in which you could sort of think about the methodologies in order to reach conclusions that reflect that accurately.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3592)">59:52</a>
+  <p>So Staita and Peter Kippoor Village has a certain amount of NYU students and maybe students from pride or or corporate unit because it is very close to the campus and but it is only a very small percentage and a lot of people it is um it still has lots of long-term residents and people who have already worked. The students only account for a small proportion of this. So this is a very good point.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3622)">1:00:22</a>
+  <p>Yeah, I think that this requires a little bit of thinking about how to think about this data.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3629)">1:00:29</a>
+  <p>Yes, and the other, so as going through all those the numbers are very interesting you know it's like we could write a report but the other question i have was like what how are we going to use this for advocacy yes what okay this will tell you what we have what do we want right what type of housing do we want right and where do we want to put it and whose support that that is the question that none of this data is going to tell us, right? We have to decide what do we want to go.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3659)">1:00:59</a>
+  <p>Yeah, I just want to figure back in on Steve's point. So we want, we want to use this research to see our potential. And the Staita and Peterborough Village doesn't have too much potential because it has no space for new units and then what do we want?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3682)">1:01:22</a>
+  <p>You know, what's the, what's the, There's a development, right? And we know there's not a whole lot of room for development. But in terms of what time, when we get the chance to develop and so on, who are we developing for? So it seems to me that the census data will give us an idea of, that's why I got stuck on Peter Krueger, it was developed for middle class. My guess is it's not middle class anymore, I think. But we need to have that data to say, we need to be very careful in defining what we mean by affordability and what we're willing to promote and advocate for when these when these proposals come up so we're speaking from here's what looked by affordable housing but here's what we found when we actually looked at the census data and they're not matching in the way that we were hopeful because it doesn't you know it's not going to look like the uh the median income of renters in the city and but if that's where we're coming from then we need the data to approve it. And that's why I think if you could decide down, because everybody thinks there's middle income, middle class assets. So that would be, that's where I was, what I would think about, but that's fine.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3750)">1:02:30</a>
+  <p>I want to point to lose because she has her hand up online.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3755)">1:02:35</a>
+  <p>Oh, yeah. So I was just, you know, just thinking about like the last question we were talking about, what does this data really tell us or that we don't know what we want. I'm guessing what we could potentially do is just look to see what our orders of priorities would be. and at least be able to rank those of like what kind of housing or what kind of thing would is more important to help us maybe reach our longer term goals. So then that way, if there's ever any like proposals or resolutions or project proposals that we need to review, we can at least um map that against what we think our needs are or what meets our needs the best um depending on what comes down to across our table across our desk later on down the line yeah i think that's a great point yes james um so based on what you're saying or right both you the the number of stabilized units is dropping</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3816)">1:03:36</a>
+  <p>and can we can we sort of predict in the future that eventually they'll just be gone i mean it's sort of a call to action to know that eventually these these have to use won't exist anymore you're saying project out in the future like as these continue to drop as landlords fix them up enough to right take them off that roster will there eventually be zero units available in the cities that are stabilized</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3843)">1:04:03</a>
+  <p>Well, I'm not sure, because as I mentioned, the historical data went from 2007 to 2017 and not looking at 2025, but there was that law in 2019. So I don't have a good enough, and I haven't read the law. So I don't know, did that put a stop? We lost, maybe we lost a bunch from 2007 to 2017. Right. And now in 2019, we're in a different world where it's much harder.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3869)">1:04:29</a>
+  <p>Yeah, it's a good question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3871)">1:04:31</a>
+  <p>that our extent have things like or how are people sort of navigating at 20 or are they finding enough loopholes still that they can always right get around it i don't know well it would really agree if it might be the same but it was like that during but the answer question it's hard to project just because we don't know what conditions are in the legal housing</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3895)">1:04:55</a>
+  <p>to predict what would you know is there's a huge amount of warehousing going on in these rents statewide and it's not clear why but um and i don't know what it is in our in our neighborhood can we tell what the number of total warehoused units are no you know the city did a big project on this and we really would contact i can contact it yeah and ask them what their findings were uh their findings were then contested oh it's much less than you think But I don't know and I don't know how they got the data.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3926)">1:05:26</a>
+  <p>Well, I can imagine if you take, for example, a building which claims that they only have four or five stabilized units left and they want to sell it and they know that a buyer would be disinterested on taking on a stabilized tenant. The warehouse, they'll get rid of somebody and they will re-rent it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3946)">1:05:46</a>
+  <p>Oh, here's my other question. This is something I noticed in the data when I was looking at specific BBL numbers and figuring out what is going on. Some buildings just disappear completely because they were, I don't know, I guess the whole thing was redeveloped. Right. So what if they, what if they raise a building to do they, are they required to put rent, stabilized units? That's a great question. Because we had, because it was like there were building. We have three rows were like all. It was like 50 units and then it was my negative 50. Like all of them were gone.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3979)">1:06:19</a>
+  <p>You had seven minutes combined. Yeah. So on my block alone. There are two that were six and eight, and it's now 22 stories. So historically what's that looked like? How has that been treated? Yeah, I mean, I think I'll go home and look for that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3994)">1:06:34</a>
+  <p>So it could be the thing, it could be the case that somebody's just buying up old buildings, knocking them all down, putting all luxury housing, and that therefore you've lost a bunch of rent and stabilized housing. Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4005)">1:06:45</a>
+  <p>And they relocate the chance. I mean, how do you get possession? It's not easy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4012)">1:06:52</a>
+  <p>I don't know. A lot of times they'll buy people at. Yeah. Or force them out.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4017)">1:06:57</a>
+  <p>If one Brent State was in the building, you can't dispossess them. Again, I don't know the reward.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4026)">1:07:06</a>
+  <p>I don't know when that law was enacted. I don't know in specific. But I have heard that. Yeah, it's true. But as an offer turn into Maloneyy, but, right. But to Brian's point and to what we kind of said before, there are ways in which you can circumnavigate these laws. And that's not true just for like this one, but it's true for pretty, you know, for a lot of laws that exist out there. There are ways in which you could probably buy somebody out or find some other method to sort of. Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4055)">1:07:35</a>
+  <p>In the data, you can see it. It was like 12 units and not a BBL code doesn't even exist anymore because it's gone.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4063)">1:07:43</a>
+  <p>So then it's a new BBL. Yeah. It's merged with other lots.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4066)">1:07:46</a>
+  <p>Right. Exactly. But I think the point that is sort of attractive. Is it going down? And I think that's a great question, right? I don't know if we could do it from, it would be really helpful to know if, in fact, somehow Wrenstable.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4080)">1:08:00</a>
+  <p>I mean, it's, I guess it'd be kind of hard to project because we'd need to know just sort of the rate at which they're disappearing. And then I guess the incoming or project, I guess, the rate of new</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4094)">1:08:14</a>
+  <p>Market rate. But I'm just to write that out because it's a really important point that many people made, especially during the Bloomberg years, that you can't possibly build enough, depending on how quickly you're losing everybody believed, no, actually stop the bleeding. And so if we can say, here's the rate that can influence, you know, what people are trying to build.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4121)">1:08:41</a>
+  <p>Yeah. And policy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4122)">1:08:42</a>
+  <p>Yeah. Great. Two issues. One is about the census data, again, I mean, the community website that would want to protect, right? And then the other one is this, the loss, right? These two separate issues, at least at Donne hearing. They're both important. Right. But does that sound? Yeah, no, I, I, two different directions. I agree. Directions to go in.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4147)">1:09:07</a>
+  <p>Yeah. Well, I think you're right. And I think these are definitely things that we should think about and continue exploring. Yeah, I mean, I want us to, we've known about this for a while, and I want us to continue moving along, but there are definitely a lot of next steps that we, I think we should really explore and think about sort of, to your point, Steve, sort of what we're trying to ask for and advocate for as we can continue along. And I think we can easily pass resolutions that sort of hone in on this, right? And I don't think we need to wait for a new development to spur up for us to react to it. I think it can be really proactive about, the request that we need to make going forward. Well, thank you guys again. This was really great.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4192)">1:09:52</a>
+  <p>Since for a little group, do we want to look at some census data relative to people just I found or no?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4199)">1:09:59</a>
+  <p>I can't do that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4201)">1:10:01</a>
+  <p>Oh, bless you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4203)">1:10:03</a>
+  <p>It won't take a long time. That would be terrific.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4209)">1:10:09</a>
+  <p>She actually just did it right now. With the way you guys work, I wouldn't be surprised.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4219)">1:10:19</a>
+  <p>And then I can like, I can clean this up a bit because we, this wasn't really ready to be sure. But yeah, we thought, okay, let's talk about. Yeah. We found all this, all the numbers. So yeah, no, we can clean it up a little bit and like make it more like a power.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4236)">1:10:36</a>
+  <p>Yeah. And then what do we do with the other part of this?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4239)">1:10:39</a>
+  <p>of the concerns that we actually want to then address promote in this area does the little group want to do to other people you know i think what would make i think what would make sense is sort of if your little group has some maybe action items if you will and sort of reach conclusions based on this data and and sort of say because i i mean i i don't want to assume things because i haven't really dealt with the data as much as you guys have. And I think you're probably more equipped to sort of tell us. And we'll trust your conclusions based on what you've researched. And I think from there, we can really start to think about ways in which we can advocate for that, maybe at the next ones or the month or the meeting after that, sort of what we want. Yeah. We can do it in a form of a resolution. And then when fall comes in form of budget requests, because we're going to have to talk about that for the end of the or I guess before some are great.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4298)">1:11:38</a>
+  <p>Oh, we'll forget about the rest of the category, many of the categories. But I think it's true you doesn't have dinner, a couple of countries. Okay, so should we do that, have a meeting like in a week or so or whenever, does that sound good for you guys to, to discuss how we'll move? Okay. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4324)">1:12:04</a>
+  <p>Okay. I'll move.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4326)">1:12:06</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4327)">1:12:07</a>
+  <p>Okay. Great. Thank you guys again. This was great. I learned so much tonight in this conversation. I really appreciate it. This has been pasted. Thanks again. Okay. So moving on, the chairs report. So yesterday, Brian shared with myself and Sandra, as well as the chair and vice chair of the Land Use and Waterfront Committee, The city is going to solicit comments to the recently passed charter amendment that we voted on in November. So the city has proposed a charter amendment. It is to establish a new section, section 197 F. And this charter amendment is to fast track affordable housing. I will practice this by saying that I have not read the materials that we received because we received it yesterday evening. And the comment period closes on April 1st. So there's a month and a half in order for us as individuals to submit comment. However, if we as a community board want to submit a comment together, we would need to pass a resolution as a committee. because then it would have to be voted on at next month's full board in March in order for the community board to submit testimony by the April 1st deadline. Having said that, which I think is a great idea, I think it's important to be unified as a community board. And then of course, we still have the ability to submit testimony ourselves. Brian can pull up the material that we shared with us yesterday so we can all just peruse it. But what I think we can do this evening is draft this resolution that says we reserve the right as a community board to submit testimony. And then I think when we vote on it at next month's full board, we can work together throughout the rest of the month to finalize this testimony. Everything would be appropriate to reflect our feelings as committee and as a full board. So that's my feelings. I'm not sure how everyone else feels. I think that it's important to share the high level, if you will, overview of sort of what this charter amendment will propose. But this is a great opportunity for individuals because this was passed, right? The voters voted on this. There's going to be a charter amendment. They're soliciting comments to the proposed text to the amendment. So I think it allows us a real great opportunity to submit testimony, to submit comment, rather, on what we want to see included in this charter amendment. Is that accurate, Brian? Does that sum of? Yeah, everything. Thanks. Yeah. So I think if the many agrees, I think we can quickly draft maybe a short Reso or even vote tonight. on voting on a result that we would eventually go on at the board meeting so that we can submit testimony and the resolution says that we want to have the right to comments on it exactly not be sure that exactly the reso the result won't find our comment I think what we would do, and this is something that we can probably talk about maybe more next month, is we can work on the exact language of the comment that we would like, but in order for us as a community board to submit comments, we should pass a resolution.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4560)">1:16:00</a>
+  <p>Wait, what is the resolution saying?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4565)">1:16:05</a>
+  <p>We haven't drafted. I mean, we have been, we can do so right now. I'm thinking it would be like a really short two whereas cause resolution that says, Community Board 6 is in receipt of this notice to submit testimony, whereas we reserve the right to submit testimony as a community board by the April 1st deadline. Therefore, blah, blah, blah. We can workshop it, of course, but we don't need to write this amendment. I'm sorry?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4598)">1:16:38</a>
+  <p>I mean, we haven't read this amendment. We have no idea what it is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4603)">1:16:43</a>
+  <p>Right. We're not passing a resolution for our position on the proposed charter amendment. The resolution would just be for the community board to submit comments on the charter evasion. But we don't need a resolution for one. Apparently we do, right, Brian? I mean, I don't think we need them as individuals if we want to do it in our own capacity. But if we want to do it as a community board, that's something that we would have to do, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4630)">1:17:10</a>
+  <p>Yeah. So the board speaks through resolution. So if you want to submit as a community board feedback on the proposed rule, then we would need to have our resume.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4651)">1:17:31</a>
+  <p>So that's right. My point is a blank resolution doesn't serve any purpose. So we actually need to say what it is that we're saying as a community board. Now, because I'm confused. We don't really need to say we're going to submit. We don't have a, we don't need to put out a resolution saying we will submit. Or we're going to buy it like we give ourselves more time.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4673)">1:17:53</a>
+  <p>Let me ask you this. Could we just pass it out of the next exec board meeting or would it have to go? You don't have that step.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4682)">1:18:02</a>
+  <p>The timing wouldn't work for exec to pass a result because it's Dr. Ford. Yeah. It's a report. Now, you can certainly pass a resolution saying we would like more time to comment.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4696)">1:18:16</a>
+  <p>So, but if we as a community board wanted to submit comment, we don't need to pass a resolution to submit the comment. The resolution would bind our comments is kind of what you were saying before, right? personally don't think they were in position to really comment on this because nobody's secret.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4714)">1:18:34</a>
+  <p>Exactly. So it doesn't work. I mean, that's what I think you can't simply get out of the fact that we don't know what we want to say by saying, that doesn't get you anywhere because then we can't just say, we're going to pass a resolution, then write something offline and somebody's going to submit it and say, well, I was covered by the community birthday and we were going to. Okay. That doesn't work.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4733)">1:18:53</a>
+  <p>So I think I probably misunderstood the procedure then.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4738)">1:18:58</a>
+  <p>I mean, It is possible for a resolution to be brought from the floor at full board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4745)">1:19:05</a>
+  <p>That's option, which I don't think I mentioned too, but which would have our comments in it. That was going to be read and put together proposal.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4759)">1:19:19</a>
+  <p>Basically it would, yeah, it would be something that came at full board without a committee having passed it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4765)">1:19:25</a>
+  <p>So it's okay, so I guess that's an option too that I didn't realize was on the table. Sorry, I didn't think of that. Okay. So what you're saying, Brian, is that we could draft a reso and introduce it at full board prior to full board. Prior to full board, excuse me, prior to full board in which the full board would then vote on that. Reso that would bind our comments to That makes a lot more sense. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4802)">1:20:02</a>
+  <p>There's not a lot of time between now and land use, but the Land Use Committee could also complete. Yeah, and I mean, they meet on Monday. Because it's time sensitive, it doesn't need to be sent to the Land Use Committee three days of the feds.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4817)">1:20:17</a>
+  <p>So what should we be familiarizing ourselves with? It's a great question. And then perhaps we could zoom in and participate in a discussion between our two committee groups and pass something out next Monday, because I feel wholly unprepared.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4832)">1:20:32</a>
+  <p>Yeah, no, I'm with you. I haven't read it either. And then the Land Use Committee meets this coming Monday, right? Brian, so. I don't even know if they have also a large agenda. I don't know. Well, I mean, you also heard last night, Dave didn't really bring this up either, so I don't even think it's on the agenda. I mean, do they have a lot of items?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4855)">1:20:55</a>
+  <p>I don't know. We can look at their agenda right now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4861)">1:21:01</a>
+  <p>I mean, he could always bring it up in his chairs report, too.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4863)">1:21:03</a>
+  <p>That's what I could. I wouldn't say that it's a long, but I don't know if their agenda is any. But also. I don't know how much time they're planning to spend on each agenda. Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4875)">1:21:15</a>
+  <p>You can ask, if there's a report, that's another option to get a committee to pass it before this before. Okay. Doesn't have to be horrible. Okay. That's really before. But you have to do by Maloneyy and ride around the way.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4892)">1:21:32</a>
+  <p>Yeah. I'm something I have to. I'm probably three to one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4898)">1:21:38</a>
+  <p>They have six sizes on their agenda, but they are discussing the Manhattan plan, which is good to take some time. Yeah, it's not a one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4909)">1:21:49</a>
+  <p>I mean, just off the top of my head, the thing that I would be most interested in contributing is some sort of forcing mechanism around implementation, because right now in my work with the racial equity folks, we're still kind of circling from, we have a lawsuit against Derek Abbott's because he didn't actually put the racial equity plan, which was likewise voted and is in the charter into a fact. So I worry about any of these things that the people have voted on and how do you put teeth behind whether or not it's a timetable or an annual look.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4947)">1:22:27</a>
+  <p>Yeah, I mean, we have to rethink because I know it's about affordable housing fast track. I still have to read about that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4955)">1:22:35</a>
+  <p>I don't even know what they're being posed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4957)">1:22:37</a>
+  <p>Even the charter on the top of my head, we know that every June, whatever, the rent control board meets me, whatever. Imagine if not only was it this like, you know, Barbarian at the gates thing, but also a check-in about construction.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4974)">1:22:54</a>
+  <p>Yeah, I mean, so we, I'd have to read with it proposing the charter amendment.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4978)">1:22:58</a>
+  <p>I really don't really know what they're, well, the charter amendment that was voted on that Now essentially the city has to implement it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4987)">1:23:07</a>
+  <p>And what they, the thing that we received was the proposed text to add the new section.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4993)">1:23:13</a>
+  <p>Yeah. So if we, uh, it says under section 197 half of the charter every five years beginning no later than October 1, 2026, the director of the department of city floor must identify the 12 community districts that during the preceding five years had the lowest rate of affordable housing development. based on the total number of new or horrible dwelling units in a community district as a percentage of the total number of housing units located in that community district at the start of each five here. Okay. Yeah. So now what they have to do, the city planning commission has to in consultation with the commissioner of HVD. They have to develop a methodology for determining the total number of affordable housing units in each community district. And it's this methodology that will be used to calculate the rate and reformable housing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5051)">1:24:11</a>
+  <p>And that's the calculation that they're proposing that. They can see the planner. What do you mean? Ben Karapnik.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5061)">1:24:21</a>
+  <p>No, he's still there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5062)">1:24:22</a>
+  <p>Well, I guess he's tying everything up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5064)">1:24:24</a>
+  <p>No, I think he'll be there until there's a new appointee. Really? Yeah, he's still there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5069)">1:24:29</a>
+  <p>Last week he said he was going to shame there, but no.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5074)">1:24:34</a>
+  <p>It's ambiguous, I guess.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5077)">1:24:37</a>
+  <p>I mean, I'd be happy if they stay on. What I'm saying is it'd be bad if there were a vacancy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5083)">1:24:43</a>
+  <p>No, I believe, I believe he's still there until there was a new city planning point. He's probably not helping it there to see a federal position, but, um, Okay, yeah, I think, all right. So I misunderstood before. So we can't, or rather it's pointless to propose a resolution that says we're going to submit something. The result that we would vote on and pass would speak to our comments on the proposed text, which I am not entirely. I can't. do this evening and i don't think anybody can do this evening so let's table that and then we take this whole line i think the other thing that i said before was you know you could pass a resolution as simply says we'd like more time to evaluate or or somebody could draft a rezzo for mondays land use committee and bring it up there</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5147)">1:25:47</a>
+  <p>What you just read Brian say that they don't have a methodology yet, and that's their first step is their creative methodology?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5153)">1:25:53</a>
+  <p>You'd have to read.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5155)">1:25:55</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5155)">1:25:55</a>
+  <p>This is like the primer, but this is not.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5157)">1:25:57</a>
+  <p>They have this calculation here, but in order to adopt a methodology for determining the total number of housing units at the start of each year or five years, with each five year cycle. That's what the most important.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5177)">1:26:17</a>
+  <p>Maybe the proposed text back into it a little bit more, right? It's a little further down in the document, right, friend?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5184)">1:26:24</a>
+  <p>But it doesn't, it won't, because it says they haven't come up with it. It will not, they have not defined what is affordable. That's the, that's the methodology that they're saying they will come up with.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5195)">1:26:35</a>
+  <p>Well, I see one thing. Yeah. Whatever the facts, what is the date for the hearing?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5202)">1:26:42</a>
+  <p>So April, April first is the deadline.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5205)">1:26:45</a>
+  <p>April 1st is the deadline to submit testimony. And we can all do so, right? We don't need to do so as a community board. We all can do so in our own individual capacity. But, and I think the hearing is also the same day too, right? Brian, if I'm mistaken.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5222)">1:27:02</a>
+  <p>Yeah. It's hearing itself is April 1st and 10 a year.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5228)">1:27:08</a>
+  <p>Okay. That's city plan. Okay. All right. So let's circulate this around. Um, now I guess we can reconvene offline and discuss how to proceed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5243)">1:27:23</a>
+  <p>And actually another thing that I had a pension, but, um, it's also, you know, it would be difficult to do logistically, but if the committee were able to find a time to meet, we'd have a special meeting you do that too. Yeah, let's see what happens on one day.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5265)">1:27:45</a>
+  <p>There's a lot of meetings. So full board then. From the floor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5272)">1:27:52</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5274)">1:27:54</a>
+  <p>It would be nice if it's possible. If part of our contribution was the work you've been doing. So even if, you know, it's not exhaustive, it's just the headline, we've lost 40% of blah, blah. But I would love it if the research found its way into this resolution.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5300)">1:28:20</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5300)">1:28:20</a>
+  <p>Because then we're also modeling for other community boards doing all that good stuff.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5306)">1:28:26</a>
+  <p>So I think first step will, we can work together collaboratively to draft the Resolution, maybe even something that we can bring up at the Land Use Committee meeting Monday. Or if we could test the water to see what their thoughts is. are. And then worst case scenarios that we have a Reso ready to go board in March, where we would bring it up from the board, send ahead of time in which we can bring up. Okay. So there are ways in which we can be on the record with a Reso that our comes. Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5344)">1:29:04</a>
+  <p>Great.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5345)">1:29:05</a>
+  <p>Well, thank you guys for helping put out that fire. Thank you, Ryan. um that was the only thing that i had through cares of board old new business none to other members of the committee's no seeing none that the meeting is adjourned at 802 p.m. thanks everyone thank</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://www.youtube.com/watch?v=cz3lFlpV4Sw" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function seekTo(seconds) {
+      const iframe = document.getElementById('ytplayer');
+      if (iframe) {
+        iframe.src = 'https://www.youtube.com/embed/cz3lFlpV4Sw?start=' + seconds + '&autoplay=1&enablejsapi=1';
+      }
+    }
+  </script>
+</body>
+</html>
