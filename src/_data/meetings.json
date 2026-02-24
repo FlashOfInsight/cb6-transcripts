@@ -1,5 +1,53 @@
 [
   {
+    "slug": "2026-02-12-health-and-education",
+    "date": "2026-02-12",
+    "committee": "Health & Education",
+    "topics": [],
+    "youtubeUrl": "https://www.youtube.com/watch?v=vXb9l6EYdKo",
+    "videoId": "vXb9l6EYdKo",
+    "agenda": null,
+    "minutesPdf": null,
+    "hasTranscript": true,
+    "transcriptSource": "whisperx"
+  },
+  {
+    "slug": "2026-02-18-executive",
+    "date": "2026-02-18",
+    "committee": "Executive",
+    "topics": [],
+    "youtubeUrl": "https://www.youtube.com/watch?v=TPUR6IOZdpE",
+    "videoId": "TPUR6IOZdpE",
+    "agenda": null,
+    "minutesPdf": null,
+    "hasTranscript": true,
+    "transcriptSource": "whisperx"
+  },
+  {
+    "slug": "2026-02-19-housing-and-homelessness",
+    "date": "2026-02-19",
+    "committee": "Housing & Homelessness",
+    "topics": [],
+    "youtubeUrl": "https://www.youtube.com/watch?v=cz3lFlpV4Sw",
+    "videoId": "cz3lFlpV4Sw",
+    "agenda": null,
+    "minutesPdf": null,
+    "hasTranscript": true,
+    "transcriptSource": "whisperx"
+  },
+  {
+    "slug": "2026-02-23-land-use-and-waterfront",
+    "date": "2026-02-23",
+    "committee": "Land Use & Waterfront",
+    "topics": [],
+    "youtubeUrl": "https://www.youtube.com/watch?v=uEE5q0XFPQ4",
+    "videoId": "uEE5q0XFPQ4",
+    "agenda": null,
+    "minutesPdf": null,
+    "hasTranscript": true,
+    "transcriptSource": "whisperx"
+  },
+  {
     "slug": "2026-02-05-public-safety-and-sanitation",
     "date": "2026-02-05",
     "committee": "Public Safety & Sanitation",
