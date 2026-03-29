@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget & Governmental Affairs - March 9, 2026 | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Budget & Governmental Affairs - March 9, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Budget & Governmental Affairs - March 9, 2026</span>
+      </nav>
+      <h1 data-pagefind-meta="title">Budget & Governmental Affairs</h1>
+      <div class="meta">March 9, 2026 · Manhattan Community Board 6</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe id="ytplayer" src="https://www.youtube.com/embed/DgfAn4eypwQ?enablejsapi=1" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=DgfAn4eypwQ" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card" data-pagefind-body>
+      <div class="transcript-header">
+        <h3>Full Transcript</h3>
+        <span class="transcript-source-badge">WhisperX + Speaker Diarization</span>
+      </div>
+      <div class="transcript-content transcript-full">
+        <div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3)">0:03</a>
+  <p>we did that's how much junk in this email account now it's ridiculous you're all right you keep getting you know we need your text your general we're going to sir we're okay we're sorry</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(33)">0:33</a>
+  <p>Welcome to the March 9, 2006 meeting of the Budget and Governmental Affairs Committee. My name is Steve Perez, and I'm the chair of the committee. Tonight, we are joined by Assistant District Manager Brendan Berth. This meeting is called to order at 6.32 p.m. As a reminder, New York State Law requires all committee members who are not able to attend the meeting in person to have their cameras on and their first and last name is displayed from the time the meeting is called to order until the time the meeting is adjourned. Do we have any members of the public attending?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(62)">1:02</a>
+  <p>I did not. Oh.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(66)">1:06</a>
+  <p>One person. Okay. Members of the public who are attending virtually, you can raise any questions or comments that you have to the Q and a feature of Zoom. Kate Kennedy is taking minutes tonight. Thank you, Kate. We will now take attendance by roll call. Brendan will conduct the roll call.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(82)">1:22</a>
+  <p>Committee members, I will call your needs. Your name is called. Please say present. I'll announce if there is Warren. Honey, R.S. Present. Jen Collins. Here. B. Desmond. Present. Rob Barfin won't be with us tonight. Kate Kennedy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(99)">1:39</a>
+  <p>Here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(100)">1:40</a>
+  <p>Edmarie Lasseter. Present. Rachel?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(103)">1:43</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(105)">1:45</a>
+  <p>Okay. Steve Perez. Present. And Mary Barf will also be with us tonight. So we have a quorum.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(116)">1:56</a>
+  <p>Okay. The agenda for tonight's meeting was distributed ahead of time by the board office and was reflected on the screen before you. If there is no objection, we will adopt the agenda. Members of the committee, if you object to adopting the agenda, please raise your hand. Seeing no objections, the agenda for tonight's meeting is adopted. The minutes from the January 12th meeting were distributed ahead of time by the board office. If there is no objection, we will adopt the minutes has drafted. Members of the committee, if you object to adopting the minutes, please raise your hand. See no objections. The minutes from the January 12 meeting are adopted. They will soon be available on the CP6 website. I think everyone is familiar with the ground rules. So we'll jump right into the content of the meeting. uh first on the agenda is discussion of mayor's fiscal year 2007 preliminary budget so all of you i'm sure are aware the budget was released on february 17 which was just after what would have been our february meeting which is why we didn't meet um and hopefully you had a chance to maybe take a look at it or at least read some articles about it. But I thought it would be a good idea just for us to very, very quickly look at a big picture of some of the presentation of the budget so we can all be on the same page. So Brendan, if you'll bring up some of the PowerPoint or PDF slides from the budget presentation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(212)">3:32</a>
+  <p>Yeah, I'm about to show it. Share it on screen. For those, they're not Zoom.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(225)">3:45</a>
+  <p>There we go.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(231)">3:51</a>
+  <p>Great. So these slides all came from Mom Donnie's presentation on the budget. I just wanted to make sure that everyone sort of gets an overview of where we are with the budget now. And remember, this is a preliminary budget. This is not the final budget or the approved budget. So it's going to go through a process. But anyway, You know, this is what the overall budget looks like. It's $127 billion for the next fiscal year. The lion's share of the budget, as many of you probably know, is DOE, 40%, next followed by social services. And then we have all the other agencies. I know that when I first saw the New York City budget, I was surprised. I didn't know that DOE took up that much, but it, you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(276)">4:36</a>
+  <p>And didn't they increase social services? Because I think they did by a lot.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(280)">4:40</a>
+  <p>Yeah, there was, I mean, there's been some changes, but it's, yeah, it's shot way on. DoE is increasing even though the per capita number of students has decreased considerably since the pandemic.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(293)">4:53</a>
+  <p>So let's go to the next one. And this just shows the preliminary five-year capital plan, $113 billion. Again, most of its schools, housing, environmental production, transport, and then all the other things that are in there. Go to the next one. So this is the more interesting one, and that is the budget's a little bit different in that. We're looking here at the new spending, and part of that new spending is reflected in unfunded mandates that came out. That's the dark purple of state mandates and other mandates. And some of the categories that don't get budgeted well in previous administrations where they made assumptions that they wouldn't spend Maloneyy that they knew they were going to spend. And then that light purple, which he calls the Adams Big Six, are the six really, really underfunded categories that Mondani just said, well, we know we spend the Maloneyy. I'm not going to under budget it. We know we're going to spend it. So you just put it in there. And then new programmatic spending was a tiny sliver of that $576 million or $4,000. than you spend. So that's just like an overall picture of some of the ways that the budget has changed. Go ahead, Sandy. Welcome.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(374)">6:14</a>
+  <p>Do we know how big six on?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(378)">6:18</a>
+  <p>Yes, I'm going to go to that next. It's just the next slide. Yeah, this is like the big overview and then that here are the six. So part of the budget deficit was caused by this and it's cash assistance, DSS, rental assistance, DSS, shelter costs, due process cases at the DOE, judgments and claims against the city, and then the city subsidy structural deficit from the MTA. So you can see how the budget in previous years has kind of you know, like the blue part is how much they budgeted and the yellow is like what we actually spend. So basically this just says, we're going to assume we're going to spend the Maloneyy that we usually do. So we're not kind of under budget. Yep.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(424)">7:04</a>
+  <p>What was a due process case? I was just going to ask.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(429)">7:09</a>
+  <p>So I'm not on the education committee, so I had to look it up, but it has to do with some claims about special needs students and the parents who are claiming that you're not needing, this is one of the, this is a, I'm not an expert, like I said, or someone else kind of explain it better, but it has to do it. If your child is not getting the resources, they needs, you can, like, file a case against the deal.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(451)">7:31</a>
+  <p>And you can get it paid for by a profit, a practitioner.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(454)">7:34</a>
+  <p>right and budgetator who's especially okay for it promoted for yeah one Maloneyy there's children but the point here is just that overall we're budgeting for things that we know we're going to pay for so that's kind of what created some of the gap then we go to the next one And then the other additional, this is the dark purple part, which is like one of the big ones, new ones is the state class size mandate, which many have heard about. So that's like an extra 600 million that they just, we have to find, you know, we have to reduce class size. So how do we do what's going to cost more Maloneyy to do that? So that's what that is. But the biggest one is the health insurance stabilization fund, which is one, sorry, $11 million, almost a billion is for that. And that's the health insurance for city employees and pensioners. So, you know, there's a lot of stuff in here that it's just you've got to pay for it because it's required. Go to the next one. So one of the things that is new is they're introducing this idea of a chief savings officer and he's going to, the mayor is going to put a person, this position in every agency, and they've been asked to reduce the budget by a target of two and a half percent at each agency as a starting point. So we don't know yet how they're going to do that, but that's kind of the demand that they didn't get me.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(538)">8:58</a>
+  <p>Not Elon Basque.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(539)">8:59</a>
+  <p>Yeah, I mean, no, no, but zero base budget. A zero-based budget initiative would tend to be when you bring them into government. They overall tend to reduce spending by anywhere from 6 to 10%. So I think when we go over your resolution, I had an amendment to that effect that we consider that we suggest that. So 2.5% is basically holding spending at current spending. It doesn't, it's just a close for inflation. Inflation rates 2.5%.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(580)">9:40</a>
+  <p>So, oh, do you have a question?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(583)">9:43</a>
+  <p>Yeah. Where did the 2.5% come from? Was this something that they think is doable?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(589)">9:49</a>
+  <p>They basically, yeah, he was asked that question at his press conference. And what he said was, it's what we can do without breaking. Like, we don't want to do what previous initiative, which was basically like, okay, shut down the libraries for three days a week or, you know, like do really drastic cuts and then suddenly you find out, oh, wait a minute, you know, so it's kind of like, we don't know exactly where that figure comes from, but it was like he felt, the mayor felt you could have, agencies could easily find that amount without disrupting essential services to the same.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(626)">10:26</a>
+  <p>where he was called the program to eliminate the gap where he set across the amount that was to be reduced i think it was seven percent if i'm not mistaken and that's kind of like taking a me cleaver to a budget and what you need when you cut a budget properly is a scalpel i mean i've never seen a budget couldn't be cut five at least five percent with a scalpel yeah oh rush no sorry go ahead yeah no i was gonna i mean i</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(654)">10:54</a>
+  <p>Jim said some of it, all the other, not just Adams, but every mayor in New York City, since I've lived in New York City, always has done pegs when we've had a budget issue. So he's just doing it different by not calling it a peg.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(671)">11:11</a>
+  <p>Yeah. That's essentially the same thing. By establishing like a position, I'm not sure, you know, the peg was generally like, but this is like a person whose job is to go through and i don't know i'm not sure where that model comes from but and i assume that that person is within the budget you posture these people yeah yeah these aren't volunteers yeah it's somebody in the financial sector of the of the department okay let's go to the next one so So then, so like these CSOs are supposed to help produce funding. They're also looking to hire 50 new auditors at the Department of Finance that he's projecting will generate some income because you're going to bind things. And then also looking at vacancies and removing hiring constraints. I'm not sure how that saves Maloneyy, but in any event, it's mostly the auditors and the CSOs who are like getting some of the savings. Let's go to the next one. On the auditors, presumably raising revenue, right? Yeah, exactly. And so this is what he says they've done to look at savings. So they're using some in year reserves that are calling, they're looking for those savings plans and they're expecting the higher expected revenues. And that then left a 7 billion gap, but let's go to the next, that's not where we ended up. So let's go to that. So then Koko kicked in a $1.5 billion commitment to the, from the state to the city. is a new new resources coming into the city so that brought the gap down go to the next one so this is what the state did some are multi-year commitments I don't know exactly what all of these are, but it's hospital sales tax, youth programming, public health costs from Article 6, and there's a one-time unrestricted aid of $500 million. So, and even all of that's sort of taken together with state assistance to the city. And what that did, go to the next one. And then an additional $97 million in school aid. That gave us a $5 billion gap. So to that 7 point whatever and it's now 5.4. So go to the next one. So now this is kind of what the administration is looking at in the preliminary budget. Basically it's saying that there's two ways. So one, he is proposed in order to, because the New York City has to have a balanced budget, right? We cannot run a deficit. So this is what I want to say. He's saying increased personal income taxes on New Yorkers earning more than $1 million and more on the most profitable corporations. There will be a tax increase and fix the imbalance between what the city and the state taxation resources are like because the city, I'll go to that. That will be the next one actually. There's another spending that. Anyway, so that's path one. And that's kind of the preferred administration's preferred path to go. Path two is, well, let's say Hockel and the state say, no, no, no, we're not going to raise any taxes on anyone. Then the only other lover that the city has to be able to change revenue is to increase property taxes. So yeah, he's basically said, I don't want to do this. to balance the budget that's kind of where that's kind of like the presentation he gave but anyway go to the next one because it goes into more detail so when he says to recalibrate the relationship between the city and the state what he's talking about is that there's going to be you know new york city contributes way more in tax revenue than we get back and so he really wants to renegotiate that arrangement basically with the state And his point is that, you know, GDP has grown up by 10% since 2010 in that city, the city portion. Go to the next one. And then he's, this is like what I just said that, you know, he has to balance the budget. The higher taxes is what he wants to do to close the gap in the, and then the next one. So this is the path to would be a 9.5% property tax increase. And that would be, you know, that's the blended rate. nine point five because it will be higher on commercial properties and co-ops yeah there wasn't any details so i don't know it's across the border like so there's a as we all know the property test system it's extremely convoluted so how they're going to apply this based on the risk yeah the assessment value assessed values and all that so anyway let's go to the last one i think so the other thing is that they draw out some of the funding from the rainy day fun to make the balancing work this year and then they replace it in in future years based on the revenue productions so that's i think that was the last one is there another one brenan is there another slide up or is at the end okay yeah so that's that was in a nutshell kind of like what the budget is preliminary budget is at this point so</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(977)">16:17</a>
+  <p>Lot to take in.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(978)">16:18</a>
+  <p>Yeah. There was, based on this, now you can pull up the resolution. So based on some of what other organizations are saying about the preliminary budget and some of this information, I just put together a very short resolution with some brief statements about the overall statements about the budget. Every year, Sandy submits a letter on behalf of, or the chair, you know, submits a letter that is our CP6's kind of reaction to budget. Most of that has to do with all of our budget requests. Like that's the content. So we're asking all the committees, to give us their responses to their budget request so we can have that into the letter. But then there's like an upfront section where you can sort of comment overall. So I thought it would be a good idea to put together some language that would help Sandy write the letter and if we can get to a consensus on what that is. Go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1033)">17:13</a>
+  <p>I agree with you on the resolution that we're opposed to the increase in property taxes, but we didn't mention anything about increasing the taxes on income for for people making more than a million dollars and corporations you know i've always lobbied for a consumption tax on luxury goods there's a mansion tax on properties over a million dollars in new yorks that's a that's a sort of a luxury and you know i just wonder if there could be something to the fact that you know just like we don't pay taxes on anything a hundred dollars less than a hundred dollars when it comes to clothing that may be anything above a certain level of cost maybe that tax should be increased if it's i don't know weveyton bags or rose roy's or things of that nature that's one way to do it um i mean more</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1088)">18:08</a>
+  <p>I'm not sure like how effective is that there's so many ways. Like that's just going to make people buy that stuff out not in New York City. Not in New York City. I mean, and how much revenue? I don't even know how much revenue that would even bring in. It's kind of hard to say.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1103)">18:23</a>
+  <p>Well, then we should we should definitely tax people making over a million dollars.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1107)">18:27</a>
+  <p>I don't think it's a binary choice. I don't think it's property tax or income tax.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1112)">18:32</a>
+  <p>Yeah. I mean, again, I think. The reason I didn't put that in there because this is, we have to remember this is preliminary. So mom done, he's basically trying to like, guess the conversation started by trying to like he, yeah, you're trying to, uh, find to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1128)">18:48</a>
+  <p>Yeah, yeah, yeah. Right. And by the recent, recent press reports show that they're going to that. He's abandoned the million threshold. Now he's talking like 300,000. That was one of the lower threshold numbers. But if I can speak on your luxury tax, I've been bouncing this idea around for a while. Just, you know what an excise tax is, an excise? Excise taxes are imposed on things that are related to behavior, basically. So you get alcohol, tobacco, et cetera, et cetera, gambling. There's no reason you need to have a Uber Eats or a, let's say, one grow up or all these other delivery services. I ran some rough numbers on this, not recently, but some time ago. If you were to impose a two percent or two dollar, excuse me, $2 excise tax on each of those meals that are delivered by those delivery services and on Uber rides and Lyft rides and just those, and I didn't get to the other one. I think I was the number I was looking at was close to $3.5 billion. Wow. Yeah. Based on New York City deliveries. If you add in Amazon type deliveries and Target and Walmart and all the others that do deliveries and do it at $2 a package, I imagine that would be the rest of the balance. There's other sources. And now that source is the source for the base number of how much, how many deliveries are made in New York City was an AI platform. I don't actually know, but I'm sure the city knows because they have the sales receipts from the restaurant sales and they can back into it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1267)">21:07</a>
+  <p>I think that's a great idea. And also, you know, We get 61 million, well, maybe not anymore, tourists a year. Let's say that we've gone down to 55 just to give a number. Why not charge five dollars for these people to come in? It's discretionary spending.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1289)">21:29</a>
+  <p>You get into constitutional issues of that. Really? Yeah, because like we can't tax. That would be like us perfect. New York City. You're up a barrier enough with a tariff. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1305)">21:45</a>
+  <p>It might be a little complicated. Excise tax on meals, but we're certain.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1310)">21:50</a>
+  <p>Yeah, right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1311)">21:51</a>
+  <p>Those are our tax.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1312)">21:52</a>
+  <p>B has a for hand case.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1314)">21:54</a>
+  <p>So I wanted to comment on that because what you don't want to do by the extra taxes is decrease your tourist industry, increase your hotel industries. And I was surprised not to see something more than the 2.5%. Because you always, when any new administration starts, they always start with, and I agree, at least 5%, because when you start with 2.5%, you wind up with nothing. Also, the Board of Education budget is absurd. Yeah. And we should really spend some time. I've always complained about the overhead that the Maloneyy doesn't actually go to the schools. And looking at that amount of what it makes up, you want to give education, but you really wanted to wear the classrooms and stuff. So I think that needs a whole special look. And then my third question, there was a lawsuit in the city that dealt with retirees and their health insurance and them going into HMOs because of what the commitment is for the city to pay the retirees health insurance. Do you know where that is? Because that's a tremendous amount of Maloneyy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1388)">23:08</a>
+  <p>Yeah, I mean, the way I understand it, that's why we have that, the health, the almost $1 billion that's in there for mandatory spending. It's because of that. It's for the retirees benefits so that they don't go to. Basically, it makes up the difference between what they would get paid for an HMO, but they have a much better health plan. And that's what that Maloneyy is covering. So if it's in the budget, my guess is they're not cutting back on the health care plans.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1421)">23:41</a>
+  <p>Yeah, so I mean, The mayor at some point said that he wasn't going to move to the Medicare advantage, which was the plan under Adams administration. There was a lawsuit. And then Adams backtracked on it. And then it was something that wasn't addressed really during his campaign. But sometime after the election, he did say that he wasn't going to push for it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1451)">24:11</a>
+  <p>So maybe let's just take a look at the resolution. We can go one by one and decide what kinds of edits we want to make to each of these little paragraphs. So I just said we appreciate the increased transparency on expenditures with realistic estimates for the categories that have been chronically under budgeted in previous years. How do we vote about that statement?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1479)">24:39</a>
+  <p>It's fine.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1482)">24:42</a>
+  <p>Is it about this? Well, yes. Okay. The thing with zero-based budgeting is when you analyze the expenditures, okay, it's basically are you meeting the mission requirements of the agency? So with zero-based budgeting, if you're not beating what's needed for social services and shelter housing costs, you apply that. um you zero based budgeting will will suss that out and you will produce that that additional amount of Maloneyy for those services on by the same token if you have a department that is spending too much such as the department of education that amount is reduced because they're overspending for the mission That's why I suggest the zero-based budgeting as part of our resolution. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1546)">25:46</a>
+  <p>Now let's go to the next one. This is the two and a half percent. So we just said we are pleased to see the commitment to identifying opportunities for savings, a designated chief savings offer each agency with achieving the minimum of 2.5% budget savings by FY27. We also welcome efforts to rebalance the tax revenue sharing arrangement with the state to ensure fair distribution of resources. B, go ahead. B, go ahead. You could, you're on you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1581)">26:21</a>
+  <p>Yeah, I was commenting on that 2.5%. I think we should say something to the effect that while the budget calls with 2.5%, we would recommend that we started a higher base because And I would, if you want to put a number in there, I would put at least 5%.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1601)">26:41</a>
+  <p>Okay, how to put it up 5%. Yeah, I wouldn't suss out a specific number. Brendan, do you have that, I sent him some language that I wanted to add to this particular paragraph. I figured that 2.5% you were, you were, you know, being diplomatic with the mayor's office, but can you, bring up that other. It's basically the same paragraph, but with an added sentence. Just a matter. I can. I may have it here. This is the discussion about zero-based budgeting. This item? Yeah, it's a PDF. I've sent you, I think. Yeah, there is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1656)">27:36</a>
+  <p>can make it a little bit.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1658)">27:38</a>
+  <p>Can you raise the red text there? zooming in a little bit. Yeah. Yeah. Just make it a little bit bigger and then move the box.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1670)">27:50</a>
+  <p>Just move the box, please.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1671)">27:51</a>
+  <p>Cover up, rush. There we go.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1677)">27:57</a>
+  <p>There we go.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1678)">27:58</a>
+  <p>Just move down and close that other box, whatever it is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1682)">28:02</a>
+  <p>Oh, there we go.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1684)">28:04</a>
+  <p>Yeah. Okay, so says, and we're basically saying two and a half percent budget savings as an initial effort. However, we believe a better and more productive reduction would occur where the mayor to implement a comprehensive zero-based budgeting program across all city departments to be completed no later than the beginning of fiscal 2028. such programs typically produce overall savings of 6% to 10% in government operations, sometimes much more. Jimmy Carter, when he was governor of Georgia before he became president, produced tremendous savings in Georgia. He promised to do the same as president. Never fall right up on it. And why is it called zero based? That's just the term. It's, uh, What you do with it's a lengthy process, but it's cathartic also. What you do is you ask stakeholders of the recipients of service, the information, whatever, why they need it. And if they can't tell you a reason they needed, or there's some reason for having it, for example, a law requires it. then you eliminate it. And you go step by step of a friend of mine did it for the Marine Corps. And it was very successful. He ended up working for the federal trade condition. It's a very, very companies, companies have been doing it for 40 odd years, more than the years, 50 years. B, go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1797)">29:57</a>
+  <p>So I understand zero base budgeting very well, because I've been a participant of it for many years. I actually think it's a process that is normal for any large company or government agency, but I would not put in another bureaucratic process right now. I think the emphasis is that they need to look at what the budgets are and come up with savings. So that's why I want greater than 2.5, and I wouldn't introduce zero-based budgeting right now. It could be played. I've seen it played in many ways. It's been successful in other mail, but it also adds more bureaucracy for the budget process at the beginning.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1841)">30:41</a>
+  <p>Well, if I can follow up, as I said, this is toward the beginning of, he's saying by 2027, I'm saying commence this process because it is cathartic. And it does take time. You have to have agency heads, you know, go through and suss out all the material. You, I'm saying, do that through the next year. So that's completed by the 128. And if he does it right, and you're right, there are people that do zero based budgeting that screw it up. If you do ZGBB properly, and if the mayor does it properly, And the guy could end up being a real hero, frankly, maybe the presidential nominee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1891)">31:31</a>
+  <p>So could we, I mean, perhaps we can choose a middle ground and go with what we're, I think what people are asking to see is a higher amount of budget savings, right? And so that we can put that in the language to say that we recommend, however, like, say that part is, FY 27 as an end of forever. However, we recommend that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1917)">31:57</a>
+  <p>Or we feel that the target, that it could be a higher level. Right. Could be achievable.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1924)">32:04</a>
+  <p>Is a higher level of savings is achievable.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1927)">32:07</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1936)">32:16</a>
+  <p>Like that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1937)">32:17</a>
+  <p>Be how you feel about that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1938)">32:18</a>
+  <p>Why don't we leave the language that says chief savings officer at each agency tasked with budget savings at the highest level possible? So that we weren't again?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1956)">32:36</a>
+  <p>You want to change that one? Well, before.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1959)">32:39</a>
+  <p>Both of them. This, this is saying what we are pleased about. That's, you need to, none, not really.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1966)">32:46</a>
+  <p>So so. So. So.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1968)">32:48</a>
+  <p>Right. But that's what we're saying, but we are pleased to see. Well, what is this is we're supposed to identify savings.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1976)">32:56</a>
+  <p>A commitment or, or making it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1978)">32:58</a>
+  <p>By the she's a very agency. And we can end it there. put the period offer at each agency. We are pleased to see admissions to do. I know, you know, companies and efficiency, but doesn't achieve saves or each agency. Period. However, yeah, agency. No, that's fine. However, we feel that a higher level of savings than 2.5%. Then 2.5%.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2002)">33:22</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2005)">33:25</a>
+  <p>A higher level of savings.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2007)">33:27</a>
+  <p>then two point four we want to know we want to know that we want to note that we know that there's that that's the target yeah go ahead another thing in terms of the structure of this resolution from the skin i've done uh like we start out with stuff that were pleased by like after this you're on to what we're disappointed by so the how do we feel that a higher level of savings is achievable that all seems like a bridge between what we're pleased with and what we're disappointed with yeah Say that again. This part of that we feel that a higher level of savings as possible could be a bit of a bridge between what we're pleased with and what we're disappointed with because before then it's all right after then is what we're disappointed with.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2052)">34:12</a>
+  <p>Well, then we said we also welcome reference to about rebalance the top program. So it's a mixture. Yeah, it's sort of sort of the way the letter flows. So that's kind of the language.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2064)">34:24</a>
+  <p>Yeah. I think it flows better this way than separating it out to positives and negatives.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2070)">34:30</a>
+  <p>Yeah, it's better this one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2075)">34:35</a>
+  <p>Are we okay with this one? We can go to the next paragraph. Yeah. Okay. So here's, we are disappointed about, so I brought it parks because most of our budget requests, it's like more than half of our capital requests are parks. And it was a commitment that the administration made and sort of Renee Dohn, so. i just wanted to say okay overall like we're disappointed at level funding for parks it's less than 0.5 percent of it and those of you participated in the ibeo so they brought this up too yeah as one of the issues about parks being so and some of the organizations i've come out and said this about the parks budget this year saying this investment can i just finish i'm sorry decades of disinvestment in our parks coupled with these disproportionate budget cuts and hiring fees has loved</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2124)">35:24</a>
+  <p>to charity public park space and we urge the administration to allocate at least one percent of the city's budget to parks leaving leveraging savings from other agencies that's actually well the same says go i saw news report i think he was committing an additional 50 million or 58 million to parks to rehab a number of parks i think um throughout the city and It was relatively recently, like in the last week or so. Because it's a pushback, cutting so much. Not that I'm aware of, no. He just said, you know, and I know because one of the council members from from Staten Island was quite upset that Staten Island wasn't getting any of it, any of the cash. So it made a stink about it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2176)">36:16</a>
+  <p>Let me see if I can pick up the article. You can find it, but I haven't. I mean, this is his preliminary bucket, and it does not include. Right. So. Any thoughts on this one before we move to the next? I'm okay. We may have to add one. Miriam, who is not here, but she brought up the point about libraries have been cut by $30 million in this new budget. And she thought it would be good to say we would like to restore library funding to baseline. So we can say, can we also say, we are also disappointed about the level of funding for New York City libraries. about the level of funding for New York City libraries. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2221)">37:01</a>
+  <p>The limited or the lead?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2223)">37:03</a>
+  <p>Which we would, we urge the administration. There is to baseline funding.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2238)">37:18</a>
+  <p>You got to go to eyes. Yeah. Yeah. Mamdani announces 50 million capital investment to reconstruct 10 parks and underserved neighborhoods. But how do you know that's not already in this budget?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2249)">37:29</a>
+  <p>That doesn't say he only announced it four days ago. But yeah, it could be it couldn't be in there already. That's what we don't know because he gave a very, very broad already of his budget. He didn't go to any details at his press conference. So now he may be revealing the details.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2270)">37:50</a>
+  <p>Yeah, we can't depend on that, too. We have to go with what we have.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2276)">37:56</a>
+  <p>We're going to be as some Maloneyy for all others.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2278)">37:58</a>
+  <p>Okay. I'm going to also add a statistic. I'm reading the Gothenus that, um, or in Gothamist that, um, less than four tenths of a percent.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2289)">38:09</a>
+  <p>Oh, yeah. Sorry, Miriam said that. She said it's, sorry. She gave me the language. Um, She recommended 0.5% be allocated to libraries.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2303)">38:23</a>
+  <p>Let's put that in there. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2308)">38:28</a>
+  <p>Ask to dedicate 0.5% of the city's budget to the library system.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2313)">38:33</a>
+  <p>So we put it on the second sentence, we urge administration.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2317)">38:37</a>
+  <p>To allocate.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2320)">38:40</a>
+  <p>To allocate.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2321)">38:41</a>
+  <p>0.5% of the budget to city libraries. Go ahead, Sandy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2327)">38:47</a>
+  <p>Sorry, is that what did you submit in the last year's budget? Sorry, I mean, we're asking for more than. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2334)">38:54</a>
+  <p>I think it's really close. Like, it's less than 0.3% now, and that's the $30 million cut. So it's.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2341)">39:01</a>
+  <p>So it's what Adam's head was.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2343)">39:03</a>
+  <p>Yeah. It's kind of the same. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2356)">39:16</a>
+  <p>Yeah, okay. Thank you very much better. Yeah, okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2363)">39:23</a>
+  <p>Thank you very.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2365)">39:25</a>
+  <p>Great. Okay, we urge the, this is the property tax. We're just saying we urge them to identify other ways to close the budget gap. Yeah, New York City's property tax system is convoluted and regressive. The property tax increase without reforming the current system combined with current housing of orality prices, but only further undermine the ability of working families to be able to affordable in the city. Again, I'm going to keep it trying to keep these things general. Mind you, we haven't looked in detail in property tax. We did two years ago. Yeah. We didn't come up with any proposals.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2402)">40:02</a>
+  <p>They do. They're basing it on the level of rents, which makes absolutely no sense.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2407)">40:07</a>
+  <p>Well, that's only condes impose. Yeah. But the rest is rental buildings. They all have different formulas. Small town homes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2414)">40:14</a>
+  <p>Yeah. I again bring up the fact that we haven't commented it because There are two, he offered two options, increases in taxes for a million and above. We're not going to comment at all on that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2429)">40:29</a>
+  <p>I think that's going to be probably controversial. I'm not sure. I left it out because I wanted to make that this is a letter that Sandy's going to send the mayor. you know, we haven't had deep discussions on income tax, so for us to be able to make a statement as a board, I think. So I was just trying to come up with what are some things that probably 99% of, you know, folks would agree with, um, rather than putting things that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2458)">40:58</a>
+  <p>Any thoughts, Sandy?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2459)">40:59</a>
+  <p>How do you feel about that, Sammy?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2461)">41:01</a>
+  <p>Well, I know we're supposed to vote on December awards. And that it will probably come up as part of the discussion. So it would be helpful to know what the board thinks about it. I think so. It's the week after full board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2478)">41:18</a>
+  <p>And we got to pass this Wednesday. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2482)">41:22</a>
+  <p>Yeah, but you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2483)">41:23</a>
+  <p>How do others feel about adding our sentiments on the income? On the income tax.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2489)">41:29</a>
+  <p>I think it merits putting it in there because it's just sort of</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2495)">41:35</a>
+  <p>i think the absence is a little glaring you know that we didn't comment on because he has two two options no no it's not no it's not a binary choice there are the problem right now there are there are those two revenue options he could ask the state bill for authority to impose the kind of excise tax i already described about</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2521)">42:01</a>
+  <p>You know, that's not what he's talking about. That's not what he's saying.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2525)">42:05</a>
+  <p>So maybe it's never been suggested. Let's see it was what I'm saying.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2531)">42:11</a>
+  <p>What I'm saying that, you know, perhaps the way to comment on the on the income tax is to offer you want to increase the income tax. I'm completely indifferent to it. But what I'm saying is if we can offer options other than one go. That's what I'm talking about. You know that we. We can't just ignore it because that's a possibility.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2555)">42:35</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2556)">42:36</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2557)">42:37</a>
+  <p>So Rashma, let's go to Rushman.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2560)">42:40</a>
+  <p>You know, the whole time I've been on this committee, the letter has always been about our budget request and what hasn't been funded or what we have as our priorities. We've never touched on the revenue side and how they should raise the revenues to find out. So I would advocate for not. mentioning either one of these as a result of that and you know but and i also think especially if we're going to get to the income next thing it's going to take too long a discussion even at full board to get people to agree on this but so we need to eliminate our our comment has always been on these are our needs we want this funded they have to figure out how they get the Maloneyy to fund it yeah</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2606)">43:26</a>
+  <p>Okay, V, go ahead. What do you think?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2609)">43:29</a>
+  <p>So I support keeping this property tax in, given the discussions that has already had in the city and the stakeholders, and especially given our area where we have a lot of condominions and Kruegeratives that because of their class, would wonder paying more. But I don't think we should get involved with the taxing of millionaires or billionaires because we haven't had those discussions. That's going to be very discordant. um at full at our full meeting it may even be among ourselves uh we can say that we recommend that they look at alternative method rate of raising revenue um as a generic type of stuff and not just offered two solutions</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2656)">44:16</a>
+  <p>right yeah exactly thanks me there's other revenues yeah so but that's what's there guys so we've urged administration to identify other ways to close the budget gap besides and i want i want to leave it general and not say that we have all these recommendations about things that we don't know much about so but you should really say other revenues um Well, because you can find great, you can do things by revenue or you can cut costs. Yeah. There's two ways to find the close the budget, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2690)">44:50</a>
+  <p>Yeah, but he's already talking about cutting course with a 2.5. So that's his one solution of cutting costs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2699)">44:59</a>
+  <p>So we're saying it needs to be more. He still has a gap after.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2702)">45:02</a>
+  <p>He still has a gap anyway. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2704)">45:04</a>
+  <p>Um, one of the revenues. things he's somebody has put out, I don't know who, is to increase the revenue from parking. So free street parking would be. Yeah, that's like if those issues are out there, I think as a community board, we should feel, you know, the same kind of the same kind of ability to make our own proposals as to revenue. I can't tell you how many times I've been at borough president meetings or borough president inaugurations, these ceremonies that they have, where they will mention something that was adopted as policy because it came out of the one of the community boards. I think this is the excise taxes that I discussed earlier, I think is one of the options that we should put for.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2764)">46:04</a>
+  <p>We would have to have a discussion about it. We haven't examined. We haven't examined what the impacts are. And we can do that, certainly. We can do it right now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2774)">46:14</a>
+  <p>And they can, and they can put it in the one you call it. They can figure out the methodology. But as I say, man, I live in a building with 32 people or 32 stories, right? There are so many deliveries coming into that building every day.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2790)">46:30</a>
+  <p>Oh, it's insane.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2791)">46:31</a>
+  <p>Yeah. And it's only since the pandemic. It's not as if this was something that was happening before.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2798)">46:38</a>
+  <p>So let's, it's a good revenue. So yeah, I mean, returning to whether or not we keep the property tax paragraph in or not, I guess the reason why I left it is because it's a very distinct proposal in the Mamdani, Manani says he doesn't like it and doesn't want to do it. And then you have a lot of folks on the other side of this political discussion, I'm sure, who also do not want it to. So this is one of those things where I think, I don't think anybody thinks this is a good idea. So it's easy. It's sort of easy for us to take a stand as a board and say, we also agree, this isn't a good idea. So let's think of other ways. But we're not at a point yet to say we know what the other ways are because we haven't had a say let's keep it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2848)">47:28</a>
+  <p>Do you want to show a hand?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2854)">47:34</a>
+  <p>Let's go to the next one and we'll come back. It's the last one. So the last one just says in general that there is uncertainty about the federal environment funds coming to the city and we recommend that the city should project for shortfalls and take appropriate actions for uncertainty basically so it's just it's pretty general the statement but it just recognizes that we know that they need to be thinking about all of these other funding flows that come in from federal and the economy yeah i wouldn't thank go ahead yeah so i had some problems with this because it actually i mean</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2900)">48:20</a>
+  <p>gets a little more involved in politics, especially just saying the new federal administration. We know this could be major problems with the federal budget. There's going to be sequestering. There's going to be not giving us major stuff. So I don't, I think the proposal stands, the resolution stands pretty firm. I would not comment on the federal government at all. This is just doing when New York City and the state needs to do.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2929)">48:49</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2930)">48:50</a>
+  <p>Anybody else comment on this?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2934)">48:54</a>
+  <p>I would agree with B on that. You know, I won't say new federal administration because it's not new anymore. And then by saying just federal administration, we take out the fact that to D to B's point about getting into partisanship here. And then there cuts, I mean, cuts happened last spring with Doge and stuff. But we've already seen section eight housing voucher issues, the Medicaid cutbacks and stuff. And so that's already hitting us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2971)">49:31</a>
+  <p>So we could, we could take that sentence out, right? Rashma, we're talking about the federal administration has called for major funding changes. Yeah. And just yeah. And believe the rest.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2984)">49:44</a>
+  <p>So let's let me see how that reads now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2988)">49:48</a>
+  <p>Well, I think B is saying just remove the entire paragraph.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2992)">49:52</a>
+  <p>Yeah. Excuse me.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2993)">49:53</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2994)">49:54</a>
+  <p>I don't think. It doesn't have anything to do with the budget itself that we're commenting on. So I think at some point as we look at other issues and what the federal government does or even the state does, we should deal with it separately. I just thought this is support to the budget or as it is now. or support for things to be considered in general terms are just not necessary.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3019)">50:19</a>
+  <p>I'm fine with other people unless someone really wants to comment on that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3024)">50:24</a>
+  <p>I just wanted to say that I think the issue regarding the federal government government at this point isn't it just political because even in the news now there's a suit in terms of the $60 million that we were supposed to be reimbursed by the federal government, that was just this morning and last night, that it's not something that's speculative. That's happening now. And it's not political if that's being done with a suit. So I think that we really have to address that element in terms of what we're then eventually going to have to come up with if it's still, if the suit, we do not win the suit. and we are not reimbursed. So I think certainly issues have to be, to me, a lot of this is very general anyway in all of the paragraphs, but that we recognize that. So I think that something regarding what you've already put in there should remain regarding to me funds being held that we are supposed to be allocated or reimbursed that the federal government has not complied with yet.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3098)">51:38</a>
+  <p>B, how do you feel about this paragraph now that we've taken out all that other language? We can simplify it more, or would you rather just be removed?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3112)">51:52</a>
+  <p>I could not unmute myself. I would rather see it on mute, but if we also, if we want to say something about, we also have concerns about the high degree of uncertainty about the future direction of the national and local economy. and its impact on the city budget and feel that the city should take into account this for future deliberations on the budget. Something very general.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3138)">52:18</a>
+  <p>Yeah. Right. So then Brendan, just take out the wallet remains unclear how and one these actions. So take out that piece of it. it would be proven to assume that the city will need to project for short polls and take appropriate actions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3153)">52:33</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3153)">52:33</a>
+  <p>It's, we're just asked, we're advising them to, I mean, they know this, but it would just think of us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3158)">52:38</a>
+  <p>See, I don't consider that political because that's reality.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3162)">52:42</a>
+  <p>Yeah. Yeah. But I'm just saying, when they know this, I just want for us as a board to be on the record to saying they need to be thinking about this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3169)">52:49</a>
+  <p>I agree with that 100%.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3172)">52:52</a>
+  <p>I think this creates a little bit more compromised language here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3176)">52:56</a>
+  <p>And that we're. We're watching.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3180)">53:00</a>
+  <p>Any other comments on the resolution? Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3185)">53:05</a>
+  <p>Go ahead. Brendan, can you bring up the other document? This is under, this would be under paragraph 34, if it is on my phone. This is to suggest other revenue sources. I was just looking here. 2.7 million deliveries by Uber reads alone for a week. in New York City. And so just agree.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3220)">53:40</a>
+  <p>Yeah, I mean, again, we can, we can take these issues up at a different line, but we don't know what the impact is on this. How is it going to know, we've done, we haven't had a discussion about it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3232)">53:52</a>
+  <p>Well, read the paragraph.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3234)">53:54</a>
+  <p>among the revenue measures we we encourage the mayor and his budget staff to explore we're not saying adopt them or just saying explore i don't i mean we could if you want to come up like lots of different ways that they could explore and we're not in a position because we haven't met with these companies we haven't you know i don't know what the impact I don't know what kind of revenue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3262)">54:22</a>
+  <p>It's an excise tax. It's not a tax on the economy. It's a tax on behavior. So I just, we're not, we're not a, I think if you put it to the, to the committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3280)">54:40</a>
+  <p>Okay, anyone on the committee would like to second putting in the language on excise tax.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3289)">54:49</a>
+  <p>I just want to. To me, I love the way the resolution is constructed, but it's all very general. If there's any way that this could be made into a general statement and also where you're not mentioning specific companies and specific rates, but knowing that this is something that could be discussed in terms of revenue raising, I would be in favor of it, but not in the specifics that are here. It's not even fitting with the rest of the resolution now that we're getting into the naming of not own rates, but also specific companies. If it could be a little bit more general, but at least expanding on what is revenue raising measures. It could be a little bit more general and it would still fit fit in with the texture of the rest of the resolution. If there's a way to do it that way.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3346)">55:46</a>
+  <p>How about we encourage, or is it? We encourage the mayor and his revenue team. We encourage the mayor and his administration to consider alternative revenue raising measures that have not yet been reflected in his budget.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3373)">56:13</a>
+  <p>It's pretty general.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3374)">56:14</a>
+  <p>Dee, did you have your hand up? Yeah, that's what you just asked for.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3377)">56:17</a>
+  <p>Yeah, I was just, I was going to comment before we just had the generalized statement. I don't think there's a problem with the generalized statement that was just given because you have comments about the libraries, you have comments about property taxes, and you could say something. We encourage the mayor and the state to look at other revenue raising means. That would also be generic without mentioning anything. Okay. You can go back to that. Such as excise taxes or you would just leave it without. I would leave it without that because there could be many other stuff. And I think we need discussion on whether it's excise taxes, what it does to the economy and everything. But I think to say there are other messes of raising revenue and they should really explore them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3427)">57:07</a>
+  <p>Yeah. So the language again is we encourage your type.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3435)">57:15</a>
+  <p>Yes. We encourage the mayor and his administration to explore additional revenue measures that have not been included in his preliminary budget and that may not have been considered here to four.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3469)">57:49</a>
+  <p>And not been considered previous before.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3472)">57:52</a>
+  <p>Previously.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3473)">57:53</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3473)">57:53</a>
+  <p>And then paragraph marked that because it's not about, it doesn't belong in the property tax.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3479)">57:59</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3480)">58:00</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3481)">58:01</a>
+  <p>But it's, excuse me.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3486)">58:06</a>
+  <p>Go ahead. I'd say revenue generating measures to make it a little bit more. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3495)">58:15</a>
+  <p>Revenue generating revenue generating measures. Right. Yeah. Okay. Let's just go to the next, bring it down a little bit. So I can see how it close into that in seconds. Just slightly go over a little bit for the, so those seven to say. Okay. Yeah. Go ahead, Brendan.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3518)">58:38</a>
+  <p>Oh, uh, never mind.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3521)">58:41</a>
+  <p>Okay. Are we okay with this language? Yeah. Okay. Anybody else have any other comments or other language they would like to edit? If not, let's go ahead and do a vote on the resolution, Brendan.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3545)">59:05</a>
+  <p>Okay. So when I call your name, please say whether you are in favor, opposed, abstain, or not entitled. to the resolution. Tony Arias.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3557)">59:17</a>
+  <p>In favor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3559)">59:19</a>
+  <p>Jim Collins. I favor. He does man. Beisman. In favor. Hey, doesman. In favor. Hey, Kennedy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3569)">59:29</a>
+  <p>In favor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3570)">59:30</a>
+  <p>Avery Lasser. In favor. Rishva Patel.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3574)">59:34</a>
+  <p>In favor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3576)">59:36</a>
+  <p>Steve Perez. In favor. With all seven committee members in favor, this resolution passes and will be before the full board on Wednesday.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3584)">59:44</a>
+  <p>Thank you. So we can move to the next item, which is to the discussion.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3590)">59:50</a>
+  <p>Oh, sorry. Because there was so much discussion on revenue generation, there is a event by the Center for Urban Features coming up next week on new ideas on generating revenues. So I am forwarding that email to Brendan to share with everybody. And there's a report with five revenue raising suggestions in there. There's a link for that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3612)">1:00:12</a>
+  <p>That's awesome. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3613)">1:00:13</a>
+  <p>Awesome. Thank you so much. I'm trying, I was trying to link it, but it's not linking in the chat. So I'll forward it to you, Brendan. You can share with everybody. Yeah, can share it with the committee tomorrow. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3627)">1:00:27</a>
+  <p>So we can move on to the discussion of our budget requests as a committee and we have two in the budget. So once you have a chance, Brendan, bring up the air table so we can take a look at the ones that belong to our committee. Our capital request was for office space. And I know that's something that Hussus has been champion. And I think the response from DCAS was that they needed to get some kind of a form. But I know, I know Hesuse has done this. So I'm really not sure what it is that we need to do at this point other than to follow up differently.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3677)">1:01:17</a>
+  <p>I think because he's already filled out one form, their assumption is he wants different office space. So, and then we're not happy with the office space we've been off. So I think that's part of, they can't have two competing forms, I guess.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3693)">1:01:33</a>
+  <p>Okay. so we need to update our request is that or we're not sure i mean the request we put in was for space and the spark um facilities but that's not until 23 right but it our updated request though we just asked decas for help with this our current space yeah which i think there's a little i think that's a separate No, that's how that's our robust. It's our budget request this year.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3726)">1:02:06</a>
+  <p>So what they're saying is for this word, we need to go out.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3729)">1:02:09</a>
+  <p>Yes. So I'm not sure, I'm assuming this knew that and filled one out, but maybe Brendan, you should check with him.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3739)">1:02:19</a>
+  <p>Yeah, I'll talk with his is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3742)">1:02:22</a>
+  <p>I mean, I know there's been a lot of discussion about this. I will leave it to Hesus to tell us if we need to do more follow-up on this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3752)">1:02:32</a>
+  <p>Yeah. And he was the one who really pushed to get this current space. Yeah. He knows way more than I do. That's for sure.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3761)">1:02:41</a>
+  <p>Okay. And then the other request was an expense request. And what did it say now? What was the response? Oh, right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3773)">1:02:53</a>
+  <p>But it's being maintained.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3774)">1:02:54</a>
+  <p>Yeah, as of FY27 preliminary budget, each community board's budget is being maintained. So I don't know. Essentially, you all know the history here. Over time, community board budgets end up becoming very different because it depends on the tenure of staff. You know, staff that have been working for 20 years at the community board earn higher salaries than brand new staff. budgets kind of tend to get out of whack over time and they've never been recalibrated, shall we say. So it ends up with a sort of idiosyncratic, in equivalence, you know, in equivalence across different boards. And so I think we've just raised that issue many times. And the answer we always get is what the budget is what it is. So that's, I don't know, if we want to say anything in response to that or keep it on there or. Or doing anything.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3833)">1:03:53</a>
+  <p>Cutting our budget will be okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3836)">1:03:56</a>
+  <p>Yeah. Anyone have any comments on that? Those were our two requests. The only other thing, Brendan, that I noticed you and I discussed it a little bit, but there was some strange presentation, the way the register came back with some of our requests. And I just don't know you have any insight into why some of our budget requests. One, the register came back and they, like we have titles for our budget requests. And they stripped all the titles out and gave generic ones. And then some of them, some of them, it was difficult to tell what we were asking for. And Brendan, you updated the air table. So I don't know if you, and then some of them, one, there was a request in there that isn't in our air table at all. And it was sent to DOT as a number two as a priority request. And so I don't know that happened.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3890)">1:04:50</a>
+  <p>But yeah, anyway, that was the only request for I noticed that happened. I don't know what happened there. The other ones I was able to sort of match. appropriately.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3903)">1:05:03</a>
+  <p>Okay. So there's no missing requests from there. Okay. So they're all in there. Yeah, there was an extra one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3909)">1:05:09</a>
+  <p>I don't, but I don't know how that ended up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3912)">1:05:12</a>
+  <p>And then how do we submit continuous support requests? Because some of them were in there as continuous support and then they were confused because they got priority numbers.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3923)">1:05:23</a>
+  <p>So I'm not 100% sure on that since it was his who submitted the request and the way. like the whole process of submitting the requests changed a little bit this past year. So I don't really go qualify to really speak on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3944)">1:05:44</a>
+  <p>What last?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3945)">1:05:45</a>
+  <p>Sandy, go ahead. And sorry, just as if each committee board's budget, it's doing 57,000. Is that not correct?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3954)">1:05:54</a>
+  <p>Well, that's from this thing. That was from four years ago.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3958)">1:05:58</a>
+  <p>They're saying that every board got the same budget.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3962)">1:06:02</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3963)">1:06:03</a>
+  <p>Is that not true?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3965)">1:06:05</a>
+  <p>It's fine, but really good.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3967)">1:06:07</a>
+  <p>He was this. I think it is actually discovered that that's not entirely true, that everyone gets the same amount, at least not in half. Again, I can't speak for the other boroughs. Okay. Oh, rush not. Go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3983)">1:06:23</a>
+  <p>Yeah, I don't know if you saw it, but Hesu sent an email about two discrepancies in the register versus what we have in our air table that has it. It's fairly long. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3995)">1:06:35</a>
+  <p>Yeah. We'll look into it then. Thank you for plugging that. V, go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4007)">1:06:47</a>
+  <p>Just going to say working with the budgets over the years, they're not uniform, at least not in Manhattan. that depends on the age of the senior staff, the amount of staff you have. Um, that's why years ago we started the street fair Maloneyy when we were being cut. I think we're one of the few boards. There might be one other Sandy that has street fair Maloneyy. So. Yeah. Yeah. So I think, you know, there's no uniformity. Sandy and I just did a meeting with on personnel actions. And there's just no uniformity among any of the community boards.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4045)">1:07:25</a>
+  <p>Okay. The populations are all vastly different too. Yeah. We have like a quarter million and some I think that was few as 60,000. Yeah. Okay. So we have to do more or the less.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4064)">1:07:44</a>
+  <p>Any other comments on our budget request before we move on?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4070)">1:07:50</a>
+  <p>No.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4070)">1:07:50</a>
+  <p>Okay, last topic for the evening is our budget and governmental affairs committee handbook. So all committees have been asked to come up with a handbook for their committee that helps people when they onboard, you know, to just help them know what the committee is supposed to do, what it needs to be aware of resources. So we came up with our budget, not exactly a handbook, but a starting point for us is that we have the guide guidance on our district need statement and budget request process which brendon is now showing on the screen i'm about to show on the screen you know i get a little bit larger for those online so those of you who may remember we updated this slightly earlier this year calendar year i think sorry last year we updated the document um But it gives an overview the budget cycle. You know, what are the different dates and deadlines that match the city? What are deadlines internally that we have to be aware of? And then it gives them, if you can just maybe come out, zoom out of that, Brendan, and then move down so we can see the rest of the document. Yeah. And then just scroll down.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4153)">1:09:13</a>
+  <p>So this as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4155)">1:09:15</a>
+  <p>Yeah, I don't want to go into all of the details. I just want to show people what's here so that we can see if there's things that we shouldn't add. So just scroll down. So that's the budget cycle, the calendars, the due dates go down. We have guidance on selecting budget requests, just ask questions about people or how are people aware of this. Has the committee discussed the request? Has there been leasing with the office? Then we have been updated. I updated this today. How many capital requests? How many expense requests we have on the air table now versus what the limit is? Go to keep scrolling. And then we have guidance for drafting the budget requests, the description, keep going. Then we have guidance on rankings, which is not so important now that we have many fewer requests, can kind of scroll past this, go down. And then we have, keep going.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4225)">1:10:25</a>
+  <p>The other thing I'll say on rankings is the whole ranking system has changed so that it's only, it's not ranking all of the requests together. It's ranking the ones from each agency. So yeah, it's number one for department transportation number one for department of parks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4246)">1:10:46</a>
+  <p>Right. So each agency gets its own. Yeah, exactly. And then we have the form, which all committees should now be aware of, many people forget about this. We have a form for submitting the budget request. It's hyperlinked on this document, but it's the format is exactly the way the fields are on the air table. So we need to capture that. And we get to know who was submitted when it was submitted so that you kind of have all of that information. And then we have guidance for drafting district needs statements. You can scroll below that, Brendan. It's fairly general. And then submitting the district need statement, keep scrolling down. So this is new that we have a district need statement resolution template, which the office, I believe, but I don't know where that lives, Brendan. So we need to link it here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4302)">1:11:42</a>
+  <p>I'm sorry, Steve, did you send this through email?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4308)">1:11:48</a>
+  <p>No, I mean, we've seen it before. I mean, it's just our normal. Okay. Yeah. I had sent this the last time we were going to, but yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4318)">1:11:58</a>
+  <p>Go ahead. If you would like, I can reshare it. Please. Yeah, the same email where I'll share the thing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4324)">1:12:04</a>
+  <p>Yeah, we'll send it out again. And then we have online resources. which point to lots of different places where you can find information. And the new one that I added was the New York City Capital Projects dashboard, which provides a view on all of the construction projects of critical infrastructure. It's a little difficult to use, but the IBO presented it at our, so I added it to this. It has some of the parks has actually a really good one on capital projects with status of all of the parks projects. Not all agencies have those for their capital. So it's a little bit destroyed. But this is what is available. And so the question now is, are there other things that you feel like we should put on this guide for new committee members to know about our committee? or the budget or anything else. If people have a suggestion, if you don't have a suggestion now, you can think about it. And when when Brendan sends this document around, take a look, see if there's anything that you feel like you as a committee member, particularly a new one, would want to know when you're coming on board this committee. Go ahead, Tammy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4397)">1:13:17</a>
+  <p>I might say it's very focused on budget requests and not on government. Oh, you've read my mind. She beat me too. I mean, the government affairs portion of what you do is also.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4408)">1:13:28</a>
+  <p>It's really important. Yeah, I was just going to bring that up that we haven't covered the, I mean, even coming from legislation and I mean, government affairs is really important.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4417)">1:13:37</a>
+  <p>Yeah, it's a little challenging because it's, we tend to deal with topics that don't fit neatly into other committees and are very topical. So like something that happened in the city. So it's not something that we, you know, this is not like a tracker where we come up with our topics, right? We talked about redistricting because it was super relevant. We talked about properties actors that one time we talked about.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4443)">1:14:03</a>
+  <p>But we need to add that. I think, yeah, I think.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4445)">1:14:05</a>
+  <p>But we can have that. Yeah. That's what I'm looking for. Because this was, this guide was for budget request, but now we'll want to turn this into a handbook. So it can be a little bit more general about other things that we do as a committee. And so that's where I'd like committee members to help me come up with, you know, what are the things that you might want to see on there. Awesome.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4468)">1:14:28</a>
+  <p>Maybe when it's completed, we should put it up as a resource. the community board members.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4479)">1:14:39</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4480)">1:14:40</a>
+  <p>I think that's it. And actually, there is a template that I think is being worked on at the exact level that it's in the process of being rolled down. So I don't have a, I don't know what is in that template yet, but we can work. I just wanted to get a head start, you know, on getting ideas from the board on the committee on ways to improve.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4504)">1:15:04</a>
+  <p>Do you want to start to work on the governmental affairs section here now? Or you want to put something together and then bring it back?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4511)">1:15:11</a>
+  <p>Yeah, not now, but like each person take a look at it and then decide what you think could go on there and we can come back to it at our future committee meeting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4519)">1:15:19</a>
+  <p>Yeah. I kept looking for the governmental part and I couldn't find it. Okay. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4527)">1:15:27</a>
+  <p>So that's your homework for next committee meeting. any other older new business i think i will waive my chair's report okay so i have a motion to adjourn so thank you all for your time and see you i pulled board on once me that's all right good night every</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://www.youtube.com/watch?v=DgfAn4eypwQ" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function seekTo(seconds) {
+      const iframe = document.getElementById('ytplayer');
+      if (iframe) {
+        iframe.src = 'https://www.youtube.com/embed/DgfAn4eypwQ?start=' + seconds + '&autoplay=1&enablejsapi=1';
+      }
+    }
+  </script>
+</body>
+</html>

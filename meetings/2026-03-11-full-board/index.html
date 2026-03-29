@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Board - March 11, 2026 | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Full Board - March 11, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Full Board - March 11, 2026</span>
+      </nav>
+      <h1 data-pagefind-meta="title">Full Board</h1>
+      <div class="meta">March 11, 2026 · Manhattan Community Board 6</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe id="ytplayer" src="https://www.youtube.com/embed/AJukIn3YNSY?enablejsapi=1" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=AJukIn3YNSY" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card" data-pagefind-body>
+      <div class="transcript-header">
+        <h3>Full Transcript</h3>
+        <span class="transcript-source-badge">WhisperX + Speaker Diarization</span>
+      </div>
+      <div class="transcript-content transcript-full">
+        <div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3)">0:03</a>
+  <p>Yeah, we're ready to go. Okay. Are we also? Yep. Welcome to the March 11th, 2026 full board meeting of Manhattan Community Board 6. My name is Sidney McKee and I am the chair of CB6. This meeting is called to order at 702.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(24)">0:24</a>
+  <p>Yeah, Sandy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(27)">0:27</a>
+  <p>My file. You can't hear me. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(31)">0:31</a>
+  <p>They care.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(33)">0:33</a>
+  <p>people are talking yes if you're quiet you can yeah tonight we are joined by first vice chair john keller secretary justin goldberg district manager hazem saudez assistant district manager brenden berg and community coordinator brian lafferty as a reminder new york state law requires all community board members who are not able to attend the meeting in person to have their cameras on and their first and last names displayed from the time the meeting is called to order until the time the meeting is adjourned. I'm going to show the things. Stu, that means you. Our grand rules. They're not speaking until granted the floor. Please raise your hand and wait for me to recognize them. It is important that only one person speaks at a time so that members of the public watching at home can understand what is being said. You'll be given a microphone if you are recognized to speak. The chat function should not be used for CB6 business or questions about agenda topics. Members of the public, if you wish to give remarks during the public session and if not already registered by filling out a form, you can register to speak in the public sessions on Zoom by using the Q&A feature and posting your name, your affiliation, and what specific topic you wish to speak about. Or if you are here in person and want to speak in the public session, You need to follow our public speaker forum, which is near the sign-ins for the CB6 newsletter by Brian. This needs to be done by 715. The agenda for tonight's meeting was distributed ahead of time by the board office, was posted online, and appears on the screen before you. If there is no objection, we adopt the agenda as stated. Board members, if you object to adopt an agenda, you may raise your hand. Seeing no objections, the agenda for tonight's meeting is adopted. Jerry will now conduct the roll call.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(151)">2:31</a>
+  <p>All right, folks. Beginning with, Anya, Arias. Present. Kyle Asaid. Kyle. No, Kyle, moving on. Neil Barclay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(166)">2:46</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(168)">2:48</a>
+  <p>Yeah. Morgan Barclay. I'll be blessed. Daniel Bernstein. Liz Burr. Jim Collins. Yeah. Stewart, yes, sir.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(184)">3:04</a>
+  <p>I'm president, but I'm having technical issues.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(190)">3:10</a>
+  <p>He dismissed. President? May I'm Donna here. President. Robert Farfund. Robert? Barack Friedman. President. Jason from a voice. Absent.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(207)">3:27</a>
+  <p>I don't think he's here to him.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(210)">3:30</a>
+  <p>Eric Goldberg.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(212)">3:32</a>
+  <p>He's going to be late.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(213)">3:33</a>
+  <p>Running late. Justin Goldberg, not me, but you present. Hey. Gloria Hay. Rabia Ekbal. Absent. Page, Judge. Present. Pretty. Ripple Kakad. Present. John Keller. President. Kate Kennedy. President. Katie Landa. Katie? Present. Sandra Lephtoff. Sandra? Vindon. Anton. Present. San Diego Key. Present. Alec Militik.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-27">SPEAKER_27</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(263)">4:23</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(266)">4:26</a>
+  <p>Richard Mince. Richard Mince. Kevin O'Kee. Reshma Patel. Present. Yes, Stephen Perez. President. Will Perry. Will Perry. William Ralph?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(294)">4:54</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(295)">4:55</a>
+  <p>Hey. Larry Shire. Yes. And Sullivan. What? Sandra Sherrod. Present. Sure. Mubin Siddiqui. Present. Present. Lady Simon. Present. Samir Thanadar. Hey. Mark Thompson. Present. Mark and Flesh. Real life. Gabe Terzo. Cat Valero. James Vera. Myself, President. Sarah Whittington.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(339)">5:39</a>
+  <p>Just absente.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(341)">5:41</a>
+  <p>Chouya Zhao.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(350)">5:50</a>
+  <p>Okay. Okay. Our elected officials sent in their reports ahead of time and they are compiled on the CB6 website. The link to the reports was sent out ahead of time for your convenience and can be found in the chat on Zoom or going to our website's page for full board meetings. I would call on each of the elected officials who are SPP'd so that they can take questions from CBC members and the public. If an elected official's representative has a time sensitive matter to report on it didn't make it into their reports, They will have three minutes to do so. First, we have, do we have people on me. Thank you. Well, we have Maki Bentley. Okay. We have Maki Bentley from Congressman Nadler's office.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(414)">6:54</a>
+  <p>Good evening, everyone. Nothing to add to the report, but happy to take any questions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(422)">7:02</a>
+  <p>Do we have any questions for Mark? Okay, not this evening. Thank you. Just keep on to her. Patent Schulteis from Senator Gonzalez's office.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(442)">7:22</a>
+  <p>Hi, I'm Daphneurport, but have you taken any questions?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(448)">7:28</a>
+  <p>Thank you. No questions. Okay. Julie Roland from A.M. Assembly Member Morris's office.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(458)">7:38</a>
+  <p>Hello, C.B. 6, I'm doing it. All right, I really don't have much bad to all the course, but I don't believe the reading lens. So I'm a test here, okay? Which is that we have so many shred truck events coming up. That's just insane. Does anybody know what our next shred truck event will be in April?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(482)">8:02</a>
+  <p>Okay?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(483)">8:03</a>
+  <p>No, it's in April.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(486)">8:06</a>
+  <p>Yeah. April 14 is a good guess not when they're having one. So see how you're busted and I have to get a real and help me. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(497)">8:17</a>
+  <p>That's my bed there. I said this is not relevant for me. I'm better in the house. So I. Okay. And for this next part. Yes. Thank you. Thank you for volunteering. We were looking for volunteers to help them to get connected with the community groups to help with her new potential ICE issues. Amazing. Great. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(533)">8:53</a>
+  <p>Okay. Okay. So you should leave because they're painting now. Well, you all, and yeah, don't listen to this next part. Okay, April 4th. is our next shred truck event. And we're popping on, we're popping up, yeah, you said 14. So we're popping up around out because we heard that you love these events. Not everybody has a shredder at home. So that one's going to be with the 90 second Street Y. We're doing the first Saturday of every month. So that makes it easy. So May 2nd, it's going to be the next one. We're starting with Sutton-Pace Park for that. That'll be the coldestack at Sutton-Pace Park. And then June 6 is the next, for you guys, if we were going for this. That one's going to be outside of ours. All of these are from 10 to 1. So we'll be outside of our office. The first one at 92nd Street, one next one, Sutton Pest Park. And then if you don't want it on Saturday, we're giving you an extra one in June. So June 18th, also in our office. Okay, so I want to make sure you have those days. Also, we have once a month, my lag dates. We're offering free legal services, call to make an appointment. The next one is, anybody know? You don't know, March 30th, all right? Other than that, we do have exciting legislative updates. Those are on the report. I'll let you read them. Thank you so much to whichever elected office is managing the weather.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(615)">10:15</a>
+  <p>It's been really nice. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(620)">10:20</a>
+  <p>Your question? I have a question. Actually, I did read it, believe it or not. I did get about the date. I read about the exit interviews. Can you tell us a little bit why this has become the an issue and how is it going to be conducted?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(635)">10:35</a>
+  <p>Sure. Thank you to that question. It is that if you haven't gotten the chance yet to read, what we put the legislative report involves that something on reports is just put forward an exit interview program, basically for members leaving government. basically we're seeing that a lot of people are leaving government and we're not asking them good questions about why so both as a matter of to do better recruitment to and definitely to have better attention but just to understand what are the issue why are people leaving home service rooms we want to be asking them about questions so something on boards is the computer engineer is very analytical is a data so we thought this is going to make sense that we don't have data on why people are leaving we want government to be a place where people want to work and where they are treated well and respect and are getting job satisfaction. So we thought we should ask a better question. So we've introduced as well. I have questions about that or anything else.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(691)">11:31</a>
+  <p>Thank you very much. Thank you. Thank you. Yes, we have Wendy Brennan from Senator Krueger's office.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(698)">11:38</a>
+  <p>I don't have anything additional to report, but I'm happy to answer any questions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(704)">11:44</a>
+  <p>Do you have any questions for the senator's office? Right? No, I guess not. Thank you. Joanna. So we understand that some of our elected officials will be here in person, but they haven't played it yet.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(730)">12:10</a>
+  <p>I think Joanna is DMing you, Brendan.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-29">SPEAKER_29</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(734)">12:14</a>
+  <p>Hello, I am.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(736)">12:16</a>
+  <p>What's the ETA on Keith?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-29">SPEAKER_29</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(740)">12:20</a>
+  <p>So the ETA is in the next few minutes. He was originally going to log on on 715, but it is, he said past a few minutes. He did not tell me when, so I'm trying to get an exact time.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(754)">12:34</a>
+  <p>Okay. Do we have an ETA on Virginia?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(758)">12:38</a>
+  <p>And Council Member Maloneyy is running late, but she is. It's coming on attending. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(763)">12:43</a>
+  <p>And the Manhattan Borough president. Okay, we might just continue on. I know I was hoping that Keith would be able to speak before we had our public session. Okay, let's come up with some questions. Okay, I'll do my chairs report. As many as you have heard, the mayor announced that the 54th Street shelter will be closing. Our housing and homelessness committee will be following up with the Department of Homeless Services and the Department of Social Services to get into additional information on the closing and of future use of the site. This happened very quickly. I think most people found out in the Gothamist, and I think that's where our elected officials found out as well. So it's, it's, you know, ongoing. The Budget and Government Affairs Committee is looking for feedback from each committee on the city's response to our budgets request. Ruple has done this already. She is the only chair that has done this. So, yes. And we have also been meeting with our elected officials to advocate for our budget requests and get their support. We've reorganized the reimagining the Waterfront Task Force, and Maya Donoghue will be heading it, joined by Liz Burr, Barak Friedman, Jason Frumowitz, B. Dismund, Daniel Bernstein, Majjad Abdul Samad, and myself. We will meet monthly at 615 before full board. And any board members who wish to join in that effort, please let me know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(874)">14:34</a>
+  <p>Can I just request to that go out in the meeting reminders? Oh, that there's that we are, it stays on our radar.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(885)">14:45</a>
+  <p>Okay, well, it's every month. So we're hoping to keep it as a, you know, a concert thing, but we'll do that. Yeah, I mean, so we're all the committee minutes, right? And then we're out and hopefully we don't miss them. We're looking for someone to help Jerry, our secretary, keep our social media up to date, really involves taking photographs and We do have an Instagram account.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(912)">15:12</a>
+  <p>I think probably WhatsApp. I will be looking at your Instagrams, calling people in.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(919)">15:19</a>
+  <p>Yeah. Okay. And that's it for my chair's report. I believe that Jesus has a report. It's not as well before. Oh, Keith does. Oh, certainly. Sorry, that's the plan. No. Keith Powers, please, welcome.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-23">SPEAKER_23</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(935)">15:35</a>
+  <p>Hello, can you hear me? Yes. All right, nice to see everyone. I'm sorry I can't be there in person. I am in the new gig. I am up north, but I wanted to just check in and say hello. We are in the middle of kind of in the sort of throws of our budget conversations here in Albany where the actually assembly just put out our version of the budget on Monday and now sort of starting the process of trying to figure this budget out before the beginning of April. So a lot going on here. Just wanted to touch on a few things locally and legislatively. We actually introduced a new bill yesterday with myself and Senator Botcher based on a bill we had passed in the city council that creates clear warnings. for when someone buys a firearm at a firearm store here in New York State about what the risks and hazards and dangers are associated with someone in the household or someone else having access to that firearm. And we're really excited about that because it's a bill we actually passed in the council, which we think will just create better public education around harms and associated with having a firearm in a household. So we actually joined mom's demand on action for their lobby day yesterday to announce that piece of legislation, which I am really excited about, and we will be posting more of the press on that. I also passed a very tiny environmental bill, but my first bill this past Monday, which I'm excited about. and actually just looks like we're passing our second hopefully next week, which actually will make it easier for SUNY students to access tuition in-state tuition if you are resident here in the state. So we are eager to help make it a little more affordable to afford. college here in New York State as well. Just two things I think locally I want to touch upon. One is I know you guys I think are touching upon or voting on or maybe discussing a resolution made to SOC middle school. We've actually been working with the parents for a while now to help them identify new school space. We're looking at sites in CB6 and nearby adjacent to see if we can find space to accommodate their school in light of some changes to the law that will require them to have to move out, plus hopefully find a new home that can give them more room to do what they do. It's a fantastic school. And I just wanted, I know some members on this board had taken up that So I want to say thank you to them and obviously encourage all of us to help push to find them new school space in proximity to our neighborhoods of the East Side can have a great middle school and continue to have a great school there. So thank you to the parents and all folks working on that. And last I talked to talk about Stytown safety, which has been an issue in the last month or so. You know, there's been a really, it was a really horrific incident that happened inside Sibis and town just about a month or so ago. And we, myself, Senator Gonzalez and Councilor Maloneyy had met with management to try to have a conversation with them based on the concerns of so many residents in Stuyves in town and parents to have a better handle on what safety looks like in the neighborhood, what Kruegeration with the precinct looks like, and staffing and head count and much more. One of the things that came out of that is a town hall that management held, one that the tennis association, second tennis association held, but also all the electives had joined a call to try to increase head count of the 13th precinct. which like many of the precincts here is still, does not have the head count they used to have. So to manage 14th Street and manage many other things that we need to manage inside of the precinct, we had called to get them some extra help and headcount to help to all those responsibilities. And second, we continue, and third, fourth, whatever, we continue to push management to communicate better, to provide clear information to tenants about what the safety protocols are and make sure there is a response adequate for so many of the concerns that we have heard. So anybody who's watching tonight, of course, reach out to my office. There's anything you want to talk to us about on that front. But there are so many residents and parents and constituents who have really done a good job of organizing over the last few weeks. And I just want to say thank you to them. And of course, we are continuing to do that work to make sure the neighborhood feels safe, is safe, and communication is adequate. So I will stop there because I know you guys got a long agenda, but just always wanted to say hello. Joanna from my office is on here as well, and I see Stu's got a question hand up, so I'm happy to take any questions remote.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1239)">20:39</a>
+  <p>We have a couple here in the room as well. Let Eric go first. She's in the very back.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-26">SPEAKER_26</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1247)">20:47</a>
+  <p>Okay. Hello, I hope everything as well. I just wanted to ask, year after year, the number one request from parents of public school students is small class sizes. And after a 20 year battle of fighting the state of New York, we finally implemented a clear law in 2022 to reduce class sizes and give students across New York City the same opportunities to learn in a small classroom setting that students have across New York State. And we're in the process of trying to implement that. And there are trade-offs to implementing the class size law.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-23">SPEAKER_23</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1295)">21:35</a>
+  <p>Look, I support the class size law. I do think it benefits learning in a real way. Also, just classroom management for the teacher and a better ability for students to navigate what is already a tricky school environment. The challenges we are facing, though, are not to be ignored. And the SOC middle school situation is one of them. We have to find new school space for a really good school in our neighborhood. there are other schools that are facing pressure around space and capacity versus you know changing which programming they're offering 3k pre-k things like that so i do think there's tremendous benefit for the students and the teachers themselves but we we have to now attend to the issues that have you know kind of developed from that and a lot of that is around finding adequate school space for all the different users of our school building, shared school space becomes challenging as the case with PS40 and SOC. And I want to be realistic about that. I want all students to learn an environment that feels up to par for them. But you know, legislature passed that bill and the goal here is to try to get it implemented and make sure that we, you know, solve for all the problems to do that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1374)">22:54</a>
+  <p>Ann had a question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1377)">22:57</a>
+  <p>Hi. Actually, this is, I remember a question for you and Harvey, who I see has also joined us. And frankly, I would love to take the both of you out for a dreamt and share stories about switching places. But my question is actually about a resolution. And I'd also actually like to hear about what the tiny environmental film you passed was, but I can look that. Yeah. The, we have a resolution regarding a change in sidewalk clearance of citywide, go for sidewalk cafe. And I actually had a question for Jason, I'm not sure where he is, but Keith, you had been a sponsor on this, one of us introduced initially, and I don't know, hardly if you have a position on it as it is coming back. But I were really concerned that something on you know a restaurant on 30th street between third and second is very different than a restaurant on 14th street between 3rd and 2nd is very different than a restaurant on 14th street between 3rd and 2nd in terms of what the pedestrian requirements are so i i personally am concerned by that and would love to hear both of your thoughts</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-23">SPEAKER_23</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1462)">24:22</a>
+  <p>Yeah, I let the Council of R. Epsteinin speak to his thoughts on it. Our thoughts were that while we're balancing all the different users and needs around outdoor dining, it's also a bill I put in the very end of session, so we didn't have like a lot of public dialogue on at that point in time. And we were starting to start solicit feedback from folks. And we heard a variety of different opinions, including the one you're sharing and stating. But what we were trying to do is to make sure that for users of restaurants and cafes and other users here that we did not unfairly, I think there was a feeling that we kind of changed the rules on them. And we wanted to give them some more relief to be able to. take advantage of outdoor dining as it is constituted presently. There obviously might be changes to the program ahead, but we wanted to try to give them the space that we thought many of them had lost. We had some very specific examples in my district that reached out where the clearance rules had made it impossible for them to now have dining and became a challenge and kind of felt unfair, frankly, too, to have them on, you know, different restaurants on different sort of abilities to have outdoor dining. But the whole process of this was getting the bill introduced and starting that conversation with various communities. We had definitely heard from those who were in support, but we're just kind of starting that engagement. And we did not pass it before the end of session. So that's why you are, I don't know who's picked it up in the council since then, but they will have to go through the normal legislative process to get a hearing on it, solicit feedback and things like that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1569)">26:09</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1571)">26:11</a>
+  <p>I do. Keith, I see you at live events, but you're always crowded by people who either love you or want something from you, so this may be the closest I'll get. There is a bill in A9076, which is the New York Civil Rights Law, that I would like to encourage you and our other assembly members to co-sponsor. Right now, if your constitutional rights are violated by a federal officer such as an ICE agent, You cannot sue that person. You cannot sue that agent. 9076 attempts to fill that gap to make that possible if you're injured, at least in New York. So I encourage all assembly members and you in particular to look at that. And that's all. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-23">SPEAKER_23</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1632)">27:12</a>
+  <p>All right. Well, first of, I apologize for being so crowded. I will make sure I always seek you out, Stu. And a little known fact is that Stu and I were actually in grad school together. That's at the grad center. So I always have, of course, room for you. I will take a look at that bill. I just pulled it up and we'll get back to you just once I have a chance to look at it. One of the first bills I did sign on to was in New York for All Act and also the, the heat bill, somewhere where Simone has, which tends to have similar or overlapping issues, I would say. So I will look at that one as well, and I'll keep you update on that. I appreciate you taking time to mention to me. Great. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1673)">27:53</a>
+  <p>Thank you. I think that's, Daniel has questions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-32">SPEAKER_32</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1684)">28:04</a>
+  <p>what it was.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-23">SPEAKER_23</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1686)">28:06</a>
+  <p>Sure. And when I say it's the most minor bill of all time, it basically just renewed an existing statute that was going to expire, which makes it, it's requirements about how you deal with certain containers and materials. Here, it's basically an EPA law that makes it, um, everybody puts the requirements around how you, how you recycle certain, like metal and plastic containers. And that was due to expire. So basically, I want to make sure we kept that on the books and I, that was basically a renewal bill. It was not the most consequential bill at all time, but still we had to do it. And so I, uh, I made sure we renewed that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1729)">28:49</a>
+  <p>Thank you. Do you have any other questions? All right. Thank you, very.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-23">SPEAKER_23</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1734)">28:54</a>
+  <p>Okay. Thanks, everyone. Nice seeing you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1737)">28:57</a>
+  <p>Okay. We also have our council member, Harvey, seeing here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1744)">29:04</a>
+  <p>Okay. Hi, thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-25">SPEAKER_25</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1751)">29:11</a>
+  <p>Everyone, sorry. Your time. Um, so sidewalk. Sorry. Sorry. We're talking.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1758)">29:18</a>
+  <p>Sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-25">SPEAKER_25</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1758)">29:18</a>
+  <p>We're talking. Okay. uh so we had a hearing last week on sidewalk dining uh the the eight-foot clears bill upon bills and under middle was uh 24 year-round outdoor dining uh you know i was at the hearing from many hours there raised some concerns that i've heard in the community around the impact of like having outdoor dining and snowing like who've you seen or recently in our lives or after dining i need to mill the street or outdoor dining in this emergency and i think you know we need to balance the needs for uh after i think of like eating outside myself and the need that we all have in the community to live and to function and i think that's what the hearing was about and i think we're going to the next couple months we have some proposed edits to the bill to try to improve what we think and really the needs of the neighborhood and probably talking to the speaker we have around table last month about it and probably get to a place where we can all get consensus but we're not there today and issues we're going to have to grapple with. We're going to talk about salt, so I want to kind of echo what some of our power set around trying to figure out a new home. It's a school that works in our community. We need to figure out the space. We talked to the superintendent at this many times of the last year. This is a new conversation going on now. At least a year and a half, I think that I don't have what they've had meeting with the cameras to talk about a merger at the table at this point. My understanding of the competition that I've had with the superintendent, and I'm trying to figure out what can work for the east side, make sure we have a place for us all to live. Obviously, the building that it's in right now is it doesn't have enough space and we need to look for alternatives. People will talk about the spur site, but you know, this is that we don't have building not built another five or six years. But that's not going to resolve it because we need something sooner than that. We're still talking to the meeting with the new chancellor. I think next week after, it will be one of the issues that are made with the new chancellor, not a little close to other concerns we have that are going on. You know, people now have the chair of the consumer work protection committee and the council. We've had a few hearings at this point. We have our budget hearing next week, so we'll want to come talk about budget issues. happy to have you come at the hearing event from my team you can you can give you all the information i think it's the 19th lot of the errands all day and we're really talking about how we protect consumers and workers in our city earlier in the year that's all sort of legislation to talk about uh uber lift drop about 10 000 to deactivated uh three vendors uh delivery workers and there's all these sets of laws that needs to be enforced and requires that the the DCWV, the agency to do that work. And so what's the resources going there to ensure that always workers get the protections that they need and you know, get the support that they need. So we had the hearing, I think two weeks ago around student load issues and we've seen a lot of issues with new york with student loan and we're trying to make sure that uh consumer work protection has the division that's focusing on student loan issue that we see people facing right that proposed budget from there and there's another additional three million dollars with support that work but we try to expand those services and early in april we have our next hearing on all the last mile bill Everyone sees the people these little Amazon cards where they're on a bicycle. None of those people work for Amazon. They work for an independent contractor so they don't get the protections and not employees at Amazon. They don't get no labor protections at all. And so Amazon's got this rule around what's last mile. They hired these companies to system or we need to ask legislation to change time and that's hearing will be equal nine we will on local events that are newsletters doing shredding we want to sit three months at the end of the month you know you waste events at union square so you know we're available if you have questions so i think these going on in the city i'm happy to do that and i really want to thank uh as i'm a member of powers for standing up for new yorkers for all those really important that we unfortunately didn't pass last year that we pushed hard to get passed. And hopefully this year what we're seeing in the country with ICE and the impact on New York service in our area is really atrocious. This is an opportunity. New York to have for a value of passing New York for a long. Just like New York City is the sanctuary city. We need to do better across our great state. So if there's a question, I'm happy to take it. Sandy, I don't know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2063)">34:23</a>
+  <p>Jerry had his hand up first, I think. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2070)">34:30</a>
+  <p>So there has been a real spike in his law before. Yeah. We have one city councilor in particular, but we have many events and rhetoric and lack of city council wide, um, statements to that fact. Has there been discussion? Uh, I'm really concerned with what's phone anything nationally and locally.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-25">SPEAKER_25</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2094)">34:54</a>
+  <p>Yeah. So, uh, council would join our real, uh, has released some really as long before statements. She appeared before he has me as big. Yeah. There we are. Yeah. We got out there. Like, we had ethics investigations. We are, you know, we had, uh, you know, you know, it could have been an attack at the mayor's mansion the other day. So I think we really need to infund it. Cities put a lot of Maloneyy into combating hate. I think that we need to focus on. We call up those attacks, but we really, just look at education training and ensuring that we attack these causes at the root. This is not a near city problem. It's a national problem and an international problem. making sure that but you we can't be alone we really need to get into our schools and teach people in our early age you know people difference need to be great because hate this time so we need to educate and we're not doing a good enough job yet in their city and our country and Tanya please thank Harvey my my question in the time is constant pressure as juries all your friends are you be saying hi by the way I'm following something</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2174)">36:14</a>
+  <p>this is a question office so on amy b unfortunately they can come three blocks out the finding right now don't fail that anyway um for the last six years i've had this question and i've asked it of attorneys i've asked it a lot of people and i'm hoping that you can shed some line on this maybe you've already answered it but i missed it roadside dining okay the roadside structure is on city property correct right right the d o't property where the landlord of that restaurant has a lease with that restaurant that does not cover that roadside uh property in the event that there's something that happens somebody falls there's a fire whatever Who is responsible? I know also that 18 inches from the curb, the building is still responsible, but now we're sort of in that gray area. It's on city property, it's on DOT property, it's not covered by a lease, how does the insurance cover it? Who's responsible?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-25">SPEAKER_25</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2252)">37:32</a>
+  <p>Yeah, so for roadway dining, I'll say two things about it. One is a council, I know the community fort that very little say over roadway dining structures and then a charter amendment to give it when we gave the panel power to the council to cease at roof you sidewalk permits we need to do the same thing for roadway dining and we're going to try to push for that but the DOT requires anyone who does roadway dining to have the insurance in place to cover any damage or injuries in that roadway structure so it's a part of the requirements of DOT for the applicant to cover that but I do think long term we need to really rethink how we do this. And I'm not opposed to roadway dining. I am honestly opposed to roadway dining on the outside of a bike lane. I actually think that's a really a big problem where you have a sidewalk, a bike lane, and then runway, and everyone's walking across the terrible idea. And I've voted against that in Albany. I'm gonna continue to fight that in the city. But I do think we need to make sure we have a comprehensive plan that works for everyone including restaurants and patrons and New Yorkers.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2324)">38:44</a>
+  <p>Because a landlord is renting a space to a restaurant, but technically that space is additional restaurant.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-25">SPEAKER_25</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2331)">38:51</a>
+  <p>Right, exactly. And so what we're seeing happen is rents are going up for those commercial spaces. Now because the space is any bigger, the store frontage, the landlords are making more Maloneyy and squeezing restaurants because they're saying, well, now you can put a sidewalk and a roadway so you can double you know, your number of customers. So the language are trying to get more rent from the frontage.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2355)">39:15</a>
+  <p>But it's not on the lease.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-25">SPEAKER_25</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2356)">39:16</a>
+  <p>So I don't know how they do it because they're going to say, well, you'll get a DOT permit for it. And so it's really not helpful to for commercial rent market either.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2369)">39:29</a>
+  <p>Jim has his hand up in the back.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2373)">39:33</a>
+  <p>You spoke about the delivery advance in the delivery people for Amazon, what have you. Up in Canada, they have a rule called dependent contractors as opposed to independent contractors so that if you got, say, whatever it is, 80% of your business from one vendor, you would be treated as though you are an employee of that vendor. And the reason that that's important is not so much withholding or what have you, but for civil liability when these guys hit. Pedestrians right now, I mean, you get it by a guy driving for Uber Eats.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2415)">40:15</a>
+  <p>You're lucky if he has two nickels still to lock together.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2418)">40:18</a>
+  <p>Okay, but the, the app company, if they were to be sued, obviously there'd be more accountability and they also have greater control over their workers because they would face the liability. So I would just want to throw that out, give them the context of what you're speaking about as city council. And perhaps if there are any state legislators in the in the audience, maybe they could discuss it as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-25">SPEAKER_25</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2446)">40:46</a>
+  <p>Yeah, thank you. It's really related to the last small bill we're hearing on April 9th. It was basically saying the same thing. So, but I think, I think it's a really important structure that we can put into place. And I appreciate you flagging that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2459)">40:59</a>
+  <p>Yeah, I just want to clarify on time's point. In fact, restaurants for Broadway cafes, do pay rent to the city. So the city in that case actually is a landlord. It's so nominal, like the amount of that they pay is really small. But still, like that is what they really do.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-25">SPEAKER_25</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2481)">41:21</a>
+  <p>They get a license fee to pay, like, like, whatever is $1,000 to apply for the roadway or whatever it is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2486)">41:26</a>
+  <p>There's a payment. There's actually a rental payment, like that they pay that's not just the license fee, but that's, and I don't remember the details, but He can, I think it can, it's like compared to the square footage that they're paying inside, it's like 5%.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-25">SPEAKER_25</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2504)">41:44</a>
+  <p>Yeah, so I think we need to, like I hear you're just saying, but I do think the landlord is making out because they're just basically saying, we just doubled it, so give us more Maloneyy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2518)">41:58</a>
+  <p>Great. Do we have any- Thank you, everyone. So next we have Mariel Ali from the borough president's office.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2535)">42:15</a>
+  <p>Hi, good evening, everyone. Good evening. Oh, yeah, we have a microphone. Thank you. Hi, good evening. See, thanks. I hope you're doing well. I am standing in for front of this evening. I did introduce myself to January, but again, if you don't remember, I'm the Director of Committee Affairs for the Mayor President. Thank you for having me this evening. A follow of announcements from our end, firstly, Happy Women's History Month, and Rhonda Don McAbrook to all who are observing. So again, lots of congratulations. Applications are open for the Manhattan Cultural Tourism Grant now through March 30th. I've left the flyers there. and also make sure to send that to you. Thank you to everyone to join our offices events over the last, you know, we have a couple of events recently, mainly our Black History Month event at the Studio Museum where we had over 300 people attend and so it's really exciting. We also worked closely with other elected officials for the Ice Panel on Trade Preparedness event. This month in terms of events, we are hosting a Women's History Month event. It's called Making Manhattan, New York City's women owned businesses at the Roosevelt House Public Policy Institute at Humster College. And that will be on Friday, March 27, between four and six. So once we have that flyer, we'll also make sure that you receive that. In terms of things that are happening across the office, our office is reviewing Mayor Montgomery's preliminary budget and our response soon. The North President participated in the Hope survey last night. He's also participated in a series of other events, including the public advocate's IFTAR, that was last Friday. The office will also be hosting an Eve event pretty soon. As it relates to immigration, the offices has started hosting monthly meetings with elected officials to discuss the ongoing and potential ICE actions in Manhattan. and the Burr President is in close to direct contact with the Columbia University President regarding the incident that happens there. You may have seen that we now have a new date for the Burr Convention, so it's this Saturday, March 14th at 5 p.m. I will be there. I hope you will too. It'll be at the same place at Alice Tully Hall. We should have all received a link to re-register. if you have it please let me know i will make sure that you get signed up and then just really quickly if i may um brad would like to thank the sly tom peter Krueger village tenants association for organizing a town hall meeting in response to the recent incident that happens there we are also closely monitoring and working to get more information on the closure of the bell views men's shelter on 30th street It will keep the community arise of what we learn, you know, for the City Hall as those conclusions begin to happen. And then also wanting to share quickly that Greg also met with senior leadership at Malta and Beth Israel and really pushing for clarity and incorporation of community input on the future uses of the site. And lastly, Brad and Stadians and our staff continue to engage with the business improvement district, community stakeholders in the area. And because I have the directive community affairs, I'm happy to say that we receive over 800 applications for the community boards. So our team is busy. Hi, I'm busy. But really looking forward to reviewing those applications and more information will be shared soon in regards to next steps in that process. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2765)">46:05</a>
+  <p>Do we have any questions for the borough president's office? Great. All right. Thank you very much.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2772)">46:12</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2778)">46:18</a>
+  <p>Can I have the microphone back, please? Thank you. And I know that Council Member Maroni is planning on joining us, but she's running a little bit late, so we'll move ahead. We've now ranked at our committee reform. Oh, I'm sorry, the public session. Almost forgot that. Has anyone signed up to speak in the public session?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2804)">46:44</a>
+  <p>They have. seven people that appears all about the same subject. So first on the speaker's list is Kristen Shattuck and her son Luke, who are residents of this district and who wish to speak on the SOX school agenda item tonight. Are they here? Kristen and Luke, if you would please come up, you will have three minutes to make your remarks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2834)">47:14</a>
+  <p>And I'd suggest that anyone is here that's here to speak about salt.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2839)">47:19</a>
+  <p>Come on up. I'll go ahead and call those names. Preeti Chala. Theodora Oaks, Joy Koshar, Claire Houston, and Rue Mumudi.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2858)">47:38</a>
+  <p>Okay. And once this is finished, I will let Hayeson Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2867)">47:47</a>
+  <p>Three minutes. You may begin now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2870)">47:50</a>
+  <p>Okay, so my son, Luke Shattuck, is going to start us off.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2879)">47:59</a>
+  <p>Thank you to the community board for allowing me to speak. My name is Luke Shattuck, and I am a fifth grader at PS40. I am hopeful to join the well-known South School of Science from middle school in the fall. My family and I have lived in the PS40 slash Salk neighborhood all my life. I would like the board to know that it's important for me for Salk to remain close to my neighborhood within this year too. As middle school approaches, I will be gaining more independence. Having Salk remained close to me will allow me to safely enjoy going to and from school. I wish that Salk remained close to the East 20th Street. As well, Salk is a truly cool school with a unique curriculum for kids. It is the science first and science forward opportunity for kids like myself that like science. That is why I have chosen Salk as my top place in the school. I ask you to please vote for Salk's education and curriculum, independent and great science kids. Many of my friends want to go to Salk and think of it as an important part of PS 40. Like a pre-K through eighth grade experience, Solve is a great school that I'd like for Salk to continue helping young scientists like myself grow. We need a great school like Salk to stay in the ground receive Peter Krueger, Stuyves, and neighborhood.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2973)">49:33</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2981)">49:41</a>
+  <p>So hi, I'm Kristen and I'm Luke's mom. Nice job for me. That's perfect engagement there. So thanks for the time here to speak today. And I hear one of us do this professionally. But this is an air and dear subject. My name is Kristen. I'm Luke's mom. And both my daughter and my son have gone through VS 40. We've been a part of the PS40 neighborhood and community for two decades, in fact. And in that time, we've understood The real concerns around class sizes, student population constraints being welcomed and either one of these fantastic schools. As my son told you, he's really excited about salt science. And the curriculum and the pedagogical framework is unique to New York City and their focus on science. Even, you know, they're focused on stone but especially science. And I think that's a unique opportunity for kids that are strong in science. So what I wanted to talk about is three or four things here, one of which is that Salk being such a distinguished school is bringing great students and families from all parts of district to into our small neighborhood. And what does that matter? As a micro neighborhood or micro economy, it does really matter. If you look around, you will see that we're struggling to bounce back post-COVID, that we have a lot of retail stores that are still And if you go to other neighborhoods, there are some neighborhoods in Manhattan that are rebounding a little bit better. And so the local traffic and the families coming into our neighborhood matter to our economy. The next thing I want to say is that, you know, Salt just has a distinctive academic model. And we would urge this board to take that seriously and to prioritize the independence and the rigor that goes on at Salt. And to continue to keep it separate and unique from any other school that is in our district, that may be great, but it's not salt. Salt's outcomes speak for themselves. And those outcomes are what really should preserve their model and their identity. And lastly, I guess I want to say that as a community member and a mom, to a kid that really loves salt, I'm willing to pull up my sleeve, roll up my sleeves and find a building proximal to the neighborhood that's right for Falk. Harvey, I'm not sure if I heard you correctly, but I can tell you, you know, we lived relatively close to the Bellevue building that was just talked about just this weekend. We found out that Mayor Montgomery County has decided to finally close that. And that's a huge building. And that may not be a salt solution tomorrow, but that might be a really great forever home for Salk for a ward to be taking seriously. And as well, someone was just speaking about that miserable. So when we're talking about Salk and Salk being a science school, we live in a science neighborhood. We are surrounded by many health care institutions. And we can do this. This is not going to be hard to do. There are many buildings available. And I'll do the first one to sign up and volunteer for our kids to keep a school like this in our neighborhood. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3183)">53:03</a>
+  <p>Next on the speaker's list is Preeti Shawa.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3187)">53:07</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3189)">53:09</a>
+  <p>Three minutes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3189)">53:09</a>
+  <p>Thank you, everyone. And thank you to members of CB6. My name is Preeti Chabla and I am a proud parent of a Salk student, Joy Coacher. She's going to be talking as well. I'm here tonight asking you to please vote in favor of Salk Resolution. Not because it's about moving a school building, but because it's about preserving a community, a legacy, an extraordinary educational institution which has served our community for three decades. Sulk is not just another middle school. It is small. It is nurturing. It is caring. It's a national blue ribbon school, recognized for its excellence by DOE. a motive award winner, and Salts Literary magazine, which is written up by the students, solely by the students, wins awards every year. This school is diverse, high performing, built on academic writer for warmth and fun. It is an extraordinary demand. Some of you might know, but the others might not, that the weight list for Salk is as long as the student body itself. Huge demand. Salt's identity is deeply tied to its neighborhood. It was funded with the blessing of Jonas Salk and maintains close ties to NYU's Grossman School of Medicine, where students benefit from real world exposure to science and medicine. That connection is not incidental. It is foundational to what makes Salk. Salk. While we fully recognize and respect the needs of PS40, all schools deserve space. Communities evolve. But solving one space challenge should not come with the cost of dismantling a thriving, successful middle school or emerging out of existence. You may hear concerns about the need for space at PS40, but these are the same children and families, as you just heard, who dream on being a sulky, as the kids proudly call it. Our area in District 2 is in desperate need for 6 to 8 middle school choices. Without salt, there's only a rook, and it cannot accommodate such a large blocks of neighborhood families. where family dense neighborhood and district two demand data heavily supports the need for more but not less school choices in our area. We urge you to look at this resolution because it asks for something very reasonable and very fair. It urges presentation of SOC, its identity without a merger. It alleges relocation within District 2, sub-district 4, proximate to the community that built it and still needs it. And they ask for transparent and great coming back. Time is up. Thank you. Thank you. So I just urge you to support the resolution to support this beautiful school. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3394)">56:34</a>
+  <p>Next is Theodora Ox. Three minutes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-33">SPEAKER_33</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3399)">56:39</a>
+  <p>peteroaks um so i'm sixth grader at sulk and i'm here to talk about sulk today and why it's such a important pillar of our neighborhood why it's so important that it stays in this area so i just want to thank you all for putting forth this resolution and for um really considering this issue it's a very important one salt is not just a middle school it's so much more It's this beautiful community that values both rigor and academics, but also having a warm and nurturing experience in the school, which is so unique and so special. And it's very, very important that we preserve this experience for the students that go there, including myself and joy, and for all the students, for all the students that will come in future generations. In the morning, when I walk to the school, I see so many people I know. I see my friends. I see people in older grades. I see my neighbors. And having talk in this neighborhood is so important. It feels like your heart is something so much bigger, not just yourself, not just your school, but like a whole community. And it's really important that we get to stay here. in this area. It's also really important that we get to have our own space to grow and thrive already. So it's so successful, just so well and is an incredible school. It could do so much more with its own space. And yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3504)">58:24</a>
+  <p>Great. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3505)">58:25</a>
+  <p>Thank you very much.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3512)">58:32</a>
+  <p>All right, next on the speaker's list is Joy Culture. Three minutes. You may begin now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-34">SPEAKER_34</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3517)">58:37</a>
+  <p>Hi, guys. Good morning, members of the panel, faculty, and parents, and fellow students. My name is Joy Kocher, and I'm a student at the Fall School of Science. I'm a student at the Fall School of Science. I'm not standing here tonight as a number and report or a line on the budget sheet. I'm standing here, I stand the list of reality of the school every single day. The fall school science is not just where we attend classes. It is where curiosity is encouraged. for experiments or personalization, where students are taught not just to learn science, but to think like scientists. Our classrooms are small enough that these are not just by name, but by our ideas, by our strengths, and the questions that we are still ever trying to answer. And that works, that's not opinion, it's facts. So all consistently performs at a high academic level. Our project-based curriculum pushes students to analyze, collaborate, and educate. The structure of the school was intentionally designed to make that possible. Merch and Salk into a larger system will risk over crowded classrooms that are looted programs and destruction resources. From a logical standpoint in itself, this mentally model that is already succeeding above and beyond makes no sense. But this decision isn't just about logistics or efficiency. It's about people. It's about students. When students quite a solve, they choose something specific, a place where their voices matter, where they can grow in an environment of build for curiosity. Emerger threatens to race and identity. It turned a unique community into just another building and assist them where individual how to get lost in the ground. And I asked you to consider something else. Credibility, the students standing here, the Aurora, Luke, and myself, we are actually going to experience the consequences of this decision every single day. We are the ones we're in discussions. We are the ones whose futures are safe by the environment, use choose to protect or dismantle. So when you discuss this more drug delivery. Remember that you are not simply rearranging schools on the map. You are excited whether a convenient works and inspire students and that produces fire results should continue to exist as it was met you. Because once a school is taken apart, you cannot simply rebuild and reconstruct what made it special. So I ask me, before making this decision, look beyond the paperwork, look at the students, look at the success, look at the community standing right in front of you tonight, and ask yourselves one simple question, if something is already working, why would we break it? For example works to protect what inspires. Protect the sole school signs. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3660)">1:01:00</a>
+  <p>I don't want to go after that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3670)">1:01:10</a>
+  <p>It's not the mic. She could. She really could. A lot of these soft kids.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3677)">1:01:17</a>
+  <p>Next on the speaker's list is Claire Houston. Three minutes. You may begin now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3683)">1:01:23</a>
+  <p>Yes, I'm going to try and make this a little bit shorter because I don't want to be repetitive. But good evening, Community Board 6. My name is Claire Houston. I'm the parent coordinator at Salt, married this year. I have a former PA president, so I have an alumnus at South Park. I loved it so much. I wanted to work there. I'm here in strong support of the resolution passed by the Health and Education Committee and for full board board this evening. In particular, I'm here to speak to the importance of salt's longstanding relationship with NYU, a relationship that is foundational, not incidental, and it's of the NYU School of Medicine and the Department of Education in NYC. The school opened in 1995, for the few months after the death of Dr. Jonas Salk, developer of the first polio vaccine. Dr. Salk was himself a graduate of NYU School of Medicine and endorsed the school by granting NYU and District 2 the use of his name. Our school was intentionally rooted in this partnership with the institution to enrich science education for New York City middle school students. For decades, that partnership has provided salt students with access to science labs, mentorships, career days, and even the use of their auditorium for our graduation. Walking across the NYU stage definitely gives all students a glimpse of their possible future selves. Our mentorship, we have 30 students right now that are working with NYU medical school students. They, because we're so close, they actually come to the building a couple times a month, which is so lovely. I get to listen in on some of these and it's great. Secondly, each year we collaborate with NYU on a career day that we now call pathways in STEM, 14 different doctors and professionals volunteers speak with all of our students. Students get to hear from cardiologists, neurologists, dermatologists, gastroenterologists, surgeons, also professors of science, different fields. It's quite an experience. Kids are very wrapped up after that morning. And certainly as a consequence of our proximity and our long-standing relationship with NYU, many of our families have deep ties to NYU as employees. The parents who work in healthcare research and academia and whose daily lives are rooted in this neighborhood. So this is not just proximity, it's also quite a community. In these ways and why you connect middle school students in the higher education. I'm sorry you're going on time. Okay, wrap up. I said anything that I want to say, thank you very much for your time.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3874)">1:04:34</a>
+  <p>Thank you. And the final speaker on the final speaker on the list is Rod and Mooney.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3885)">1:04:45</a>
+  <p>Mr. Mooney, you have three minutes. You may again now. Thank you. I'll keep it down to one because I think you've had a lot on this issue already. um if i look tired it's because i am i have to afford an old at home to be here i hope you think that as evidence of my commitment to this issue rather than negligence of the parent i promise you one minute i think it boils down to three key issues here right we want to preserve a really a really wonderful school culture right that is as open and inclusive and curious as it is creative we want to maintain an asset for the community and that really serves this community and the third point is we want to enable the thinking white objectives as more than we heard the support for in the in the room we've heard support among elected officials and and finding a solution for so which this resolution wants to begin to do through dialogue will help us do that as well thank you very much</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3953)">1:05:53</a>
+  <p>We do have council member Maloneyy with us. If you're ready, if you'd like to, if you have to see. Thank you. This is a record. We've had council member with us, I think, three months in a row. So thank you. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3972)">1:06:12</a>
+  <p>Never. Hello. Thank you. Thank you so much. You, everyone. Happy to be back. So thank you for having me. And I want to, first off, commend the young students who were just testifying. It is scary to be up here. And that was really impressive. So a round of applause. And also a huge thank you to my staff who've been here for the whole meeting, a brief pair who many of you know. Yes, thank you, Greece. And I wanted to take a chance to introduce our new constituent services director, Anderson Ortiz, who's right here. And interesting will be amending these meetings regularly and our point person for, for everything constituent services moving forward. We are fully staffed officially. Uh, first off, I want to say happy wins his three months. It's a celebratory month. And to honor that yesterday, I introduced a resolution on the Equal Rights Amendment, which is A resident calling on Congress to recognize the ERA as the 28th Amendment in the United States Constitution. Shocking that we aren't at that point, but also surprising that we as a city haven't put that resolution forward. This is an issue that's deeply personal to me. My great ancestor actually authored it in 1923. And you can do the math on that and how long we've been fighting for equal rights in the Constitution. So it was very hard to have a group of council members, men and women. We had organizations like now when mommy's heart speaking out about how important this is. And it's sparking a national movement where ERA now nonprofit is asking city councils across the country to have similar resolutions to put pressure on Congress. And finally, recognize the equal rights amendment, which has been ratified by 30 states. So it's really just a technicality. It is also St. Patrick's Day. So I hope they have to take on as the chair of the Irish caucus. I have to make sure to give a shout out to the upcoming events, including a event that we're having in the city council chamber. on monday that is open to the public all are invited we do ask you to r cp at 530 we'll have entertainment irish shoes will have uh step dancers and we'll be honoring important members of the irish community so uh on st patrick's day everyone is irish and we'd love for you to come the other thing keeping busy is the budget uh we as the council are beginning our budget hearings in response and i'm sure already mentioned this, I know you went before, but I was in hearing today on the finance committee where we're getting into the bottom of the pretty large budget cap and trying to think creatively about revenues that do not involve putting the on on our constituents and people of this city that are already facing an affordability crisis. So that is what I'm spending a lot of my time on over the next month and our response to the mayor's budget proposal is due in the beginning of April. So if you need to find me, I'm at 250. Forgive me if I don't come to the next community board meeting. The issues specific to this community, we actually had a meeting this morning, where we went through some of the budget priorities and got into a lot of the issues that are top priority. Tomorrow, we are doing a conversation, discussing retirees, that Rupil has helped to organize. I don't know if you want to, did you already protest?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4219)">1:10:19</a>
+  <p>No, we have gone to say yes, but.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4221)">1:10:21</a>
+  <p>All right, well, you'll hear from Ripple on that, and I'm excited to be there in person to talk about this really complex issue about how we make sure that people have access to the healthcare that they were promised and not forced onto Medicare disadvantage. And next Thursday, we have the Spark task force as well. We all know that that is very important to this, to this area. And we're going to be taking on the new version of the task force where I think I'm the only new member, but the elected officials that sort of moved around. And then lastly, one of the things that has been on my mind this week, like many of you, I learned about Madami, Mayor Mondami's plan to close the shelter nearby on 30th Street. So I'm eager to work with the community board on discussing plans. So what we would like to see for that site. And also ensure that the relocation process is smooth and any issues that come up around that, so have been trying to be in touch with the administration on what those next steps are. In closing, our office is always here for you. We'll have a consistent presence at this meeting. I want to thank you for all the work that you do and letting speak.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4302)">1:11:42</a>
+  <p>Do you have a time for questions? Yeah, Jerry has a question. We're free.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4305)">1:11:45</a>
+  <p>Yeah, hi, hi, because, sorry. Because you go with this time, I'm going to repeat myself. I would love to ask that the city council of the very more forceful about pandemic is not aphobia that's both on the council, state-wide. There's no place for hate. Well, any discussion, solution, actions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4334)">1:12:14</a>
+  <p>A lot of the, there is a package of bills that are coming forward right now that protect all religious institutions. And one of them is the bill that I have is to protect any religious institution by giving them access to NYPD. So if you are a religious organization that feels you might need a digital protection, you can go to NYPD and get a report on how your organization should think about emergency preparedness. The last few people need a situation where you need to prepare for the worst, and that would include all religious institutions, whether it's critical and non-vong, um or or jewish so i do think that there's a clear sense and the council that there's no place for hate in the city of any type and we've been forceful on that when incidents have come up but thank you for the point thank you and alice milica who's online has a question please</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-31">SPEAKER_31</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4397)">1:13:17</a>
+  <p>Hi, good evening council member. I'm just wondering if you have any other information for us regarding the future of the 30th street shelter, whether in conversations that you've had with City Hall or DHS, if there's any more information that you can share with us publicly about the site.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4417)">1:13:37</a>
+  <p>I don't have any new information that I will share this time. I found out about an hour before the articles came out. So a lot of, I have the same information that you all have. What I do see is an opportunity, which is there's no clear plan right now that has been put out there. So my suggestion is that as the city council member for this area and with the community board, then we come forward with our perspective on what the site should be used for. And personally, housing is top of mind, of all sites, including affordable housing. And that's what I would like to have a longer conversation about with the community board about what we'd like to put forward in the letter and recommendation to the administration. But thank you for the question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4468)">1:14:28</a>
+  <p>Um, from my and then, and then Justin.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4474)">1:14:34</a>
+  <p>I'm sure if you were able to tempt the St. Patrick's Day for all. parade that happened in Queens, but it's for the citywide, but it was great. But I was wondering, like, what are other initiatives that we can do to create better visibility for LGBTQI in our district? Um, so it's Manhattan is the big parade, borough. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4496)">1:14:56</a>
+  <p>Um, I wasn't able to attend, but I did hear about it and I know that the council had a strong presence, including the speaker attending. um and think that it's yeah that's a that's a great event um i yeah i think we can in future we can look at specific honorees that we can include in the council chamber and but i'd love to talk to after their ideas that you have about how we can create events here well and justin thanks council member for coming um</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4531)">1:15:31</a>
+  <p>So I'm a big sports fan. We've discussed the World Cup is coming in a few months.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-30">SPEAKER_30</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4536)">1:15:36</a>
+  <p>And I know that you're chair of EDC. And I know you're kind of taking the lead on this. What can we do as community to encourage, as the World Cup comes up, to encourage revenue to the area?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4550)">1:15:50</a>
+  <p>That is fair time for question. I had a hearing on this last Friday through Economic Development Committee. to talk about how the administration is thinking about the cup and to highlight some of the areas where there are blockers to local economic development. One of the takeaways for me is that business improvement districts have been, there's a block from June and July on planning activities in public spaces, less the FIFA or the World Company to use those spaces. And they haven't been given enough information specifically from the administration or from EPA about how to engage in any way. And we're at March, we're talking about a few months. So it's definitely something that I want to shed light on some of the gaps that planning for an event like that takes a lot of time. And billions of revenues projected from that. millions of people who are coming to the city. So I think that's a really important issue. What I will say is that we have some resources in our office can help put together for businesses that want to take advantage of the cut. So there's a one, we already have it. Okay, great. There's a one pager that we have over here that talks about how you might take advantage for some of the opportunity. And please come on there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4639)">1:17:19</a>
+  <p>Sure, there are in the council members.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4663)">1:17:43</a>
+  <p>committee's overall website.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4666)">1:17:46</a>
+  <p>There's also an Avenue grant program, responding by the Association for Better New York, where they're actually giving small posse Maloneyy to local businesses and some nonprofits that are developing events or promotions or other tie-ins themed around FIFA. And you'll find a lot of that information is on the last two-page of the council members community report. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4694)">1:18:14</a>
+  <p>And we look forward to supporting the community and bids however we can as we get closer to that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4701)">1:18:21</a>
+  <p>Great. Well, thank you so much for coming. We really appreciate this a record. You're done to go. Great. Yes. And now, please, we start to live as people.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4717)">1:18:37</a>
+  <p>Thank you, everyone. Just a few housing matter, or shorter, any members? First of all, it's that time of year where some of our members will be concluding their service on the board. So I just want to remind everyone that for those CB6 members who are currently serving and not decided not to apply for another term, your service does not automatically end on March 31st. Your service actually ends when the borough president points someone to your seat. so um if you are willing to continue so uh perhaps may i believe is what we're hearing from the pro president's office then that would be great but if you choose to end your service on march 31st you will have to technically resign so just send a simple email to the office um indicating that and That will take care of that. But just know that it doesn't automatically end on March 21st. If you stop coming to meetings on March 31st, you will be wrapping up absences and adversely impacting forum for your fellow members. And lastly, I'd like to remind you that we have a resolution template on the board website. We are very glad the members who would step up and decide to draft resolutions. We asked that you use the templates. We have a Google Doc version and the Word version. It all becomes formatted the way we do it and it saves the office a lot of work and just format it back from whatever it is that you're doing. So if you could please go to our website. It's under resources. You will find it under the resources for CB6 members and it comes to this. And there are a lot of useful resources for CD6 members, two of which are the templates for resolutions. So I'll stop there unless there are any questions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4841)">1:20:41</a>
+  <p>Okay, thank you. We've now arrived at our committee reports and resolutions. Members of the public, please note that in this section of the meeting, we only recognize questions from members of the board. The CB6 staff emailed the digital ballot to all members. Please click on the link to open the ballot, select your name from the draft down list, and select your vote on each resolution as presented. Do not submit it until later in the meeting after the final resolution has been discussed and presented. At the end of the meeting, please submit it after indicating all of your votes. You will not be able to submit the ballot unless you vote on every resolution. If you plan on abstain, please let abstain and remember this will count as a negative vote. Final vote counts will be announced after the second roll call. If any part of our going procedures are clear, please raise your hand and we will address your question. First up is executive committee. This is a resolution authorized in the continuation of land use consulting services. And George James is our current consultant who we have relied on heavily. He's a great resource for the board. Are there any questions about the resolution? Marty. Where can we see the reports?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-28">SPEAKER_28</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4916)">1:21:56</a>
+  <p>Where can we see the reports? that they have done so far.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4920)">1:22:00</a>
+  <p>Typically, if it's for the land use committee, and so it's with the minutes on the land use meetings. I'll do. Okay. If there's no objection, we'll now go on the resolution. Please mark your digital ballot. And those of you who are not using the digital ballot, we'll ask you to vote your, we'll clutch you to vote verbally during the second roll call. Next up, we have Gabe Tursa, the chair of Land Use and Warrant.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4946)">1:22:26</a>
+  <p>Thank you. Okay, so we have a resolution here regarding the fast track methodology for the 12 community districts producing the least affordable housing. It sounds straightforward, but there actually are some methodology questions. I like to a ton of work on this resolution. I want to give him a shout out. I hope you all got the chance to read it, but there are a few things that are sort of surprising that I really wanted to highlight, and that is the finality of the decision as it stands now. In other words, anyone has ever worked with large datasets, understand there's almost always a revision. In this case, even if information comes forward that changes the rankings, so to speak, that you can't appeal it. Another interesting thing is we want them to wait, perhaps the size of apartments and the depth of affordability instead of just total units. Because if you don't do that, you wind up with just lots of studios and one bedrooms. at a higher affordability rate. Any questions?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5021)">1:23:41</a>
+  <p>Mm-hmm.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5025)">1:23:45</a>
+  <p>It's not actually a question. It's just like I was really impressed. This was a really well written resolution and I know it came out of a lot of thoughtful conversation and it covered a lot of ground and explained advice. So thank you very much. Yeah. Alexis. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5047)">1:24:07</a>
+  <p>And actually, it had to be done in a very short amount of time as well, just because of the way the councilors.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5055)">1:24:15</a>
+  <p>Liz? Yeah, I had a general question because I think, you know, the whole fast track speaks to the timing them and I saw that the, um, This is a discussion period or, you know, 98 period. But I wanted to know why did you find out 30, why not 50, how do you lie at 90s?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5082)">1:24:42</a>
+  <p>That's a great question. And then everyone who watched it on YouTube knows we actually dug into that. And the answer is, I think with public bodies and large data sets, knows we only meet once in that 30-day window. I'm temperamentally a fast tracker, but in this case, it seems sensible, but to go for 90.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5107)">1:25:07</a>
+  <p>We were just saying that quite often, based on our meetings, we need to have a pass committee and for the minute, and that takes more than 30 days typically. Are there any other questions? Marjor? If there's no objection, we'll now go on the resolution. Please mark your digital vote. Do you report? Yes. It needs a microphone, so. All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5135)">1:25:35</a>
+  <p>So next meeting, we are going to be talking about the Salk School specifically, we have a task force. Jim and James are going to be looking for schools in the district. It sounds like there's a lot of passion in the neighborhood for the Salk School. We are going to be talking to some parents groups as well. And we're going to be talking about potentially putting public bathrooms in as many pops as possible. And then on a personal note, I will be leaving community board six.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5167)">1:26:07</a>
+  <p>No, no.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5168)">1:26:08</a>
+  <p>For I'm going to be legislative director for Assembly member Keith Powers and helping him cover community board to say so you will not be rid of me. You're sure. You can call his office and ask for a different person to come in. So I want to thank you all. It's been incredibly meaningful experience and I'm deeply, deeply grateful to everyone here and community work six.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5199)">1:26:39</a>
+  <p>So thank you. I will miss you a lot.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5206)">1:26:46</a>
+  <p>Congratulations. Thank you. Yes, congratulations. Next, we have business affairs and licensing and Tom Malden, Chair.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-28">SPEAKER_28</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5213)">1:26:53</a>
+  <p>Hi. Item A is actually two of the same establishment. One side walk cafe, you have a drug war cafe. We wouldn't have any uses of this. But I want to say parenthetically, really amazes me that many of these applicants will send in pictures of their current setups, which are an obvious conflict with what they go on their schematics.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5241)">1:27:21</a>
+  <p>We'll try to bring this up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-28">SPEAKER_28</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5244)">1:27:24</a>
+  <p>in long term the department transportation does inspect these outdoor cafes and roadway cafes and we can also call 311 and the DOT will come out and inspect. In that case other than that I have no we have no issues with the dining up application the sidewalk cafe roadway cafe for a bark fly so Is there a motion to this one?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5278)">1:27:58</a>
+  <p>Are we bundling? Is there any objection to bundling? Is there any objection to bundling? This is a objection.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5287)">1:28:07</a>
+  <p>Sorry. I just want to call out the last one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5290)">1:28:10</a>
+  <p>Oh, the campus. So we could bundle all the others. Would that be acceptable?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-28">SPEAKER_28</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5294)">1:28:14</a>
+  <p>Okay. I'll just go down to us. I'll like the bundle. Let's hear a motion. The bundle is C-D-E. F and G, which are all Litter and your Sire licenses. We have no issues with any of them. We know that the committee was in favor of them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5320)">1:28:40</a>
+  <p>I'll second, I think, what I heard of this question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5323)">1:28:43</a>
+  <p>All right, so please go ahead. If there's no objection, we'll now vote on the bundled resolutions. And that's state of age. H, yes, item.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-28">SPEAKER_28</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5334)">1:28:54</a>
+  <p>We get the application for the cannabis license for 831 3rd Avenue. Many of you know this as an example, which is moving I think downtown. No, downtown. Okay. They're moving anyway.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5351)">1:29:11</a>
+  <p>47.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-28">SPEAKER_28</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5352)">1:29:12</a>
+  <p>A big place. This application was in technical compliance with the new cannabis regulations which was recently signed by the governor. The problem is technical compliance doesn't mean that this complies to what the community feels would be necessary or add in their particular runway or not runway establishment. And he said, notwithstanding new regulations, this is not the best interest in the community. We had a number of letters from the trusted parties saying that they were not in favor. There was community members at the meeting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5408)">1:30:08</a>
+  <p>They were not in favor of it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-28">SPEAKER_28</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5410)">1:30:10</a>
+  <p>We felt overall, again, even though this was in technical compliance, we did not favor it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5419)">1:30:19</a>
+  <p>And just to clarify, Anton, the proximity rule, we understood that this one is within. Talk about it. Oh, okay, but that it meets the current proximity requirements.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-28">SPEAKER_28</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5430)">1:30:30</a>
+  <p>It meets the proximity requirements. The problem is that new regulations basically say that a school has to be within 500 feet on the same treat. So you can technically have as the bagels in the middle of the block or towards the corner and around the corner of the school less than 200 feet away. And this is the case that we saw that the paper school was 297 feet away. The child wine institute was 200 feet away. regulations said you can't have another kind of a shop within a thousand feet of another kind of a shop this one if it goes through will be 675 feet away from urban relief organic relief and they have put an application called a community</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5508)">1:31:48</a>
+  <p>Okay, so do we have any questions? Jason.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5518)">1:31:58</a>
+  <p>I'm opposed to the resolution and I encourage the members of the board to join me in my opposition.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5524)">1:32:04</a>
+  <p>I think, you know, as the resolution points out, this applicant is in compliance with current regulations.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5533)">1:32:13</a>
+  <p>We have recently opposed another</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5541)">1:32:21</a>
+  <p>And the Canada's board went ahead and approved the license despite our opposition. And I think our opposition to compliant establishments that really weakens our credibility as a board and hinders our ability to have recognized opposition that we have more legitimate reasons for future businesses. Just a couple other points. that it's not suitable because it's near transit I don't see why that creates a that's a justifiable reason why a business shouldn't be located in transit I think that would be a benefit to the business's success and then just lastly I think I know I</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5605)">1:33:25</a>
+  <p>solving our problems with illicit shops as having a thriving and successful and abundant legal and regulated cannabis shop throughout the neighborhood.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5616)">1:33:36</a>
+  <p>And so I support the expansion of legal shops throughout our neighborhood. And I think there's no good basis to oppose this application. One last point that I failed to forget. I understand there was opposition at the meeting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5635)">1:33:55</a>
+  <p>face and vote in a different direction and certain members come from the community come to speak about in many cases about many issues and it's important that we can certainly need a greater community not just the voices of those who came to immediate to our servant and thank you uh jerry yeah i have got no i just want to echo with support for jason to uh and we have jim and then uh cut</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5669)">1:34:29</a>
+  <p>If we're opposing this the second time for the same basic reason, it seems to me that repeating that same basic reason tends to point highlight perhaps a shortcoming in the regulations that needs to be addressed. If it's within 275, it happens to be around the block, that seems to me to fall within the intention of the regulation, yet not the letter of the regulation. And I was urged everybody to support Anton's resolution because that shortcoming eventually will get noticed and eventually the state will correct it. Uh, Kat.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5726)">1:35:26</a>
+  <p>I just wanted to add comment. in response to Jason and others who would oppose this resolution. We did recognize this at the board at length, particularly the lack of partnership with OCEM and their negligence in keeping things clear. And I'm not opposed to cannabis shops in our community at all. We didn't talk with the applicant at length And this is someone who is fairly new to the area. And I encourage you if you all want to have more conjecture to come to involve community meetings and discuss it among other members who were seated on this committee and not just bringing up at the full board. That's just something I would ask in respect forward.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5779)">1:36:19</a>
+  <p>And, um, and yeah, I, to follow up on what Kat is saying. We are not nimbied. Like, we actually approved a renewal for a cannabis dispensary that opened with some problems, and we acknowledged that they address those problems and then, you know, resolve them. So we approve that. The other application that you talk about that we worked really hard to reject, and OCM did not listen to us, was actually somebody who started his presentation to the committee, speaking to Kat's point, by lying or by branding about the fact that he lies to O.C.M about his connections with the, into the applications that he is part of the support of. So we're not like anti-cannabis. Like that is an inaccurate reading of it. And the other thing that I just want to mention, which only have few of us know here, is that OSEM is in a general way, super frustrating to work with. They were supposed to be a meeting today to clarify a webinar that was supposed to clue us in to actually know what the rules are that we are, you know, we are trying to make decisions based on. That has been booked for a couple of weeks. The first notice they sent out was a registration that took us to a registration for an entirely different, completely unrelated meeting. When we push back, they sent us registration for the correct one. This meeting was supposed to start at 1 o'clock today. At 1243, they sent it in the email saying, not even saying it's been, you know, the date has been changed. Just saying, here's a new invite. And so they research. So this is how they operate. So we do want to offer than they do. And agree, like Kat says, if you are concerned that we are just saying no, come to the meetings or we discuss them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5944)">1:39:04</a>
+  <p>If Anton wants to say something, but I suggest that we vote on the resolution.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-28">SPEAKER_28</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5952)">1:39:12</a>
+  <p>Talking about a report. interpreted the rules the original law such that they 134 cannabis shop opened up under those regulations and then they realized he interpreted regulations wrong and automatically disallowed 134 cannabis shops to operate this new law which is signed by the government or made it clear</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5990)">1:39:50</a>
+  <p>that the old law said proximity a thousand feet on the same street.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-28">SPEAKER_28</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5998)">1:39:58</a>
+  <p>The problem is in New York City, you can't go a thousand feet without running into a school one way or the other. We certainly are not in favor of this room and we're going to be discussing this at our next meeting. In terms of what we're going to talk about soon, new bell can book is being reviewed which will help new members and anybody else would like take a look at it what we do and how we do it we're going to be talking about it which is sending access to roadway sidewalk cafes which was Harvey have seen have discussed and what else we're going to talk about this proposal by Mayor Mount Downey to have small business right control. I don't think right control works in the free market society, but we'll talk about us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6062)">1:41:02</a>
+  <p>Great, so hopefully everyone has voted on this resolution. And we'll move on to health and education with Rupert Kahn's chair.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6070)">1:41:10</a>
+  <p>Hi, so we have one resolution on the salt which basically just says we want to keep it in CB6 essentially. Any questions?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6090)">1:41:30</a>
+  <p>All right. Marty. Oh, sorry. Eric wants to say something.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-26">SPEAKER_26</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6099)">1:41:39</a>
+  <p>Hi. I just want to. And for 20 years now, we've been fighting to lower class sizes in New York City and roadblocks have been put up at every turn and every foreigner. And then finally, after years of advocacy, New York State finally passed a law in 2022 to give New York City students the class size across New York City and there are families that are impacted and we should try to moderate that. But everyone needs to understand that the students in New York City have subpar education and that was determined in a court of law in 2009 and justice has been denied for 20 years. So I'm asking you to understand the context probably a way that we can figure this out, but we need to understand that this is part of it. And when we talk about NIMBY, we also need to make our contribution to students' education. So just be thoughtful around it. We want to help these families and students, but students are sitting in classrooms year after year with overcrowded. classrooms and I will point out the curriculum at our middle schools is the same, right? It's maybe marginally different at the edge, but I know that Baruch and other schools could provide the unique educational curriculum that they're saying that SOC provides, but every school has the same math, science, English, social studies. They do because my students went there too. Be thoughtful, appreciate.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6263)">1:44:23</a>
+  <p>If there's no objection, we'll now vote on the resolution. Please mark your digital. Oh, I'm sorry. Oh, sure.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6271)">1:44:31</a>
+  <p>I think all students have spoken favoring the proposal I'd like, but just the case they're watching. Oh, nice. Okay, great. Just encourage them when we accept members when they're 16 to join.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6285)">1:44:45</a>
+  <p>Yes. And I support the resolution. Thank you. Great. Yes. All right. And then RuPaul, you have her in board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6298)">1:44:58</a>
+  <p>Yes, I do. So as council member Maloneyy mentioned a little bit earlier, we are going to discuss city retirees health care plan tomorrow. We had somebody to come talk about it in January about why they shouldn't be moved off the retirement benefits they were promised and Council Member Melanie is going to come tomorrow and continue the discussion so if that's a topic of interest to you come tomorrow for our meeting and also yeah council member will be here again tomorrow for CB 6 for this so that's two days in a row three months in a row The next is health fair. We have one coming up on March 27. Flyers are on the table. I want to thank Gloria for printing them on her printer because we can get the professional copies in time. So thank you for that. And as far as the district need statements go, I couldn't have done it without Gloria either. So thank you for helping with that. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6375)">1:46:15</a>
+  <p>So please, everyone take a flyer and post it where you live or in some place where you know already see. So we, I think we have 25.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6385)">1:46:25</a>
+  <p>No, we only have four or five here because Gloria printed them off a carpenter. Oh, okay. Can you circulate the actual ones will. So I mean email it. Oh, yeah, yeah. Once we get the official, well, digital copy will.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6400)">1:46:40</a>
+  <p>So someone take the precious four or five and post them in their meaningful places.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6405)">1:46:45</a>
+  <p>all right transportation uh or brock is going to brock is preemate our vice chair thank you all right uh we have two resolutions um the first one involves NYU Langone which was on second avenue between 17 and 18th street um they were cited by the federal joint commission for the way they store oxygen and other applications and uh They were nice enough to give me a four of it. And I agree, definitely without dating. And they're going to make, you know, the big tank right on 18th, which is going to throw the oxygen and from that over to the patients. So that's going to require a truck to come over there for oxygen at the hospital. And if they need a loading zone or no parking zone, so that's anybody has any questions about first resolution.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6463)">1:47:43</a>
+  <p>Okay, if there's no objection, we'll now go on the resolution, please mark your digital ballot.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6471)">1:47:51</a>
+  <p>The second resolution, and I'm really excited about, this is for all those people out there, they're like, hey, what about pedestrians? You know, what about us? Like Gloria, right? So this is saying that, you know, when we walk down the sidewalk, the sidewalk should be clear. How much of it should be clear? Well, it depends on What kind of corridor is? Is it fit that in a global corridor? Or is it 30th Street, a side street, which would be a baseline street. And so the EFT has definitions of what each type of street should have. For 30th Street, as soon as a baseline street. The neighborhood corridor. All right. Well, pretend it's a baseline street because that's what I remember. It's eight foot. What's that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6519)">1:48:39</a>
+  <p>It is not a thing. What's not a thing?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6522)">1:48:42</a>
+  <p>Baseline Street is the minimum.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6525)">1:48:45</a>
+  <p>We're talking about different things in.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6527)">1:48:47</a>
+  <p>Yeah, the baseline tree is not sure, it's about 30 street, but baseline street is a thing. And for example, baseline street should be eight foot wide with a four foot clear path. So you found a baseline street, there's still room for amenities and sidewalk dining and such. But we had long discussions about this community. And what we're saying is, if the sidewalk width is insufficient, it should be widened. We should have wider sidewalks, right? So about eight or nine years ago, the city narrowed all, you know, almost all the sidewalks in the city. And that's why you're like, hey, I see people walking side by side by side of the same way. Really, it's that our sidewalks are too narrow. It's not these people should be walking side by by and fucking. Anyway, that's the scoop and maybe a question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6577)">1:49:37</a>
+  <p>Sorry, Liz, let's go listen the back and then we'll talk to Anna.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6582)">1:49:42</a>
+  <p>Yeah, I just put some clarification on if this were codified, um, habits to situations where people are already out of compliance or situations are out of compliance, like are they deemed illegal and then we like fix them or are they grandfathered in and everything?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6602)">1:50:02</a>
+  <p>That's a great question. There's a huge number of sidewalks that are not in compliance with DFTs or phone recommendations of what this should be. So what we're saying is the sidewalks should be widened if they're out of compliance.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6622)">1:50:22</a>
+  <p>So sorry, just to clarify, if you have a student that comes into this space, your segment should revise the student. I thought it was specifically mentioned that you didn't have to do that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6632)">1:50:32</a>
+  <p>Yeah. So basically, we have a lot of discussions about stoops and tree pits, and we don't want building turned out. We don't want trees torn down, so we exempted them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6644)">1:50:44</a>
+  <p>So I think that addresses Liz's question, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6647)">1:50:47</a>
+  <p>To an extent, but there's still a lot of blocks that are not of compliance even ignoring stoops and street pits.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6654)">1:50:54</a>
+  <p>And maybe you could just give an example so we can understand.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6657)">1:50:57</a>
+  <p>Well, like we were saying that the baseline clear path that's common violated. By what? No, I guess that's what I'm not. Oh, like it. Too narrow and the clear path not being four feet obstructions by bicycle racks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6684)">1:51:24</a>
+  <p>But they're movable things. It's not, there are things that are movable. It's not infrastructure like a building.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6690)">1:51:30</a>
+  <p>Many things that are movable, but also just like bicycle racks that are bolted in.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6701)">1:51:41</a>
+  <p>Okay, sorry. Hopefully that clarifies. That was my understanding as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6706)">1:51:46</a>
+  <p>Ann. So I think it's a shame that transportation and business affairs did not work on this together because I think you're kind of struggling with a lot of the same issues here about sidewalk clarity. And one thing that we discussed in our last committee meeting was this issue that I raised about sidewalk clearance and that there is, I'm trying to read mine, you know, I think it's intro 1444 that would essentially say there is no street in the city that needs to have more than eight foot clearance, eight foot clearance on the sidewalk. And that just seems problematic to me. And I think you're together taking that even, not further, but you're kind of clarifying that, like saying that even that even that should, there should be more, I think we're both struggling towards the same objective, which is making sure pedestrians have enough for a rink to walk. And if you have a stroller or a wheelchair or whatever, any mobility device, you have space. So I'll vote for this, but I feel like there is more room to talk about this and that you should be aware of the several bills in the city council about this if you are not already. Well, thank you for your vote.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6808)">1:53:28</a>
+  <p>But yeah, each each type of corridor has a different specification on how why the sidewalk should be, like, for example, B. Avenue or 473, our global corridors versus community corridors versus silhoury. And D.R.T. has the own recommendation for each one. I have a pick, and I could read as you if you are worried by it, but.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6828)">1:53:48</a>
+  <p>Literally, if I can read to you, the length of place who says, no, require. no oral ellipsies shall require that a clear path under than eight feet of the window of the sidewalk when it clear after the installation of this island.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6847)">1:54:07</a>
+  <p>So there's no more than eight feet? No more than eight feet. Okay, well that's a violation of what DOT has. The DOT has for a global corridor shared a 25 foot wide width and a 15 foot clear knob.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6861)">1:54:21</a>
+  <p>That's exactly why I'm phrasing this. issue that we need to work together on this. So we all thought what's going on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6871)">1:54:31</a>
+  <p>Madam Chair, I think this is out of order or it's not remained the resolution.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6875)">1:54:35</a>
+  <p>But if there's no more if there's no objection, we'll vote on a resolution, but it does sound like maybe you should get there should be for discussion in this issue. Um, so is there any objection to voting? And please go ahead and mark your digital ballot. Do you have a report?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6893)">1:54:53</a>
+  <p>Maybe just a quick thing to mention 34th Street Busway. You know, Mayor McDonny is in favor of the 34th Street Busway and he campaigned on the 34th Street Busway and he went to rallies on the 34th Street Busway. So, you know, why aren't we seeing like an announcement like McGinnis Boulevard or like Madison Avenue? Why aren't we seeing that? And just to kind of fill you in that there's negotiations taking place even with the city, state, and the federal highway administration, and hopefully something could be worked out there. But the negotiations and draw ongoing for a very good question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6935)">1:55:35</a>
+  <p>We're going to reading the street. I'm sorry, that's bad. Forget that. Forget that I said that way. No, I don't think it would be for a way. Budget Government Affairs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6953)">1:55:53</a>
+  <p>Community Board six way. Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-27">SPEAKER_27</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6955)">1:55:55</a>
+  <p>We have one resolution.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6960)">1:56:00</a>
+  <p>This is, however year, we have the opportunity to comment on the preliminary budget that the area is so most of what goes in</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-27">SPEAKER_27</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6980)">1:56:20</a>
+  <p>And we've set the deadline for Friday as Sandy had already stated. So that goes in the letter. But then we also thought,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7014)">1:56:54</a>
+  <p>Liz, sorry, great. Yeah, curious, just because I'm new to this process.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7021)">1:57:01</a>
+  <p>How did you guys land on letters and parks and why not like housing or anything else? Just curious.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-27">SPEAKER_27</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7028)">1:57:08</a>
+  <p>So yeah, we aren't as</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7046)">1:57:26</a>
+  <p>and then the libraries came up um miriam brought it to our attention that it was one of the only areas that got a big reduction um so we wanted that restored essentially to what has been in past hundreds okay if there's no objection we'll now go on the resolution please mark your digital ballots and you can submit them now okay okay housing and homelessness alec tech chair Alec, are you still with us?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-31">SPEAKER_31</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7077)">1:57:57</a>
+  <p>Yes, I'm here. So we are meeting on Monday. The first item on the agenda is we will hear a presentation from our planning fellow who had been doing some great research and some great work for us for the past several months. She's going to share her findings regarding senior populations within community district six, as well as some potential housing solutions that can sort of meet the needs of senior populations in our community districts. And as we've heard this evening, the 30th street shelter is closing. And so we are going to spend some time on Monday talking about our solutions and what we'd like to see of the site as well as any questions that we may have for city agencies and city elected officials. As we've heard, it's kind of blindsided a lot of people. And so I think we just kind of want a little bit more clarity and how we can be involved in the process moving forward.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7139)">1:58:59</a>
+  <p>Any questions? Any questions for all? Okay, move on to public safety and sanitation. Stu, Deser Chair.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7149)">1:59:09</a>
+  <p>I'll waive, but I'll take extra time next month.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7154)">1:59:14</a>
+  <p>Okay. Parks, landmarks, and cultural affairs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7160)">1:59:20</a>
+  <p>One wave, one wave deserves another. I will wave.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7165)">1:59:25</a>
+  <p>Okay. Board members, if you have any older new business to state, please raise your hand. Okay. Jerry will now conduct a second roll call.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7180)">1:59:40</a>
+  <p>Hi. Shiajav.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7182)">1:59:42</a>
+  <p>President.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7183)">1:59:43</a>
+  <p>Sarah Whittington. Absolutely. I remain here. James Biro. Heather. Napaleri.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7195)">1:59:55</a>
+  <p>Eve.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7202)">2:00:02</a>
+  <p>Mark Thompson, Samir Fanda, you play signing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7210)">2:00:10</a>
+  <p>Where?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7213)">2:00:13</a>
+  <p>Levine Saniky.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7214)">2:00:14</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7217)">2:00:17</a>
+  <p>Bandro, Sherrod, present. Van Seligman. By Shire, present. Byrhyr.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7231)">2:00:31</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7234)">2:00:34</a>
+  <p>Will Perry? Absent. Leaving for Ed. Present. Reshma Patel? Brezhma.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7246)">2:00:46</a>
+  <p>Keep going. She was.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7248)">2:00:48</a>
+  <p>She's waving. She's waving. She's waving. Yeah, she was. She's waving. And she's waving. There's a . . . . . . . . . .</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7263)">2:01:03</a>
+  <p>.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-31">SPEAKER_31</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7263)">2:01:03</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7265)">2:01:05</a>
+  <p>Yeah. Bandy McKee? Present. Ansela known. Sandra Leftoff? Absent. Amy Landa.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7278)">2:01:18</a>
+  <p>She had done.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7280)">2:01:20</a>
+  <p>Kate Kennedy. John Keller. Ripple Kakad.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7290)">2:01:30</a>
+  <p>I mean, here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7292)">2:01:32</a>
+  <p>Yes. Thank you, RuPaul.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7295)">2:01:35</a>
+  <p>It's been a long day.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7298)">2:01:38</a>
+  <p>Page, Judge. What? Page is here. Robbie F. Apoll? Absolutely. Lori F. Abe?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7307)">2:01:47</a>
+  <p>Brother.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7309)">2:01:49</a>
+  <p>Justin Goldberg? President. Eric Goldberg.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7313)">2:01:53</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7314)">2:01:54</a>
+  <p>Jason Formowitz. Brock Friedman. President. Robert Parkon.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7324)">2:02:04</a>
+  <p>Absent.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7325)">2:02:05</a>
+  <p>Maya, how many? B. Disman.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7329)">2:02:09</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7332)">2:02:12</a>
+  <p>Stu Desser.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7334)">2:02:14</a>
+  <p>Here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7336)">2:02:16</a>
+  <p>Jim Collins. Yeah. Liz Burke. Daniel Bernstein. Brother. L.B. Barrasso. Morgan Barry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7349)">2:02:29</a>
+  <p>Here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7350)">2:02:30</a>
+  <p>No Barclay. Neil Lee? I'm here. What?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7358)">2:02:38</a>
+  <p>Neil, we need your ballot.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7362)">2:02:42</a>
+  <p>Need your ballot, Neil? I look they. Get that ballot. Tanya? Uh, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7371)">2:02:51</a>
+  <p>Present. And I'm sure you guys are missing the treasurer's report, which is. I'm sorry. It has been overlooked. Don't worry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7385)">2:03:05</a>
+  <p>We have Maloneyy. That's what they have Maloneyy to pay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7389)">2:03:09</a>
+  <p>Not Maloneyy to party.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7392)">2:03:12</a>
+  <p>Okay, so I'm a huge apologies.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-33">SPEAKER_33</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7395)">2:03:15</a>
+  <p>I've been sitting waiting for.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7400)">2:03:20</a>
+  <p>Actually, there are elected officials in the House. We don't have any Maloneyy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7403)">2:03:23</a>
+  <p>Yeah, yeah. We need Maloneyy. We need Maloneyy. If there are no objections, we will adjourn the meeting. Oh, oh, sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7416)">2:03:36</a>
+  <p>All right, we've got all the ballots in. Let's call the votes. The exact resolution on urban planning services passes 35 in favor, no opposed to extensions. Land use resolution 2A passes unanimously with 37 votes. Bulk 3A passes with 36 in favor, none opposed, one abstention. B. Passes with 36 in favor, none opposed. One abstentions. One abstention. Bulk 3C passes unanimously with 37 in favor. Bulk 3D also unanimous. Bulk 3E also unanimous. Bulk 3F also unanimous. Bulk 3G, unanimous. Bulk 3H. passes with 22 in favor, 13 opposed, and two abstentions. Health 4A passes with 36 in favor, one opposed. So that's the soft resolution. It passes. 36 in favor, one opposed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7504)">2:05:04</a>
+  <p>I think everyone's left.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7506)">2:05:06</a>
+  <p>Okay. Transportation 5A passes 36 in favor, none opposed, no abstentions, one not entitled to vote. Transportation 5B passes 34 in favor, no opposed, three abstentions. And budget resolution 6A, unanimous 37 in favor. That's it. Back to you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7532)">2:05:32</a>
+  <p>All right. Now, if there are no objections, we will adjourn the meeting. Seeing no further business, the meeting is returned at 908. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7543)">2:05:43</a>
+  <p>Good. Bye. I can see it. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7553)">2:05:53</a>
+  <p>Okay. Okay.</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://www.youtube.com/watch?v=AJukIn3YNSY" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function seekTo(seconds) {
+      const iframe = document.getElementById('ytplayer');
+      if (iframe) {
+        iframe.src = 'https://www.youtube.com/embed/AJukIn3YNSY?start=' + seconds + '&autoplay=1&enablejsapi=1';
+      }
+    }
+  </script>
+</body>
+</html>

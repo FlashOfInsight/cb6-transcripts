@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parks, Landmarks & Cultural Affairs - March 3, 2026 | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Parks, Landmarks & Cultural Affairs - March 3, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Parks, Landmarks & Cultural Affairs - March 3, 2026</span>
+      </nav>
+      <h1 data-pagefind-meta="title">Parks, Landmarks & Cultural Affairs</h1>
+      <div class="meta">March 3, 2026 · Manhattan Community Board 6</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe id="ytplayer" src="https://www.youtube.com/embed/CjxmcRHxWg4?enablejsapi=1" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=CjxmcRHxWg4" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card" data-pagefind-body>
+      <div class="transcript-header">
+        <h3>Full Transcript</h3>
+        <span class="transcript-source-badge">WhisperX + Speaker Diarization</span>
+      </div>
+      <div class="transcript-content transcript-full">
+        <div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4)">0:04</a>
+  <p>All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(12)">0:12</a>
+  <p>Okay, welcome to the March 3rd, 2006 meeting of the Parks Landmarks and Cultural Affairs Committee. My name is Neil Barclan, the chair of the committee, and tonight we're joined by district manager, Jesus Perez, Brian Laford, he's unable to be here to see you next. So thank you for joining us, Jesus. This meeting is called to order at 6.34 PM. As a reminder, New York State law requires all committee members who are not able to attend the meeting in person, to have their cameras on and personal last names displayed from the time during the meeting. Let's say, members of the public who are attending virtually. You can raise any questions or comments that you have through the Q&A feature of Zoom, members of the public who are here in person, not applicable. We don't have anyone here. And let's see, so if once the committee is done with the discussion, then we can feel questions from the public. And Sarah Whittington is kind enough to take the minutes this evening. Let's see, now Jesus will take attendance by roll call.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(80)">1:20</a>
+  <p>Good evening, everyone. I will call your name. When you hear your name, please indicate that you are present. Ian Barclay. Present. Martin Barrett. Present. Elvi Barroso.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(90)">1:30</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(91)">1:31</a>
+  <p>Daniel Bernstein. I don't see. We'll move on. Robert Parfan is absent. Rabia Iqbal. Absent. Page, Judge. I think I heard page there. Yes. Thank you. Anton Malner. Present. Thank you. Reshma Patel. I do not see yet. Move on. Sandra Sherrod.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(127)">2:07</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(129)">2:09</a>
+  <p>Thank you. Ruben Siddiqui. I do not see or hear. Lettie Simon. Here, present. Thank you, Mark Thompson.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(145)">2:25</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(147)">2:27</a>
+  <p>Thank you, Sarah Whittington. Present. Thank you. Shuliazal.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(152)">2:32</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(154)">2:34</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(157)">2:37</a>
+  <p>Okay, that we have thought. Okay, the agenda for tonight's meeting was distributed ahead of time by the board office and is reflected on the screen before you. No objection will adopt the agenda. Okay. Seeing objections, the agenda for tonight's meeting is adopted. Um, let's say, so still reviewing the minutes from February 3rd, 2026 meeting and it will be distributed for you to review before the next meeting. April meeting. Let's see. In order to conduct an efficient meeting, let's observe a few ground rules. So one, speak when granted the floor. Two, committee members who are here in person, if you have a question about committee business or wish to make a motion, please raise your hand. I will identify you to speak. Committee members who are not in person, if you have a question about committee business, raise your hand. call them you to speak. Committee members, it's extremely important that just speak one at a time. People at home sometimes have said they're unable to hear what's going on. And then number five, this is pretty much committee members do not use Zoom, the chat function to discuss committee business. And then we will arrive to the agenda and just also welcome Elsie. Albi, I'm sorry. You know, I was trying to, no, no, I was trying to put ball out of Alwi Barroso and that's what I got caught in between. So I'll thank you for joining us this evening. Okay, so we'll start with the number one on the agenda and that's the report from New York City Department of Parks and Recreation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(266)">4:26</a>
+  <p>I'll see them here. I think she think she was on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(272)">4:32</a>
+  <p>Why don't we move on in the middle of the ride?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(281)">4:41</a>
+  <p>Yeah, she was on all right. Easy enough. Okay, yeah. Okay, we'll go to number two then. I, yeah, I don't see her on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(288)">4:48</a>
+  <p>He's on the attendee list, but she's not on the list of participants. It's Letty. Hello. Check the, check the list of attendees. She's there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(302)">5:02</a>
+  <p>Yeah, Robert is there too. All right. Thanks, Ledy. And we've promoted them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(311)">5:11</a>
+  <p>So they've seen.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(321)">5:21</a>
+  <p>Okay. Can you hear me now? Oh, I'm here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(329)">5:29</a>
+  <p>Hello.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(331)">5:31</a>
+  <p>Okay, can everybody hear me now?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(334)">5:34</a>
+  <p>Yep, welcome, Sheena.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(335)">5:35</a>
+  <p>Okay, welcome everybody. I'm glad we all survived the storm. Um, so I got a couple of things. Um, March 16th, we're going to groundbreaking St. Barton's playground. Um, so. I hope everybody could come out and we'll be starting the new playground in March 16th. I got a request for to add some, I think, not picking tables, a ping pong table to the design. The problem is that design has already been finalized. So maybe when it's over, we can look into it. If we can find the space for it once they complete it. But once the design has already been established, there's really no going back. And we don't want to hold up this project any longer than it already has been. So once we finish, we'll see what we can do to add. the ping pong table to this area, see what space that we have available. This month was supposed to start the conference station for Murphy's Brothers, but we're gonna start it April. So it's going to go into construction this April for Murphy's Brothers. So the storm that we had. So I got a couple of emails regarding the storm at um several um specifically augustus and gardens and um a young lady wrote in and um she was quite upset that the the snow wasn't removed from the playground area um both storms was significantly heavy you know for the city and um Due to the conditions that took place, the amount of snow we received, which we haven't received in a long time, we were ordered by the mayor to work alongside sanitation. We usually do work alongside sanitation. We send staff there, but this time we had to work on streets, on the city streets. Usually we do it in front of our playgrounds and, you know, in our parks. This time we had to go to city streets and we were ordered there to work alongside DSNY both times. And that delayed us from going inside. What we usually make pathways inside um you know we have a a strict manual that we we we go by but our first response is to work alongside disney and usually we don't have to go there you know usually we are a send staff there to help plow because we have plows ourselves this time we um they we did a lot of shoveling um street with bus stops crosswalks and sidewalks. And this was on regular, outside of our normal parks and playgrounds. And this caused a delay for us in both storms to be able to go inside and create pathways. And it's a manual, we were ordered to do this, is something that we just didn't come up with. Right. And we, you know, once we finish, then we wind up going inside. um we we cannot clear all the snow out of the playground you know there's no place to put it it has to you know melt on its own and we look for mother nature to really help us out with that um so i think it was a lot of you know concerns about that um we finally did get to it but um we weren't able to get it fast enough for some you know for some parents and you know my apologies for that but you know we strict orders to do as we instructed to do um And as soon as we got released from that, we were able to go and finish up our sidewalks and our staircases and our ramps and then inside our playgrounds. So I just wanted to clear that up. There's a strict manual that we have to follow by. And I know it's concerning, but you know, these are the things that we get in order to do. It's not like we don't want to do it. It's just that we have orders to do it, you know, a certain way once we get called on upon the mayor's office. Um, other than that, um, I'm looking, I'm looking forward to the summer. I just want to skip spring and go straight to summer. Uh, anybody have any questions and concerns? I'm here to answer them. Michael?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(648)">10:48</a>
+  <p>Well, no, when of the groundbreaking been to me? What's the day?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(653)">10:53</a>
+  <p>It would be? March 16th. The groundbreaking for St. Barton's March 16th? We're done. But they'll get there in the morning. So they're going to be there in the morning. So I'm assuming it's going to be at maybe they start getting at 7 o'clock.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(672)">11:12</a>
+  <p>Are we going to get like a, is there like a ribbon cutting or is it just?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(675)">11:15</a>
+  <p>No, no. The river cut usually happens after we, you know, after we complete the assignment. But we're going to break ground March 16th. So we're going to close off the area. Usually this is a year long project. hopefully it won't be that it won't be that long but it's a it's a year long project um and hopefully at the end um something great to come out of it and son you have a question the heeding speaker monthly yeah the heating system yeah i um</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(717)">11:57</a>
+  <p>I and my wife play pickleball at Constant Baker Motley. The third floor has not had any heat the whole winter. And it's pretty difficult to play pickleball in your overcoat.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(730)">12:10</a>
+  <p>I know. I think I received the email. I forward it over to our recreation division for them to respond. I don't know why they don't have any heat. And I did pass it on to her and they were supposed to respond. If they have not responded, I will touch base with them and get back to you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(754)">12:34</a>
+  <p>Appreciate that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(755)">12:35</a>
+  <p>Thank you. I don't say anyone else from the committee. Molly House there has her hand up. Yeah, we can unmute her. Oh, there you go. Thanks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(773)">12:53</a>
+  <p>Hi there. Can you guys hear me? Yes. I'm going to hang up on my, I'm on to my phone and my. Okay. Yeah. Thank you, Chair. I wanted, can you hear me okay? Yes. I didn't hang up my phone. Thank you, Sheena, for all your work. I really appreciate everything you do. I'm here tonight on behalf of Alliance for Kipps Bay and just find out, and maybe it's the other parks gentleman, Robert. I don't know who I should be directing this question to, but just the construction, the full construction at East River Waterfront, the East Esplanade Park,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(820)">13:40</a>
+  <p>36 to 41st street are there any plans for i know it's been budgeted and we talk about a lot that the pilings and improvements along that waterfront area are you talking about my glick park yes um it it's i thought it was like a five-year plan and that was maybe three years ago that that supposed to have started i'll get some more information about that um Regarding that, I thought there was a five-year plan, you know, before they can, they was going to be able to get to that location. I don't have anything so far. For Glick, but I'll look into it. I'll definitely look into it. But it is supposed to get done to my understanding. When I first got back to the area, yeah. It was on the list to get done.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(874)">14:34</a>
+  <p>you know what it would stage is that now i am not i'm quite not i'm not quite sure okay yeah because i mean it's been like five-year plan for probably at least 15 years i think so i mean you know but i'll get back to you by glick park thank you sheena and then yeah i mean just the stamp you know the usual every park asked for but we need water there we need um better lighting we have some lighting but just not</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(899)">14:59</a>
+  <p>further by the dog run by the pilot dog run you know so all of those so once they start this process right once they start um you know once it gets into the design phase um we always come to the community board and we always present and during that time that's the time we able to tweak things oh we need this we want that we can get this we want that so um they'll come up with a design and they'll put in everything they think they need and we usually do outreach as well for the area um so once that process comes aboard we're gonna come to the community board and we'll we actually put out a notification saying okay we're um doing outreach you know and this is at the time you come everyone from the community come and say well this is what we will like to see this is where and then the parks have come up with a plan on what all can happen at the location and they put it together and then they put the design and then they're presented and then we'll bring it back to the board it's like a you know it's like a whole yeah yeah that's my job that's my good effort well thank you the last thing i just want to say and i know that sandy sent you some pictures but you are aware of the sinkholes there and then just the</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(975)">16:15</a>
+  <p>the planters that are broken, the concrete so just to flag that for everybody on this call too. But I appreciate your time and all the work you put in. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(985)">16:25</a>
+  <p>We're going to try to dress that for the step and then the concrete. Yes, I see. She did send me, send me some stuff for the click.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(992)">16:32</a>
+  <p>Great. Thank you. Thank you, Chair. That's all I have. All right. Thanks, Molly.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(999)">16:39</a>
+  <p>Is that Jim Collins? All right. Hi, Jim.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1005)">16:45</a>
+  <p>Hello, Parksters. I, Sean, I just, I was the person that sent you the note or sent, I guess, through the chair. I just wanted to confirm, you said that you'd like something like akin to a John Deere tractor for snow removal at Stuyvesant Park. Yes. So that they could put it in the budget requests.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1031)">17:11</a>
+  <p>um so yes um we had a meeting um with um council member em abstein and um and the um the conservancy spina so there were some things that was what was brought up and like garbage new garbage cans um and um you know snow equipment and and one of the things is you know trying to get a john deer because they were concerned about you know the snow in the area, in the pathways, creating pathways, and things like that. So we're looking into, we're looking at, that was one of the things we mentioned. The type of snow that we received just past these past two storms, you know, snow, snow machines just was not sufficient enough. You know, it was definitely, you know, and the snow machines can only last a few hours at best. And- What is that? because a lot of the snow equipment sometimes gets jammed up right snow throwers after a while they get jammed up and between us pushing it one way and someone else pushing it the other way it's you know a lot of this work we did by hand um we did we were eight we were able to um have one or our um cousin districts come and help us out with a plow truck but the plow truck cannot get into um every area of the park just around the around the fountain area um the smaller units like the just smaller units like the john dears they can get to these areas and that's why we have put in the request to have a to get a john deer um the problem is that you know now we are we are looking you know they want we can only purchase electric at this time we're looking to push forward to make sure we can get a diesel because diesel is a little much more powerful than the electric electric</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1150)">19:10</a>
+  <p>you know from some of the stuff that i read about it the electric ones are just not that great but a plow a plow truck is something that we really really need throughout the whole district the other question was um for the children who uh will not be able to use st barton park during the during the reconstruction is there an ultra where do you suggest as an alternative for them</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1177)">19:37</a>
+  <p>so we have benson abano we have bellevue south um i just wanted to get it on the record for the yeah so there's a jason parks i think vincent abomin was probably the closest And it's new. Vincent Obama is a new player. But the basketball court is still be open. And so will the handball court area still be open? It's just the playground would not be open. I also have Robert Moses and I also have MacArthur. So those are the closest ones around in Asa Levy, but maybe a little 10 block radius there. But we do have some close, close the plagues next to it. And they can use some attention, Bellevue and Vincent Albano.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1228)">20:28</a>
+  <p>The kids can get one else to play pickleball at Sam Barton. So.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1237)">20:37</a>
+  <p>For the basketball court to be open, so it's like an open space.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1241)">20:41</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1242)">20:42</a>
+  <p>Okay. Sheila, find out the model and what and exactly. what equipment you might need. We used to regularly have park equipment on our budget, on our capital budget requests. That's something that we had. We actually had had a playground right across the street from St. Vaughton's Park that Glick then built a store over the spot that was a park. We had went, We had many discussions as to the design of the area between 34th Street and 35th Street, 1st Avenue to the building. And we designed enough recreation equipment for toddlers, for children, and for teens in that area. And somehow over the course of time, the builder decided that they didn't need to use what was agreed to with the community board and they built a structure there. I don't know how that happened or who approved it. What year was this? The park was there from 93 or so to about 2010. There was an ice skating ring in the lower part during the winters, which during the summer months was then greened over and used for picnics and things. uh it really was a a lovely area and we spent a lot of time in designing it and somewhere along the way somebody agreed that they could build a building over what we had this this committee had voted on this car the same mark they used to be ice skating work and that's in this is on the east side of 1st Avenue between 34th Street and 35th Street. Oh, there's a sweet group. Yeah. This is on first avenue. Okay. There's a sweet green side on the corner.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1407)">23:27</a>
+  <p>Okay. I know what you said. I know what you're talking about. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1409)">23:29</a>
+  <p>That building was a park. Okay. That was part of the area that was south of there. That whole this is we allowed Glick to build extra floors.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1423)">23:43</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1423)">23:43</a>
+  <p>by by that to happen and also with that glick then donated a half a million dollars for the upkeep of the east river esplanade park which is now is sometimes referred to as glick park whatever happened to that's five million dollars i don't know either but um that's history yeah wow</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1452)">24:12</a>
+  <p>Okay, I'll get you the information.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1455)">24:15</a>
+  <p>Right. I had a question on, if they get the John there, where do you keep them?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1461)">24:21</a>
+  <p>So we, so we have a space in the back of Augustus and Gordons. We have a space back there and we're getting ready to get some space to at the 34th Street area. and we might be able to put a container there so um you know so we can be able to because we're going to be actually taken on that property as well once it's completed so um it's going to be like a like a sitting area in a workout area um on 34th street we're next to to the um the ferry yeah so we're getting that piece of property um as well</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1514)">25:14</a>
+  <p>Sure. I'm not sure if this is under the New York City Parks and Recreation. The pink man that we see in some of the parks and on top of the buildings is that part of the New York City Parks and Recreation?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1535)">25:35</a>
+  <p>The who?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1537)">25:37</a>
+  <p>The pink man.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1543)">25:43</a>
+  <p>I've never seen a pink man.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1545)">25:45</a>
+  <p>No, it's something as part of the Madison Square bid. Those giant pink statues they put around. I think the bid actually is doing that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1552)">25:52</a>
+  <p>Oh, I haven't seen it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1554)">25:54</a>
+  <p>It's like with the horses and the last step. Oh, okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1558)">25:58</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1560)">26:00</a>
+  <p>No, that's not. I can send one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1562)">26:02</a>
+  <p>But send the picture because I haven't seen it. But no, that's not us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1567)">26:07</a>
+  <p>Yeah. I think it's the bid that was doing it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1572)">26:12</a>
+  <p>Michael. I think the big man that's you and like the flat iron brought us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1579)">26:19</a>
+  <p>Yeah, right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1580)">26:20</a>
+  <p>It's the biggest, flat iron, the improvement district.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1587)">26:27</a>
+  <p>All right. So is that it? No questions for Sheena. Okay. Have a good night.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1599)">26:39</a>
+  <p>Good night. All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1605)">26:45</a>
+  <p>All right, we'll go to number two. We will finally have the discussion of the Brazil.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1611)">26:51</a>
+  <p>I'm walking along. This is a big thing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1614)">26:54</a>
+  <p>I haven't noticed it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1617)">26:57</a>
+  <p>Where is that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1624)">27:04</a>
+  <p>Madison? There's a few of them. Everywhere. There's a few of them. I never know on top of the building in some parks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1632)">27:12</a>
+  <p>Yes, one of a few weeks ago. I think two or three.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1637)">27:17</a>
+  <p>Oh, it just went up a few weeks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1638)">27:18</a>
+  <p>Yeah. Yeah. Okay. I'll be down. I think it a few months.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1641)">27:21</a>
+  <p>Oh, yeah. I was in Massachusetts. I could. Maybe that turns.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1645)">27:25</a>
+  <p>Yeah. So, okay. We'll go through the second part. Second item on the agenda. HDC resolution. Do we want to put that up?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1660)">27:40</a>
+  <p>Okay. Probably right up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1662)">27:42</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1663)">27:43</a>
+  <p>Thanks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1668)">27:48</a>
+  <p>Okay. Um. Did we remove 152 East 34th Street yet?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1691)">28:11</a>
+  <p>Uh, no, because we just learned of the church's opposition this morning. So there hasn't been a chance to formally remove it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1701)">28:21</a>
+  <p>Yeah, so OK, the church there at 152 East 34th Street. They don't want to be landmark. So most owners don't want to be landmarked.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1712)">28:32</a>
+  <p>I know. This is something that we've had for forever, whenever we were doing any landmarking.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1722)">28:42</a>
+  <p>They don't want it. It's a lot to it. It becomes very difficult to make any change, you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1728)">28:48</a>
+  <p>Yeah, well, but it's still a structure that's worth landmarking.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1735)">28:55</a>
+  <p>Well, I mean, I guess, but the owners then falls on the owner to, I guess, to a certain upkeep, or I guess, nevertheless, the church's position is, no, thank you. So we take 152 all, and when will we vote on that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1754)">29:14</a>
+  <p>Well, they've said no. Well, no. But to his point that everybody will say no. Wait, wait. We haven't heard responses one way or the other from the other five entities. Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1769)">29:29</a>
+  <p>But if you have a party that has said, we don't want to be landmark. We cannot tell them, well, we support you becoming a landmark. What are we supporting? No, but why?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1781)">29:41</a>
+  <p>Because the structure is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1783)">29:43</a>
+  <p>uh worth landmarking right but then uh there's certain i guess like i said requirements right they want to sell it but if they want they want to sell the bill then well i mean okay that that that that is no selling once it becomes a landmark yeah because they won't be able to make changes and stuff i mean there there is a discussion and perhaps the landmarks commission does this about preserving things that have historical importance yeah Right, Grand Central would have been torn down. People say that Penn Station, the old Penn Station should be really nice, but no one fought for it. So that got torn down in some time.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1820)">30:20</a>
+  <p>Yeah, it was because of that, the landmarks commission was developed. Jackie Kennedy.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1826)">30:26</a>
+  <p>Yeah, you walk the Grand Central and you know, you see that whole story.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1831)">30:31</a>
+  <p>Um, yeah, some things. Mark, do you have, you have anything to add?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1840)">30:40</a>
+  <p>Um, I can't, I'm a mute. No, I'm off great. No, I just think, you know, I agree. I love the land market, but they're going to say no, and then LPC is going to say no, because the church objects. I mean, the rest of these are pretty straightforward, I think, but churches usually get the pass. LPS people say no, because we're not the object. That's sort of the history. There's, I mean, I agree, Marty, it'd be great to land market. I mean, if you want to put it in the resolution, that's good, but it's not going to get landmarked. That's helpful to know that the city does give a difference to, you know, churches and synagogues and stuff.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1883)">31:23</a>
+  <p>So we can just remove that then.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1889)">31:29</a>
+  <p>I think once it comes back or gets sold or something at that point, more discussion gets underway if it's for sale, but right now they're going to get a pass.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1903)">31:43</a>
+  <p>Yeah, there's a couple committee committee members. Nancy and a couple of members of the public.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1910)">31:50</a>
+  <p>Yeah, you can call on Nancy first. She had her hand up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1920)">32:00</a>
+  <p>Nancy Sharon?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1921)">32:01</a>
+  <p>Yes. Can you hear me? Yes. Okay. I have a letter from the pastor of the church that you were just discussing the Armenian Evangelical Church. And he would like me to read the letter if that's okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1941)">32:21</a>
+  <p>Well, we all received the letter already. And so we understand his position. And he also messaged us when the meeting first started. And so everything is noted. And it was very clear the church's position. And then I reiterated that the church does not want to be landmark. So it will be removed from the resolution and the community board is not advocating or asking for the structure to be landmark. That's all. But we do have the letter.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1973)">32:53</a>
+  <p>So. Okay. Well, if you have it, then I guess I don't need to read it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1977)">32:57</a>
+  <p>Yeah. Okay. Well, thank you. Let's see. I think, uh, Okay, yes, Jim.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1989)">33:09</a>
+  <p>Yes, hi. And I had asked to be promoted. It said that I rejected the invitation. I didn't see it. So if he can promote me, that'd be great. And I can't see the draft of the resolution, but I know that the post office on 23rd Street, Madison Square Station. is up for landmarking. Now it's not clear to me whether that's the interior space, which includes those works projects administration, WPA paintings that are inside the, inside the post office, or if it's the building itself, or perhaps both. I just wanted to mention, and Marty probably remember this, There was talk probably 15 years ago, or perhaps more, to make that building, to build above that building. And I believe it was to be some sort of residential housing, whether or not it was affordable, I don't know. But I don't know. Was it a dormitory? I don't remember. Yeah, it might have been. But in any event, if the building itself is to be landmarked, I don't know how, whether, how that might negatively affect any future effort to build above that building. And also, I don't know that we can landmark a federal site, a federally owned site. Shia?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2100)">35:00</a>
+  <p>I want to mention that LPC has the enforcement right to designate a place. And if they really want to designate, and even though the property owners don't want to do this, the LPC can still designate the church. And if the church states that they have the financial hardship and they need to submit the hardship application to LPC, and then LPC will have the panel to decide if the church really has the financial hardship. And also LPC might mention that if you are designated, if you are designated that you get the chance to have the landmark grant to repair your church. And I think this is their concern. And right now, I have no idea what the LPC's opinion on this church. And I'm not sure if we really want to just delete it from our resolution.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2166)">36:06</a>
+  <p>Okay, Laddie?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2168)">36:08</a>
+  <p>I just have a question. Has the ADC or the board reached out to any of these proposed landmarks to find out the position of the property owner? No.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2186)">36:26</a>
+  <p>That's what the office always does.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2188)">36:28</a>
+  <p>I'm asking a question because I never got an answer to that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2191)">36:31</a>
+  <p>The office says to answer that. The office was not asked to reach out to any of these sites.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2197)">36:37</a>
+  <p>I asked at the last meeting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2201)">36:41</a>
+  <p>That did not make it to me.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2203)">36:43</a>
+  <p>No, I was kind of pushed aside. It's not your fault. But I asked that question before we proceed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2210)">36:50</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2211)">36:51</a>
+  <p>Whether we had done our due diligence, that was, that's it. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2217)">36:57</a>
+  <p>Yeah, I don't, thank you, Ledy. I don't think HDC</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2221)">37:01</a>
+  <p>said anything about speaking to we should you know every time we vote we should really have at least reached out and and so then we'll get six letters of saying we don't want to we don't want the landmark but yes this has always been the case whenever there's a landmarking resolution the office sends a letter to the property that says you're, you know, the box landmarks committee would be meeting on such and such date and the full board would then be taking give up on such and such a date and you have your rights to say whatever you want about it. And this is being the performer for every landmarks that we've done over the years.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2278)">37:58</a>
+  <p>That was my question, Marty, you answered. Yeah, and that's what I've been asking. Thank you. Can we put it off?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2288)">38:08</a>
+  <p>Yeah. Any present?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2289)">38:09</a>
+  <p>I remember it was we had the exactly same discussion during the last meeting and we said that it was right. Yes and it was said that it was pending because we need more time to discuss with the owner and we will use this month to discuss the owner and I have no idea and what the what kind of process and progress we have we have done during this month and we only get like one letter from one church saying that they don't want to be a landmark.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2322)">38:42</a>
+  <p>But I don't think we reached out, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2325)">38:45</a>
+  <p>That's my question. Last month than this month.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2329)">38:49</a>
+  <p>Yeah, so we can reach out to the owners, the office can reach out and then we'll discuss this again.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2336)">38:56</a>
+  <p>Yes. This is advisory, this resolution, but we're not obligated to reach out to any of these building owners, who is legally required to tell the building owner that we're considering you for- This has been our procedure. LPC. Whenever we've done a resolution in regards to landmarking.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2358)">39:18</a>
+  <p>Okay. And LPC is obligated to do that. Okay. Yeah, LPC will do that. But during our last meeting, we said that we will use this month to ask for the owner's opinions and then we will do the decision. We will have the decision during this meeting. This is what we discussed the last month.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2383)">39:43</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2384)">39:44</a>
+  <p>Yeah, I want to ask Martin, do we have criteria for landmarking?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2390)">39:50</a>
+  <p>Well, again, it's often, it comes to us from the, from the LPC, it comes to us from the historical society. There's various inputs that will come to us, you know, the some years ago, the mid-time, whatever the group is that takes, that covers the area between 33rd Street to 40 something to Madison area. Ezra? Maybe it was a, yeah, but there's a Proving District. Yeah, yeah, no, not the, not the bid, but it was that the, the, the, the committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2441)">40:41</a>
+  <p>Murray Hill neighbors.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2443)">40:43</a>
+  <p>Oh, Murray Hill committee. They came up with a really nice bound book, which I, donated to the office at some point when I was getting rid of things that had picked, and they took us on the tour through the various different buildings that they felt within their district should be landmarked. It was the sailors and the seaman. There was this one. There was this church. There was that. And it was a, it's a bound book. It was a, it's a very nice book. It might be in this building somewhere. And it was then who came to us. So it's various different inputs, but invariably, then all of those, entered, all of those addresses, owners are told that we're going to be talking about you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2503)">41:43</a>
+  <p>Can we put it off and vote next month and have the office at least make preliminary calls and outreach?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2510)">41:50</a>
+  <p>Yes. Is there any legal difference between recommending a privately owned building for landmarking versus post office, which is a government-owned building? It's a building in our county.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2528)">42:08</a>
+  <p>It's a building in our district. So we should develop them a criteria.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2534)">42:14</a>
+  <p>No, like for instance, when the Morgan railroad station, which is, there's an entrance via the, there's a restaurant on the corner of Park and 33rd. Yeah. Wolfgangs or something. Oh, yeah. And through there, you can get to the Morgan Railroad Station with the Morgan's car We, they certainly didn't want us to do a resolution, what we did. Which the Landmark Committee may or may not honor. Well, they made a decision. Well, again, it was.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2589)">43:09</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2590)">43:10</a>
+  <p>It was a landmark.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2592)">43:12</a>
+  <p>I mean, so the question I have is we're not, the landmark commission are kind of the historical experts, architects, whoever is making these decisions, right? We are community boards or are we, you know, to represent the interests of the community? So should we be just talking to people like the church has come to us and we don't want this and asking for that? Or are we trying to also preserve historical buildings in our district, right? That's a viewing. Look, I personally, only reason I know there's used to be an Armenian, large Armenian community in this area is because I walked by that church all the times. It was me, I would want that history preserved, right? But if they don't want it, then, you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2629)">43:49</a>
+  <p>Yeah, they're looking to sell it. Yeah. Well, we used to have on this committee, Jack Taylor, Jack Taylor, and this is a, a power that was eliminated from the, resolution that they put together, they're looking at. Jack Taylor was one of the founders or whatever of the Historical District Council.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2656)">44:16</a>
+  <p>He was a- So that's the HDC that is going around.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2659)">44:19</a>
+  <p>Yeah, he was very much revered on the LPC because he knew everything about landmarking, you know, you know, If they want to change this window, well, it could be this, it could be that. He was our expert. Before he was too old to really get around, we made him a lifelong member of this committee without him ever having to reapply. We haven't had anybody like that. who could say, well, this building really should be landmark.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2700)">45:00</a>
+  <p>Yeah. Yeah, that's why, like that's not point. None of ours are experts.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2704)">45:04</a>
+  <p>Yeah. But we had had.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2705)">45:05</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2708)">45:08</a>
+  <p>Does Sandra has this handoff?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2712)">45:12</a>
+  <p>So it's been tangentially mentioned a few times, but I'll just make it maybe super clear. The whole landmark zoning text that we now have before us as a result of the destruction of the structure that was Pennsylvania station in the early 60s because the owner wanted to maximize profit. So part of the intent of landmarks preservation is not necessarily to always do what the owner wants, but instead to try to protect those cultural and significant architectural assets to the city, the state, and the country. So I do think it'd be great to reach out to the owners, but I don't want to only ever consider landmark recommendations based on the owner's recommendation that would not necessarily get us a city that we want to enjoy living in.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2777)">46:17</a>
+  <p>Michael? I think it's great that you want to landmark both office. I've gone to that post office every time and I'd love to see the post office we kept the same way. It is just a mural and the lobby especially like to see that reserves. And about 400 first avenue, I think it'd be great. If you're going to get landmark to often and historic information on the building so people understand the significance of it. I'm not a perfect customer in New York.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2817)">46:57</a>
+  <p>Are anything else?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2818)">46:58</a>
+  <p>I think she had her hand up or maybe she should pretend.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2821)">47:01</a>
+  <p>I think it was from before.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2823)">47:03</a>
+  <p>Yes, and I want to say that it is the landmark's responsibility to decide if the property owner really has a financial hardship. They have these special procedures to decide that and we can't decide it. And if the owner really has the financial hardship and they should really they should really submit the materials to landmark and we can't just decide that we won't include this item to our resolution because the owner gives us a letter.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2859)">47:39</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2861)">47:41</a>
+  <p>Jim?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2869)">47:49</a>
+  <p>then he accidentally. As I said, I couldn't see the draft of the resolution. And with respect to the Madison Square Post Office, if it's for the interior only or the interior and the building, there should be some request, I believe, to get those WPA murals clean because they are filthy. They're covered with, what, 90 years of grit and grime from exhaust and all the stuff that goes on in the city. They've had it for 90 years. So I don't think we can do it through a New York City capital budget, but perhaps whoever takes Jerry Nadler's seat can get it funded through the House of Representatives.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2928)">48:48</a>
+  <p>Jim, during our time on the board, it was actually cleaned.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2934)">48:54</a>
+  <p>It was?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2935)">48:55</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2935)">48:55</a>
+  <p>They didn't do a very good job.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2937)">48:57</a>
+  <p>Yeah, in the 90s, they actually did a cleaning. The resolution has a separate separate resolution. Resos in regards to both the building and the interior. And then actually... And it was clean? No, no, to make it for the designation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2962)">49:22</a>
+  <p>Oh, for the designation. No, that I remember. I remember, I remember vaguely that, you know, being done. But I think if you're going to preserve them, they need to be you know, cleaned professionally. I don't know you saying somebody cleaned them in our during our. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2987)">49:47</a>
+  <p>In the 90s, like 95, six, seven, somewhere in there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2991)">49:51</a>
+  <p>In fact, there's there's filthy as they used to be.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2995)">49:55</a>
+  <p>We were given the tour.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2999)">49:59</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3001)">50:01</a>
+  <p>Can we speak to the motion before us for this resolution?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3007)">50:07</a>
+  <p>No, we'll come back and talk about it again next month. So, and we will move on to the third item on the agenda. The air table. There is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3024)">50:24</a>
+  <p>I believe last meeting, we tabled the air table for- We're going to table it again. Yeah, okay. and i asked that you all have a chance to look at it so i'm not sure if you did or didn't but what what we have here is a template for all of the parks in our community board area and what the initiative is is to have an ongoing record of what's going on in each park it would be helpful because um you know we don't have as many parks as other areas and it would be nice for us to have a you know, a reckoning of what's going on. What we would endeavor to do is after our parks department presentations at each one of these monthly meetings, there would be adding to the air table whatever park was discussed and what the issues are. Part of the, also part of the initiative is that people will get, two people have gotten in touch with our chair, asking about a couple of different parks in our neighborhood and are there people that they could get in touch with that are heading, you know, plants and flowers and that sort of park upkeep. So anyway, if we didn't have a chance to look at it, maybe you would go and look at that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3119)">51:59</a>
+  <p>I think it's a worthwhile endeavor, but it also takes some time and effort on the part of... You have a checklist as far as, you know, some years ago, about six years ago, eight years ago, we did this on Pops.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3135)">52:15</a>
+  <p>We, we, uh, the, it was 2020 because the COVID happened. He started, because I remember I went and looked at a bunch of them. Yeah, so six years ago. Yeah, yeah, it was 19, 20 because then we stopped.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3146)">52:26</a>
+  <p>They never went forward because of, yeah, we, we had like a checklist of what to look for. And we each had three, four pops more or less in the area that we lived. to then look to see if the seating is good. If there's plants, if it's open. And most, a lot of them were fenced off. There was construction. There's all sorts of things. But if we have some sort of a checklist that we, and again, then we could just split it up among us to look at the different parks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3185)">53:05</a>
+  <p>Yeah, I think there are, categories in the spreadsheet that you go through. So I think we should all have a look at it so that we can all have the discussion. But it would be divvying up, I'm sure. Spreadsheet is where it's we're.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3202)">53:22</a>
+  <p>I haven't here, you want to bring it up, but I believe it was circulated.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3205)">53:25</a>
+  <p>Yeah, that's not just look on email that can't find it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3208)">53:28</a>
+  <p>Yeah, no, I don't. Well, then let's let's pull up here. We can certainly circulated. Because that'd be great idea. This is a prototype. of what Sarah is talking about. The attempt is to make a list of every single part in this district because it is important as especially as a Parks Committee members and maybe for the general public to know what parts are in this district, their locations.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3238)">53:58</a>
+  <p>And their full real names, but sometimes they have multiple names like we don't know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3243)">54:03</a>
+  <p>Well, that some of these names might be outdated because the office actually lived up this prototype several years ago. But at the time, the Parks Committee didn't really want to do anything within it. So we sort of put it in mothballs. But as you can see, it has some categories like comfort station. I don't think they're called that anymore.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3263)">54:23</a>
+  <p>Yeah, we would have them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3264)">54:24</a>
+  <p>But for example, why does it have that category? Well, perhaps since this board was always so big on public bathrooms, Maybe we could see how many of our, you can easily see how many of our parks have bathrooms and how many do not. You know, if there's more nuance required, like some of them just infrastructurally cannot have a bathroom, then we can indicate that. And so we could use this as a way to really conduct an analysis on the parks in our district. You know, you could go to the Parks Department website and just get a list of parks, but it's like a list of parks in Manhattan. some list of parts in Manhattan Community District 6. So we're looking for something that's a little bit more nimble that actually allows for real analysis, because with that analysis then comes better advocacy, hopefully. Dog runs, you know, people love their dogs. We can maybe track how many parts have dog runs and how many do not. What the parks groups are, if there are any, what the size is. All right, there are, you know, we had the screenshots of images that maybe we don't, we can do, we don't have to. Part of what Sarah is asking is like, if you have ideas for other categories that that could be added here, ways of, you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3347)">55:47</a>
+  <p>Could put down when the, you know, a construction column because we know some of these parks are having reduction. Condition of soothing. Question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3357)">55:57</a>
+  <p>Yeah, one of the things maybe at a safety, because last fall we had with Bellevue South, and there was some other parks where we had large groups people come and talk about how they felt the parks were unsafe and were asking for more. So what I had started doing was then taking walks to the parks just to see what it was and counting, okay, like who's what's happening and what's going and maybe kind of tracking that better too.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3385)">56:25</a>
+  <p>Yeah, and you know, we can put other categories like that. The Parks Department updates initially that was there because, you know, Parks Department comes to your meeting every single month and gives many informative updates. But, you know, they don't come to us in writing and, you know, they're not taken down like really well in the minutes. The information is pretty much lost unless you go back and watch the video. you know, it would be nice, it may be one of the members or maybe the person was running minutes, would make a really good summary of those parks department updates, and then we could put them in the designated record for that particular park. So you always have a running tally of what the parks department has been saying live at the meaning of this particular part. You know, oftentimes something like this would just fall to the office. But one of the things, you know, the office cannot do like 100 different things if the members of the committee aren't going to really get behind something like this. So part of the reason I think Sarah is trying to suss out right now is what's the appetite for really getting behind something like this? Do you think something like this is valuable? You know, because if we don't, then maybe we're wasting our time here, but if we do, maybe we can put some effort behind really making this a product. that the committee can use, the board can use, and that members of the public can use.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3477)">57:57</a>
+  <p>It's missing a few.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3480)">58:00</a>
+  <p>So it's just a prototype. So Sandra has this hand out?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3485)">58:05</a>
+  <p>Yeah, I don't know why it's his permanent dog run. Yes, no. I mean, we have. dog run facilities, whether they're permanent, semi-permanent, I think that should be listed. But I do think it would be very helpful to have some degree of indication of any sort of public commentary or feedback that we've received around these. So as we're looking at these, we are aware not just of what the Park Department, Parks Department has updated us on, but also what we're hearing from the public.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3523)">58:43</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3523)">58:43</a>
+  <p>Also, when I saw this on the agenda, I thought we're actually discussing the budget request air table. And most of our budget requests were in CB6 are parks. And there's things on there, as you know, because I message you every time we have a question, that we have requests on there from years ago. And then oftentimes, we don't know what they were for. So this would be really helpful for that process as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3548)">59:08</a>
+  <p>Yeah, that's good point.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3554)">59:14</a>
+  <p>Okay. But I mean, this was what you guys can do is sort of, we can circulate this link if it wasn't circulated before. You guys can really take a look at it and then reply back with your suggestions to Sarah and she can compile the suggestions and we can all talk about how to best build this out. And if you really, really want to move forward with this, this seems like it could be a really good tool. But we want to build that, you know, it takes a lot of work to do these things. We don't want to just do it if no one's going to get a position. We've even got some suggestions from the public. Please have Ralph Bunch and Nice River Esplanade. Uh, see, yeah, they, Yep, it looks like they got a dog. So no, there rough bunches in there. So as he's regress not, which is out of frame.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3623)">1:00:23</a>
+  <p>All right. Stuyves and Cove is in Landeria.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3629)">1:00:29</a>
+  <p>They may not have included Stuyvesant Coe.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3631)">1:00:31</a>
+  <p>Because it's at the New York City Department of Deparks, but it isn't part.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3636)">1:00:36</a>
+  <p>We can include it. And it just does indicate that it is a different kind of property. Oh, actually, no. So I throw this here out of frame. And it's indicated as EDC. As is water site clear.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3651)">1:00:51</a>
+  <p>Or is there. Should we include them the Tudor City Park? Because lots of people don't realize that the two playgrounds are mentioned here, Mary O'Connor and Tudor Grove, and people often think that we also manage the park, I mean, or the. Yeah, all these suggestions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3665)">1:01:05</a>
+  <p>When we send you the email, give us just these suggestions. Yeah, just come back and we can, we can say what we should add.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3672)">1:01:12</a>
+  <p>Yeah, it's call for equipment in the park. Who's the part is it? Is it a passive park?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3678)">1:01:18</a>
+  <p>Is it a, yeah, yeah, whatever, whatever you guys think. And then we can sort of build it, build it out and see that people try it, use it, you know, once we see how it works sort of in the wild, so to speak. Then we can make modifications to see how people actually use it. But yeah, I mean, as you guys have noticed that the resolution database has really become something that people look at and that people are always waiting to see updated. It's really become from what I've heard from members a really useful tool. Maybe something like this could also be a used to it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3715)">1:01:55</a>
+  <p>Yeah. So when the email is sent out, take a look and then reply and</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3721)">1:02:01</a>
+  <p>everyone is making good points so okay uh moving i'm sorry um thank you neal i had a quick question this i i personally think this list is incredibly helpful um shouldn't we also include the park that's not yet made but we had a ribbon cutting for on 34th street on the waterfront uh yes um</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3747)">1:02:27</a>
+  <p>We can. Once it's open, it may be open in the next few months. We can certainly include that. I'm not sure what its name is going to be. So maybe we'll wait until we hear from the Parks Department.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3759)">1:02:39</a>
+  <p>Makes it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3760)">1:02:40</a>
+  <p>What its name is going to be. And just to clarify, we also need to clarify whether its ownership has actually been transferred to parks. But yes. And we see a comment from Elisa Nebedo to include Eastman Town Greenway. Um, yes, we can certainly do that. In fact, this prototype was made, uh, before East Midtown Greenway was actually, uh, constructed. So that's why it's not an issue on here, but those are two good additions. It's really looking to rename as Lucifer's way.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3794)">1:03:14</a>
+  <p>We have, we passed the resolution two years ago. And then September will be three years since his death. And then the parks department will allow it to be. Who are that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3808)">1:03:28</a>
+  <p>Also, I don't see Sutton place parks on here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3813)">1:03:33</a>
+  <p>Only the one is listed, not the others. You're right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3819)">1:03:39</a>
+  <p>There are five parks and an Esplanade and a connecting Esplanade. So there is six. And that has not, and that's not the Greenway.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3832)">1:03:52</a>
+  <p>Yeah, those are good suggestions. or for this, but yeah, it's out. So it sounds like you guys have suggestions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3839)">1:03:59</a>
+  <p>Oh, I see what you have. You have the street address.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3842)">1:04:02</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3843)">1:04:03</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3845)">1:04:05</a>
+  <p>And once we send this out to you for your perusal, you'll send your suggestions back.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3854)">1:04:14</a>
+  <p>That's great. I appreciate it. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3858)">1:04:18</a>
+  <p>Do you think we could also include annual events these parks may have? Or is that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3867)">1:04:27</a>
+  <p>Yeah, I mean, put all those ideas. Let's put them on. And then we'll see, you know, maybe we'll have so many ideas that the thing will be really, really, it looked really, really cluttered. And we'll see, okay, maybe we care back. As far as the, you know, if you want to list, you know, every year, Sutton Place Parks holds an event in this month.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3885)">1:04:45</a>
+  <p>We have six or eight annuals.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3888)">1:04:48</a>
+  <p>But as far as the specifics, you know, the actual flyers and the actual.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3892)">1:04:52</a>
+  <p>Oh, no, no, just the dates, the months perhaps on the event.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3897)">1:04:57</a>
+  <p>Use letter. So yeah, we can see and you guys can talk as a group because we want to create something that looks useful, helpful, but not too clever.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3907)">1:05:07</a>
+  <p>Okay. Sorry, Michael, then we're going to wrap it up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3910)">1:05:10</a>
+  <p>That's right. I want to say, why. I'm not like our. I mean, you ever asked a lot. I've been waiting for the last couple years. And I'm wondering, like, one more, while I reopen, like, one day on the five, and take back to fences and reopen the park.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3935)">1:05:35</a>
+  <p>I don't know that. That's probably a question for the department again.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3940)">1:05:40</a>
+  <p>But didn't she not kind of, Molly sort of asked that question. Yeah. For Glick, right? And because Molly said for 50 years, they've been saying five years.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3948)">1:05:48</a>
+  <p>Yeah, so that means 20. But she said they're getting very close to him.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3956)">1:05:56</a>
+  <p>Yeah. So if she has said it, I mean, she usually has a pretty good idea of what's going on. But I know that that's definitely people have had a lot of questions about them. All right. So we'll move on presentation of district needs. Okay. Jesus again. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3975)">1:06:15</a>
+  <p>Let me pull this up. All right. So as you all know, The district needs statement and budget requests is a process that all community boards go through every single year. The budget requests that this committee has quite a few of in our list is what you know most familiar is what you're most familiar with. However, there is a narrative portion that goes along that. And in that, it's a report essentially, and there are subject matter areas that the city, the department of city planning wants the board to discuss or expound at length on the particular subject matter. Oops, I'm sorry, this is the wrong one. This is last, I'm sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4034)">1:07:14</a>
+  <p>But your transportation is whereas is in Latin.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4037)">1:07:17</a>
+  <p>That's just a... That's Greeking. That's just filler taste. I'm sorry. That was for translator. I've been staffing a meeting last night. That's what that's for. But essentially, I'll pull it up, but essentially, the city wants the boards to find some consensus on what the greatest need is for parks, let's say. It has, pull it up here. Here it is. It has a dozen or so categories that you can choose. And oftentimes these get neglected in the excitement over the actual budget request themselves. So this year, the exec and the budget committees wanted us to take a closer look at these particular, this particular part of the district and state. As you can see, the parks, cultural, and other community facilities section is the section that pertains to parts. They don't break up the subject matter areas the same way our committees are broken up. So sometimes people, the committees have to share these. But cultural programming and parts are both wheelhouses of this, or both in this committee's wheelhouse. And it gives you a list of what you think in this subject matter area is the most pressing need, the most important need, everything from cultural programming to insufficient park space to library programming. Now, the current pit for CB6 is insufficient park or open space. CB6 has long been beating the drum that we need more parks, we need more parks. So this is not a huge surprise. So what we want you to do is to look at this list and see, what do you think is the most important out of all of these? You as a committee must agree on just one. Maybe it is still insufficient park or open space, in which case, your work is very easy. But if you think there are other things that should be, maybe something should dethrone that, and something else should be the top pick this year, this will change every year, perhaps, if you wanted to. then make a good case for it. But look at this list and pick the thing that you think is the most important need for this district as a whole. Then we will write essentially a justification, a little written justification that makes the case of why this, we have chosen this as the most important need in this subject matter area for this district. I think we've made a pretty good case for CB6's desire for more park space. We used to have quality of our park space and facilities. But this past year we changed it to the amount of park space. So read this and think about it and then let us know sort of like you're letting us know your suggestions about the parts air table let us know what you think should be the most important issue should it be the same one you already have should it be a different one it should be a different one why do you think that and then you guys can discuss it as a committee because hopefully before you break for summer you need to uh coalesce around one of these okay exactly we're down to 155 000 residents</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4274)">1:11:14</a>
+  <p>Uh, yes. We've always kind of covered. We can't have like 165, 168. Yeah. I take that more or less. So yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4285)">1:11:25</a>
+  <p>Okay. Shoot the email over and we'll do the same thing like with the air table. Because we're going to wrap this up. I'm just looking at the panelists or at home. I'm trying to figure out who isn't sleeping.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4297)">1:11:37</a>
+  <p>I am free awake and engaged.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4302)">1:11:42</a>
+  <p>Okay. All right, so, you know, as typical, wave everything. Just one thing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4309)">1:11:49</a>
+  <p>I did have one new business item or no, or just old business or follow up. Okay. So as we had discussed on the request that the libraries, the Kips Bay Library, which we had exchanged during a budget meeting, text messages. In, I think it was his, there was someone from the office reached out to the library in particular about the Kipsby Library and the question, in that email they said, more urgent in the Epiphany Library because a facade and the roof need to be fixed. So I wanted to find out if there's been any discussions with Tiffany Library, if they had come.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4343)">1:12:23</a>
+  <p>No, we, you know, we've had them here before. And then I speak to staff there. And that's the first time I haven't, I had ever heard anything about it. You know, the only thing they had talked about before. was like power outlets on the park near the window where 23rd is because they have two different sections. But that was the only thing that I've ever heard. But the next time I stopped by.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4373)">1:12:53</a>
+  <p>Yeah, if you can ask them because she said it was pretty urgent. And obviously for roof is they were here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4378)">1:12:58</a>
+  <p>Yeah, they didn't mention it. Yeah. You know, maybe they just recently had some type of.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4384)">1:13:04</a>
+  <p>I guess we reached out to NYPL HQ. Yeah. They were the ones that indicated that while they're still, they still think that Kips Bay Library means a high priority, they've identified a more urgently with epiphany. Epiphany facade and roof needs restoration. And they've identified that it might cost about $5 million to do that. So that might be something worth considering. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4417)">1:13:37</a>
+  <p>Okay. Well, yeah, I'm just looking here. Like I said, I go there from time to time. Yeah, it's Omisha Covington. So yeah, when I go back. Okay. So I think that's it. This will be Mark Thompson's last meeting with us. Oh, so you, you, speech. Long speech or?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4446)">1:14:06</a>
+  <p>No, it's been a fun 25 years. I don't know, whatever it is, but I'm no longer on the board. So, or I won't get to the end of the month. So it's been fun, guys. Thanks. But yeah, so you guys got a question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4457)">1:14:17</a>
+  <p>Thank you, Mark. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4458)">1:14:18</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4459)">1:14:19</a>
+  <p>Thank you so much for your service. I'll see you a full board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4461)">1:14:21</a>
+  <p>Thank you for your service. Your sharing of knowledge that those of us are new or have learned from you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4469)">1:14:29</a>
+  <p>Thank you, welcome.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4469)">1:14:29</a>
+  <p>It's a pleasure to me too.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4471)">1:14:31</a>
+  <p>Yeah, it's good to see you guys. But I'll see you at full board. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4476)">1:14:36</a>
+  <p>You're leaving this committee or the board? The board, yeah. Really?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4481)">1:14:41</a>
+  <p>I'm a lobbyist by profession, so lobbyists are no longer allowed to be on community because we're corrupt and evil.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4490)">1:14:50</a>
+  <p>all right something sure yeah no is that a mistake yeah i i i just have a very quick question for the district needs for the park facilities so when we consider our ranking do we need to consider the feasibility because i'm thinking about this because we all know that our district just has very few parks lands but it is pretty since we have all the buildings all over around and it is pretty hard to explore more areas to have more parks. Like it might be pretty difficult to have more parks. And if we want to have our ranking to solve the urgent needs, do we want to also consider the feasibility of this?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4538)">1:15:38</a>
+  <p>What I've seen there is sometimes with these rankings, it is a little bit more, it's a little bit art and a little bit, probably more art than science. What I would suggest from what I've seen be done in recent years is if you can make a really good case or why something should be a high ranking need, irrespective of whether it's feasible or not, make it a high ranking need. In the end, If there are sort of lower hanging proof that the city can knock out and fund and get, get accomplished, great. But at the very least, you've indicated that, hey, this need is a super, super pressing need. It may be a heavy lift, but we still think it's a pressing need. I would suggest you indicated as such. Otherwise, because if you rank it down because you don't think it's feasible, they're not going to think that you think it's super important.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4598)">1:16:38</a>
+  <p>Okay. We're all right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4602)">1:16:42</a>
+  <p>We got motion to leave. Motion to join. Where's the next board meeting? We're at the next board meeting is back at water. The meeting is now ended at 7.51 p.m. All right. It was really terrific.</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://www.youtube.com/watch?v=CjxmcRHxWg4" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function seekTo(seconds) {
+      const iframe = document.getElementById('ytplayer');
+      if (iframe) {
+        iframe.src = 'https://www.youtube.com/embed/CjxmcRHxWg4?start=' + seconds + '&autoplay=1&enablejsapi=1';
+      }
+    }
+  </script>
+</body>
+</html>

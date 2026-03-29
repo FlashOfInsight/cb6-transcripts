@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transportation - March 2, 2026 | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Transportation - March 2, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Transportation - March 2, 2026</span>
+      </nav>
+      <h1 data-pagefind-meta="title">Transportation</h1>
+      <div class="meta">March 2, 2026 · Manhattan Community Board 6</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe id="ytplayer" src="https://www.youtube.com/embed/EpMHeKJDgcM?enablejsapi=1" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=EpMHeKJDgcM" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card" data-pagefind-body>
+      <div class="transcript-header">
+        <h3>Full Transcript</h3>
+        <span class="transcript-source-badge">WhisperX + Speaker Diarization</span>
+      </div>
+      <div class="transcript-content transcript-full">
+        <div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(9)">0:09</a>
+  <p>All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(12)">0:12</a>
+  <p>All right. Welcome to the March 2nd, 2026 meeting of the compilation committee. My name is Jason Pramwick and the chair of the committee. And that we are joined by district manager, his is Perez. It is called to order at 7 o'clock p.m. As a reminder, New York state law requires all the new members. We're not able to attend a meeting persons, just have their parents on and the first and last name displayed from time the meeting is called until the meetings during. Numbers of the public who are attending virtually, you may raise your hand or give comments that you have to the Q&A feature on Zoom. Members of the public who are here in person. You can raise any questions that you have by raising your hand. If there's some following committee for discussion, we will feel questions from the public.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(48)">0:48</a>
+  <p>Do we have anybody thinking, we need to volunteer to take minutes tonight. Thank you, Maya. All right, and we will not take attendance by roll call and has this will take the roll call.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(60)">1:00</a>
+  <p>Good evening, everyone. When I call your name, please indicate that you are present. My phone. You be disman. C, B. Online, B. Disman. All right, we'll come back to me. Maya Donahue. Present. Bharat Friedman. Present. Thank you. Jason Bromowitz. Present. Thank you. Eric Goldberg. Present. Thank you. Sean Lamarou. Present. Thank you. Aye, Four. Present. Thank you. Mariam Rowe. President. Thank you. Larry Shire. Present. Thank you. Gabe Terzo. President. Thank you. Should share. Present. Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(118)">1:58</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(119)">1:59</a>
+  <p>Thank you. All right. Perfect attendance.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(126)">2:06</a>
+  <p>Uh, right. Uh, the agenda provides meeting was distributed ahead of time by the board office and reflect on the screen for you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(133)">2:13</a>
+  <p>If there, so if there's no objection, uh, we will adopt the agenda, numbers of the committee if you are open to, if you object to adopt the agenda, those guys your hand. Or racing objection, the minutes or the agenda is adopted.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(149)">2:29</a>
+  <p>Next, the minutes from February meeting, who they were distributed ahead of time.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(159)">2:39</a>
+  <p>They were, okay. If there's any objection to adopting the minutes as distributed, raise your hand.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(168)">2:48</a>
+  <p>All right, single objection, the minutes from the February meeting are adopted.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(172)">2:52</a>
+  <p>All right, let's set some ground rules in order to conduct an official meeting. No one may speak until granted the floor. Committee members who are here in person, if you have a question about community business or wish to make a motion, please raise your hand and I will speak to you and I will identify you so you can speak. All committee members of the public, please raise your hand for Zoom and I will identify you so you can speak. All committee members of the public watching at home and understand what is being said by each committee member. Chat function for members present via Zoom should not be used for community business or questions about gender topics. All of such marks should be made on the record. There is your hand to Zoom. Chat should only be used to learn the technical difficulties you are having or stated writing information like an email address. That was a race data at lab during the meeting. All right, we will now start. So the lights meeting agenda. First off, we have the person second. We have two items about NMU, Langone. And first we'll be discussing</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(227)">3:47</a>
+  <p>parking regulations on 1st Avenue, uh, between the pickup, the drop-off area and East 3rd Street. Um, so I didn't think it from in. Um, I'll give you court. Uh, if you have, uh, if we can talk about it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(242)">4:02</a>
+  <p>Oh, we had submitted a, uh, a graphic. I'm just wondering who you got. They don't have it. I can circulate a hard couple. Yeah, not this one. Uh, the other one, right? Uh, yes, this is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(263)">4:23</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(263)">4:23</a>
+  <p>Yes, yes, is it. Uh, do you want to come up to table that, so that you get you in the mind? Sure. Yeah. Do you want to be standard? Yeah. So, so what this graphic shows, it kind of shows, um, first avenue and it shows are we have like a turnaround space. Outside of our ED, it's got the numbers one through 11. So there are approximately 11 parking positions for ambulances. And these are predominantly to kind of offload patients and for EMTs and paramedics to clean the ambulance, resupply the ambulance before they can get back out on the road. What we had requested or what we're requesting is in the no standing zone, which is on First Avenue, there's approximately 13 spaces. We are requests to base to put a sign that says ambulance parking only in addition to the no standing zone. Because what happens is it gets a lot of just general cars parked there. And what happens is the ambulances end up parking in the bus lane. And I think when we constructed Kimmel, There's an agreement that NYU would purchase a number of ambulances. I think we purchased three for the city of New York. And we also have 10 ambulances that are stationed at NYU. And we get another 60 to 100 ambulances that as part of the 911 system will come to our ED to drop off patients. And when they're waiting for another call, they're queued up. So we wanted to have a place for them to queue up. because we obviously can't fit that many in the turnaround area. So the request to the community board would be for us to be able to have this ambulance parking only sign in addition to the no standing sign. It's already there because what's happening is it's all cars. Now we can't park anything. Don't sit there. I'm assuming you have The park there are legal. Yeah, it's not enforced. The no standing zone does not appear to be enforced. Any questions? Okay, I want to ask you about the space that's marked number 19. It strikes me that if that was to be maintained is a no standing and no parking zone, you'd have a daylight as ambulances race into the emergency area. Pedestrians are going to be blocked by any ambulance that's utilizing that space because they're very tall and wide. What do you think of that? I think if the community board wanted to recommend it, like, you know, we've shown 13 possible spots if we wanted to reduce that in the name of safety, I think that's fine. Okay, I want to just put that out there in case we ever have a resolution that we should call for that to be a daylighted area. Are you considered 19? 19. Wouldn't that as a daylighting concern be, because ambulances coming in would be coming from North on 1st Avenue. They work right east on 33rd Street. And then turning and then turning again. Oh, no, I'm sorry. They'd be going straight in. Right. Oh, I'm sorry. I'm not talking so much about the ambulances coming in there. That would be more related to space number 18. OK. But 19 would be for vehicles that are trying to enter the Kimmel entrance, a similar concern where they're making a return. Right. Just a question for you, Fred. Right now the cars are parking illegally. So you want to change it to another sign where cars will still park legally. Or do we think that saying that ambulance thing, that nobody's going to park in the ambulance spot? I mean, they're both illegal. So it's just kind of, is it just kind of window dressing? I mean, I don't have any objection to this, but I feel like we got a fighting stance. I feel like. If people understand that, I would say if you ask like nine, you know, 10 New Yorkers, what define what a no standing zone is. They probably don't, don't know, possibly don't know. But if we had like this supplemental sign and just said ambulance parking only, it's like, you know, people, I think people would be more respectful. I mean, maybe I'm being optimistic. I get your point. No, I don't have objection to it. I've just. putting it out there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(571)">9:31</a>
+  <p>Can I ask what type of illegal, that's maybe a weird question, but what type of illegal parking are you seeing there? Is it just people like waiting?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(579)">9:39</a>
+  <p>Is it standing? Is it police platter? These are not, there is nobody in the cars. Like people are just, I think people learn very quickly that there's, there's no enforcement. So, you know, Do you believe the staff of the hospital? Like, I guess I'm just- They're not, they're not staff. Staff at the hospital actually get like a discounted, if they want to drive in, they can request it to get discounted parking stickers and they park. Their staff parking provided under the FDR drive. We have two lots. So that's where they would, they would go most likely. Got it. Okay. Yeah. When you say they're rivalous for, for what period of time? I can imagine somebody were dashing inside to get somebody out in a transporter who was waiting in the lobby to get picked up. Do you have any kind of a sense of that? We have two drop-off areas. One is in front of 541st Avenue, which is like the kind of the main entrance to the hospital. And we have another drop-off area at, in front of Kimmel. So we actually have two drop-offs with cues. I think these cars, you know, I can't imagine who they belong to or why they're there. But they're there all the time. What we would like is we would like to use that space for ambulances because we don't, there's just not enough space to cue the ambulances before they're dispatched on call.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(677)">11:17</a>
+  <p>Okay. What is the blue color represent next today?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(682)">11:22</a>
+  <p>The blue color is kind of like a kind of like no stand, no parking within an ambulance turnaround because that's where the EMTs, paramedics are bringing the prams into the ED. So it's kind of like the ED entrance.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(698)">11:38</a>
+  <p>So in that area, like new park, right? Right, great. Is that sort of supplies or is that for bringing people in or?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(706)">11:46</a>
+  <p>It's to bring either people in or, you know, before they go out, they kind of resupply and they clean up the, you know, ambulance and then they, um, they wait for their next time all.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(717)">11:57</a>
+  <p>I'm in support of the, uh, and everyone parking areas, because like, I think if that's a very good idea, because like, it's no standing. It is a bit confusing, no standing, no park, you're standing, that's the only top. It's can get picked to be dropped off, no parking, and you can break up and drop off goods as well. And that's confusing it against a lot of people. And so I think that Andrew, it's only parking, a lot more sense.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(751)">12:31</a>
+  <p>Hi, I just mentioned something that I just wanted to check on. You talked about the parking that's under the FDR drive. And just sort of as a community member, that's one of the things that's very disturbing about the NYU footprint in the area is that that is space that I believe should be community space. And the fact that we're seating community space for parking is really unsettling to me. So I just want to understand how that plays in to you know, this request to change and what are your intentions with the parking spaces that are above ground given, I think you've got a whole parking lot at the facility.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(790)">13:10</a>
+  <p>But there are actually two parking lots. There's one where 34th Street butts into the FDR drive. And then there's one kind of further down. And then there's actually another one for Bellevue. Bellevue's got the space kind of to the south of us. I can't really speak to like, you know, do we do we lease the space? Is it the city space? I'm not really sure. I can tell you that it's mostly employees of the hospital that park there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(824)">13:44</a>
+  <p>And I would just share for the committee is obviously this is waterfront space that's currently used for parking. And even if it's for employee parking, I just feel like employees could take public transportation or park in the hospital lots as they choose. And it's just on bottom line, very offensive to me. Every time I walk down the FDR and I see this waterfront space, that's for parking. So for having a conversation, we should at least entertain the way that, you know, the hospital impacts the community. Yeah, I'm very supportive of your thing, but. things don't happen in a vacuum and we're here tonight asking for this. Um, and we've got parking space that, um, corrods the waterfront and our access to it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(870)">14:30</a>
+  <p>Um, great and shared the concern. Um, I don't think that would be sooner below for the ambulances in this case. It's not for the agents.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(877)">14:37</a>
+  <p>Yeah, but I feel like it should be raised and will be people being in dialogue and have, I know, but I'm saying we've been in dialogue for years. Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(888)">14:48</a>
+  <p>nothing happens to the dialogue so i'm just well i think it could be fair and correct if i'm wrong with the main point of contention has been the area that has just has in view right now which have been since turned it back over to the city i agree with your concern that's not the main area that is a small area of concern the entire waterfront from 34th down to 18th street so yeah i mean i clearly agree with you that i'd be nice for it to be open uh i don't know if as a community board we just like take an issue with those other spaces, though, historically. You tell me, I'm not aware. Yeah. Yeah. Okay. Yeah. Do you want to comment on that a little bit?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(929)">15:29</a>
+  <p>But you know, you have a couple. So I mean, yeah, I mean, a couple of things we did get rid of the one. This board is no fan of illegal parking anywhere. So my question, and I'm broadly supportive of this. My question for you is, do we actually have any data on how this has illegal parking is harmed ambulance response time. I'm actually thinking it does. I'm not like a traffic engineer. I'm an architect and I'm a regulatory director. I would think what it does do is the ambulances will just queue up in the bus lane. you know, which is another problem. So I think we're trying to get them out of the bus lane into the parking lane. And there's one quick follow question. Do you guys communicated at all with these 17? Do you think about the enforcement? In the consistency? We haven't. I think that the issue would be like if it says no standing and an ambulance was parked there, like that would include the ambulance, right? Technically. Yeah. Yeah. So I think I'm not sure that. However, I am personally very supportive of making this ambulance parking on this, my opinion, but I would be curious to know, because once we change the signs to Brock's points, people who park illegally are apparently on graded reading. So, you know, like it's an end. Yeah. Braddadee change the side. She said things. I mean, one, you know, we did a walk through and the cars are definitely just standing there and nobody's in them, nobody's moving, and we were there for a while. And then to your point, NYU does go on diversion because of all the cars there. And when it's very busy, you can't handle the ambulances coming in. So it is a medical issue. It's not just thing. And this committee should know that this was already requested to DOT which denied the request, so we would be overruling their opinion. So it's just worth it. I suggested that there'd be an ED drop-off or walk-ins or if somebody comes in with a taxi and wants to just drop somebody out in front of the ER, I suggested that, which was presenter leadership and they weren't really interested in that. But I still think it's a good idea, but anyway, just want to just add. Yeah, I really saw other people have their hands up. You know, one of our concerns was, you know, we had a working relationship with and I don't know DOT is on this call, but we had a working relationship with the previous Manhattan Borough Commissioner. And when we sent in the letter, it was at the acting Manhattan Borough Commissioner. So I'm not sure. If there's like another person who's now the borough commissioner, if there's changing policy with the new administration, like, you know, this was at the end of the Adams kind of administration. Just where the friend committee to know that that happened.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1128)">18:48</a>
+  <p>And to be overruled DOT.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1131)">18:51</a>
+  <p>We can ask VOT and consider it. And she was appointed for a. Mm-hmm.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1135)">18:55</a>
+  <p>Uh, what's going to be.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1136)">18:56</a>
+  <p>I see Michael knows. I was going to do.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1139)">18:59</a>
+  <p>So I actually support this, a request. But I do would like to think about what Larry said with daylighting. I think if you look at the emergency rooms, and unfortunately, I've had to use it recently a number of times. The number of ambulances that line up is amazing since Beth Israel closed. It's even more. So I think this is an important resolution. I think the idea of the parking lots is a separate issue that we should take up separately, but to deal with the emergency rooms.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1169)">19:29</a>
+  <p>Thank you. With regards to the daylighting, could you build the diagram again? Could we move? Is it needed or would be helpful if we also extended the ambulance parking across the street?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1186)">19:46</a>
+  <p>There's a, there's meter parking, I believe, on the other side of First Avenue. Right. We want to make up for the spots that we'd be removed for the daylighting. If that's necessary, I think I'd first, I would be supportive of that. Interesting. If you have a- We say to remove the meter parking across the street. Either two spaces or some of them, maybe not all of them. But it'd be helpful. But we probably did the whole thing as well, I think that would not be a sport of other personal. Well, I think we didn't think of that because there is the residents across the street in the IMP paid buildings. We thought that this was closer to you know, more funding the hospital. I think we should do both. I'm not to guess exactly able to do it across the street. But I just want to add one thing to what B said was that we, one of our capital projects right now is we're expanding our ED because we're overwhelmed with the amount of patients that are coming in. So that's like a big capital project for us. So I think the current situation is only going to get worse. Michael, go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1260)">21:00</a>
+  <p>I'm sure what to say, like, in addition to this, like, a lot of people talk about the parking lot as well. And I was thinking, like, what are you doing to encourage, like, people, I've seen the parking lot and I'm wondering, like, what are you doing to encourage people working in the hospital to use alternate means of transportation to commute to work?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1289)">21:29</a>
+  <p>Well, I would say that I'm a Manhattanite. I live up in Inwood, and I take Metro North to Grand Central and I walk to the hospital. And so I think there are a lot of, I don't think everyone could drive to the hospital. I think there are a lot of people who use mass transit coming from like the city, but also coming from Long Island and New Jersey. I want to follow that up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1320)">22:00</a>
+  <p>I'm guessing Michael also means as far as your package to staff, are you giving MTA passes and support?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1329)">22:09</a>
+  <p>Because I'm going to, I'm going to work on the employee parking in the waterfront, but I think we're getting off topic on the ambulance.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1337)">22:17</a>
+  <p>But I could tell you, like, you know, I have the, we basically get pre-tax dollars for the parking similar to like, you know, a lot of other. New Yorkers, we don't really get any kind of great benefit for taking mass transit. Okay. Do we have anybody?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1357)">22:37</a>
+  <p>Oh, sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1358)">22:38</a>
+  <p>We have a kind of from the public. Basically, they believe that some of that parking is NYU security that's using it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1367)">22:47</a>
+  <p>And they ask if there was an ambulance parking lane weeks ago. That was the heaven cordoned off. uh so i can't speak this is i don't think our security uh staff has vehicles um you know they're all kind of on foot in the in the hospital um there was a capital project that was done by amtrak amtrak um was they're upgrading their tracks, which actually run underneath the hospital. And they upgraded, they have like what they call a communication shed, which is on their south ventilation town. They have two ventilation towers that are in tax lots that are within the super block. So they own those ventilation towers. And they built a communication shed on adjacent to the south ventilation tower. So we allowed them access. I mean, I feel like it was in everyone's best interest. It's our tax dollars are going to pay for this federal project. So we allow granted them access and they kind of took over a large part of the bay. ambulance bay and during that time they provided personnel to basically discourage people from parking there and we tried to get the ambulances to queue up on First Avenue because they didn't have access to the turnaround space because Amtrak is working there. I actually think Amtrak still has DOT permits for lay down space on First Avenue. kind of where the north ventilation shaft is like that area is still um and track and i believe the city of new york is improving the curb cuts for the pedestrian crossing so the city of new york has a construction going on on both sides of first avenue i'm only something um larry your concerns on um daylight i agree with you although i'm questioning if it might be more effective to have the given that people are not observing the no parking and no standing regulations today we maintain that as no standing well i i'm i'm saying exactly that it should remain no standing any time and people who want to do the drop-offs which is what barak was talking about would have that opportunity if that was enforced individual off who wasn't taken by ambulance to the emergency room so i'm not i'm not opposed to it i just i just question it it seems like it will i wonder putting it as no ambulance parking only might actually effectively make it clear more regularly than i'm not sure i understand that you're recommending</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1564)">26:04</a>
+  <p>I suggesting maybe we do change it to ambulance parking only.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1568)">26:08</a>
+  <p>Well, the reality is that you're going to have an ambulance there that's going to block the view and it's going to block access to the curb. Which I agree is not ideal, but I think the alternative is- Which poses two problems.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1580)">26:20</a>
+  <p>Right, but I think the alternative is cars parking there illegally.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1583)">26:23</a>
+  <p>Well, that can be dealt with. Toeing, ticketing, harassment, You know, having people talk to or leaving flyers. There are a lot of subtle ways that you can that you can discourage this if you want to. But I don't think, I don't think it should be ignored. I think it has to be addressed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1606)">26:46</a>
+  <p>Is NYU currently own enough ambulances to fill all 11 spots plus 12 through 24?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1612)">26:52</a>
+  <p>Ammills, NYU owns 10? And they're kind of like, I believe the way this works is we pay for them and give them to the sea. And they're part of the 911 system. I think all of the EMTs and paramedics are our city employees. And I think the intent of the turnaround space is basically pulling and drop off the patient, you know, refurbish the ambulance and then get back out into a loading space. Right, a loading space. What happens is in the morning, I believe that they have like kind of like a check-in. They get their assignments. So, you know, the morning is like a peak time for us. And also we could have a situation where, you know, we have a lot of ambulances all at one time.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1659)">27:39</a>
+  <p>So you're saying it's likely that all these spots could be filled.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1662)">27:42</a>
+  <p>Yes. Okay. So they're based out of the, they have like a facility. We have 10, 10 ambulances are based out of NYU. But you take more than. we can have uh but any like fire department ambulance or other ambulance company will can come to n yu because we're part of the 911 system right okay honestly i think we're the better we can get the ambus response would be great if we can do in a way to improve both the acts of care for local residents and for</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1703)">28:23</a>
+  <p>and improve the bus service at the same time with the bus lane, I think that'd be amazing. I think honestly, we should go for it. And I feel like, honestly, like, then an opportunity to really help people get the hospital and get their care. And he's like on the lower east side of Manhattan, I'm also involved with the efforts to keep that this real open. And they close. And so now we're done to make more emergency room. I think they're a good idea to try to keep the improve access to the hospital.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1746)">29:06</a>
+  <p>Perfect. It's just going to say it seems like there's no real objections to this. So I'm happy to write a resolution and we can bring it up next week, next month if we're okay with that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1759)">29:19</a>
+  <p>Do you want to include the daylighting suggestions that Larry? in that resolution in the problem yet.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1767)">29:27</a>
+  <p>Maybe I should have just one last point and I agree with the intent of this is just to share with the friends at NYU that it would be wonderful if you came to the community board with a give back to the community as you know as we think about this sort of be prolactive and to think about how space like that on the waterfront could be returned to the community Just note on that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1790)">29:50</a>
+  <p>I do think that's probably most appropriate with the waterfront committee. Regardless.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1794)">29:54</a>
+  <p>Yeah, yeah. They hear and they're acting and we punt every time. I'm asking.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1799)">29:59</a>
+  <p>I just wanted to say why I don't think we should add it to. I'm not saying.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1802)">30:02</a>
+  <p>I don't think you should either. I wasn't say I just look at it. Why we're not doing that. I think we should add it either. Okay. Okay. Different. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1809)">30:09</a>
+  <p>Uh, better. Okay. And for the resolution that Barak is volunteering to write, I just want to. clarify that the daylight and it serves two purposes. One, it frees up the curb for drop-offs, casual drop-offs of people to the emergency room. And the second is that because large vehicles, tall vehicles, wide vehicles will not be parked in a place where another vehicle will be making a turn around pedestrians on the sidewalk could be visible to drivers and they could also see drivers who would be crossing their path. So it's Specifying spaces 18 and 19 to be reserved as no standing any time, would for those reasons be part of the resolve.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1892)">31:32</a>
+  <p>Okay. Great. All right. Let's move on. Anybody else does anything to add? We'll move on the next topic. Oh, no, we need to call a question. No, because we'll call it on a net. Okay, that's on the agenda. Similar requests from NYU, no standing at 302 East 18th Street to Lelford, delivery of oxygen.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1914)">31:54</a>
+  <p>Did they join?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1915)">31:55</a>
+  <p>Yes, please. I'll just, like, well, interesting. We also didn't walk through of this area. So just as a some background on this NYU or this orthopedic hospital, I guess, NYU's owned it for about maybe 20 years. I think it was originally either part of Beth Israel or city hospital. This facility does a lot of like orthopedic cases. It has something called like a manifold medical gas system. So what that means is that cylinders of gas are dropped off by a truck now to the point on a daily basis and they're brought into like a med gas manifold room off of the loading dock. They're connected to a manifold. The empties are kind of stored. So it's kind of a very involved process and we're to the point where we're using enough medical gas that it's be we can't like basically we can't keep up with the with the demand and we've actually um it's been recommended by authorities having jurisdiction at the federal level and the state level that we need to upgrade our medical gas systems to what's called like a bulk a bulk system. So the bulk system would be a larger tank that's outside. Many of the hospitals have these and this would be for liquid oxygen. It's actually safer because it's outside and we can store more liquid oxygen and it would be less risk because we don't have like gases within the hospital. We had started this process many years ago. And the original intent was that the offloading would be adjacent to the loading dock. And we kind of went through a process with the city of New York, with the city planning, the building department, the fire department. And we kind of got to the end of the process. And our supplier kind of felt that it wasn't, it was, not compliant to offload gas where there are these large openings in the building. We have like our loading dock is there. So they wanted to change the design. So they change the design so that the gas loading would be on 18th Street. It's not near any openings in the hospital. But the problem is that the gas, the truck that delivers the gas is a larger truck and it needs to offload over the top of what they call like a spill pad which is concrete liquid oxygen can't come in contact with any petroleum projects because petroleum products because it gets it be volatile um so we have like the the next diagram kind of shows the the proposed uh area for the truck drop off and the spill pad um in actually in the street. So this would be a no parking zone. We try to get the gas company to drill down and tell us exactly when they were delivering gas. The problem is that they're delivering gas to like many medical facilities in Manhattan. So they can't like give us precise times. So. this would be like no parking all the time. And another problem is that we can't really have cars parked over the top of the concrete pad because if it gets any kind of oil or gas on it, the trucks will deliver the oxygen to dangerous.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2180)">36:20</a>
+  <p>That would be for four spaces, about 80 feet. So it's 70 feet from the center of the spill pad that box over the left, that's the concrete pad. That's where the back of the truck would unload the gas into the fill box and then it's 70 feet to the front of the truck. So it's about 80 feet from the corner.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2211)">36:51</a>
+  <p>All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2213)">36:53</a>
+  <p>Michael. Another question. So the film pad looks like you go a little bit off the sidewalk.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2220)">37:00</a>
+  <p>and then if i'm like what does this spill pad look like and like i think the spill pad is just like a concrete pad um in the roadway i think the roadway is probably asphalt has like a topping asphalt topping with concrete underneath so asphalt is a petroleum product so it's not suitable for you know, like offloading liquid oxygen. So we would be just building this like 12 by 12 pad in the street.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2254)">37:34</a>
+  <p>Level with the street. It has to be clean all the time. If there's any oil on it, we have to go out and clean it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2264)">37:44</a>
+  <p>So if I ruined it, somebody accidentally drives on it?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2268)">37:48</a>
+  <p>No, you just can't park on top of it. you know, some oil might come from a car.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2276)">37:56</a>
+  <p>And what about the sidewalk? It also extends on the sidewalk. I don't think so. I think it butts off to this side. Okay. All right. I had two questions. First, I'll be serving some alternative in terms of what is the state of the art of manufacturing the oxygen on site rather than having deliveries? I couldn't answer that question. But I guess we do. Because you have that on, if you go on an airplane, because I had the experience of having to get oxygen in an emergency and they manufacture oxygen in the airplane and cabin. So I wanted to inquire that as about that as an alternative. Well, this is also liquid ox. I understand the purpose of the liquid oxygen is that you can store. So maybe that's, maybe that's part of the answer. So the second question that I have involved, so I'm trying to picture what day in the life of this operation is going to be, starting with how do you police the area here to keep people from parking on the pad, over, along to when you do get the deliveries, how do you get it inside? You have to block the sidewalk for how long? And again, how do you prevent someone from creating a hazard because this could explode perhaps if someone is ill intent? Well, I think that this procedure is actually happens all over the city of New York. It's not new. We actually have it at our Manhattan campus, but it's on 30th Street. We had a bulk oxygen facility on FDR drive, and it was a threat because it's in the flood zone. So we actually paid to relocate it to hire grant on 30th Street. So that's a demapped street. We didn't have to ask the city of New York for permission, but we have the same problem that you just brought up with people parking there and even uh one of the biggest vendors is the medical examiner's office but i think we've worked out a deal with them we know what their cars are we call them we tell them the options there can please you know park someplace else for you know half hour so well like this offload oxygen so um So this is like a common way of delivering oxygen to like a medical facility. The problem we have with this facility is that we're kind of boxed in on all sides. You know, our front door is kind of on 17th Street and it's got the entranceway and accessible ramp. And then on 2nd Avenue, we have like a bike lane and we have bike storage and There's a pedestrian safe zone. That plus all the openings in the building. It was, you know, that was our preferred choice and it was rejected. So this is kind of the only, our only spot. We have kind of... I understand the rationale, and it's a good rationale. I agree with it. But I'm just trying to get a better idea of how it would be managed. You have people who are visiting the building who aren't easily communicated with in advance and not going to have an understanding. They want to, they want to park there while they bring their relative up to get their knee operated on. They're going to be there two, three hours. They see the sent these space every day and they violate your parking regulation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2523)">42:03</a>
+  <p>Right. Well, that's the back of the hospital, 18th Street. In front of the hospital, it's 17th Street.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2528)">42:08</a>
+  <p>No, I understand it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2529)">42:09</a>
+  <p>Basically, the truck would pull up and there's a hose stored on site. So the driver would connect the hose to the back of the truck to a built-in fill box.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2543)">42:23</a>
+  <p>Is that going to be elevated 10 feet above some pedestrian school?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2546)">42:26</a>
+  <p>The fill box is on the property line. The port would be low. So the hose would be on the ground. They would have a Jersey barrier. that would go over the hose and it would be there for the 20 or 30 minutes that they were, they are stealing the tank from the... Would pedestrians be able to cross it? No, no. We would have a, there would be a Jersey barrier there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2580)">43:00</a>
+  <p>Good. So, I mean, obviously our hospitals need oxygen. The strikes me as eMenintly reasonable. The consequences of illegal parking seem substantially higher here than 33rd Street. What is there any plan to prevent this proactive plan working with, uh, uh, instantaneous towing working with the city council person who I think should be renamed Maloneyy. I for this district. It strikes me here. You can't have somebody just randomly parked there and the cost is very high. It is very high because what we experience on the Manhattan campus is it when the truck comes. If someone's parked, they'll just keep going. And not only that, but we actually get charged for the delivery, even though we didn't get any product. So, you know, I agree that this is a, this is a problem.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2631)">43:51</a>
+  <p>We already hate the legal parking and now it's life and death. Is, uh, my presumption was that it was there was a legal parking that the, uh, the truck would block 18th Street.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2642)">44:02</a>
+  <p>Is that not correct? They just simply not be able to do the lower. We asked about that. It would be oily black. Yeah. Is that just that for a minute? Well, I think the problem is that air gas, who's our supplier, says that if they have to do delivery from the center of 18th street, similar to like what every oil truck in city of New York does, uh, that the holes would be too heavy. So they will not do that. Okay. Uh, yeah, got it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2676)">44:36</a>
+  <p>Uh, yeah, uh, Michael, I see her, but I just want to make everybody else because you already spoke, uh, got a microphone.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2685)">44:45</a>
+  <p>So when they have delivery, do they connect the trucks with school pad or did it connect somewhere else in the building? They get the eye.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2693)">44:53</a>
+  <p>The head is in the street just so that. oil doesn't get on the asphalt. It has to be a clean area. They connect the hose to the truck, and then the hose goes to the fill box, and then there's piping under Brown that goes to the tank.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2711)">45:11</a>
+  <p>Oh, it's a fill box on the field padder.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2713)">45:13</a>
+  <p>No, the fill box is on the property line. It's a vertical box with a port, you know, maybe 18 inches above the ground that the hose connects to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2725)">45:25</a>
+  <p>So it's across from the side box. the other side of the sidewalk to the property line. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2730)">45:30</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2732)">45:32</a>
+  <p>Let me let me plug this idea. If your pad was connected by piping underground into the building without having to connect a temporary hose, would this not make the operation more efficient and safe?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2751)">45:51</a>
+  <p>Air gas. Does it We wanted to have a ballard with the fill station in it, air gas was opposed to that. We wanted to have a- I'm sorry, who? Our vendor, the people who delivered the oxygen. They don't want a fill box built into the sidewalk. They make it look at moisture in there, mold, oil. So we wanted to recess the fill box into the ground. They didn't like that idea. We wanted a bollard stanchion where they could connect to. They don't like that idea. We are afraid someone will hit it. And then even a bollard with bollards around it, they didn't like that idea either. They don't think that's going to work. So we tried different design options.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2806)">46:46</a>
+  <p>I think this is a fairly low pedestrian volume area. Let's say that it's ideal, but I'd</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2813)">46:53</a>
+  <p>Personally, I don't think it's going to be a huge inconvenience to pedestrians. Um, I have your question, can hospitals manufacture oxen and I thought that was a great mind and answer that, but I just had to Google it. And it's very unusual, very rare for hospitals. We actually large scale industrial equipment and we sort of pediatric hospitals and fairly small Manhattan based hospitals. I think it's probably a no go for this and, um, I guess my question is you do multiple deliveries there to this hospital. Can this site also be used as delivery for multiple other things? So that's the second question. And then we also just so committee knows there's some sidewalk parking by NYU security and kind of discuss with Patricia. Maybe she's on the line. And there. Oh, hey, Patricia. And then that's being addressed and hopefully that stuff. So thank you for them. So we actually thought that the no parking was a good idea because it allows us to do deliveries here as well as in addition to the oxygen delivery. I mean, I thought that was a great idea. And I guess we are addressing the issue of the car parked on the sidewalk internal. Yeah, no, just a thank you. Just to Eric's point about community relations. And thank you for addressing that. And then just to say that we have a resolution. I don't know if we can bring it up. People have comments. I just wanted to make amendment to it that they want 80 feet, which I didn't write into the resolution. There's no objections. We could just add no parking for 80 feet. So is 81.4 feet. Is that what you really need or is it 80 feet? I think the issue is that you know we're trying to get the problem is the hose right the hose is a set length so this kind of dictates and and also all of our equipment is in the side yard of the hospital so you kind of set your um our tank and then the hose kind of dictates where that spill pad is so you know the spill pad it looks like the spill pad is 12 by 12 so the truck wants to kind of back up onto it so it looks like there's a couple of feet between the spill pad and the crosswalk um it'd be nice if it was a oh i agree if it was a little more efficient in the in the space but i feel like this is the best that we could do well if you want to ask for 82 feet uh i'll be asked for it i think what we did is we we asked the um our vendor like what was the dimensions and this is what they they gave us so tell us what we should put in our resolution last quarter it looks like it's 81 feet um 81.4 feet from the edge of the crosswalk to uh the white solid line where i guess the meter parking is yeah that's probably how we should describe it in the year resolution Sounds very reasonable. Yeah. So just, can we do with violators will be towed with this typical DOT no standing or no parking or is that like a, do we need a separate thing?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3028)">50:28</a>
+  <p>I don't think they do that anymore, but we don't have any group from DOT on tonight in person.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3035)">50:35</a>
+  <p>Okay. Well, we can recommend it even if it doesn't happen. Yeah. Uh, yeah, we can put them there. Uh, does the community board know how that works? I mean, as like a. Manhattan night, I'm curious. Like, is that, do we, when we as the owner of this business fire a, like a towing company to do that? Or is that something the city of New York does once you get a ticket and then one of their tow trucks comes and they, they're authorized to remove the car? Do you guys know how that works?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3068)">51:08</a>
+  <p>I could give you what I think, how I think it works, but not as like an official answer. I'm pretty sure it's on the police precinct.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3076)">51:16</a>
+  <p>I don't think you have a private right of enforcement, but you should confirm what the idea. It's pretty close for this precinct. Yeah, it's only a walk away here. Yes. Virginia. You're right. Yeah. Look at it's Harvey's probably. Yeah, Virginia. One's Virginia's. Oh, okay. Yeah, yeah. I can leave them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3099)">51:39</a>
+  <p>Did you want to add something, Michael? I asked me. I was thinking like with the, what is the, what happens with someone I family park from it?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3116)">51:56</a>
+  <p>I think that we're going to be responsible to clean it. Like, and I think that if the, if air gas comes and they see that there's a petroleum on it, they won't deliver. So I think, I feel like the maintenance of the spill pad is on us. Can you go down to the result?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3139)">52:19</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3140)">52:20</a>
+  <p>Um, the, um, the, uh, mag, we're six sports establishment of a designated 81.4 foot, no parking zone. Yep. 81.2 or, sorry, so anyone. Right. Yeah. Great. Let's see. Let's see. The mention of the pad in there. It was not mentioned with one. Which zone, which is a something.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3182)">53:02</a>
+  <p>Which includes a, what, concrete pad?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3185)">53:05</a>
+  <p>The spill pad is 12 by 12 located in the roadway.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3191)">53:11</a>
+  <p>adjacent to the sidewalk which includes which includes yeah a 12 by 12 but 12 inches that would be an achievement</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3223)">53:43</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3228)">53:48</a>
+  <p>Yeah. Yeah. Yeah. Yeah. Yeah. Yeah. Yeah. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3232)">53:52</a>
+  <p>Yeah, I think concrete is the material is important.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3236)">53:56</a>
+  <p>Um. Yeah. Spill pad adjacent to the sidewalk.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3244)">54:04</a>
+  <p>Are we going to ask for that buffer zone space?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3247)">54:07</a>
+  <p>So they know where on the, um, I think there's a white line kind of. those were the end of those. I don't think we need to get that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3257)">54:17</a>
+  <p>Okay, just checking. Well, I was saying like where the spill pad was specifically, since it seems to be at the back of the truck.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3264)">54:24</a>
+  <p>Uh, I think for the purpose of the resolution. It's fine. They'll refer to the diagrams as it pertains the actual incommission. Yeah. Uh, okay. Uh, any other, did you have a comment that set off adjacent to the sidewalk for, or two kernels or no comments? Trying to get a little bit, um, Maybe you can take out the comment next to roadway. I put that in there for readability. Establishment of a designated 8.81.4 foot, no parking zone, which includes a 12 foot by 12 foot concrete spill pad in the roadway. Jason's in the sidewalk on the side of the east 18th street, just east of second after street. It's a long sentence, but whatever. And then the second comment for a second, yeah. We should diagram just to. Well, do we get included, right? The stream.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3335)">55:35</a>
+  <p>Yeah, we get a picture.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3337)">55:37</a>
+  <p>We should include, well, we full add the picture as an appendix one. We put it together for the board. Okay, any other comments, concerns? Uh, if not, do we have a global question? Great. Uh, is just a second? Second. Okay. Um, move to a roll call vote.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3359)">55:59</a>
+  <p>Sorry, we're putting a note in here just so we don't. I just have a diagram sentence because we're talking about. Oh. I mean, we probably should just have a diagram support. All right. I mean, that would help people. Yeah. And if we're reviewing it is All right, you guys are voting on this. Yes, please. Okay. All right, you are voting to adopt the resolution that was just before you. When I call your name, please indicate whether you are in favor, opposed, abstain, or not entitled to vote on this resolution.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3402)">56:42</a>
+  <p>Michael Cohen.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3406)">56:46</a>
+  <p>Beatrice Isman.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3407)">56:47</a>
+  <p>In favor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3410)">56:50</a>
+  <p>Maya Donahue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3411)">56:51</a>
+  <p>In favor?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3413)">56:53</a>
+  <p>Orrath Breedman. In favor? Jason Palmerick. In favor? Eric Goldberg. In favor? Sean Lameru. In favor? Anna Piker?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3425)">57:05</a>
+  <p>In favor?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3427)">57:07</a>
+  <p>Mary Am Rao?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3428)">57:08</a>
+  <p>In favor?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3430)">57:10</a>
+  <p>Larry Shire? In favor? Gary Weinstein? In favor? unanimous in favor. As of carries and moves on to board. Um, we, and sweet for we back there. Well, I appreciate that transportation cities help and understand with this issue. I mean, I can assure you all that we tried every which way to make this not to be a, you know, try to get that solution. Because again, we'll vote on the other resolution next month. And so yeah, this one will have been full board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3471)">57:51</a>
+  <p>So we'll need for you to come back next month. I don't think unless you really want to be here. But yeah, so you all will seem like really nice pieces.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3479)">57:59</a>
+  <p>Not me. Sonny good. Okay, please. Thank you. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3484)">58:04</a>
+  <p>Thank you for going. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3488)">58:08</a>
+  <p>All right, we will now move on to the next one on the agenda, which is discussion of garage access for 33rd Avenue. And we have Mr. Rick Mince. May I have permission to currently be in this conversation. Who is speaking as a member of the board?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3507)">58:27</a>
+  <p>I am.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3508)">58:28</a>
+  <p>That board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3509)">58:29</a>
+  <p>Yeah, I'm here on behalf. I have six copies of what was email to you in case.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3514)">58:34</a>
+  <p>I don't think it actually made it out.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3516)">58:36</a>
+  <p>Okay. So I'm here today on behalf of the board at 333 Avenue, which is the first building on the left on North Town 3rd Avenue, where the new street configuration of the ones. And I would just like to say that I'm trying to be an honest broker between the concerns of the board and this committee. I helped draft this memo and other members of our board and our superintendent and their management county are all on this call. So the biggest concern that we have is that, you know, as you may be familiar with the configuration of that block, we have in an inset parking, which used to be a parking lane, but had well about put in on both ends on the north end because it abuts the 25th Street Plaza. Then we have a separated bike lane, then a parking lane. Then there are now two lanes of traffic and a bus lane on the far right with a parking lane next to it. So it was a big change from the, I believe, five lanes of traffic that were formerly there. And this is where Third Avenue opens up from two way to one way. And so traffic would formerly, essentially spread out at right in front of our building. You know, there are various concerns which I'll touch on briefly, but the main concern is that access to a garage has become precarious. Parked vehicles are not respecting the clear zone turning into the garage, which means the access in and out of the garage often requires people to use a bike lane. The existing striping isn't clear enough. There's not enough of a clear zone or daylighting zone, especially because postal trucks are stored there, so you can't see around them, which means driving out of the garage is dangerous. And our service entrance is right next to the garage entrance, which means, you know, there's no safe place to put vehicles that are loading or unloading and so forth. One thing that I don't know, I don't know if the traffic engineers that could plan this understood that this block carries northbound traffic coming from the south side of 23rd Street, along with all of the turning traffic from 23rd Street. And the two traffic lanes are very tight, which means things are backed up all the way across 23rd Street for much of the day and night. Humpkin has gone up and so forth. So, you know, there are, there are broader concerns that we have with the configuration. We understand we're not in a position to ask that the street be fully reconfigured. And I think all of our board members would agree that, you know, there are advantages to the current configuration. Lots of people like the bike lane, people have noted that the bus is faster. But we would ideally like to solve the loading and unloading problem. And we have a few recommendations. I mean, the biggest challenge is that we have a lot of older people in the building who now have to load and unload in the street, meaning in one of the two traffic lanes, which backs up, essentially backs up traffic down to 20 second street or further. So there are a couple things we want to ask for. One is we would like the parking lane to be converted to a commercial or loading zone. Two is we would like the striping to be made clearer so that the location of the pedestrian space is more obvious, especially for people who are confused. We would like a clear path to the northbound bike lane to be striped so that we don't have bikes cutting diagonally across the intersection and seemingly going out of nowhere, as older people are tempted across into the refuge. um we we are open to um having uh physical instructions in the daylight zone planters um boulders whatever the the city is willing to place um and finally we we included a proposal to at restripe the um the um the uh area where the bike lane currently is and the inset parking area as a shared space like on Broadway below 23rd to provide safer access to the garage and to the service entrance and in lieu of using that inset parking area as pedestrian space, it could convert it back to loading a loading zone or commercial parking for all the service vehicles that use the building. The idea if we did that is that it will be shared space up to the point of our garage entrance, then would merge back in with the northbound traffic and the main traffic area. north from the middle of our block past 25th Street. So that is a very concise formulation of the concerns that we have in our building and some things that we think would help. We have tried to focus on practical and actionable solutions rather than on complaining because we would rather have our practical issues addressed, then fight an unwinnable battle against the forces of nature. And that, I'll stop there. I just want to emphasize that I'm speaking on behalf of the board, not on my own behalf in every regard, but I agree with most of this and would support any of the things that the board is asking for. Now I'll stop. I think they're talking on behalf of 330. 3.34, not 334, not coming in. Yeah. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3962)">1:06:02</a>
+  <p>Oh, sorry. I don't just about my meeting. Okay. So yeah, so first of all, I want to thank you and people from the building coming to voice your concerns. I appreciate that. Just one thing is that the, when the D.T did the project, they had to stop because it got cold and DOT can't paint. once it gets below a certain temperature. So everything is incomplete. And then not totally clear what the, you know, final, how the final striking will be marked, but definitely needs to be better. Definitely needs to be better. There was a truck. boiler room there that was thankfully- That's fine. And we appreciate it more than anyone else. And that truck there kind of was like the market for other drivers to legally park there. Yeah. And so it's confusing for drivers. So that whole area needs to be marked better as pedestrian space. And I think that would go a long way to protecting the pedestrian space. Because one of the biggest issues in Manhattan you know, our sidewalks are really overcrowded. And there's a shortage of pedestrian space. And people interpret that as, oh, I hate when people walk side by side, but everybody should be able to walk side by side and talk.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4043)">1:07:23</a>
+  <p>Just can I just add two things to that? One is the same is true, the block above, between 25 and 26. They also have insect parking that can't leave thing in the interest of, you know, straightforwardness, I have to, I have to say that it's our board's opinion that pedestrian traffic on the block is not having. And our board is concerned that if that becomes permanent perist and space, we'll have even more noise and disruption and smoking from the bars. Jason, I think that's it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4087)">1:08:07</a>
+  <p>And I will say that that's one of the top concerns in CB6 is a lack of park space, a lack of pedestrian space, and that's always been a top concerning the sport. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4101)">1:08:21</a>
+  <p>Rich, you mentioned potential for hunters. Yes. For DOT, do not understand anything for DOT to do vendors, they need a partner in plants and water and being trash out of them. Is the board the building willing to take such a caretaking role?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4120)">1:08:40</a>
+  <p>I can't commit the board, but I think there is a good chance that our board would be willing to take responsibility for that. We already maintain a plan to prebats. We have a very competent and dedicated building staff. And also we have members, residents who I think would enjoy doing a little gardening. So there's a very good chance that we would need some sort of commitment.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4155)">1:09:15</a>
+  <p>But yeah, but yes, okay, very good. One of the thought. We do have a policy on no parking, reestablishing no parking zones in front of residential buildings that we passed a resolution on a full months ago. I see that as falling into addressing some of these problems. Eventually straight in front of the building, we could establish a no parking zone.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4181)">1:09:41</a>
+  <p>Well, remember there's two areas. There's the parking lane that is protecting the bike lane. Yes. And then there's that intent. So are you talking about the parking lane?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4192)">1:09:52</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4192)">1:09:52</a>
+  <p>If you're concerned about like drop-offs, we could create a note if you can request no parking for</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4198)">1:09:58</a>
+  <p>uh we're in front of the building entrance and maybe also in front of the terrorist entrance i mean it was it was it's because we because there needs to be access across it would basically be the whole block um and that would mean that uh you know commercial vehicles essentially our service vehicles to park there illegally is what would happen um that they would park there really probably um because they have to go somewhere So which vehicles are perfect. The service vehicles and service our building. We have a lot of, you know, it's a 200 unit building. So we get, we have construction going on and three or four apartments at a time and maintenance vehicles to come and illicit and so forth. I'm not saying necessarily that that's the wrong thing to do. But do you not want that? You would have to be, I guess our policy, the board, the building would request that. I think, I mean, what we want is probably an extended, clearly marked clear zone at the south end for loading. And then commercial parking, sorry, commercial parking beyond that. But if, I mean, we might prefer no parking there. for loading purposes because right now, like we have people use accessory ride and those vehicles are load on the right side. So the vehicle is in the left traffic right and the loading is in the right traffic plane adjacent to the bus lane and all traffic has to stop. Yep.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4307)">1:11:47</a>
+  <p>Sorry, you lost me on the striping versus the no parking.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4311)">1:11:51</a>
+  <p>Well, Honestly, I can't speak for the board about whether they would prefer a full no parking loading zone in front of the building or loading zone or commercial parking because really we have both needs. And that's assuming that the curbside space, the top of the definitely space.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4337)">1:12:17</a>
+  <p>If that is, that's definitely the intention that that is. If you look at the designs, that's no, I know. It is going, it is, it is, it is, it is possession space. It's not effectively managed today, but it is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4349)">1:12:29</a>
+  <p>I mean, that's the, that's, you know, I mean, that's sort of what we are, uh, saying that it, it makes it very difficult to operate the building if vehicle access to by a lot of there on the curb directly at there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4365)">1:12:45</a>
+  <p>Yeah. Uh, I see. Okay. Uh, go there. Rich, this is a building which has its own parking garage with internal access to the building.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4376)">1:12:56</a>
+  <p>It has its own parking garage with human access</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4386)">1:13:06</a>
+  <p>But could that in some instances be utilized by tradesmen being permitted to park in the garage and then have access to the apartments?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4396)">1:13:16</a>
+  <p>I don't know whether the vehicles that are used to service the building would fit in the garage. Well, maybe some of them might.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4406)">1:13:26</a>
+  <p>I just want to put it out as a suggestion to alleviate some of your concern. Obviously, it won't. do it for the larger vehicles, but it might, uh, it might be an arrangement that the, uh, uh, that the residents, uh, could agree upon would be, uh, would be popular for them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4432)">1:13:52</a>
+  <p>It would, um, impose a cost on the building because that, um, garage is a sub lease to an operator. Yeah, well, you'd have to reimburse them or the tradesmen would have to reimburse them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4444)">1:14:04</a>
+  <p>And then the tenant who has the work done would have to reimburse the tradesman. Well, I'd recommend that rather than imposing a cost on the whole community. All right. If that parking space is turned into a loading zone, why do you need the curb space? Why can't the service people pull into the loading zone and use that? Why do they need to pull into the pedestrian space?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4470)">1:14:30</a>
+  <p>They could, but they would be, I mean, they would be parking for, you know, extended period. So it would not be legal for them to do that for letting us out. Yeah, hours like, you know, we, for example, we have been having an elevator maintenance project and there's been people in front of development.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4492)">1:14:52</a>
+  <p>But is there any change in the amount of parking?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4495)">1:14:55</a>
+  <p>right now there's increased parking because there's illegal parking and the yeah we stopped and the regular parking we stopped doing the illegal parking now that the printer is there's very very little so there's is there any change in amount of parking because it's just shifted um well yeah because of the daylighting on both ends um there's no daylighting oh there is there is oh where the garage is a pedestrian zone that's maybe i don't know 12 feet long on the um</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4525)">1:15:25</a>
+  <p>south end and then there is clear zone before and after the garage entrance and then beyond that there's there's no parking in all we also lost the space because i mean it's a 200 building there's 200 apartment buildings there's never going to be enough parking no i know no every building in manhattan says oh we don't have enough parking literally every single one i understand so you know i mean uh we could just knock down all the buildings and manhattan could just be all parking Yeah, and I still wouldn't be enough. Yeah, but I just don't. But I think if that parking space was loading the sound, I think that would go a long way to solving your problem.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4568)">1:16:08</a>
+  <p>What I would ask then is that you let me go back to our board and ask them, since you say you need a request from us in order to do that. Petition?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4581)">1:16:21</a>
+  <p>We need one, but that would be ideal approach. Ask for a petition. Ask for a letter of support. A letter owner or petition. Or petition. Or the board members of people building.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4594)">1:16:34</a>
+  <p>Okay. Well, positive. I'm not positive. I'm sure you can get it. Is this guys the favor? Can you look in the resolution tracker and see if we have the designs. Sorry, other resolution. The man's track and see if we have the designs for third avenue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4609)">1:16:49</a>
+  <p>just so that we can see the diagram about the streetscape is laid up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4613)">1:16:53</a>
+  <p>Let me look.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4614)">1:16:54</a>
+  <p>It is in there because I've pulled the jam before. It's the idea. To be my thoughts?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4627)">1:17:07</a>
+  <p>Yes, so I agree that I think that would be the, and my preference on how to handle this would be creating some loading zones.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4639)">1:17:19</a>
+  <p>Agreed with Barack that there's not about parking to go around. I don't think we take, I don't support removing up the pedestrian space. I'm also unclear why the Barak's point, the pedestrian space creates a impediment to service vehicles. They just have to cross the pedestrian space and the bike</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4668)">1:17:48</a>
+  <p>Right, but um, you mean if they're parked in the look in the load in the what you're proposing for loading zone?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4675)">1:17:55</a>
+  <p>Uh, or the existing parking in this, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4680)">1:18:00</a>
+  <p>Uh, it should be one with, there's the new conditions. Um, for 25 third, the 24th to 26 stretch stretch. This may not give you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4699)">1:18:19</a>
+  <p>Yeah, I don't know if there's everyone's our latest.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4702)">1:18:22</a>
+  <p>This would have been from like December when did we discussed this, would have been like October, December October.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4720)">1:18:40</a>
+  <p>November, October.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4729)">1:18:49</a>
+  <p>Can we go back to a question of why the removal of the pedestrian space? I mean, impacts the service vehicle? I think it was going to ask.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4738)">1:18:58</a>
+  <p>Yeah. Well, I mean, you know, there are a couple of things. One is there is a lot of heavy equipment moving in and out of the service entrance, which would be, you know, which right now, which would, right now would have to cross the bike lane. uh, from a traffic lane. Um, it was the set? Is it? Yeah. Thank you. Uh, can you scroll to the, um, the drawing of the new conditions for 23rd to 25th. Uh, that's it. No. Up. Up. That's it. Right. Yeah. Yeah. So. I'm going to just step over here in point. I'll make it in there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4793)">1:19:53</a>
+  <p>Okay. So you may follow with the pointers of people who are online.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4802)">1:20:02</a>
+  <p>So this is people standing in what is intended to become expanded pedestrian space. We said that's the other side. It's the other side. Yeah, it's upside out. Or I'm outside out. I'm going to stand right here. So this is the proposed extended side of which is currently on the inside parking area. There's the bike lane. There's the parking lane. There are the two travel lanes, the bus lane, and then there's a parking now at the far side. And so Jason, what you're talking about is, and at the end of the block, there's there's some portion of it. I mean, we could talk about doing the whole part of it as well. There aren't that many spaces. It's like, you know, three or four spaces. I mean, that I support removing all three spaces, but we can if we turn into the loading zone. I mean, realistically, it would be used for extended loading and commercial activity in some part of it. That's something that is outside the scope of this committee, whether people use it legally or not. as long as they're not disruptive.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4880)">1:21:20</a>
+  <p>I mean, we could theoretically address that through what sign we asked for. Yeah. Yeah. It could be no parking. They could be a loading zone. Yeah. We have the discretion to ask.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4891)">1:21:31</a>
+  <p>We could have a lot of a policed by us loading zone on the south end of the block right near the building entrance and then commercial parking further down, for example.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4906)">1:21:46</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4907)">1:21:47</a>
+  <p>Yeah. Yeah. So sorry, so if we did give you that, why is that inadequate for the loading that you would need for buildings?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4916)">1:21:56</a>
+  <p>Well, I think there are members of the board who are concerned about people being unable to load from curbside. I mean, what would realistically happen if this became pedestrian cities? I don't know if the plan is to actually raise the concrete.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4934)">1:22:14</a>
+  <p>In the long, very, some other lifetime.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4938)">1:22:18</a>
+  <p>I mean, realistically, what is likely to happen, for example, for Cesaride, is that the vehicle will pull into the bike lane to load, which is not.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4946)">1:22:26</a>
+  <p>Why would it do that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4948)">1:22:28</a>
+  <p>Because you use the loading space. It would use the loading space, but then people would still be loading in moving traffic from the right side as a vehicle. But I'm not sure that I don't know if that's avoid it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4963)">1:22:43</a>
+  <p>In the bike, you're saying they'd be loading into the accessory vehicle from the bike lane?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4968)">1:22:48</a>
+  <p>No, they'd be loading. The vehicles probably pull in here and they would be loading from. Could they utilize the corner as well? Around the other side. Yeah. No, we have postal vehicles parked there 24-7 basically all the time. Could we make that parking? Although it's already illegal. There's nothing you can do about postal vehicles. Hey, Paul and you, I'm not right here. Michael, go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4997)">1:23:17</a>
+  <p>How about, if you put in the parking lane, a stop just for accessory ride and have, in that lane, have a mid-block cross, or so they can access to the accessory from there?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5015)">1:23:35</a>
+  <p>I mean, actually, the idea of making it accessory parking, which would in practice also be used for loading is not a terrible idea. We could do that and do you want to. I would want to bring this to the board to say specifically. But that's actually, you know, that's not a crazy idea. I know you had another question. If Jason will probably.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5039)">1:23:59</a>
+  <p>Yeah. So I think you should take back to the board about the parking thing. But another concern that I was reading in the packet was about the number of travel lanes. and how the bottlenecking has impacted the street. And so I was wondering what your ideal proposed idea.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5055)">1:24:15</a>
+  <p>I mean, you know, I don't know what to suggest other than to, you know, I don't really know what to suggest. I mean, you know, the idea of putting shared space and thing, but I mean, really, I think you're trying to pour, you know, a gallon of traffic into a court bottle there, given that it's 23rd Street and third avenue all feeding up. So, I mean, some people would say, I'm sure there are members of our board who would say that the bus lane should be removed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5103)">1:25:03</a>
+  <p>I was going to suggest would you give up a parking lane for a channel lane?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5107)">1:25:07</a>
+  <p>Well, I mean, we can't, we can't give up both the curbside parking and the existing parking line because we do need loading and surface space.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5119)">1:25:19</a>
+  <p>I'm going to give you a little bit of hard time. many other blocks have building there are many buildings along protected bike lanes and pedestrian spaces and they manage to continue to operate and exist understand that i don't i don't really see why this is a any special situation that isn't ready addressed on or 72nd avenue six avenue et cetera and i'm here uh honestly representing the consider that just that's just stated by the point of you uh lara i'm gonna say</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5152)">1:25:52</a>
+  <p>I don't know how many years you've lived in the building bridge. But were you there when the 25th Street was converted from a traffic street to the pedestrian plaza?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5169)">1:26:09</a>
+  <p>I was not, but multiple members of our board, including our chair, were. and are the same building that will all here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5179)">1:26:19</a>
+  <p>This particular board has been very, very active in lobbying for what it wants. And they created the situation that we currently have that you're now complaining about. where it'll be aware. No, I'm just saying it's. No, because our board met with the representatives of DOT in the lobby of your building. We had a meeting there right there in your building in person. One of the concerns then was that a lot of track, and this goes to what Meyer was talking about, a lot of traffic now going west on 25th Street has to turn and go north. And that's part of what's causing the backup that you're complaining about. Instead of allowing the traffic to more naturally progress down to 23rd Street to go further across town, It can't be divided between going west on 27th Street and 23rd Street. So, you know, I just wanted to bring up that bit of history. It's still possible to reconfigure this particular block to make it two-way. And then it would alleviate the traffic. And I think for a lot of people, it would... perhaps solve problems, but it would require a different traffic engineering configuration. Personally, I think that's the way to go and something worth studying and something to ask the OT to consider. This particular thing that you're asking for doesn't solve the underlying problem, but it's just an answer for your board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5289)">1:28:09</a>
+  <p>I actually agree. that that would be worth looking at. In other words, extend the two-way stretch. One block. One more. But I am saying that on my own opinion and not on behalf of the building board, because we have a discussion.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5309)">1:28:29</a>
+  <p>Quickly, with regards to the funneling, I think, hope, I think community has committed to revisiting the design of Third Avenue below. 24th Street.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5321)">1:28:41</a>
+  <p>So I think there's a larger redesign. No, it's the area between 24th and 25th that we're concerned about.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5329)">1:28:49</a>
+  <p>Well, it's, yeah, I mean, it's, it's really, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5335)">1:28:55</a>
+  <p>Like, my point out that third avenue is, is a, it's in progress. And that there's, I agree that there is a problem with traffic on, I see extend down to to me on 19th Street as well in this creating this funnel. So like, I completely agree that like there's deficiencies without the roadway design. I would, we have asked for every design of third avenue south of this area. So I, I hope the OTA intends to. come back with a plan and I hope that that will ultimately address the congestion and falling issue with.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5367)">1:29:27</a>
+  <p>Right. There actually is no funneling issue at your block because between 23rd and 24th Street, where Willows going up and there's only two lanes going north between 23rd and 24. But then when it gets to your block, there's still two lanes going. So there's literally no funnel issue happening there. So that's one. And then two is, If you're just saying people are honking more, so we need to wide all the space to give everything to drivers, people are honking. All of Manhattan, again, destroy all the buildings, just give them all the drivers because everybody honks everywhere, our culture. So we can't just widen blocks because people honk. And the third thing I would say is I really don't get the loading zone here, because that's how people load everywhere in New York City. There's a space next to a sidewalk or next to a bike lane. And then the driver pulls in and then people get in. I don't get that concern. I don't get any of the concern, those concerns. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5428)">1:30:28</a>
+  <p>So, and it's not meant to attack you. I'm just, I understand. I understand. I think part of the issue, part of the issue there is that when a taxi stops to pick someone up in that left traffic lane, traffic backs up to and beyond 23rd Street. When there's no voting zone. When there's no load. That's why giving you the loading zone.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5449)">1:30:49</a>
+  <p>Right, right. Right. Would you address that. I mean, it strikes me as in all things, the problem is parking. Those four spots are the low-hanging fruit that are causing this huge bottlenecks. If those were the loading zone and or commercial parking, it would really alleviate a lot of this. They are commercial parking. But they're also personal parking. Right now they're not. Right now they're a meter. Yeah, so there's one from meter to commercial and our loading zone. I think it would alleviate a lot of this. And I mean, as for honking, yeah, I live right there. I'm going to anywhere. The honking is out of control. And we need ruthless anti-hawking enforcement up to and including removing your driver's license for anger honking.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5491)">1:31:31</a>
+  <p>I see the rest of my time.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5496)">1:31:36</a>
+  <p>All right. Thank you. Okay. Honestly. well i like to think the image of a garage i was wondering why can't we have like already extended sidewalk part of like like a different color or something to like indicate for the garages that of people know like make room to get reading as in the garage and stuff i mean that the the that i think that's a good idea um the big the</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5527)">1:32:07</a>
+  <p>bigger issue that was what's happening out at the street. And I do think that no matter what we do, we need those day right, especially on the self or approaching side of the brush. But Brock, as you said, it's not done.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5542)">1:32:22</a>
+  <p>Right. No, no, I think that's a huge part of the problem. It is an unfinished project. Yeah. Start for after. Yeah. Unfinished project that, uh, uh, you know, pause for the winter.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5554)">1:32:34</a>
+  <p>I don't know how you want to wrap this up as chair. I don't feel we need to take any more of your time.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5564)">1:32:44</a>
+  <p>I'd like to move to table this until we have more construction of this corridor from striping season.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5577)">1:32:57</a>
+  <p>Would you like me to go back to our board with the how we would like those parking line spaces treated.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5586)">1:33:06</a>
+  <p>Yes, and I will refer you to our policy self-rezzo on how to request those changes. And so, yeah, if you'd like to make a request for changes, but come back to us with that in that, with requirements.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5600)">1:33:20</a>
+  <p>It will likely be a request both for re-signage and for daylighting and civilian of visibility.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5609)">1:33:29</a>
+  <p>I'm making, I'm going to make the suggestion that, before you formally come back here that you observe for perhaps a period of time, how the DOT's ultimate striping and markings work out to identify a more specific problem and solution, since right now we're maybe only talking theoretically.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5635)">1:33:55</a>
+  <p>Well, I may be wrong, but I think the lines are down. I think the man that's not that's incomplete is the pedestrian space that significantly the... And payment treatment, like, of the, of the refuge.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5649)">1:34:09</a>
+  <p>It's outlined in lines, but if they're paying it, that has...</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5653)">1:34:13</a>
+  <p>I presume they're going to fill that with, like, gray. Yeah, the mushroom color, yeah, yeah. And with planters there and with paint and with pedestrian signs, that would be like, I'm going to move to your building. It would have.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5667)">1:34:27</a>
+  <p>Yeah. I, we should check with DOT in terms of what's needed to establish planters. I don't know if we need a resolution or we could just, but you can ask them nicely.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5680)">1:34:40</a>
+  <p>We can do that as follow up and so. I will report back to our board on this. I mean, they're listening and some level listening. I'm only suggesting that this, and we don't have to formally table it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5693)">1:34:53</a>
+  <p>I'm just suggesting that we may have better information when drivers get used to whatever the final or supposedly the final configuration is. And if you're going to have a request, you could be related to that. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5715)">1:35:15</a>
+  <p>I do think the planters are a good idea in general. I think there's a number of other areas in Manhattan where you see this pedestrian space and the absence of like the hard infrastructure is often there's a legal parking.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5726)">1:35:26</a>
+  <p>I mean, on my way here, I looked and there was a postal truck parked blocking the interest of the garage. So like. Yeah. So yeah, I think, yeah. I mean, Freddie are super is like, you know, drives him crazy. Yeah. Uh, so yeah, I think that would be a good general solution. Okay. Um, all right. Well, I appreciate your, all of your consideration and your time. Um, and with your permission, um, and with your permission, um, and with your permission, um, and with your permission, um, all right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5762)">1:36:02</a>
+  <p>Um, all right, um, are we're going to close that item, uh, and then move on to second last line agenda, which is,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5772)">1:36:12</a>
+  <p>The discussion instructions to clear sidewalk paths in Manhattan Community Village 6.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5778)">1:36:18</a>
+  <p>We've had a productive conversation via email on this. We have a revised Reso addressing concerns around tree beds primarily.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5792)">1:36:32</a>
+  <p>Then we also want to give a better intro than a little bit. So I think, yeah, we had a small group and we had a back and forth about it. The big issues was from our meeting last one was the tree pits. We don't want them touch stoops and buildings. We don't want buildings torn down and stoops torn down. There was another one that we wanted sidewalks widened, where they're insufficient. So those are the three differences from the last time we saw this. Does anybody have any comments, concerns, questions? Also, you spelled out the width. Right, the minimum width should be eight feet, four foot clear path with room for amenities, should be the minimum New York City sidewalk with.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5850)">1:37:30</a>
+  <p>Michael. What about having wider than eight feet sidewalks? What if you're feeding for like nine or ten six sidewalks?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5857)">1:37:37</a>
+  <p>Yeah, that's just the minimum, like for low traffic sidewalks. The DOT has different designations of sidewalks. Like if it's Fifth Avenue, then they have a different destination. But the absolute minimum, that was a sticking point was the side streets and what the minimum should be for a low traffic sidewalk.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5879)">1:37:59</a>
+  <p>I mean, a four feet clear path, that's a little bit like, I mean, that's the That's not a lot of room on the sidewalk.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5888)">1:38:08</a>
+  <p>That's the minimum for a low traffic side. That's not like 42nd Street or 5th Avenue or 3rd Avenue. That's like 17th Street. You know what I mean? A sidewalk on the street. Today we have no minimum. So the idea is creating starting from zero to four feet.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5905)">1:38:25</a>
+  <p>And I know what will be? Yeah. I'm comfortable with the resolution. I'm concerned on some level that we're adding a level of bureaucracy rather than cutting through it, that it'll be, you know, with the gas that we just heard from NYU, that it'll be a case of, well, fire ultimately needs to opine, but it's also DEP because it's a hookup, but then it's also mayor's office of people with disabilities because it's also an impediment and then DOT signs off. I'm worried it won't cut through in the way that we're hoping it will. Hopefully, because I appreciate that in the Reso, there's the vision plan. Hopefully things like that will mean that, you know, this overrides, supersedes other concerns and therefore, you know, you can't park on the sidewalk. You can't impede this way with this important accessibility is like the top of mind. I, it just, it will come down to Maloneyy and political fortitude to see through something where it's consolidated and not just another level of bureaucracy. And so I think the mission of it and the way it's written, is saying that that's what we want. And I hope that that's something that it would translate to in reality.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5968)">1:39:28</a>
+  <p>Right. That's the current situation right now. This asks for it to be congealed into one bureaucratic institution. Yes. But yeah, that's currently the way it is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5978)">1:39:38</a>
+  <p>That is the way it's run right now. Though this would just be establishing the DOT is the ultimate decider. In reality, they're not going to be the fire inspectors and the experts on, you know, I mean like, they're not going to be the ones DEP installing the city bike dog. You know, like, it's not. And so that's, as long as, it will take Maloneyy. It'll take Maloneyy and a big DOT. And I, I think that's what we're calling on. And I just want to make that clear on the record that I think it'll take a much more robust operation than just like, y'all pick it up as you currently exist as an agency.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6015)">1:40:15</a>
+  <p>That's going to be.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6017)">1:40:17</a>
+  <p>It's going to be.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6021)">1:40:21</a>
+  <p>So I think I followed the discussions back and forth on the resolution, and it really dealt with a lot of the issues that we brought up at the last meeting. I do agree that this is the beginning point, and it has to be accuracy. There will be bureaucracy, and there will be Maloneyy. But I think this is a good starting point to ask for very specific things. I'm a big supporter of the resolution as written.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6048)">1:40:48</a>
+  <p>Thank you. All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6050)">1:40:50</a>
+  <p>Michael, go ahead. How are we going to make sure, like, sometimes like, when I see, and I'm going to make sure of the, the four-feet of care spaces in the forest, because sometimes like, I've seen that I like people like street vendors sometimes or food carts, they sometimes set up. on the five bar for them in the parking lane. So how do we make it happen for us? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6080)">1:41:20</a>
+  <p>So I think by having DOT be the agency responsible for this, it would give them enforcement authority around this. Whereas today, there is no, there's no agency responsible for this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6092)">1:41:32</a>
+  <p>So that, that's giving DOT control would, is an attempt to solve that. Is that? Yeah. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6099)">1:41:39</a>
+  <p>It would move.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6101)">1:41:41</a>
+  <p>Yeah. Well, when we were discussing these changes, Anna, the thing that you were talking about really didn't come up with respect to who's going to be a lead agency. For example, when a street tree dies, it's not the DOT, but it's the Parks Department Division of Forestry. of that tree. So I see the DOT is essentially being a coordinating agency and not stepping on somebody else's territory to the extent that they can get another agency to respond to a need. It's more helpful than the current situation. So that's why I support this resolution.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6161)">1:42:41</a>
+  <p>Okay, I've seen no other discussion. Do we have a motion?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6167)">1:42:47</a>
+  <p>One more question. It was also raised about city bikes and outdoor dining. Is there a reason they weren't included or were they just less discussed or was it? I know we do the stoops were entered.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6179)">1:42:59</a>
+  <p>Yeah, I don't think we've read it up specifically, but I think we should end it in, which would be quick tab.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6183)">1:43:03</a>
+  <p>That we don't want to remove outdoor dining. Well, that's, that's the question. It may be more complicating than it's worth. And I do want this to be passed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6190)">1:43:10</a>
+  <p>I think I don't want. I think we dealt more with the really, really hard infrastructure that makes sense.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6197)">1:43:17</a>
+  <p>Okay. Yeah, I personally think we don't want outdoor dining in places where it would restrict the clear bed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6203)">1:43:23</a>
+  <p>No, but I mean, ideally after dining would be in the park of mine.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6206)">1:43:26</a>
+  <p>Right. That was part of the conversation. Right. Separate issue. So it's differently. Yeah, that was that was part of the, yeah. Again, if it's complicating, we can set separately address how we should be using parking spaces for those two uses. That's fine. I just wanted to ask the mission. Got it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6223)">1:43:43</a>
+  <p>Cool. Okay. Uh, seeing on the discussion that we have a motion? I move resolution. Thank you. Okay. Second it. All right. Long seconds. Um, second. All right, I've got a third for Michael. So then we will go to vote. Azuse. All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6244)">1:44:04</a>
+  <p>The resolution regarding obstructions and clear sidewalk paths in the Manhattan Community District 6, when I call your name, please indicate your vote on the resolution that was previously shown a few moments ago. Indicate whether you are in favor, opposed, abstain, or not entitled to vote on this resolution. Michael Cullen.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6267)">1:44:27</a>
+  <p>In favor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6269)">1:44:29</a>
+  <p>B. Disman.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6270)">1:44:30</a>
+  <p>In favor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6272)">1:44:32</a>
+  <p>Maya Donoghue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6273)">1:44:33</a>
+  <p>In favor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6274)">1:44:34</a>
+  <p>Barack Friedman. In favor. Jason Palmeritz. In favor. Eric Goldberg. In favor. Sean Lomeroe. In favor. Adam Hercord. In favor. Larry and Ralph.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6287)">1:44:47</a>
+  <p>In favor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6289)">1:44:49</a>
+  <p>Larry Shire. In favor. Gabe Tursow. In favor. Jerry Weinstein. In favor. unanimously in favor. It moves on to board for this one. All right. The board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6300)">1:45:00</a>
+  <p>Uh, all right. Last one we need on the discussion of finance year, 2028 state and the district needs and budget requests. Uh, is it still giving the form? Yes, because I'm not prepared then.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6315)">1:45:15</a>
+  <p>Um, all right. So, uh, hello, everyone. I am not Brendan. He explained to you what this is and why we're doing it. He also explained that you guys were to reach out to the office with your take on what the most important need as far as transportation and mobility issues are concerned in this district. I am preparing for this. I only saw about six people that actually did do that. So, but so. I read those responses. Three people said that the CB6's current pit, accessibility should say the current bin. One person said bus service and quality. One person said open space and street activation and another person said subway service and quality. So the main thing we need to do is we need to decide which of these dozen or so things Is this committee going to build consensus on and say, this is the most important transportation and mobility issue for this district? It does seem like there's already a frontrunner accessibility, which is our current pick. Does the committee have any discussion about that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6407)">1:46:47</a>
+  <p>I submitted my vote for accessibility and I think that a lot of what Miriam said last year stands and I think we have a lot of work forward on reaching those accessibility goals. I think we are working towards that, but I don't think we should remove it as our current pick. I think it's evidenced by a lot of the stuff we talked about even tonight that accessibility and creating that more broadly, whether that's elevators in the subway, whether that's more pedestrian plazas that are closer than maybe a larger park might be for somebody or just the clear space to be able to walk down when there's a ton of snow and there's only one tiny footprint for you to walk through. I think it's still our most important issue and we should keep it so.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6452)">1:47:32</a>
+  <p>I think I'm the person who said subways, if I did, I do want to. I think we should use every possible format to advocate for the Second Avenue subway to be built on a earthbound timeline, not a New York timeline. And this would be an important avenue to do that. So I advocate to put some ways at the top of the list.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6473)">1:47:53</a>
+  <p>Could we change it to Second Avenue subway rather than Subways if that were, can we amend this list?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6479)">1:47:59</a>
+  <p>No, you can write in an other. But what I would suggest to do is if that's what ultimately wins, though right now it only has one vote, you would pick subway service and quality. And then in your blur, because there is, if you see here, there is a blur where you sort of make the case for why this is the most important need. You can then go to further detail.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6506)">1:48:26</a>
+  <p>I have a follow question on Gibbs specific. Is it the to primarily do the second avenue extension first? Are you talking about the entire view extension as the priority?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6518)">1:48:38</a>
+  <p>Well, as it runs through our district is, I guess, one, phase three. So.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6523)">1:48:43</a>
+  <p>Right. So you want it before any potential extension of them? I'm not saying that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6527)">1:48:47</a>
+  <p>I'm saying that we risk my opinion differs then. Yeah. No, I'm saying we should use every. moment, every lever we have to advocate for it being built southbound without any delays after they're done on 125th Street and with all expediency and all policy clearing the path so it doesn't take centuries too bit. All right. I support what Gabe is proposing and I want to say further that we need to start planning now. simultaneous with the construction of the the Harlem extensions that are currently in works because when they're done with that work, we should be able to start constructing this right away, keeping the same crews hired without having to stand down and then get the thing started up, which will take a few years. Listen to Michael, let me.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6602)">1:50:02</a>
+  <p>Well, honestly, my feeling is, you know, we should have the second avenue to stop waiting to the list. I think accessibility is important because we need to do a better job with like honestly clearing the streets during my Like, last time we had a visit, you know, recently, I don't think it's been a great job, clearing a brief around the bus stops about shelters. I think it was like one of the day after, like there's a lot of compile about churches, bus stop and so the curve fit. I think we have any more taxed out services that the current cuts more place for people to sit.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6648)">1:50:48</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6649)">1:50:49</a>
+  <p>So I certainly want to see the second avenue subway extended, but I think accessibility for our people that live in our area, it's taken too long to get elevators and other things so that people can use our public system. So I would keep accessibility, but I wouldn't be opposed to listing further down the list, the continuation of the second avenue subway, even though I think it's impractical now, given where the federal government is over the next three years.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6682)">1:51:22</a>
+  <p>I'm going to try to draw a connection between accessibility and the Second Avenue subway. So if the second Avenue subway were extended in its expected capacity, it would be accessible. The stations would be ADA accessible. So by extending the Second Avenue subway, we would also be improving access to public transit or within our community, access to public transit for areas east of 2nd Avenue and 2nd Avenue. So I think that's actually a pretty meaningful way for us to address accessibility as the installation of the 2nd Avenue subway. That will have my vote.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6726)">1:52:06</a>
+  <p>Interrupt you. So you could just add, including the 2nd Avenue subway. You could leave it the way it is and include at the rest of it, including the extension of the 2nd Avenue subway and make it one ask.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6740)">1:52:20</a>
+  <p>But we would still be making the ask as accessibility as the main ask, I guess.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6745)">1:52:25</a>
+  <p>Including your doctor finding what being grounded in second and well, let's be going to finish there. Did you want to finish?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6757)">1:52:37</a>
+  <p>No.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6760)">1:52:40</a>
+  <p>Okay. One one thing to clarify just to be doubly clear. these things i know it's a list but it's not these are not like the budget requests that you guys prioritize and rank and that we have the air table for and all that stuff you know you already have a you know do the second avenue subway budget request what this is asking you is to take a more sort of higher level view of things and say what is the one thing you had to pick just one overarching need um right now you've got accessibility And essentially the entire case is made, the entire case that you make is, you know, we want subways with elevators and then that's how you address accessibility. Yeah, some of the responses that were submitted for accessibility were more nuanced as you heard, you know, dealing with shoveling bus shelters and blizzards, dealing with pedestrian, accessible pedestrian signals at pedestrian islands. Some people mentioning equity in the public transportation system and things like that. So that's going to do the second part of this. Once you decide on which of these is the most important need, then you're going to start making your case for it. So keep that in mind when you're thinking about what you're adding here. If you want to work the second avenue subway in, maybe but people are still sort of leaning towards accessibility, you could work that into the blur. And you do also have it as a budget request. It's very ambitious. But keep those distinctions in mind when you're having this conversation. Other comments? What do you propose? Do you propose that it would be subway and that's a kind of accessibility? That's not proposal. And so that would be the first listed item under the current accessibility? No, my proposal would be that we just highlight Subway and we, I think, basically I'm just making the statement.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6896)">1:54:56</a>
+  <p>I think I agree with accessibility.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6898)">1:54:58</a>
+  <p>We have to choose one of these categories, either Subway or something called accessibility and then have a description following it. So which of those two are you proposing to be? I've chosen.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6912)">1:55:12</a>
+  <p>Speaking as a member of the committee and just a vote in the committee, I would, I would vote or subway service to be the main ask. Okay. And then, and my justification for that is that we be improved. I think accessibility is also very important. I think we would be addressing accessibility significantly by advocating for a second. Okay. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6937)">1:55:37</a>
+  <p>I disagree. And I don't think it's something just called accessibility. And I am a huge proponent of adding the 2nd Avenue subway. As mentioned, it is one of our budget item requests, which I think will make a lot of moves. But also, you have to contend with if the city is looking at a lot of stuff, we have the highest ridership and the most reliable M15 on 2nd Avenue already. So are you going to then ask for a subway and then not also be advocating for pedestrian islands? for how can we improve curb cuts? So they're not flooded all day long after rain. How can we do the elevators? How can we do all these other things that people, as we said, need now? And it's going to take years for the subway to come in. I think we should prioritize.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6978)">1:56:18</a>
+  <p>Service asks. It's sewage, too. We have to do some litter problem.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6983)">1:56:23</a>
+  <p>I know. But I'm saying these are all things that accumulate into accessibility. Like, I don't think it's fair that we can walk over a puddle, but somebody's wheelchair has to go through dirty water. And I think we can fold in the subway into accessibility. I think it's nebulous enough for that, but I don't think it's this like huge pie in the sky cloud term. I think real things could be done to improve people's lives in that fiscal year.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7012)">1:56:52</a>
+  <p>That was what you did, but flip it. So it is accessibility. I chose the, um, the pedestrian plaza because i thought that was a big overarching thing that could capture a lot of talking about but now that i hear you talk about more more about accessibility i think that's even a broader thing that includes a lot of what we talk about in terms of accessibility it's kind of like lifting time rises all boats right where If a disabled person can do something that makes it easier for us as well. And so that can hit a lot of those issues that you've all mentioned. And it still has the guiding principle of like accessibility is really important to us. We care about everybody, but also we care about the second half new subway and puddles on the sidewalk and bus service level boarding. And I think that can all fit under accessibility.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7060)">1:57:40</a>
+  <p>Yeah, I agree. And I think accessibility also goes, I know it's like does talk about infrastructure, but like the MTA just recently started doing like, if you go out until like Queens, they'll do, um, like you're approaching whatever station, but somebody who has an accent from like that local neighborhood. And so it like is including accessibility of the different types of New Yorkers just into our transit system. That's beyond just like physical disabilities. And I think there's a lot of stuff we can encompass an accessibility.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7089)">1:58:09</a>
+  <p>For M15 is no substitute.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7091)">1:58:11</a>
+  <p>I love them. So I'm not saying we shouldn't have a subway. I do think they can put it and you just think we can do a lot of things.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7099)">1:58:19</a>
+  <p>Shooting between us two doesn't seem to make much sense because the subways from the state and this ADA is from the city. So it just almost it's really hard for me to say, let's choose between the two, but I originally said ADA, but now I'm saying second avenue subway because that's going to cost billions of dollars and the chance of getting it of us getting without us putting, at number one, I think is tough. Whereas ADA, we're going to be, and that's just baseline. We're always going to be addressing that. It's super important. We're always going to be addressing it. So I just put second Avenue subway is number one, because that's going to be our hardest to get. We're going to have to fight for that one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7144)">1:59:04</a>
+  <p>It may be the biggest bang for the buck to do the subway. If this were a 10-year vision statement, It would definitely be my vote. I'd have to go with accessibility in the meantime just because it is still very lofty asks for very real things for the next year. And it includes others.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7169)">1:59:29</a>
+  <p>I support the second having a subway because I look at accessibility more in terms of the local district service delivery, something that the board already keeps an eye on and keeps pressure on as a matter of what its general function is. But we, in terms of a planning, I see us as being a more planning body. It's, I think it's more appropriate to seek the second avenue subway unless there was an accessibility project, such as passing the ADA, you know, in and of itself, that would be a priority. But it's been the law since 1990.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7224)">2:00:24</a>
+  <p>And we still have so many stations that don't have elevators or accessibility. I think that's where we can put the pressure. And we do have like the,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7231)">2:00:31</a>
+  <p>Well, in our district, the only stations that don't have accessibility are 3rd Avenue and what else? That's also not malfeasance. That is actually the legal reasons I can't do it quickly and we should be advocated to change those laws. As part of accessibility version? Honestly, yeah. Get rid of Wix law. That's part of acceptable. Right, right. Instead of the service delivery, when we're talking about passing laws and that type of thing, And that's where I come to going to the 7th Avenue subway and that advocacy. But in life, I understand and I want the things you want as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7277)">2:01:17</a>
+  <p>So I want to echo how Larry just framed things.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7283)">2:01:23</a>
+  <p>I feel like this is their shot annually to actually make dreams concrete and that the work we do on a monthly basis is maintaining pressure and solving things that are within our immediate range so i feel like that's this is the appropriate use case to remand a second avenue subway i am still with accessibility being our priority i think accessibility similar to what sean said like it's going to improve the quality of life for everyone</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7320)">2:02:00</a>
+  <p>Accessibility also isn't just elevators on subways. I've seen people struggle with getting off a train car who's on a wheelchair. So accessibility is way bigger than just working elevators. I also see a lot of people struggle to get on the bus, especially older people. And so that's like an everyday thing that I see. And at some point, I'm going to be one of those people who's going to need more and better and safer streets, you know? And so I say accessibility number one, still. Like to point out, those of us who are advocating the second or so we are not against.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7357)">2:02:37</a>
+  <p>I think most of us in the Congress is on support of this point.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7361)">2:02:41</a>
+  <p>Sure. Uh, good. Okay. Do we have any other? Are we only between accessibility and subways? Is there any other? Let's do it. It's team fair. There's one to be clear that we're not debating any other of these. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7383)">2:03:03</a>
+  <p>I think we've had a robust debate and we should move to a vote on between the two. Sounds good.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7389)">2:03:09</a>
+  <p>Uh, if you guys think, well, the way you guys vote like on a rezone, you have to choose one and that either passion or it fails. If you're trying to sort of see. which of these will get the most hands, we can sort of do that. Okay, but that is a formal book. No, probably not. Fine. Very good. One other option, not that I had to drive things out, but one other option is, and you guys, you know, go home, think about it, sleep on it, come back, ready to make a decision at next month's meeting, maybe even start working on the blurbs. For those of you who are disability, revamp the verb so that you can really make your case and you can really maybe the blur will be the thing that clinches it. Those of you that are second avenue some way, you're going to have to completely draft a new blurb because right now the blurb does not reflect that. you make the most compelling case, making you'll win some people over to your side. That may be another option to take. I like that a lot, as long as there's no urgency, Chris, deciding this time. We need to get this done by, like, September-ish. So you can wait to next time. If you're actually going to, like, think about it and do the work.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7458)">2:04:18</a>
+  <p>Okay, so I'm going to volunteer gave to write the blurb on 2nd Avenue and Maya to write the accessibility, modify the accessibility as necessary.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7469)">2:04:29</a>
+  <p>And then we can get more review both, then we can make a vote in our next meeting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7475)">2:04:35</a>
+  <p>Sounds good.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7477)">2:04:37</a>
+  <p>Okay. And if all else fails, just our muscle board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7481)">2:04:41</a>
+  <p>I think that was a good discussion. So, yeah, good. Okay. Wonderful. Moving on the agenda, chair support, I'm waiting to support. We have any older new business?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7495)">2:04:55</a>
+  <p>So I mean, the whole people up where we met with CB 4, 5, and 6 and the DOT today. And we reminded them that our mayor said he wants New York City streetscape and public transit to be the envy of the world. So reminded them of that. We talked about busways and they're meeting with federal highway administration authorities who are skeptical. And so that is a lot of a hold up for 34th Street and 42nd Street. But if you think of big ideas that would make our streetscape, the envy of the world um think about them and something on my mind is a bus rapid transit for second avenue i think is on my mind but if any of you have ideas we should um and this is kind of our opportunity this next year or two what do you mean by bus rapid transit on second avenue what do you describe it as or how could you well it may one of two things based on if it's going to be a free bus or if it's going to be a pay bus. So it depends on whether it's free. And there's different designs. But protecting the bus lanes, giving the signal priority to the buses in Latin America, they pay before getting on and go to a station and then go on. But since it's the highest ridership in the whole United States, then 15, it's a right for bus rapid transit. So I just, that's kind of on my mind. But other things too. How does that differ from tapping and paying at all the doors? Well, faster boarding. Yeah, faster boring. I mean, if everybody's free, you don't need to work. If it's free, don't need to worry about it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7596)">2:06:36</a>
+  <p>But if it's not free, then you pay before you get on and then everybody gets on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7601)">2:06:41</a>
+  <p>OGS, like the older SBAs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7603)">2:06:43</a>
+  <p>Like stations, like bus stations. Just an idea. I thought we'd move beyond that. Government Cleveland? No, they're the best favorite table in the country. And I'm, it's open for, I didn't mean a test to go into the cell of the BRT, but I think, I think, I think, I agree with you and support it, but I think we technically have a bus signal priority on second Avenue already.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7632)">2:07:12</a>
+  <p>We do. We do. We don't know. That you know very cool. I thought so. I'm pretty sure. No. Okay, I'm not be wrong. I know you're wrong.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7642)">2:07:22</a>
+  <p>If that signal, right. There are some, there are some places along 42nd Street. Yeah. There's a special signal that allows the bus to go through the intersection prior to the other traffic with the industries. I might be thinking of 30 courts. Sure. The signal can hold green for the bus to go through and then turn red. So can give bus the signal. Well, I mean, the, the signal for the bus is a voter can white line.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7669)">2:07:49</a>
+  <p>It's a different, that's something else. That's like a, what they call that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7674)">2:07:54</a>
+  <p>Okay, cut lane signal, but anyway, yes. So that's, that's how you ensure that the buses go through. I'm like the yes. No, you have a comment, Michael?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7691)">2:08:11</a>
+  <p>Michael. No, you have a comment?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7694)">2:08:14</a>
+  <p>No, okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7694)">2:08:14</a>
+  <p>I wanted to ask very quickly, like, When you talk about bus rapid transit 2nd Avenue, I definitely know that a different thing could be improved in the BRT on there already. Are you talking about improving these things like bus service route?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7714)">2:08:34</a>
+  <p>So I think we can, I think we shouldn't go into detail here, but there is room for improvement and we could have it as an agenda item. If Jason's okay with it in Mayor June, but</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7725)">2:08:45</a>
+  <p>I mean, I could have a big idea about the second heaven just plus wrap, but I'm sure. We have a partner with a partner to Greenville Bridge. Or you got one multiple units. For my experience of running the bus on Second Avenue, you know, your video tuned from Hunter College. The one thing I noticed of that you get on 16th Street, you know, news, and everything. And there's a huge line of cars. It tries to get on and off between Red Ridge and truck and beat truck. And I'm afraid of the longest part of the trip. I'm wondering if having two different signals and somebody can help improve that situation and can make it faster for the bus to get</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7789)">2:09:49</a>
+  <p>across the area in Manhattan and that would be as fast as people at the rest of it because i think there's really part that's flow down the bus yeah that's something we can look at that is part of it's fair key um okay uh any other opening business all right saying nine and uh did we have a motion adjourn okay all right uh Thank you, Jason.</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://www.youtube.com/watch?v=EpMHeKJDgcM" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function seekTo(seconds) {
+      const iframe = document.getElementById('ytplayer');
+      if (iframe) {
+        iframe.src = 'https://www.youtube.com/embed/EpMHeKJDgcM?start=' + seconds + '&autoplay=1&enablejsapi=1';
+      }
+    }
+  </script>
+</body>
+</html>
