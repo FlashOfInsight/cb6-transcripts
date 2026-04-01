@@ -1,5 +1,17 @@
 [
   {
+    "slug": "2026-03-31-meeting",
+    "date": "2026-03-31",
+    "committee": "Meeting",
+    "topics": [],
+    "youtubeUrl": "https://www.youtube.com/watch?v=cIrbnV04fGI",
+    "videoId": "cIrbnV04fGI",
+    "agenda": null,
+    "minutesPdf": null,
+    "hasTranscript": true,
+    "transcriptSource": "whisperx"
+  },
+  {
     "slug": "2026-02-26-business-affairs-and-licensing",
     "date": "2026-02-26",
     "committee": "Business Affairs & Licensing",
