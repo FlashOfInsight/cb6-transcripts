@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Safety & Sanitation - May 7, 2026 | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Public Safety & Sanitation - May 7, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Public Safety & Sanitation - May 7, 2026</span>
+      </nav>
+      <h1 data-pagefind-meta="title">Public Safety & Sanitation</h1>
+      <div class="meta">May 7, 2026 · Manhattan Community Board 6</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe id="ytplayer" src="https://www.youtube.com/embed/G_gqUUBybhs?enablejsapi=1" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=G_gqUUBybhs" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card" data-pagefind-body>
+      <div class="transcript-header">
+        <h3>Full Transcript</h3>
+        <span class="transcript-source-badge">WhisperX + Speaker Diarization</span>
+      </div>
+      <div class="transcript-content transcript-full">
+        <div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1)">0:01</a>
+  <p>I don't speak and I see neither of them. And you wouldn't see them yet. We do have a full. There is someone joining us by full. I'm not sure. um sir kevin while we're meeting we meet him okay um how do you feel about the rest of now we're we'll move forward with it</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(98)">1:38</a>
+  <p>Can't hear anything. I can't hear.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(113)">1:53</a>
+  <p>Hi, everyone. We have one of our two DSMY reps with us. We're just going to wait a couple of minutes to see if we can be joined by the others. So we'll give us a few more minutes. Oh, we're all here. We're ready to go. Um, so welcome to make a lot. So we'll, we'll see how I do it. And then you can take, uh, we're ready. We are ready. So welcome to the May 7, 2026 meeting in the public safety foundation committee. My name is Stuart Dessor and I'm chair of the committee. Tonight will join by community-coordinated Brian Lopody, this meeting both order at 1833. And while someone wants to volunteer now to take a minute, I didn't follow up here we have. On Brian, we take attendance. If any, you join this and you expect one more. Was he? Okay. This is going to start meeting is distributed ahead of time. And we'll be accepted on the screen with this line to just catch up with my left, please. But you've all seen it without objection to adopting. In no objections, the agenda adopted. The minute and more certain things to do to the committee without objection to adopt and it's drafted. In no objection, the Without objection, we'll send the rules requiring the amendment to be recognized for speaking. But for the first agenda, I don't have to some of the president to the panel assembly. Our meeting tonight is essentially a forum of a number of our neighborhood groups and associations and did get to speak with the New York City Department of Sanitation. We have arrived. From DSNY, we're pleased to be joined by District of Superintendent Kiram Phillips and DSNY's Director of Outreach and the 12s. From our community, I believe we're joined tonight, and I'll do this alphabetically, by the Alliance of Spain, the Beekman Place Association, the East Midtown Partnership, which is a district improvement district, Friends of Dad Hammershaw Sison, the Gramercyon Neighborhood Association, Ships Bay Neighborhood Association, Murray Hill Neighborhood Association, Rose Hill Initiative, certain area community, Tudor City Association, and Turtle Bay Association. Sanitation is really an issue of interest to us all, and the record shows that people are more in time. For those of you on Zoom who received panel of invitations from the office, You have control over using mute the button. I think there's around 35 of us present tonight. So for the sake of orders, you raise your hand and be recognized before you speak. Anyone online who did not receive the panel's invitation Director Hoyles and Superintendent Phillips, since you're both the center of attention tonight, there's no reason to raise your hand, just be inappropriate. So, the SNY District Superintendent Phillips starts his day somewhere before the sun rises. I think a long time before the sunrise is. And he seems to work well past midday. So I think his body thinks that it's now midnight. So we especially appreciate your being with us tonight. I think he represents exactly the kind of public official that we most appreciate who makes the city work. He's very responsive to our concerns and he's report here with us at midnight. His realm is understand means for running day-to-day operations effectively and efficiently. I believe also from DSMY Director of Health will speak with us more about policy. including the coming of contamination. So we're similarly grateful for you to be here, and I mean that's still in that performance. Really useful.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(423)">7:03</a>
+  <p>One issue. I'm sorry to interrupt you, but your voice is coming through really garbled. It's very difficult to understand you. I don't know if it is just me or if you know your mic. So in order.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(437)">7:17</a>
+  <p>No, it's everyone.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(440)">7:20</a>
+  <p>We have moved this annoying device closer to me and I will speak slower and pretend and I'm capable of enunciation and we'll see if it works. It's better.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(456)">7:36</a>
+  <p>It's better, yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(458)">7:38</a>
+  <p>So one issue that I think involves both of your realms and Y And which several groups tonight have raised is their wish to purchase their own corner trash receptacles and have the city collect from them. That's among the questions that we forwarded to you from all of the groups. So I'm guessing you're pretty well prepared to feel that one as well as the other issues we've raised. That does bring to the four a general question about relationships. The bids and neighborhood associations in our community are genuine assets. For the neighborhoods they represent, in addition to everything else they do, they bring a collective voice to the local concerns, which in turn helps the city decide where to focus. Most significantly, bids and neighborhood associations are effectively force multipliers, enhancing the city's work, providing services and materials that the city does not. In return, they aim for a symbiotic relationship with the city. The city, of course, is required to steward its resources, allocating them fairly and operating with great efficiency. So I think we all understand the tension, but ultimately we all want to work in concert. Although each of our neighborhood groups and Vids could speak directly with the S&Y separately, One reason that we have you all here together tonight is because even issues that might appear to be very parochial might end up revealing a commonality between the various groups. So not that I expect any of you are shy, but don't be shy about raising issues. One last thing here at the community board. We produce both a district need statement and a budget request. So what we hear tonight will help us better appreciate what the bid and neighborhood groups expresses needs and from where DSNY might see its resources being allocated. So I'd like to give Superintendent Phillips and Director of Wilde each an opportunity to introduce yourselves. And since you've seen some questions in advance, I'd be glad if you just want to respond up front and then we'll let the panelists from the neighborhood groups jump in. So why don't we start with Superintendent Phillips? I see you with us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(619)">10:19</a>
+  <p>Yes, I'm here. Can you hear me?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(621)">10:21</a>
+  <p>Yes, now we can.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(622)">10:22</a>
+  <p>All right. How you doing? I'm Superintendent Phillips up in the science at District 6 for about six months now. And I'm glad to be here to hear your complaints and hear the issues and work on and resolve them. I'm hearing my own time trying to drive my way home so I can sit down properly and enjoy this meeting. But I'll let Mr. Andrew go first and address all your questions and then hopefully I'm home by then.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(652)">10:52</a>
+  <p>Looks looks to us like you're in San Francisco. Driving across the Bay Bridge, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(659)">10:59</a>
+  <p>So, Director Hoyles, please.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(661)">11:01</a>
+  <p>Sure. Thanks. So I'm here at my desk. Can you all hear me fine, first off? Yes. OK, cool. So thanks for having me. I work in the Bureau of Public Affairs. And my role mostly has to do with different programs and policies that roll out around the city of Newark. Some of the things that I'll be talking about, the NYC Bin mandate later on when we get those questions. perhaps the expansion of, you know, the stationary on street containers or the empire bins. And, you know, since the first question was related to, you know, block associations or bids purchasing their own bins, well, The Department of Sanitation has been moving in this direction of containerization of waste, right? This is first started with containerization of waste with businesses. There was a mandate for containerization for small residential households. And then that's also containerization of the waste that bids put out, right? from those type of decisions that came down really for an you know the reasoning being to make sure that trash bags aren't on the curb which attract rodents which you know cause issues with mess on the streets The city wanted to move in a direction that allowed for bids to be able to participate with containerization of waste in a way that makes sense for them. So purchasing your own receptacles, the tricky part about that really, It doesn't ensure that the receptacles that are out there are rodent resistant or rodent proof. Sanitation moved in the direction essentially of requiring the bins that are out at the curb, those corner bins, to be purchased with council member or just purchased with discretionary funds to the city council or through the community board. And that allows us to have programs like the Clean Curbs program where there can be, you know, essentially a locked bin that's at the curb where trash bins are accessed by sanitation workers who can, who can empty those out for servicing. However, it doesn't allow for individual groups, right, like a bid or a neighborhood association to purchase their own corner baskets, so to speak, because we've moved from sort of a type of, I want to say free for all, but just an allowance of any single community entity to purchase their own baskets and put them there, to having a more uniformed approach and a uniformed funding mechanism and allocation. My colleague, Antonio, who sits right over to the left of me, he works with all of the areas of the city on their discretionary funding with sanitation so they can get supplemental basket collection service for those really dirty hotspot that one might have in their neighborhoods or on, you know, accessing, you know, the new, the new NYC bins that we have for their parts of the city. So it's a mouthful, but it is, it is, you know, at this point, we, We support the, you know, those neighborhood groups working with their, um, with their elected officials essentially for, um, to use their discretionary funding for, uh, you know, that, that type of basket or those receptacles, um, for the clean curbs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(880)">14:40</a>
+  <p>The standard baskets that you purchase.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(883)">14:43</a>
+  <p>The standard baskets that those ones, but also there are the clean curb, um, locked bins that are on, that are on a, you know, a segment of the street. that would be part of a bid.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(894)">14:54</a>
+  <p>So let me ask if someone from Bidman Place first wants to respond to that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(903)">15:03</a>
+  <p>Yeah, let me pull up my question sheet too, just so I have it up against my screen.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(907)">15:07</a>
+  <p>Or Pamp Sutton Area Association? Rob has this name based. Yes. Rob from the, from the East Midtown BIT. Thank you. You're muted.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(923)">15:23</a>
+  <p>Oh, hi, I think just from Beacon Place. All right, Pam, give, oh, sorry, this is Jen Gensberger from Beekman Place. Hi, Jen.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(934)">15:34</a>
+  <p>Let Rob respond and then we'll talk to you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(937)">15:37</a>
+  <p>That's okay, 10 seconds and I can't believe I kept myself muted. Do you think after six years we'd get this down, right? But I just want to just jump up as a kind of a point of clarification. the phrase bids putting out their trash, remember, that's public trash that is not generated by the bid. uh we are doing a public service by sweeping the streets and sidewalks and i only pointed out because i actually love containerization i'm a convert i'll admit but i've come to love containerization but it's always been a sore point from the days when commissioner tish was there that was called bid trash me and my two employees do not generate 100 some odd bags a day so i just want to you know my my colleagues i'm the only did i think on the call today but my colleagues would would find it offensive so for future reference that's all oh thank you for that you know we i we have talking points and i'm read some of them earlier today and i think i just</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1007)">16:47</a>
+  <p>red bid trash and I shouldn't have. I know it's not your trash, certainly. And what you all do is critical to the functioning of the city, certainly.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1016)">16:56</a>
+  <p>Can we hear from Jen?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1019)">16:59</a>
+  <p>Yeah. So thank you so much, Andrew. I'm in the position with Beacon Place where we actually already have big belly stations in our neighborhood. We used to have six bins that were purchased for our neighborhood probably 30 years ago. And those were, you know, really old and needed to be replaced. And so we raised funds and we purchased two to replace six, so like cleaning up. But I guess one thing I'm just curious about with New York cities, it seemed like for a while big belly stations were something that you were seeing popping up in neighborhoods. Of course, they're all over Boston. And that's why our neighborhood association selected Big Belly. And also because we saw them in parks and parks was using them. So we're like, okay, this is consistent. We like consistency. We're all for that. And so we thought that was the direction they're going. So I guess the first question is that not the direction that the city is going in terms of, you know, neighborhood containerization. And what do we do with the situation right now where we have Doe Fund who collects the trash and carries it out to First Avenue where that it is then picked up by DSNY on the street when containerization comes? Like, where is Doe Fund supposed to put that trash?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1099)">18:19</a>
+  <p>Yeah, so I might need a little clarification on your first question. I certainly can get into the details of like containerization of where material needs to be placed for collection. That would be those kind of like the city bins that I was talking about with clean curbs. If you're talking about like from what i think what i heard as you're saying is the city at large shifting away from like supporting big bellies is that is that kind of what you're bringing yeah like karts used to have big bellies we're popping up everywhere and parks helped us actually install these big bellies because they're right at the foot of a park right right yeah some of the The issues, I guess I want to say, you know, Big Bellies are great. They really were solving an issue. There's a maintenance cost, right? There is a capacity issue, right, that I'm aware of that exists for those types of bins. And then just the servicing issue, whereas the more maybe standard corner basket does have a little bit more capacities for passer buyers' trash. um and there's just a slightly there's a lower cost and i believe like going towards you know looking at where we're at right now with how things cost that that has been some um of the decision around it you know ultimately sanitation relief has been moving towards containerization as a way that can be mirrored around the entire city and um our corner baskets that we started to you know, that are better been, we were able to kind of identify that and find that out in that process. There's a little bit of the reasons why we're going towards that. I'm not saying that we're like not promoting big bellies, but there are different costs associated with those then, like, and the maintenance, then there are with, you know, for instance, are better been that is at the curb. For the DoFund servicing those and storing that material at curbs. So same with any containerization rule, any material place that the curb has to be in a, in a bin. So that could be in one of those city bins that are part of a clean curb bin, right, where we will service. We have the keys to access those. And it could also be in a receptacle that you know, if bid was actually storing those receptacles, then they could place those curbside. Now that my understanding is that bids had been given the guidance and procedures on, you know, accessing and funding those curbside city bins to store materials, which, for instance, the Doe Fund would be placing the trash in there and then sanitation will be servicing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1265)">21:05</a>
+  <p>So just to be clear on this, They're taking the trash out of the big belly and putting it and you would require them to put them in a different finding container. And the question is, can't DSNY just pull it straight out of the big belly?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1283)">21:23</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1286)">21:26</a>
+  <p>Right. And Superintendent Phillips, correct or wrong, but we're not servicing those directly.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1291)">21:31</a>
+  <p>I don't know about the big belly some big midface, but i know it was an issue with the servicing of the big bellies of being over full the keys was breaking again in and that's the issues of overall serviceability so when so fun they service it i think twice a day and then they dropped the bags we have like a few containerized locations already on 56 52nd and i think 48th street where they drop off all the bins and then we service it from there</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1322)">22:02</a>
+  <p>Yeah. But that's not what really happens. The Doe Foundation cleans the streets and they pile of bags on each of the corners next to the trash cans. They do that on 2nd Avenue. They do on 1st Avenue. And that's what they do with that. And then the sanitation department, usually when they're doing their route, they will pick up the bags. Does anyone agree with me on that? Do you see that in the neighborhood?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1348)">22:28</a>
+  <p>Yeah. That's what happens.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1350)">22:30</a>
+  <p>Yeah, so no one's bringing them to 52nd Street or 56th Street.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1357)">22:37</a>
+  <p>Let me just bring Pam into this with the area community, because I think you have a comparable issue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1365)">22:45</a>
+  <p>Yes, well, we do. And our issue is in the cul-de-sacs at 58th, 57th, and 56th. And that is that now what people are doing is they're just throwing their bags on the curb at the end of the cul-de-sac. um they also some have the the gray you know uh containers but um most of them are just thrown on the curb what our solution is is city bins hoping and i discuss this we discuss this with superintendent phillips and that is that we could purchase privately a city bin put it at the get it to the end of the cul-de-sac and then the DSNY would be able to pick it up. Now what you're saying, Andrew, is that you have the key to get into city bins and that you would be then the trucks and the drivers would open the doors, take the bin out and the bag and throw it into the truck. Would that be, what is that what you're saying? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1432)">23:52</a>
+  <p>Yeah, so that's what, as I was explaining it, like containerization in that level is what should be happening. Yeah. Yeah. Um, as I'm joining some notes, I'm hearing that that's not necessarily happening with some of the big bellies, which I know is a different issue with the different association, but.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1449)">24:09</a>
+  <p>So my question is, my question is one, um, is regarding these city bins. You do approve the city bins that they're, they're purchased privately. They would sit at the end of the, at the cul-de-sac. And on the trash pickup days, then they would go into the city bin and take the trash out. Is that correct? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1472)">24:32</a>
+  <p>Yeah. So that is how it's supposed to be happening.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1475)">24:35</a>
+  <p>Great. So my question is then, and just this is to Jen. This is just to Jen's issue and with the Big Belly. And so then are you saying that then this the Big Belly trash that's taken out by the Doe Fund and taken to First Avenue? Does that, would you then require a city bin to be there in order for you to pick up the trash there? And would they, have a city bin there as well so i mean so if the dough fund took the the the trash bag out brought it to to first avenue and put it into a city bin would that be acceptable for you to pick up yeah as long as i'm not having to pay the city bin but i think it still goes back to the point where it's hard</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1522)">25:22</a>
+  <p>to like understand that the department of sanitation in new york doesn't pick up all the garbage like that's just like i still wrap my head what you're explaining is fine but like big picture guys it's kind of funny isn't it in a way i mean god bless the dope fund yeah right but like they're an extension of</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1548)">25:48</a>
+  <p>Yeah, without them, without them, our streets would be a lot dirty. 100%, I agree with you. 100%.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1557)">25:57</a>
+  <p>I guess it's just trying to name it, it's, um, sanitation just wants to move towards containerization. So the bags being placed at the curb is kind of is more of the issue. Like what, you know, participants purchasing and having their own city bins installed. and then maintaining that container so that we can service them, that that allows us to service a containerized trash pile, I guess. I'm trying to say.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1587)">26:27</a>
+  <p>Director, what I'm understanding is that while sometimes the trash is empty multiple times a day, so it does have to be a storage bin. There seems to be a lot of extra effort going here because the neighborhood groups in the bid are removing trash from a container and moving it someplace else for you to then pick it up. And the question is, isn't there a way that you can pick it up directly? Whether it's fixing the locks on the big bellies, whether it's getting approval. So I think I think SAC was looking at getting its own crash bins because it felt that they were more aesthetic, but they also seemed to function the same way as the approved bins do. And it looks like it wouldn't be more difficult for Superintendent Phillips' crews to collect from them. So that's what we're looking for. Why waste all this energy?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1652)">27:32</a>
+  <p>moving trash from one place to another just so that you can collect it later it's the wall on the rodent and we try to containerize get the garbage in a in the bid city bins which is which all the the big companies are required to purchase eventually and have at a centralized location so there will be no bags on the curb because at the same time that the city is making everybody</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1680)">28:00</a>
+  <p>containerize their personal trash and the city is leaving bags on all the corners and sort of a slap in the face to the community so that's part of the reason they're going to containerize in all the bins all the bit bags i think just to be clear i think i think everyone probably appreciates containerization but here you've got an extra step going on and and containers that may not be necessary And director, while you're on mute, so when you were talking before, we knew you were saying something, but we were- Oh, no, Superintendent Phillips started chiming in, so I just muted myself, because he's a superintendent, so I want to make sure that you can talk. Very good. But what we're, what we're bringing to you, I think, is a policy question, and you see a number of groups who want something that And, you know, I don't think it's fair to corner you because you're not going to make the final decision, although we're kind of cruel here and we don't mind doing that. But, you know, to the extent that you can recognize that there's a common concern among many of these groups, I think that's something that you should bring back and see if it can be considered. We won't try to resolve it tonight because I think we understand the issue at this point. Kevin.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1768)">29:28</a>
+  <p>Yeah, I want to jump in. Kevin O'Keefe, and I am, remember this committee, but also work with the St. Farm Park Conservancy. My question is about storage yards that are on the street or on the sidewalk or both. So if you take 35th Street between the 2nd Avenue and 1st Avenue and 36th Street, there's huge storage yards for a 2nd Avenue water main project that six years past its original completion date. We, the Conservancy, brought in urban pest management to see what we can do about the rat situation in the park. And they said the issue is the storage yards. We keep the park clean, but they come from the storage yards so much so that we had to convince the parks department Thank you, Commissioner Tricia Memorial, where they came in and did a rat mitigation only because the trash was not cleaned up. We have a volunteer program that does that, but Commissioner Tish, when she was commissioner, said, we prefer you not go out into areas like that and pick up the trash with volunteers. Well, what's the solution then?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1835)">30:35</a>
+  <p>And before you answer, Mario, with the Rose Hill Initiative raised a similar issue, Mario, would you, and your hand is raised. Please unmute yourself before you speak.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1849)">30:49</a>
+  <p>Yeah, thank you. I think that the containerization and all of that is quite great. And I applaud that because it should make life easier for everybody. The only thing that I believe that is happening here is that we are making the whole process very comprehensive. And with the fact that the there is an increase in our residential communities of people, bodies, et cetera, we need a better system in order to collect that. And to alleviate what the problems is with the pests that some of those excesses of um garbage garbage bags et cetera are creating in the area i mean and mainly i'm talking about uh lexington avenue uh in the stretch from a 30 second 30 third or way down to the 20s low 20s and then again six seventh avenue etc etc etc so superintending to our director would you like to respond</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1925)">32:05</a>
+  <p>I'd love a little bit more clarification and just adding in that department, what I believe you all know, like Department of Sanitation as far as a road mitigation efforts, they're on the trash that set out curbside. So when you were talking, I wasn't completely certain if this location was, within our jurisdiction, if I'm honest, right? And I don't want to go in that direction, but that sometimes is the reality check of how agencies can deliver the services.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1956)">32:36</a>
+  <p>Thank you. That's the conundrum because what, again, what Commissioner Tish, Commissioner at the time said was we understand that garbage is piling up, again, away from the sanitation pickup spots, but there's so much trash there. And of course, we have a volunteer group that wants to go and clean it up. And she goes, we prefer you not do that. Well, if you're not going to pick it up sanitation, And we're not allowed to bring volunteers in. And by the way, I'll be fair to admit, we do it anyway. We climb over and get up the trash, but we don't want rats. But I'd really like there to be some, you can arrest me if you want, but there needs to be some understanding of who's responsible for the trash in those storage charts. Is it the construction in the contracting individuals?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1998)">33:18</a>
+  <p>yeah they said we'll try our best and they never do clean it up right but there is also another problem i'm sorry to chime in here but there is the private services that they are picking up trash from some of the stores and some of the uh companies that they are not uh serviced by the s and y so um What is the situation there with these people? Because their garbage piles up and stays there forever. And that is causing problems. And I don't think that they are using the containerization that we are trying instead to promote for the rest of the city.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2043)">34:03</a>
+  <p>So just a thank you for these details. There's a few things. And I'll start with volunteer cleanups because volunteer cleanups happen citywide and you can, you know, groups work with us to get their tools from us and they'll do these cleanups and they put the bags of trash curbside. We coordinate with them as on a for a day of pickup when those bags are placed, this kind of. Um, you know, is a little bit of a, of a, I want to say workaround of because it, because of material is not containerized, but that could be some type of a solution, right? This isn't sanitation material if it's construction, uh, debris. If it's a private entity or if it's a private business, right? That material has to be carded by a private carter and all carters, all businesses, excuse me, they are required to do containerized their waste as well. for what's set out for their collection. So when that's not taking place, and Mario, I see you're trying to jump in just one last thing. When someone that's not taking place, sanitation does enforce against businesses, whether it's against the construction business or against whatever that that location is, right? The enforcement of that is by typically through one or through reaching out to, you know, to us or my office, our customer service team with the documentation. And then we can, you know, talk to our enforcement division about like, hey, this is something we're getting a lot of flack from the community about. Can we send an enforcement officer there to, to inspect, right? They have the right in their jurisdiction to go and look at the scenario and see if any of the rules are being broken. And I hope that in that mouthful, that's some bit of the answer there. But I do believe if this material isn't sanitation's jurisdiction, then it does get challenging for me to be able to say like, oh, yeah, we can definitely pick up that material because if it's not in our scope of work.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2151)">35:51</a>
+  <p>And when you say private, do you mean, because the second avenue, modern main project is actually a city funded project. Are you saying that the contractor construction company is private, thus even if they're not doing the job and they're sending rats? Yep. Gotcha. So thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2169)">36:09</a>
+  <p>Yeah, as we're working on like commercial waste zones, we're working with a lot of these partners that are city funded or their city agencies, but they're using a contract with a private that has a private vendor on it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2180)">36:20</a>
+  <p>All right. So. So then Phillips, don't your supervisors who, who are out there patrolling issue summonses for exactly these conditions?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2190)">36:30</a>
+  <p>Yes, they can't issue some of this once they find conditions. Or they can report it and we can escalate it up. If it's out of our jurisdiction, we can try to see what's going on with the lot. You said 35th Street, first or second, and where else?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2203)">36:43</a>
+  <p>It's 35th Street between 1st and 2nd Avenue. And it's, well, it's actually a tunnel approach street and 2nd Avenue. And on 36th Street, it's between tunnel approach street and 1st Avenue. There are storage yards that actually make the sidewalks, the 36 sidewalk you've can't use. It's all blocked. But it also goes on to the street, the storage yard for that project.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2227)">37:07</a>
+  <p>And go ahead, Pam.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2229)">37:09</a>
+  <p>Yeah. My comment to that is that when it comes to construction debris and so forth and that the DSNY can't come by to issue summons quickly enough, is that a 311 call? And then the DSNY will be on alert to go and give them a summons.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2251)">37:31</a>
+  <p>Correct. You could call 301, or you could email or call Mr. Doyle's office, or you could email me directly and I send the supervisor over there and we'll get eyes on it, especially the businesses. If you take a business, it's not containerizing. You could call me. One of my supervisors will definitely go over there and issue a summons if they find a violation. Sometimes I'll even go out an issue the summons if I need to, please.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2276)">37:56</a>
+  <p>Wonderful.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2277)">37:57</a>
+  <p>Yeah, I think it's important to name like three and one as being the key like non-emergency trackable recording service for any entity in the city to kind of report things. But then we do have a customer service line. We do log things. We do daily send that to the field. The field checks on it exactly what Superintendent Phillips is talking about. It's just the sort of the difference is three on one is you know that you submitted that and it's recorded within the city record, so to speak, not the city, but it's recorded in that form. But if you reach out to us, you know, and there's a crazy day happening, you know, I might not check my inbox and see that that there's this email that came into customer service. And that's just the one difference. We're happy to have them come in to both.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2323)">38:43</a>
+  <p>If I may ask a question, so. So what I'm hearing is that we can use 311 and we can report these issues. What is the sanitation's role in foreseeing and observing these issues before we have to observe it? Isn't that the job of the supervisors out in the field to notice this already and take care of it? Like, I don't understand. Like, why are we the foot soldiers for the sanitation department? You guys are the supervisors. You can't drive by and see a site that has issues already. Like, I don't understand. Why are we doing your job?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2368)">39:28</a>
+  <p>I wouldn't phrase it in those exact terms. I would say that you'd have to understand that the role of the supervisor who's in the field is actually responding probably to many other three and ones at the moment. And they're coming in from a district for all different types of waste issues, whether they're residential waste, commercial waste, cleaning. It could be an issue, right, if it's not necessarily a trash set out, but it also could be a cleaning issue. There's hazardous and household waste items that have to be picked up, for instance, Freon or other CFC containing devices. There could be derelict vehicles that they're doing checks on throughout their shift. And this is in the entire district, right? So I do think that there's the importance of 30 and one is a way to be a kind of diligent good neighbor and notifying the city they we are out there at the same time making observations but they do they are working through their their sort of pool of of work that they have as well and um you know if if uh superintendent philps can jump into talking about this but um if there is something that sort of supersedes the import or the or the or the the critical nature of something, then they'll go to that instead, right? Like trash is important and also if there is a derelict vehicle blocking you know, a fire hydrant, something like that, but they have to work on that first.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2458)">40:58</a>
+  <p>Understood. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2460)">41:00</a>
+  <p>And I think, Dominic, I think, you know, in my experience, and I haven't had the opportunity to work with Karen Superintendent Phillips yet, although my husband has, I know, and I'm excited to work with you as well, Andrew. We used to work with Officer Bianco and he would help us issue summons and some days like what they're suggesting, you know, just being a good neighbor and I think you should turn it over and tell everybody what a good neighbor you are and everything that you do. But I have had situations where I've contacted Officer Bianca and he's like, yeah, I just walked by and saw that mess. I'm writing him a summons. So just to give you one example of they are out there looking and seeing what we're seeing, but probably not to the extent that you're seeing on 49th Street, which you should bring up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2516)">41:56</a>
+  <p>Well, so I live at 10 Beekman and I, sorry, 10 Mitchell, right off of Beekman and I, every other Sunday as I can, I actually clean from the FDR all the way up to 2nd Avenue and I come up 2nd Avenue and then come all the way down back to 1st Avenue and I use you know bags from my building and I sometimes get a few people with me sometimes I don't I actually was on the drive this Saturday this Sunday because of the bike race and it was completely empty and I cleaned the whole exit from exit 10 all the way forward and I don't mind doing it I you know I run my own architectural company in New York and I do what I can but I just To be very, very honest, I just find the city dirty. And it's very discouraging. Sunday after Sunday after Sunday. And this morning, I witnessed the sanitation picking up at three, at three Mitchell. And they shoved so many bags in the back of the truck when the whatever you call that, he's came down and imploded all the bags. All the garbage went all over the street. And you know what they did? They drove away. And I got my bucket out. After coming off from the gym at 7.30 in the morning and I cleaned all of Mitchell Place down the 1st Avenue. I'm not going to do it anymore. I'm just going to call 311. I'm going to get the number of the truck and I'm going to report them. It is not the first time it's happened. That's what I'm talking about. That is my frustration in all of this. I know everyone's talking about containment and so on and so on. It's all great. But the fact is this city's dirty and there's got to be a way to clean it up efficiently. And your department. The sanitation department needs to do a better job, period.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2627)">43:47</a>
+  <p>No, wait. Superintendent Phillips and Director Hoyle, is it okay if after this meeting we distribute your email addresses to the participants of this forum?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2646)">44:06</a>
+  <p>Yeah, but actually, but customer service in line, first, and email is better for concerns and complaints like that because I'm in policy and programs, right? Like I'm not the person who's immediately responding to a complaint like the gentleman just brought up, right? In fact, if it did go to me, it would probably take a few hours to get resolved.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2671)">44:31</a>
+  <p>Okay, so you'll give us the information.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2673)">44:33</a>
+  <p>Yeah, I'll put it in the chat right now. Is that work? I'm sorry? Can I type it into the chat just so that it's there right now?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2681)">44:41</a>
+  <p>Sure, everyone can see the chat, right? Panelists should be able to see the chat. I'm not sure that. Okay, the panelists, you'll see it in the chat. And we'll get information to you later if you don't get it now. I'm sorry, I don't know your name with the Murray Hill Neighbor Association, but did you, you were shaking your head before. I'm in agreement. Did you want to say anything?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2707)">45:07</a>
+  <p>Thank you. First, I wanted to thank you. My name is Lily and I'm at the Murray Hill Neighborhood Association and thank you for inviting me. It's a very exciting group of individuals and I'm honored to be in the room with most of you. So the Murray Hall Neighborhood Association is trying, we're not a bid. So it's very interesting to just hear your perspectives in terms of how you are addressing the issue of containerization of controlling garbage in a community that is basically residential. So that's our problem, you know, that we don't have a lot of businesses to support containerization. So I'm here to listen. I'm here to learn. We have issues of trying to kind of beautify the neighborhood to figure out how we can just get a sense of decorum, you know, back to the streets. There's just a lot of garbage bins that are always full. For some reason, First Avenue in particular doesn't seem to have, I did a map of the community walking from 34th to 42nd between first and fifth. And first, Madison, but it's scattered throughout the entire community where there's a lot of corners that just don't have bins. And we have every type of bin you can imagine in the community. We've got green ones. We've got the Stanley ones. They're all different types. And there's no, it's so unappealing, you know, to look at. And so we want to figure out how can we, one, beautify the community so we can have some sense of, of getting just cleanliness to the neighborhood and some sort of consistency, but also to get them serviced because we found out many of them are not serviced. We don't really still understand how the Doe Fund can pick up in certain areas of our community, but not in others. Some areas of the community are very challenged in terms of needing bins removed all the time. So it's a huge learning curve and that's what we're trying to sort of figure out. We have one contact at DSNY and it may not be enough for us. I'm here to kind of tap into your resources to learn about how we can figure out, how we can tackle the enormity of residential garbage that we have. I'm thrilled about the composting that's happened in our community because I think that that has help with some, but because we don't have businesses or this containerization issue in our community, we have different challenges than what some of your other communities are talking about.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2883)">48:03</a>
+  <p>I'm sorry, can I just jump in quickly? And by the way, hi, Lily. Hi, Rob. The one thing that was of great benefit to the bids was that city council and DSNY worked together to allow us, basically to reimburse us for our costs. As I think I mentioned to you, Lily. Yes. I am still, I just sent an email with myself to remind me, I'm going to Albany for the weekend. When I get back, I need to get into the passport program, you know, frustrating. I think, and this is beyond, this is beyond our DSNY reps that are here right now, but I think what might be beneficial, excuse me, is if working with council members Epsteinin Maloneyy, Menon, if they were to authorize a new round of funding so that community groups would have the same access to funds, that the bids, I don't know if the DoFund got in in time, but ACE did in other groups that were a little more organized on a, no offense, you know what I mean, organized as a group. That helped us immensely. I could have afford to do it, okay? But for me, it's about $130,000 project. I'm going to be reimbursed 116,000. And that's only because the other 15,000 or so came along after the fact. I think different community groups could band together. And it's bigger than just the east side and CB6. That might be a way to see that the, it's a great, I'm a convert, as I said before, it's become a great program. I'm happy to not see, there are, when I see bags on the corners now, I know that they're, that, that they've been dumped. They're not mine. And I can tell people that. And, you know, it's just amazing, but a lot of the community groups need to be part of that and they need to have the funding reimbursed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3025)">50:25</a>
+  <p>now i'll second that or um before we move on uh ben with council member Epsteinin i i didn't ask you uh to come to speak tonight but if you want to um since this seems to be moving in your direction please do uh if you're if you're still with us i see you</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3047)">50:47</a>
+  <p>I am here. I'm happy to take questions or bring them back to the council member. I don't have anything specific to mention on this, though I think it's good to hear community feedback in ways that our office and other offices can get involved, especially for the areas that are in district too.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3064)">51:04</a>
+  <p>Very good, Justin. Yeah, I was going to say that back in January, I think it was, We spoke with council member Maloneyy and DSNY also on finding ways to use, let's say marketing, Link NYC to promote, to promote to the community, the idea of cleanliness and upkeep. So beyond just funding for bins, having the community, having people feel, you know, walk through and messaging to try to persuade and convince people to contribute to keeping their community clean. And I know that at the time we had talked about involving some community members and bids as well. So I'm not sure if there's a way to do that now that we're all here together, how to navigate that. We had spoken about that back in January, Sandy and I run the call.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3111)">51:51</a>
+  <p>And Pam, I think you heard your hand up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3114)">51:54</a>
+  <p>Yes, I did. One of our. issues in here on the corners in Sutton Place, and I see it around the city, especially up and down First Avenue, are the corner trash bins. They are so, they are, most of them are broken half the time. You can't clean them. And when, you know, the doors are open, Rats and mice can get in there. And then when they are taken away to Long Island City to be repaired, you're left with a wire basket on the corner. And very often, no basket at all, no trash bin at all. And our biggest, what we would like to know from the DSNY, do you have a selection of trash bins that we can purchase privately? You know, just so that we have workable clean trash bins that function, because these do not function at all. They're really pretty deplorable, actually. You can't, you know, there's stickers and graffiti all over them. We pay someone three times a week to clean the streets, the sidewalks, to take graffiti down and so forth and so on. And we cannot clean those trash bins. they're just really not okay. So Superintendent Phillips, do you have an idea or director, do you have an idea of any way that we can or how we can purchase new trash bins? Not the ones that we have now. Whoever designed those needs to go back to school because they are really bad.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3211)">53:31</a>
+  <p>So yeah, community groups cannot purchase their own corner baskets that has to come from funding from the community board or, uh, or a city council member, right, for the better been. So, so working with those offices, yes. with my colleagues in public affairs, yes, but the Sutton Area Community Association couldn't purchase that bin, just to be clear on that. When there's also a bin, sometimes we have to swap bins out. We have to swap bins out for a thousand and one reasons of parade, you know, unservicing them. But complaints is another reason why we service bins. So, swap a bin out, excuse me. So if there is a busted old rusty bin that's put there, we take that into consideration, certainly do for exchanging that. So the customer service line that I dropped, that's really helpful because that is going right to the teams that manage that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3271)">54:31</a>
+  <p>Yes, but that's not the issue. I just wanted to say that's not the issue. The issue is that they're non-functional bins. And so can we go to CB6 and can we fund it through CB6? And what are the options if we do?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3284)">54:44</a>
+  <p>It would be the better bin. Yeah, so that's, we would, we would want to be selecting the, like approving the bin, basically. That's fine.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3292)">54:52</a>
+  <p>But can, do we have a selection of what CD6?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3295)">54:55</a>
+  <p>No, sorry. Yeah, I'm being unclear that the better bin, our bin, let's call the better bin. That's what we're, that's the bin that we have.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3302)">55:02</a>
+  <p>Are you talking about the gray one with the black top?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3306)">55:06</a>
+  <p>It's, you know, metal on the top. And then it has the plastic insert inside with the lid can shift over.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3314)">55:14</a>
+  <p>And it's got holes on the side.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3316)">55:16</a>
+  <p>So it's those tiny slits, yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3318)">55:18</a>
+  <p>Well, we have holes in ours. And then in the doors that open and close so they can take the bag out from the container inside. Right? Well, that door 90% of the time is broken. And I will go up and down First Avenue and I will close them and try to close them. Um, and it's not possible because they're broken. And we actually, um, we were talking to supervisor Bianco and I, we, we had many conversations about this. And, you know, he, he at the time, um, when he was in service, he's no longer here in the neighborhood, but he had said that, um, he understands the problem because I would see him and I'd say, look, what do we do with it? There's no trash bin on the corner. He said, well, we took it to Long Island city to be repaired. And so there's nothing there at all. And then we have, and if it is taken to Long Island City, you're left with this little small tiny wire green basket that's on the inside. And how can that possibly service blocks of people that are going back and forth? So therefore, every trash is overflowing. And it doesn't bid, but it doesn't bid well for the city. That's how unattractive they are. It doesn't bid well for the city. So maybe, you know, is there a policy that, is there something that we can do to go back to the drawing board to get new kinds of bins? Because these bins are new, by the way. These were just funded by Keith Powers. Keith Powers just put those on the corners like two or three years ago. And they are in, they look like they've been there for like 15 years. And they haven't. So that's, that's a situation, that's something that we need to fix and we need to find a solution for because it's really unattractive and it's unsanitary. It's not sanitary. So there you are. That's, that's. That's my issue to, that's what I would like to find a solution for.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3445)">57:25</a>
+  <p>And I just want to say again that a number of these groups would be willing to buy to pay for bins and they would select their own with DSNY's approval. Yes. I know that we look at the bins at the Fifth Avenue Association has, which they maintain themselves. I presume that Rob may also have his own bins.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3470)">57:50</a>
+  <p>Yeah. Internal Bay Association has their own bins. The question that they had, though, was, is it best to not have an open receptacle than, you know, have one? Because I know this debate came up with the parks department, too, that if you don't have a container, let's say, at the entrance to a park, it's actually cleaner because when you have people throwing and missing in the receptacle and an open receptacle, it's bad. Is that true? This is some litter psychology I'd love to deep. dive deep into. But if you can answer that, it would be helpful.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3506)">58:26</a>
+  <p>I can't speculate on if there's a bin there or not what a New York or a tourist will do. But we have to, you know, taking consideration where sanitation can service baskets. Parks, baskets are very different, right? Parks department services, parks. We don't put bins in the middle intersections. Typically, they have to, you know, in middle of the block, they have to be at the corner. They have to be serviceable by the collection crew that's on the basket route. Yeah, that's all I'll say towards that point.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3536)">58:56</a>
+  <p>So I just want to say one more thing, one more thing. The trash pins that are on Fifth Avenue, they're strong. There's never trash around them or whatever. They're super strong. You can't, there's no stickers on them because they won't, they won't stick. And you can get graffiti if there's graffiti on. There's never any graffiti on it. I guess they clean the trash bins if there should be on Fifth Avenue. But those bins are amazing. They're strong. They should be citywide. That's the kind of bin that New York should have throughout the city. Not these tinny things that break when you look at it in the wrong way.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3575)">59:35</a>
+  <p>And I think I sent you a link to DSNY that shows the manufacturer of those particular bins.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3584)">59:44</a>
+  <p>Oh, you did? Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3586)">59:46</a>
+  <p>That's... Not to... Well, actually to you too, Pam, but I think... Okay. I think if the superintendent and director don't have that, I can send it again. Thank you. Email is so cheap. But you're seeing some patterns here, right? Of the concerns in the neighborhood.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3608)">1:00:08</a>
+  <p>uh and again i don't think anyone expects that you will resolve the question tonight but you also understand that these are questions that everyone wants yeah no certainly no i hope it's not coming through that i'm like not hearing these these these all my notes are here on in front of me all my post it's that's where you see me jotting this down it's it's you know the city of new york does offer a level of service to residents that i think can sometimes feel like not enough or not enough. I'm not trying to, you know, use words that dismiss or demean anybody's issues. These are real, you know, if you're going outside and you're seeing trash, so that's the reality, right? Sanitation is offering three days a week of trash collection service, one day a week of recycling collection service. You know, we're collecting baskets at least once a day, sometimes up to three times a week. We're doing street cleaning. on specific streets once a week during this week. And that can seem like not enough, right? So when there have been desires to have additional services, that's when again, it's looking to have discretional funding from community board or from your council member. have supplemental litter basket service or supplemental cleaning service, you know, motorized litter patrol. And that actually we can work with directly with our cleaning office and with our community affairs team to point out the hotspots. that way those crews can focus on those areas, right? Because there is just the regular traditional collection and cleaning routes. But if there are hotspots, for instance, where there's always illegal dumping going on, then that's one way that we can try to be more proactive. I'm not trying to say that it could solve everything right there in this call, but that's how we get it started is by having that conversation.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3720)">1:02:00</a>
+  <p>So one more thing I'd like to add, one more thing. You have an auxiliary department ACE, right? right that you know that's that's that's that's that'd be funded through council member or or or community yeah okay so maybe that is a you know there's a solution there for the you know i think that One, I think it's fair that you re-look at the policy for the big belly containers. I think that's fair. And whether whatever comes from it comes from it, but I think it's a fair question and a fair request. At the same time, one, Lily, when you're talking about the Doe Fund, the Doe Fund has a menu of Rob, correct me, they have a menu of what you can select and choose and pay for. by the month for them to do whatever service you want them to do. They'll do, they have like 20 items. They're very expensive. And so the community itself has to, you know, be able to afford that menu and that's monthly service. But we have looked at it and it's very, very expensive. And so we look to ACE to help us clean, you know, to keep First Avenue. um you know together and and cleaner and we have one gentleman who really is very good at what he does and he's on the corners and we speak often and but at the same time um the dough fund and and this whole the the issue with big belly and so forth i just think that that would be something that you could just take a look at</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3818)">1:03:38</a>
+  <p>Before we go to you, Mario, I believe the chair of our board wants to speak. And of course, she knows how important it is to speak loudly and into the owl.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3828)">1:03:48</a>
+  <p>One question I had, you keep referring to the community boards being able to fund purchases of services and garbage cans. Where does the community board get that Maloneyy from? And maybe you could direct us to another community board that has done that because we actually don't know of funding that is available for us to go ahead to do that for our community.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3857)">1:04:17</a>
+  <p>Yeah, no, I can't point you to another community board on the call this second. But through it through is there not a discretionary funding process that community boards have access to, right? Like that's that's what I'm referring to when we've met with them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3876)">1:04:36</a>
+  <p>Yes, we ask the city to fund various issues. We also ask our our elected officials. Um, so you're saying if we collect together, everyone in our community, we might have a better chance of getting that support.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3897)">1:04:57</a>
+  <p>Uh, yeah. Well, I think that would probably be in like identifying hotspots and then focusing services in those hotspots from the community board. Right. Um, if it's additional funding for an additional collection crew, that would be coming from, um, discretionary funding right from, from a city council member.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3916)">1:05:16</a>
+  <p>So I think especially for all the people on the call, this is important that you need to let us know the hotspots so we can advocate for you. I'm not sure we've heard that continuously. So we do try and help the community. So please do let us know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3936)">1:05:36</a>
+  <p>with council member Epsteinin?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3940)">1:05:40</a>
+  <p>Yeah, just to follow up on that as well. So assuming that it goes to discretionary funding, there's only also so much of that. And it seems that there are, I guess in certain instances, the willingness for community groups or neighborhood associations to also partly either fund or put in and I'm wondering like is there ability for a counselor for the community boards to take that role and either sign off for a sister does it have to be like fully funded through city discretionary funds because I think in that regard there's a lot of things that the council member needs to fund through discretionary funds that it's like is the will and want for even like the trash can be put in place and I'm just wondering are there ways that I know it may have to go through like council authorization but does it have to be fully funded through our discretionary funds</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3983)">1:06:23</a>
+  <p>Yeah, it needs to come through council's discretionary funds.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3989)">1:06:29</a>
+  <p>First, Dr. Glenn, is it Cosman? And you're muted.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3997)">1:06:37</a>
+  <p>Okay. Thank you. It's Glenn. Perfect. The one thing I agree completely with Dominic's assessment of this whole call this evening. First of all, it seems as if the community The more affluent communities might be able to do things on their own. But this is a citywide problem and it shouldn't be based on income. How much Maloneyy a community has? This is a sanitation, a DSNY issue. And we really need at least listening to this to revamp the entire system. The city is completely, it's disgusting. It really is. It's terrible. Now, talking about bins in front of parks, if you go to Europe, There are no bins any place. There's no garbage in Europe. I mean, it's so much cleaner than we are here. We are the most, we are supposedly the greatest country in the world. It doesn't look like it in New York City. And that's the issue. And to have Dominic sweeping the areas, Pam having our community, our group paying people to clean up, there's something amiss here when the sanitation department goes by, doesn't look to see there's garbage present. And I understand there's different degrees of garbage, whether it's there, They're whether they can do it or not, but still, it's garbage. Let's get the private sanitation and the DSNY together and create a program. We have to revamp this. That's just from a community point to view. That's what I'm saying.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4084)">1:08:04</a>
+  <p>Yeah, it sounds like, and I want to talk to Brian Lafferty as well, that we maybe could do it together. I think there needs to be a point person and Sandy at the community board or this committee. so that those that want that funding and see if we can get it from the community board, I'm happy to play that role. I obviously have a very passionate interest in this subject, but I just wanted to throw that out. They're happy to work with all the community associations and bids, park associations, you name it, let's get some funds. I'm happy to be that point person. Justin.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4116)">1:08:36</a>
+  <p>Yeah, I was going to say also, Glenn, I agree. I think it's also a cultural issue. I was in Tokyo. It just, when I went to Japan, you notice that everybody just taught from the time they're really young. They don't even have trash cans there that people use. So it's not like, DS, you know, our kind of institutions, they do, I think they're doing a pretty good job, but it's also a culture, you know, it's incumbent on us as community members and how we go about it too. So.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4142)">1:09:02</a>
+  <p>And Rob, you know, if everyone here got what they want, we put you out of business.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4152)">1:09:12</a>
+  <p>I'm sorry, just one last word. First, I want to thank you, Director and Superintendent for joining us tonight. I know that you are really in a pickle because between the fact that the city has an increased residential and commercial density. the fact that we have a lot of new visitors such as migrants and many of them are turning into people that they are living on the streets and they really don't care about cleanliness and hygiene and all of that. I know that you were caught in in a bind and they weren't prepared for all of this. I think that what Glenn just said and what other people have said here tonight is extremely important. And the fact that we really need to understand how we can fix what is not working right now because there are a lot of those private services that they are supposed to be of aid of businesses that they are creating a lot of garbage that they don't do their job. And, you know, I don't know how many times you're trying to enforce, for example, construction places that they are not doing their job. Everywhere you are going, when there is a construction that is going on, the place is dirty. It doesn't matter where you are. It is amazing. And it doesn't matter how many times a day you're going to go out. Somehow, everything has to start from the ground and coming up. If those people are not following the rules, if those people are not slapped on the wrist properly, we know you're going to end up really clearing the problem that we're facing. And in case, I thank you for all the work that you are doing. And I really got to move on because I have other businesses to attend tonight.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4282)">1:11:22</a>
+  <p>Thank you for being with us. I'm sorry, Rob. It looks like you want to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4287)">1:11:27</a>
+  <p>Yeah, no, I was just going to say I'm going to need to jump off too. I just want to, in defense of DSNY, they are doing what they can. These are bigger than Andrew. These are big global issues. I mean, we've talked about. It's us. It's not DSMY with, except for trash bags exploding out of the back of trucks. It's not DSNY throwing trash on the streets. It's New Yorkers. And so this is a big thing and to the extent, I think DS and Dwight is probably struggling, by the way, under the same financial strains, a lot of agencies are. And so I really think it's incumbent on everyone on this call, including me, to talk to our council members, to talk to our mayor, to talk to the people that can help make a difference and prioritize sanitation. and by the way parks too but that's another thing but to prioritize these uh and not make them second class departments uh to push this because otherwise we're just sitting here bitching about the same old stuff that is you know going to happen again next week uh and so i i want to thank andrew and is the director still yeah Because I'm missing people.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4378)">1:12:58</a>
+  <p>Superintendent Phillips.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4380)">1:13:00</a>
+  <p>Sorry, yes. Anyway, I want to thank them for being here. And I want to thank CB6 for allowing me to be a part of it. And I'm sorry if I'm talking too much, but thank you. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4391)">1:13:11</a>
+  <p>And I just want to say Superintendent Phillips has been very responsive. And I'm really appreciate him. And I certainly don't want him to think that he's being attacked. He's done. He's really been listening to people and talking, so we appreciate his efforts. I would like, I mean, we've gotten a sense of some of these issues, and I know there's others on the list, but Director Hoyles, could you talk to us about the coming of containerization now? Sure. So go ahead, why don't I just let you explain what it's going to look like in our neighborhood?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4433)">1:13:53</a>
+  <p>Yeah, um, thanks for letting me talk about that for a little bit. Well, there's not a timeline that I can say when community board six would be part of the empire bin rollout. Um, it is citywide by 2031 is our, um, is our marching orders, right? That's what, that's what we're aiming for right now. Um, and so empire bins or stationary on street containers are bins that, um, are, installed on the side, on the parking lane. I'm doing air quotes, you know, because maybe it's not necessarily a parking lane. Maybe it's something that we could reimagine as some other space. Um, but these bins, um, essentially are only accessible via the building staff or department of sanitation and they're serviced on the same, uh, schedule as the existing trash, um, schedule. So two times a week or three times a week, depending on where we're at in the city. There's, uh, service with the side loading truck. These, um, containers, they're about one, uh, or sorry, they're about two cubic yards in volume. Right, so the two of them take up about half of a car, one of them will take about half of a car space, right? And they, we piloted this in Manhattan Community Board nine in West Harlem. And after that, we're extending that pilot for another year in that location. And we're piloting the next location in Brooklyn Community Board two this summer with installation in the fall. And then the next couple of districts, there's going to be one city in every community board throughout the city. So these bins are required for buildings with over 31 units, with 31 or more units. And then buildings with 10 to 30 units, they get to choose between, you know, the NYC bin, the official wheelie bin, They can use those individual wheelie bins or sign up for or opt in for a empire bin. And that would be, you know, their choice. There's not a fee right now for the empire bin, but through, through, you know, one of the local laws that for this program, Department of Sanitation can charge up to $55 per residential unit for maintenance and repair and servicing of these bins. So it's a pilot that we're doing right now. It is expanding and we have a timeline for the entire city, but we only have right now the next couple of districts. Actually, the next one in Manhattan would be Manhattan Community Board too, so a little bit south of you all.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4605)">1:16:45</a>
+  <p>Can I ask one question, Director Hoyle? I just wanted to confirm that privately on the cul-de-saxe they can purchase city bins and that your team of men will pick up the garbage.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4618)">1:16:58</a>
+  <p>Yeah, that they would service them, yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4620)">1:17:00</a>
+  <p>Yes, that's wonderful. That's 50% good, that's great news.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4625)">1:17:05</a>
+  <p>Okay. Talking about city bins, right? Pam.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4629)">1:17:09</a>
+  <p>Yes, yes, I'm talking about city bins. Yeah, so city.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4633)">1:17:13</a>
+  <p>Yeah, and it sounds like Superintendent Phillips was speaking where he's servicing this somewhere else in community board six as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4641)">1:17:21</a>
+  <p>Yeah, I think Rob burn, Rob has it in, in his area as well. He has the city bins. Um, yes. Um, but I just wanted to clarify that because there are residents that want to purchase those city bins at the end of their, um, they're, they're called a sack and just to make sure that you would service it. And I just wanted to confirm that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4662)">1:17:42</a>
+  <p>Yeah. So, so I want to make sure that, you know, that that is, that's okay. There's the clean curbs program where you're just basically communicating that to department of sanitation that you're purchasing these. And that's part, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4674)">1:17:54</a>
+  <p>So we have to contact clean curbs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4678)">1:17:58</a>
+  <p>Yeah, and I can provide the link maybe at the end of this meeting or I'm not sure what the best way would leave for everybody's aware of that information. But that would be the way. How about I, you know, Stuart would it be best if I follow up with you directly, the link.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4691)">1:18:11</a>
+  <p>Yeah, whatever you want to disseminate, if you send to us, we will send it to everyone here. And Glenn, I see your hand is up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4699)">1:18:19</a>
+  <p>I do have a question for Director Hoyles. What is the difference between the empire bins and those bins that you see, like for example, outside the Friars Club? There's also some of those bins on East 56th Street off of 3rd Avenue between 3rd and Lex. Those really beautiful bins.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4718)">1:18:38</a>
+  <p>Like a sleek metal looking bin. Yeah. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4721)">1:18:41</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4721)">1:18:41</a>
+  <p>That would be like a city bin. Those are so. So, so yeah, the empire bins, um, they're made actually by, you know, it's a, the program itself, it requires a specialized truck that's never been. that's not manufactured in the US, a part of its manufacturing Europe. Actually, you know, individuals were talking on this call earlier about, you know, Europe is much clear. They've been doing containerization for a lot longer than us. So we're using, you know, a hybridized truck that can service these types of European style bins. And that's why it's the rollout is kind of take some time because the trucks don't actually exist, right? They're being manufactured while the rollout's happening. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4766)">1:19:26</a>
+  <p>Lee, please, go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4768)">1:19:28</a>
+  <p>Yes, thank you. I just wanted to clarify a question from Pam, the SAC vice president. Director Hoyles, when you said we should contact Clean Curb regarding the privately funded placement of city beds at the end of our cul-de-sacs in Sutton Place, is that basically to let them know that the bins are there for their servicing? It's not to ask permission.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4791)">1:19:51</a>
+  <p>Is that correct? There is an approval, but we are approvingly. The approval is part of it because it's going on to the cityscape, right? It's approval by Department of Transportation as well. So anything that's on the cityscape, Department of Transportation has to their eyes on and sanitation has to approve because it's, you know, notifying us that there is this serviceable entity that that is going to be there. Terrific.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4812)">1:20:12</a>
+  <p>So it's a, I'm sorry, it's a collaborative phone call with clean curbs just to make sure that they're aware that the bins are there in the future.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4820)">1:20:20</a>
+  <p>Yeah, what is important to me as I'm, I don't want to rattle off like it's too easy. Like it can't be in a bus stop or it can't be on over a fire main or it can't be over, you know, there are parts of the city scape that you could not put them there. If there's not the frontage, then then that could be a reason for it to be rejected. But so I do want to name that there is a approval because that. you know, they can't go in certain locations, but it is also just more of a collaborative, you know, uh, discussion about what's going there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4850)">1:20:50</a>
+  <p>One thing, um, Director Hoyle. So it, we need to contact cleaning curves prior to purchasing the city bin and letting them know where, what location that city bin will be at and that they will get back to us with the approval and how long does that take?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4869)">1:21:09</a>
+  <p>Can't speak to a little how long it'll take. This is all internal with sanitation. It's all in our containerizations unit.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4876)">1:21:16</a>
+  <p>So if we ask for this approval, calling cleaning curbs, do we get an immediate approval or is it something that you would, sorry?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4887)">1:21:27</a>
+  <p>Yeah, I'm just writing this down. Let me find that out for you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4891)">1:21:31</a>
+  <p>Okay, great. Perfect.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4893)">1:21:33</a>
+  <p>So thank you. I think I'd like to leave it here for now. I've seen Director Hoyles take about 3,000 pages of notes. And we're hoping that this will result not just in answers that start with no, but in some degrees of working in concert with our neighborhood. groups. So I think with that, if Superintendent Phillips is still with us or he's on a highway someplace. I'm still here. I'm still here. Excellent. So just in case it didn't come across, we really do appreciate both York. and Director Hoyle's participation. You know, just the very fact that you're responsive, that you're here listening and talking to the community is really important. I think we'll wait for you to stay when you're ready for us to speak again, but we do want to speak again. Very good.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4969)">1:22:49</a>
+  <p>I appreciate you all too. Thanks so much. You should hear our snow meetings if you think this is. I'm just kidding. We're in the waste business, but also, you know, we're trying to make newer cleaner safer place. So it's summer.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4983)">1:23:03</a>
+  <p>We'll be here in six months. So thank you all very much. We're going to move. Thank you. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4993)">1:23:13</a>
+  <p>Thank you, Superintendent Phillips. Thank you for all you do. And thank you all.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4997)">1:23:17</a>
+  <p>Thank you guys for having.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4998)">1:23:18</a>
+  <p>Thank you as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5000)">1:23:20</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5003)">1:23:23</a>
+  <p>Okay, we're moving on to our next agenda item. It's Kevin's item on a potential resolution. What we have all seen, I think, from our email is that the governor seems to have said that she will respond to all of those issues. But Kevin feels that And I will let you speak.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5026)">1:23:46</a>
+  <p>Oh, so it's me. If you could put up the resume, Brian, is that possible? So we drafted this resolution. It's been on the agenda for a couple of days. And I swear this was not collusion with the governor. But the governor yesterday came out and basically supported everything that was in the resolution. And that's three acts that we would like, I would love for the committee to support. That's starting with the, I think we can read that here. I'm trying to pull it up myself. The New York for All Act. And if you have any questions about that, here we go. This is, and then the second is the Melt Act. And the third, these are all been proposed. They have not worked out of committee in Albany, but it looks like the governor is on board. Well, she is on board less than 24 hours ago. Hold on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5081)">1:24:41</a>
+  <p>So let me if you want to read that off. Yeah, let me summarize what the acts are first. The New York for All Act aims to ensure, I'm sorry, did you? Oh, you look like you wanted. No, no, no. Okay. So the New York for all act aims to ensure that everyone, that includes immigrants, whether they're, regardless of their status, can get medical care, police protection, and schooling for their children. without fear that doing so is going to subject them to the scrutiny of immigration authorities. I think the bill has an obvious political thrust and it incorporates basic concerns for humanity. And it demonstrates an interest not just for those present without legal authorization, but those who are legally present as well. But it also inherently protects everyone since if crime victims can't trust police, then criminals roam freely. If people can't be treated for disease, the consequences might spread. And if children go uneducated, we produce an underclass that ultimately endangers us all. So the way the New York for All Act aims to operate is by prohibiting the state from providing information on immigration status to federal authorities. The act is nothing and indeed it could do nothing to limit the legitimate federal authority. And it requires the state officials to comply with legitimate judicial rewards and orders. It just prevents federal authorities from effectively commandeering state resources for federal purposes. I counted 31 co-sponsors in the Senate, including Kristen Gonzalez and Liz Pruder, 75 co-sponsons in the Assembly, including Keith Powers and Alex Morris. That's the premier of the three acts.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5205)">1:26:45</a>
+  <p>And I could jump into the melt, actually. I'm sorry, having my screen back up. Thank you, Stu. The Milt Act would basically ban the use of face covering and plainclosed by immigration actions conducted in New York State. I think we've seen that the agents of federal government are operating as mass militia, not good. Immigration enforcement should not be turned into a paramilitary secret police force. Also, I think that's important. This is basically a fight against tyranny. Tony Simone from the Assembly introduced it and also Patricia Fahey from the Senate is also on board, among many others.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5245)">1:27:25</a>
+  <p>Two states already have that where you cannot wear a mask. New Jersey and California.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5252)">1:27:32</a>
+  <p>And in that case, there are 24 co-sponsors in the Senate. Again, that includes Liz Krueger and 59 co-sponsors in the Assembly in Keith Powers. And then the last act is the Radar Act. reporting of arrests, detentions, actions, and removals by immigration enforcement. I am impressed by the ability to create acronyms. It's primarily just a public dashboard. It's just reporting immigration enforcement activities within the state. It includes statistical information on contacts between state and federal officials. and it has demographic information on the people who might be arrested. But it's simply about reporting. It's not any further action than that. Again, Liz Proover is signed onto it with 11 other co-sponsors. And so those are the three acts that are in this resolution The governor has said that is part of the budget negotiations. She has, and by the way, I'm sorry, we passed a resolution two months ago for what is it called the month.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5342)">1:29:02</a>
+  <p>It was the ability to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5346)">1:29:06</a>
+  <p>You're suing the ability to sue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5350)">1:29:10</a>
+  <p>Right. So that the governor also said that she's supporting that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5356)">1:29:16</a>
+  <p>Well, that's extending it to ICE as well, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5358)">1:29:18</a>
+  <p>It reaches ICE, but it's not limited time. It's certainly not. It's federal immigration official.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5366)">1:29:26</a>
+  <p>Yeah. I mean, that was just an email. I know. I said, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5368)">1:29:28</a>
+  <p>Yeah. So the governor has said she supports all of this already. She said that she's negotiated with the legislature and they are in agreement. So, Kevin.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5384)">1:29:44</a>
+  <p>So, you know, I keep things simple. We want to put all three together. And obviously this resolution is to show support for, again, the New York for All Act, the Radar Act, and the Milt Act. So we've talked about it enough. I think we can.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5404)">1:30:04</a>
+  <p>And we're really just supporting and we're supporting her. This is already known in a way, but you need to be on record of, because should anything fall through the cracks, where do we stand on it, you know?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5421)">1:30:21</a>
+  <p>You would be responsible. Well, I'll do respect to the governor. This committee was actually talking about it before she came out. I know you want to give credit to the governor, maybe. No, I'm just saying.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5431)">1:30:31</a>
+  <p>Happily surprised.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5433)">1:30:33</a>
+  <p>Justin, what do you feel? My issues is that, so I support the two bills, Nelson Radar. The NY for all one, I have an issue with it because the spirit of the bills, I understand it, but to me, It's an enforcement mechanism that affects communities that I feel like I don't have standing in. So you're talking about community upstate, like this is a statewide bill. So if it were me, I would, I'm going to vote no because that for NY for all, I think it should be, if that was changed to be for our community, I would vote yes. But I just don't feel like I'm standing to do that for a statewide bill. The other two, I'm okay with, but that one, it's an enforcement mechanism that governs how people engage with their local community. And I just don't, that's not how I see governance.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5484)">1:31:24</a>
+  <p>And before you respond, I'm sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5486)">1:31:26</a>
+  <p>That question, because you raised it's such an important point. So when, um, is an increase in a population can be inclusive, uh, immigrants that have come to the community. What happens in our education or school bills? Is there, does the state increase the funding to those communities? What happens? Because I've certainly seen it in another.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5511)">1:31:51</a>
+  <p>But I'm not sure.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5512)">1:31:52</a>
+  <p>There's a large increase, say there's an increase. An increase. It is the issue of the, you can't speak for upstate, which I think you're raising a human issue. So my question is, what happens when there's an increase in that population? Immigrants come into the community, they're not necessarily paying into the, into the education taxes, does the state supplement it, or is it now just the problem of that local community? I'm not sure. But that seems like an really important issue. So if you were going to say it's all right to read everybody on the same let the playing feel, it would have to be that the state has to equalize the funding as it seems to me that's a fair part of this. So I'm just curious, would you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5559)">1:32:39</a>
+  <p>I'm not sure, honestly. Yeah, but I'm talking more about how people and communities interact with their local police officials. And I just don't like, I see this the inverse is like being in Texas and having somebody from a community board like dictate how I'm going to engage like Austin versus Dallas. Like I, I don't know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5580)">1:33:00</a>
+  <p>Okay, we're talking about too different. Like I'm not sure. Yeah. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5587)">1:33:07</a>
+  <p>That's what like I would have that's amazing comment email chain. Like I.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5590)">1:33:10</a>
+  <p>would have preferred to separate it because i will vote for the other two but and why for all i don't feel comfortable with that i mean the sphere of the bill but it's it's just not really how i see governance okay well we can certainly consider uh voting for this is obviously a resau the draft and we can consider you know carving one out i'd like to think that we have enough support i mean you guys like i would encourage if it's like you'll have enough support but that's you know i'm saying if we there's there's always another option if uh</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5622)">1:33:42</a>
+  <p>We don't even need a motion. I mean, if you want to redraft this as two separate bills, as two separate rezos, I'm sorry, or strike part of the reso, you know, we can do that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5637)">1:33:57</a>
+  <p>Let me see if the reso now passes committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5642)">1:34:02</a>
+  <p>And then can somebody answer the question I raised about.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5647)">1:34:07</a>
+  <p>it would have to be any kind of state funding what a town or city funding in all these communities but i think the state would probably have to support most of that this is a part of the budget talks exactly yeah so it's really about that yeah does somebody know i have an exact answer does somebody know in fact is that what happens so if there's yes but i can i give you a better understanding of um how it's for to make sure we're on the same page um And she's actually connecting all of this to the budget. And that is the deal that was made. So that's going to be a New York State budget.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5689)">1:34:49</a>
+  <p>Well, that's also a sort of political mechanism. Right. It's not always, as we've seen Congress, it's not always because it's actually a vegetarian issue. Oh, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5707)">1:35:07</a>
+  <p>Well, I'm pulling this up. Does anybody else? Who else is on board from the community? It'd be great to get anybody else who's in.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5716)">1:35:16</a>
+  <p>I'll support all three.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5717)">1:35:17</a>
+  <p>I'll support all three.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5720)">1:35:20</a>
+  <p>Because to me, it's all part of what she said, and it's all part of the package.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5724)">1:35:24</a>
+  <p>Well, I was going to say it's a few. I mean, I think it's important, however you guys feel to pass it today, because By next month, this could already, like, I think you want to express that support before it's kind of going to budget. It's good to do that now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5738)">1:35:38</a>
+  <p>Let me just, I kind of like to understand your objection a little bit more. You know, whenever we vote on a state bill, it affects everyone upstate as well as.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5750)">1:35:50</a>
+  <p>I don't like really voting on state bills. So that's kind of a, I, that's, but but melt and and um and radar both state bills so i thought about that a lot um and i felt that those are more sort of regulatory those are more um they don't ask the community to and to really change how they interact with their local law enforcement they they essentially are impacting how federal enforcement should be held accountable. I see this is a little bit of a different concept. So ideally, no, I wouldn't want to vote on those either, but I feel like I'll be flexible with that and pass. Yeah, there is a lot of hypocrisy with it. But yeah, I agree with that. But I wanted to be flexible with those because I do support those in spirit. Sandra, I have a quick. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5795)">1:36:35</a>
+  <p>I have a question. I mean, an answer. Okay. It's the cost would generally be paid for by, New York State, but also some local governments would also pitch in. Again, they're working this out in the budget. So the budget may be predominantly, if not all, New York State. The reason they need Maloneyy, they're saying is training government employees on the new rules. How much is that going to cost? Potential legal expenses, administrative compliant costs, and broader public service costs tied to immigration policy. So again, I don't think it's exorbitant considering the amount that's in the state budget, but that helps it get it been a little.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5838)">1:37:18</a>
+  <p>It doesn't really address. So I get it very concretely in terms of the schooling situation. There's an increase in kids in the school. They don't, is it the obligation of the local community to pick up the costs of that? Or does that become something that the same compensates for? That's a big issue on a local level.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5861)">1:37:41</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5862)">1:37:42</a>
+  <p>That would be a part that was that I have a house in the Hudson Valley upstate. So I feel very strongly now to speak for me up there. But that would be a school tax. So every individual would pay the school tax. Absolutely. My school taxes are off. It's a country place. It's off the charts because it's one of the top 100 high schools in the country. So yes, it would be for that, for the school, it would definitely be community.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5891)">1:38:11</a>
+  <p>Just to be. You understand the problem of that for these local rural communities. That's a real issue, right? So if you're in a rural, agrarian community and you've got to pay extra tax, school tax, That's a problem. That's a serious problem.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5908)">1:38:28</a>
+  <p>Yeah. And I have to tell you, I talk to the assessors and the local government there because I'm like, you know, I don't have kids. I don't have any kids in that high school. And, you know, after talking to him, it's about, but I want good kids to come up into my area. So yes, I do want to support other people's children. So it's a kind of, I think it's civics in a way. yeah but i think you're missing the point i'm raising about no i but i don't think any one economics that you know new york would probably get the most people but i think in a lot of rural areas you're not going to see any huge numbers that i think will affect anything right and they would have that we would need the data on it but that's okay i mean i just you need the data on it but yeah i mean children living in new york um certainly have the right to um</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5962)">1:39:22</a>
+  <p>attend pop of schools. So U.S. Supreme Court, I think it's Plyor versus Doe. I mean, that's sure.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5968)">1:39:28</a>
+  <p>Right. The questions who's paying the bill.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5970)">1:39:30</a>
+  <p>Right. It would potentially, it would potentially be the state, but it could also be local.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5976)">1:39:36</a>
+  <p>It's also the local, it's somewhat partly the state, but it's also a local community through, um, through the taxes, school tax, which means you're, That's not, that's a really regressive situation, right? Because you're gonna stick it on poor people as well as rich people. So that's unique, and that's just how I'm understanding it. And that's something who seriously think about.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6002)">1:40:02</a>
+  <p>I'm sorry, school tax is regressive.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6004)">1:40:04</a>
+  <p>I mean, they're based on the point is, if everybody, there are a lot of people got their second homeowners, they've got the Maloneyy, right? But then there are a lot of vocal farmers who would be also paying the burden of the community. And that becomes problematic.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6023)">1:40:23</a>
+  <p>No, I don't, I would push back a little bit. I don't think it's a burden. I think again, New York rolled in its name is apparent that New York is for everybody. I don't think it's a, I don't think anybody's a burden.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6034)">1:40:34</a>
+  <p>That's not a burden. That's happening in other ways anyway. I'm in a tiny rural community with farms and they just reassess me at the most crazy house price because house prices are through the roof. I mean, I am paying $16,000 in a little tiny community town for school taxes. And I'm not happy about that. And I am going to talk to them about the new assessment, but this is happening everywhere all the time. And the New York State is a very taxed state in terms of especially housing. It's very taxed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6072)">1:41:12</a>
+  <p>And again, it's part of the budget negotiation. So clearly this only- Yeah, we'll see what happened. And you do have so many people on board already, including our state of somebody going to keep powers. So it's clearly has the support to happen anyway. We just happen to be here now the day after the governor showed his support. I'm still very much in favor of it, but open to any tweaks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6095)">1:41:35</a>
+  <p>I wouldn't never vote against education and funding. I think education is so critical for everything we do, whether you're talking about public safety or mental health, you know, economics, because ultimately these are people who have Maloneyy issues if you're talking about homelessness. There is nothing or there's very little in our life that isn't reliant on the education of our people. And I think that the more, whether it's people who have come here as immigrants, whether their parents, Tom came here or not, these are people that end up in our community. And the better we take care of them, the better we follow as a society. It's abstract. It's looking in, it's a very long view. It's not, you know, what you pay tomorrow. But I think we're a community board and unlike people who are elected, who have to look at the next election, we're going to live in this community for a long time. And I just think that when it comes to education, I'm not to be spent well, but I'm not going to object to going to people who status we don't know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6193)">1:43:13</a>
+  <p>When I say it's a burden, I don't think it's a burden when we're helping everybody. Believe me, there's a lot of taxes that I believe should not be there that would bring our tax rate even taxes even lower. Believe me, but this is not one to me that should be questioned because of education, because of health care.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6210)">1:43:30</a>
+  <p>Right. I'm just really raising an issue who falls on. You're making the Maloneyy, you don't care, or you can't or whatever. You ain't making the Maloneyy. It has a big impact. That's all. Just on, and well, the only question I asked is who's paying for it? In the end, who would pay you for that? Is it the state? That's terrific, right? But if it's the individual communities?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6234)">1:43:54</a>
+  <p>So are local taxes, real estate taxes based on a head count? Because I mean, the state budget is based on, it's based basically on heads. I mean, it's not quite that straightforward. When the state pays for education or when it for that matter, it's based on the head count. There's a certain dollar amount per person. And I know it's not quite that straightforward, but, but. Are real estate taxes based on the same premise? Is it based on a headcount?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6273)">1:44:33</a>
+  <p>On income, it's based on a value in the house. It's based on you create bad in the house.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6277)">1:44:37</a>
+  <p>Right, but I mean, there's an overall budget for the school that you're paying out of your, out of your education.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6285)">1:44:45</a>
+  <p>Right, so Svarscale has a lot of Maloneyy for schools based on the value of the homes, right? That's how it works. So it comes from assess values. And so people are paying for local.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6300)">1:45:00</a>
+  <p>Right, but Scarsdale, exactly, but Scarsdale is paying more per person than we are in most communities. And I don't think it's based on the head count. It's just. Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6312)">1:45:12</a>
+  <p>No, but the point being that education is supported by the taxes one face. for education, right? However, that happens within the community. That's why you get, as far as they else, got a whole lot of Maloneyy to pay for education. Whereas, I don't know, Yonkers says, so I'm making that part of, but the negative the community that doesn't have, it, it's just depends on the, the taxes one pays. So you get to the four communities, they're paying for the quality of their education by their, by their local school tax, right? I don't know how much the state compensations. It's a real problem. As inequities of our system are sitting there in our educational system in your face.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6362)">1:46:02</a>
+  <p>A couple of things. Immigrant families, I know you're not saying otherwise.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6365)">1:46:05</a>
+  <p>Not saying.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6366)">1:46:06</a>
+  <p>Immigrant families obviously pay taxes through sales tax, payroll tax. No, no, no, I know. I just said right. But I'm just saying that I want that out there, though, that they're paying. Look, I think what who said of educating children, it's been proven that reduces crime and poverty rates. So that's worth fighting for right there. Education is, I think, the minimum bullet for our future. We got to be proud what's going to happen.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6398)">1:46:38</a>
+  <p>I always think about the next one is coming.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6402)">1:46:42</a>
+  <p>Yeah. I mean, just who we are, you know, we're going to say. Some people don't belong here. That's a bigger ideological discussion. But I feel very passionate that's just the right thing to do these things. So I would move that we have a vote.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6418)">1:46:58</a>
+  <p>All we're going to do it is two and why we're doing this on three.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6421)">1:47:01</a>
+  <p>Well, right now we have a result on the table at all three. That's the motion.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6429)">1:47:09</a>
+  <p>Just one thing, the state is very involved in house taxes and school taxes. Because my new assessment is based on they have a formula about land and they are upping my land assessment because New York State has a lot. You know, like, and now this town or county has to obey what New York State is saying. This is very all intertwined. Even local communities are obeying state, what the state wants. It's really fascinating and horrible at the same time. But it's, but you know, it works, General.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6468)">1:47:48</a>
+  <p>We complain. I do. Yeah. One more point. Immigrants strengthen the workforce, but strength of the economy. So it is going to, you know, that's those.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6479)">1:47:59</a>
+  <p>That's great. It's not the discussion I brought up. No, I just, but I don't. I, you know, yes, you certainly we're taking into consideration. I'm really talking about. I do wish not have differences and class issues. That's what I'm really addressing here. And who's going to get screwed in this and who not? And both people don't get screwed in it. But poor people in here polarizes. That's all. That's what I'm saying.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6502)">1:48:22</a>
+  <p>Poor people may also benefit from this. I mean, you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6506)">1:48:26</a>
+  <p>Maybe, but when your homeowners, they ain't happy with it, right? When you're, when, when, when you're, when you're paying the tax and what you realize is the education that was available, is now being diminished or you don't have the faculty anymore, et cetera, et cetera. You see it. That's all. That's just to understand that in what you're voting. The rest, listen, the rest I agree with, but I do understand class issues and you really have to, you know, and then you vote on it, but at least understand what else is implied in it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6539)">1:48:59</a>
+  <p>That's all. Okay. we can entertain a motion to take a vote on this we can take entertain a motion to split this into two separate resolutions it sounds like it's mr chair i'm gonna listen to your motion i'd still like to vote for all three and then see what happens brian okay at well emotions made uh go here yes i know you want me to go through the script There was a motion made to vote on the resolution supporting the New York For All Act, the Radar Act and the Melt Act. We will now take a vote. Brian will call the role. Oh, please. And the second? We don't need a second word committee. We don't need a second word committee. I've read. I've Greg Roberts rule.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6601)">1:50:01</a>
+  <p>Oh, my God. We know you have. Oh, I know you have. I was in the executive. That's why I don't think.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6606)">1:50:06</a>
+  <p>Greg Roberts rules. If you, but go ahead.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6610)">1:50:10</a>
+  <p>I'll second it. I'll third it. I'll fourth it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6613)">1:50:13</a>
+  <p>You're only allowed to second.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6616)">1:50:16</a>
+  <p>I want a little independence. I'm a meeting members. When I call your name, please respond. Favor, oppose, abstain, or not entitled. Stu Dessert. In favor. Thank you. Dessing Bolberg. Opposed. Thank you. Lori Hage.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6632)">1:50:32</a>
+  <p>In favor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6633)">1:50:33</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6635)">1:50:35</a>
+  <p>Everyone is not with us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6637)">1:50:37</a>
+  <p>Sandra Leffaw? Um, absent.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6644)">1:50:44</a>
+  <p>Thank you. Kevin O'Kee. In favor. Thank you. And Saladin is not with us. Uh, so that's three votes in favor, one opposed, one abstention. Right down to the wire.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6666)">1:51:06</a>
+  <p>Okay. We appreciate it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6669)">1:51:09</a>
+  <p>These might be issues, these might the same concerns that we both have are probably going to come up to in full board. So if you wanted to go through, you probably know, should those are taught, you know, things you want to think through is. I will address both because Stu and Paris will not be at our full board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6683)">1:51:23</a>
+  <p>I'll be remote. As people say I am anyway. And but you'll pitch it. I also would like not tonight, but would like to hear both of you more because these are interesting questions that I think are worthy of discussion.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6705)">1:51:45</a>
+  <p>You're going to break up state issues. You got to understand the importations in the state and how further polarizes a state you don't want to polarize. You got to pay you really have to understand the implications. in these in out of the city, right? The city are very different.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6724)">1:52:04</a>
+  <p>But Kevin, thanks for putting like, clearly put a lot of time too. So thanks for that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6727)">1:52:07</a>
+  <p>Thank you. And I'll go a lot more time into making sure that everything is addressed to face people have questions. I will be happy to address your comments and others. Thank you. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6740)">1:52:20</a>
+  <p>You all enjoy standing up there. The, I believe we're moving to new and old business now. I distributed a note that I received about, about pets, I believe dogs, just dogs off leash were prohibited. You've all seen a note. It's something we could consider. It's also something, unfortunately, RuPaul is not with us tonight. Oh, but we do have Gloria. does look like it might be a health issue as opposed to a public safety issue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6776)">1:52:56</a>
+  <p>Um, what would be, I mean, I would think a dog off leash could potentially bite someone. That to me, it's safety.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6782)">1:53:02</a>
+  <p>Uh, what's just, well, did I say that. Or when you're done, does a dog lender?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6788)">1:53:08</a>
+  <p>Sure. Um, it, it also, what's raised is also, um, um, uh, food establishments cleaning up after them. Uh, and let's see, um, I guess that's it. So it's, it's, you know, it's food establishments, people not cleaning up after the dogs, versus versus being on public transit or, or, you know, so.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6817)">1:53:37</a>
+  <p>Yeah, what I was going to say is like as a, I got a dog back in December. And you, you know, when you go to dog parks, it's, I would say 70, 75% of people are very good, very good etiquette. But there are people that, you know, like as a dog, like, there's some dog owners that just, they're dogs, they don't really, there's, there's poor etiquette, they're watching how they're interacting with, with, you know, non dog owners. I, you know, personally, I can't really, I take my dog on transit too. So like, maybe I'm not the best, you know, person for it to say on those things, but I do think it's important that there are, there is some, I can understand the concern.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6857)">1:54:17</a>
+  <p>So with, and it's, I believe, I mean, you can bring your pet on transit. Yeah. They're just supposed to be in a cave. Yeah, yeah, yeah. I should say I take Long Island Railroad and I'm really happy when people have bring their dogs on a leash and the occasional cat. And I've never had a problem with that, but grocery stores are an interesting question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6878)">1:54:38</a>
+  <p>Oh, that is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6879)">1:54:39</a>
+  <p>Yeah, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6881)">1:54:41</a>
+  <p>And I think they still do it. And even the grocery store says they're not a lot, but people do not hear.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6886)">1:54:46</a>
+  <p>And I think Ryan wanted to say something, but I'm not sure. Oh, well, no. It's pretty much. I'm going to read, and I guess I couldn't. So is this something that you believe belongs with public safety and you want to take up? It's something that you think can go to help. Let me talk to a little about it first before you decide.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6908)">1:55:08</a>
+  <p>Excellent. It's definitely an issue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6910)">1:55:10</a>
+  <p>I mean, I think like, you know, I'm picked up. I think dogs in grocery stores.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6917)">1:55:17</a>
+  <p>Yeah, I would agree with that. I don't like as a dog. I feel like there's etiquette. There's some like kind of edge cases. But then it's just that there are 10%, 50%, that are bad dog. Like, they don't have etiquette. So it kind of ruins it for everybody else. But cats. What's what? They're easy. But that's a, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6934)">1:55:34</a>
+  <p>Cats are actually not permitted in.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6937)">1:55:37</a>
+  <p>They are because of legislation? Yeah. Keith is bringing it up. Also on the state level, Eric Botts had already been one of the introductions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6946)">1:55:46</a>
+  <p>Wait, I'm sorry. Are cats now to chase mice or?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6952)">1:55:52</a>
+  <p>There is now on the state side, there is legislation afoot to allow cats and bodegas. And Keith Powers has already championed it on the city side when he was supposed to do.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6965)">1:56:05</a>
+  <p>They're like born for that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6967)">1:56:07</a>
+  <p>Yeah, I mean, that's what they're against. They're just like literally evolved to do that. Going back to dogs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(6975)">1:56:15</a>
+  <p>I think so, yeah. You know, it's raining pets and dogs in this discussion, but going back to, uh, Justin, I agree with the 100%. Look, I spent a lot of time in a park where dogs are not allowed. The entitlement on some dog owners, even when parks employees go up and tell them, it's unbelievable that they get in their face and say, you don't care, in more than once I've heard this, you don't care about dogs. Actually, we're just going by the rules.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7005)">1:56:45</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7005)">1:56:45</a>
+  <p>There was also a wild back in Central Park. There was a sort of informal agreement between police and dog owners that before, I think it was like 7 a.m. They would be allowed to let the dogs off the leash and after that. So, you know, there's some casual agreements. But I mean, I think I'd like to see what Rupo comes to look with. And then we can bring it back here next one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7033)">1:57:13</a>
+  <p>I do think it's important not to be too restrictive and kind of punish the people with, you know, like scurting the rules a little bit, but, but I think most dog owners are pretty respectful, but there are, there is a percentage. I think that, They just don't think of other people be besides that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7049)">1:57:29</a>
+  <p>Because when it comes to off-leash, well, they just... You also see it on the high line where dogs are not allowed and people, people, but their claim is always a service animal.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7058)">1:57:38</a>
+  <p>By the way, it's also a issue when you're a dog owner, like for your own dog, because when you have other dogs that are, like I said, that 10% that don't really... I'll walk into a dog run and like I have to pick my dog immediately because the owner is just really bad etiquette. So it's definitely is an issue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7076)">1:57:56</a>
+  <p>So Sandra, we're way over there. We just barely. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7083)">1:58:03</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7085)">1:58:05</a>
+  <p>So we'll wait to hear from help on the issue. So that was new business. Is there any other new or?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7095)">1:58:15</a>
+  <p>I don't know if you got the email. I had the volunteer liaison to the 13 precinct, so I think it would be very to have input from the, you know, having a relationship with our local police department. So we did contact them. And finally, the person did get back to me saying that they don't do a liaison. I could come there as other people in the community do. Um, I'm going to push it because I think they should be a formal relationship as opposed to a one can drop by. I didn't like that. Um, I thought, actually, I have a little bit of this. We should be, we should be in a more egalitarian relationship with them. So I'm going to pursue that and see what we can do.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7140)">1:59:00</a>
+  <p>Thank you. And, you know, that may have been sloppy language on their part. They do, you know, the, um, people from the DA's office appear there. people from elected.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7151)">1:59:11</a>
+  <p>No, no, that anybody could drive, anybody could come. Anyone, but the notion of having a particular relationship with the community where they don't do.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7161)">1:59:21</a>
+  <p>And I think that needs to be rethought. I think that would be great. And you'll also find, you're, you're talking about the 13th precinct. If anyone wants to be involved with the 17th, that would also be good. Remember the 17th.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7174)">1:59:34</a>
+  <p>I think we should probably be one. Yeah, let's just try this one out and see. see what happens. I'm sorry, what you said.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7181)">1:59:41</a>
+  <p>No, I had a conversation with Sandy about that, but I need to remember what I said.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7184)">1:59:44</a>
+  <p>You don't remember? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7187)">1:59:47</a>
+  <p>I'm glad you raised it. Can we have an incumbent person? It'll be a lot safer. Not that it's not safe, man.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7194)">1:59:54</a>
+  <p>But please. You've been here the whole time. How can you sit there silently when it's so exciting?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7202)">2:00:02</a>
+  <p>That's exciting. And, you know, really a lot of important things going on here. So I'm a little, this would also, if you record it, you could sell it and put people right to sleep. Because it's, it's a lot.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7219)">2:00:19</a>
+  <p>Just for the record, it's only reported. Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7222)">2:00:22</a>
+  <p>Sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7222)">2:00:22</a>
+  <p>I have to say.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7223)">2:00:23</a>
+  <p>So if you need to sleep one, I'm pulling.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7227)">2:00:27</a>
+  <p>So we're talking about it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7231)">2:00:31</a>
+  <p>Barbara Schildkraut. I live on 21st Street between 2nd and 3rd Avenue. My neighbor is the 13th precinct. I don't think that my concern fits into anything you've talked about because of the 13th precinct. They're not good neighbors. in terms of sanitation. Just sanitation. If you look at the sidewalk right in front of the precinct, it's all broken up. It looks like it was last repaired maybe a couple of centuries ago. There are thousands of cigarette butts because at the time of the change in, you know, another group come in and the guys are all standing there and smoking and like 50 cigarettes are right away left all over the sidewalk and all those cracks and you know I walk by I actually took a picture I'll just show maybe one of you a barrier those old wooden barriers painted blue This one is, you know, looks, has been through a lot. But it's one of those barriers that's been sitting there for maybe 15 years in the, not on the sidewalk. Well, I keep throwing it off that this police put it on the sidewalk and I keep throwing it into the street. And my block is a parking lot for the police. seven days a week, 24 hours a day. Most of the time, if you step off of the sidewalk, I jaywalk a lot. So I, you know, if I see, I can get across and then not have to wait for a red light or something. I'm a big jaywalker. So, but you have to be careful because the mud right off of the sidewalk is about three inches thick. going into the street. And that's how we live. Pass by just like a week ago, and there was a dead rap on the sidewalk. And last summer, there was another dead rat. It's just beyond disgusting. That's on one block. I'm sick and tired of it. And I mentioned it to a, as I passed the dead rat, I said, there's a rat over there, dead rat. And he said, what do you want me to do?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7411)">2:03:31</a>
+  <p>Yeah. Our transportation committee has also been focused on some of the police precincts because of where they park. And there are issues, of course, about parking plate abuses where people get these permits to parking</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7431)">2:03:51</a>
+  <p>which is an issue on that part of the Department of Sanitation cleans a portion of that street is whenever they tell, I guess they call the precinct and say we're coming tomorrow or whatever it is. And right in front of the precinct, it's like spit and span. Everywhere else there's mud right off of the sidewalk in the street. It's just beyond belief.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7459)">2:04:19</a>
+  <p>So that's interesting, actually, if you're walking its side of street on the- Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7463)">2:04:23</a>
+  <p>Can I ask, is this the, it's the, um, the, um, the, the, right in front of the precinct or is it that, like, is the precinct that's not cleaning up or is it just happened to be adjacent to do since?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7476)">2:04:36</a>
+  <p>The department of sanitation does not clean the street, okay, except. when they come to clean right in front of the precinct. Yeah. Why? Because there are police cars all over the street. I see. All the time, 24 hours a day, seven days.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7492)">2:04:52</a>
+  <p>So they can't street sweet because there's no walking inside of street.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7497)">2:04:57</a>
+  <p>Right on me. Here's that barrier, that's lying. This is right outside my apartment door. Yeah. There's a police car and a little bit of the street. I tried to get us everything in there. But that barrier has been sitting in the street for 15 or 20 years. I mean, you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7520)">2:05:20</a>
+  <p>Yeah, it's been an issue before, hasn't it? Like, because I remember like a meeting two years ago or three years ago, I came to who's in before.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7528)">2:05:28</a>
+  <p>But I with, you know, with, you know, I complained to the police.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7533)">2:05:33</a>
+  <p>Could you just show the picture? Just show the picture to Sandra, who has a grass lover. You volunteer. This is what happened.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7545)">2:05:45</a>
+  <p>There's the barrier.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7548)">2:05:48</a>
+  <p>It all comes with a territory.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7550)">2:05:50</a>
+  <p>The mud there. My building is right over here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7554)">2:05:54</a>
+  <p>It's so what you'll find at the community council meeting is that there'll be. there will be some complaints about police most of the time people go there and complainer they're not getting enough policing um so it's a combination of things so it will include issues like this right what is this surprising too is much surprising oh i what i'm talking about i know i was actually listening to actually the issue is</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7587)">2:06:27</a>
+  <p>There's no place for people to park, right? I mean, I don't know how you address the issue. I get it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7591)">2:06:31</a>
+  <p>Well, the police officers are parking and they're never cleaning.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7594)">2:06:34</a>
+  <p>Pots is what?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7595)">2:06:35</a>
+  <p>There's no alternate side of street.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7598)">2:06:38</a>
+  <p>There's no, and the cops come in from wherever they're coming in from. Yeah. And they've got no place to park the car. So this is issues, I mean, on top of issues is the final issue of they can't get the street clean. But in fact, these people are driving in. From wherever they drive in now, I think that the notion of having to be a resident of the city is no longer true for publicity. That's right. So that means a lot of them are driving in and they've got no place to park the car. That's a structural, that's a real problem. And so that, you know, that's a layer that, however it has to be addressed, it has to be addressed. So there's no cleanup that's going on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7638)">2:07:18</a>
+  <p>Oh, that's what obviously, actually that was how got processed for me. So on the other, on 20th Street, between second and third, is this enormous facility owned by the police. Not sure what it's called, but you can't even get near it. I mean, you know, they have guards outside.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7657)">2:07:37</a>
+  <p>The old academy building.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7658)">2:07:38</a>
+  <p>The academy, old academy building. They have parking under there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7662)">2:07:42</a>
+  <p>Well, we're looking at, I think land use is looking at seeing if that can be,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7669)">2:07:49</a>
+  <p>yes I'll still get with I mean follow up with DS and Y to see if they can find playing like why is it they can't clean it up because it's just every day it's parked there's no there's no work in a day there's no walk in a day so you'll see all these wrecked cars yeah that are just</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7688)">2:08:08</a>
+  <p>parked there until they can get rid of them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7690)">2:08:10</a>
+  <p>It's kind of a conundra.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7692)">2:08:12</a>
+  <p>I mean, but it's really, there's just so much stuff.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7695)">2:08:15</a>
+  <p>Yeah. And it doesn't have to be disgusting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7698)">2:08:18</a>
+  <p>It's a residential. Even if it was clean once, you know, like at least, but if it's just like piling up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7703)">2:08:23</a>
+  <p>Your cigarette blocks all over the sidewalk. Pick up a devs, right, if it's there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7708)">2:08:28</a>
+  <p>My building, in front of my building, you have to take two steps down. And so there's a little. area that's about the width of the building, which is kind of unusual. Most buildings don't have that. And then there's a front door. So people walking by, they think it's a garbage place and they throw their garbage down there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7734)">2:08:54</a>
+  <p>Okay. So we'll... One thing to talk about is the relation between that precinct or whatever precinct and the community is the up in arms right now. There's no place for that to get worked out. And so it gets played out, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7747)">2:09:07</a>
+  <p>And so where is the person, you know, of all of these people in Sutton Place and Beekman Place and Kit, where is the person representing my neighborhood? Because I'm sitting here for, I don't know, three hours. I don't even know that I should have come here. It's just that I, I saw, you know, community board and I just wanted to. Well, you should have been hers.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7778)">2:09:38</a>
+  <p>You have heard. That's important that you can.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7781)">2:09:41</a>
+  <p>And if you want to, I mean, this is how these associations started. When I started two nonprofits, community nonprofits, and then this district, you just go out, find people and start one. Start your own. And then you, it. It grows from there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7794)">2:09:54</a>
+  <p>One thing you saw when we had neighborhood associations is they bring some cloud to the community voice. So if you actually could, there is a Grammarcy. There is a grammar scene.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7810)">2:10:10</a>
+  <p>see was mentioned. I'd like to know who that was.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7813)">2:10:13</a>
+  <p>I don't know what their footprint is either. They look online and find it. Look up Garmercy Association or what? The Gramercy Neighborhood Associates. Look that. Always called the Gramercy. Yeah, there's a difference. Yeah, see if you can be in touch with them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7834)">2:10:34</a>
+  <p>Rhapsing neighborhood associates.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7837)">2:10:37</a>
+  <p>That's Ryan. That's what they're called, right? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7840)">2:10:40</a>
+  <p>Do you have a name or a email address or something you could send me? I'll give you my email address.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7847)">2:10:47</a>
+  <p>Sure. I think we actually have your email.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7849)">2:10:49</a>
+  <p>Oh, you've got my email address.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7851)">2:10:51</a>
+  <p>Okay. We can continue this conversation, but we can also.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7856)">2:10:56</a>
+  <p>I'm not done with new new business because I need to say again, please my extreme urgent concern for the well-being of all citizens is getting are facial face and finger face and voice copy related and protected. This is happening fast. And people are getting calls. They think it's wrong like the head of city bank. I mean, people are already using voices and elderly people, especially because they've gotten so sophisticated.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7894)">2:11:34</a>
+  <p>Yes, it sounds like.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7895)">2:11:35</a>
+  <p>It's so sophisticated.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7897)">2:11:37</a>
+  <p>And that's an area that would be an expert that you would. So I look, we can talk about that. I mean, we can.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7902)">2:11:42</a>
+  <p>Well, Senator Gonzalez was at that the last full board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7907)">2:11:47</a>
+  <p>Yeah. Yeah, if she could leave. and she said they i'm sorry yeah yes we will brian will get the information yeah yeah yeah and follow up with us yeah yeah yeah sure um and and what i'd like to suggest is i know the i understand the issue not well but i understand it generally um i think the ideal would be for the two of you and maybe you if you want um to come up with a strategy for how we address that again it's uh</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7938)">2:12:18</a>
+  <p>you know it's a global issue um yes um but if we i just want to keep on the state but yeah because federal it's just not going to happen now federal yeah nothing like that's ever going to happen right now but and so the uh the uh experts are saying the state can you know they get it started i think whoever does and senator gonzalez mentions something but i don't think she mentioned voice and i said to her are you talking about face in voice and she said she's talking about what do they call that um all your like fingerprints what is it called there's a yeah i know you're digital it's lost even like this what do you know it's a uh yeah it's your diet uh something Anyway, we have to stay up now. Yes, biometrics. That's it. This is serious, guys. I want you all to be afraid because it's serious.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(7993)">2:13:13</a>
+  <p>Well, the other thing I was just say, if you like, with the AI, with how the technology works, it's really, like, it's just, it's like conversation to text and it can just quickly change it. And I mean, I could, I could go and Claude right now and build that. Like, yeah, but I'm saying anything. That's why we don't trust you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8008)">2:13:28</a>
+  <p>Yeah. And there's no filtering. Who are other assembly members on board? Morris be really.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8015)">2:13:35</a>
+  <p>Yeah. Love Bores. I've been talking to his office. I know Gonzalez is on it, but I, you know, sometimes they just jump on things and they don't fully understand.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8024)">2:13:44</a>
+  <p>Well, she chair the technology. I think Bores understands you very well. So I think.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8032)">2:13:52</a>
+  <p>I'm sure. Alice for us. Well, I've been talking to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8035)">2:13:55</a>
+  <p>They've been calling me. because they want to me to volunteer.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8039)">2:13:59</a>
+  <p>You know what was them?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8040)">2:14:00</a>
+  <p>No, no, I didn't know. Because I knew that I, you know, I.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8046)">2:14:06</a>
+  <p>Do you know, there's other state legislation or anywhere else that or city legislation has been. Yeah, but I just got to ask you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8057)">2:14:17</a>
+  <p>It's extremely innovative. It's really leading the way. And it's simple. Why can't we be, why can't I own my face and my voice? Now, will that prevent everyone from using it potentially? No, but you have recourse. There's no recourse anymore. That's just like, you know, the same thing we're trying to do in these other things. So anyway, we'll talk.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8084)">2:14:44</a>
+  <p>Yeah, I mean, if the two of you, We'll come up with a strategy and we're going to let's adjourn the meeting. Yes, let's join.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8091)">2:14:51</a>
+  <p>I had one just really quick new business thing, but I just thinking through that next month, I know brought this up on executive board, but is there anything in anticipation of the World Cup that we need to talk about or do you think that because it's coming? Yeah, just I wasn't sure because by the time that, you know, we're not having an influx of people into our community and I just doesn't sure if we needed to discuss. Did you want to propose something or?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8114)">2:15:14</a>
+  <p>They don't really.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8115)">2:15:15</a>
+  <p>like alcohol in the street or something okay with that does anyone i don't know what happened you know we decided yeah right it didn't happen okay yeah yeah open containers not a thing we do if if you want to propose i mean i think the tentative plan right now for um next month is is public safety um um driven by the incident in skytown yeah um and that's where i'd like to focus if they're all go to it if there's something that's worth it okay yeah and then bring it to us um I'm going to ask if there's a motion to adjourn? Motion. Motion. Wow. That's a multiple motion.</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://www.youtube.com/watch?v=G_gqUUBybhs" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function seekTo(seconds) {
+      const iframe = document.getElementById('ytplayer');
+      if (iframe) {
+        iframe.src = 'https://www.youtube.com/embed/G_gqUUBybhs?start=' + seconds + '&autoplay=1&enablejsapi=1';
+      }
+    }
+  </script>
+</body>
+</html>

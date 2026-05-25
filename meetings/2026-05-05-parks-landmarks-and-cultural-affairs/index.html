@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parks, Landmarks & Cultural Affairs - May 5, 2026 | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Parks, Landmarks & Cultural Affairs - May 5, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Parks, Landmarks & Cultural Affairs - May 5, 2026</span>
+      </nav>
+      <h1 data-pagefind-meta="title">Parks, Landmarks & Cultural Affairs</h1>
+      <div class="meta">May 5, 2026 · Manhattan Community Board 6</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe id="ytplayer" src="https://www.youtube.com/embed/2-yWCsUF4LA?enablejsapi=1" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=2-yWCsUF4LA" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card" data-pagefind-body>
+      <div class="transcript-header">
+        <h3>Full Transcript</h3>
+        <span class="transcript-source-badge">WhisperX + Speaker Diarization</span>
+      </div>
+      <div class="transcript-content transcript-full">
+        <div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(0)">0:00</a>
+  <p>I continue to go. Because it is being reported, right? We're reporting. I'm just waiting to the last. Okay, so I'll continue then.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(8)">0:08</a>
+  <p>May 5th, 2026, Indian Parkes Cultural Affairs Committee. I'm Neil Barkley, Chair of the Committee, and today we're joined by Community Coordinator Brian Lafferty, Community Resource Order, at 6.31 p.m. As a reminder, the New York State Law requires all committee members, so committee members who are at home, just take your camera on and</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(30)">0:30</a>
+  <p>first and last name displayed. Let's see, members of the public, for those attending virtually, you can raise your hand or can have the comments, you can place them in the Q&A feature of Zoom, and then members who are here in person, and then we can recognize you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(48)">0:48</a>
+  <p>And if you know, we do not need to volunteer to take a minute.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(52)">0:52</a>
+  <p>The sound is fuzzy, Neil.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(55)">0:55</a>
+  <p>How about now, is that? Brian, should we bring that closer?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(59)">0:59</a>
+  <p>I should like to move it's closer to here. Okay, see if that helps.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(66)">1:06</a>
+  <p>Does this help? Yes, thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(68)">1:08</a>
+  <p>Right, perfect. All right, so we do have someone to take a minute. Sarah Weddington calling from Paris. I told her not to join the meeting, but she's dedicated. So thank you. You're welcome. You're welcome. So now we will take attendance, Brian Lafferty. Thanks, Neil.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(88)">1:28</a>
+  <p>Members, when I call your name, please indicate that your presence. Neil Barclay. President. Thank you. Marty Barrett? Present. Alvi Barroso. Present. Daniel Bernstein, can not be with us this evening. Robert Barthin for not be with us this evening. Robbie Higpaul will not be with us this evening. Paige Judge. Present. Anti-Malner and I'll be with us as a senior. Race Mark Patel. The gentleman, the total question has. Ellen? I think she may be a few minutes late. Sure. Sandra Surrott. Make sure if he's on us and tells me than yet.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(147)">2:27</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(149)">2:29</a>
+  <p>Moving Siddiqui. She will be here today. Okay. Lettie Simon.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(160)">2:40</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(162)">2:42</a>
+  <p>Thank you. Mark Thompson will not be with us this evening. Sarah Williamson.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(168)">2:48</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(170)">2:50</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(174)">2:54</a>
+  <p>Six present, but we do not have a film. All right. So we all got the minutes ahead of time. And so if there are no objections, we can adopt the minutes. All right. Those are adopted. And then the minutes from April 7, 2026 meeting were distributed ahead of time by the board office. There's no objection. We will adopt the minutes is drafted. Members of the committee, if you object to adopting the minutes, please raise your hand. All right, no objection. So April 7th, April 7, 2026 meeting minutes, it will be adopted and be on the CB6 website soon. Let's see. Background, no one may speak until granted the floor. Committee members who are in person, not a lot. If you have a question about committee business or wish to make a motion, please raise your hand. I've identified you so you can speak. Committee members, I'm able to attend in person. If you have a question about committee business, you can raise your hand through Zoom. All committee members is extremely important, just to have one person speak at a time, chat function for committee members present via Zoom. We cannot discuss, I guess, a committee business on the Zoom chat feature. And then we'll just get to the agenda since we have a lot going on here. We'll have the presentation from the green chart gardeners. I think I can listen to Vino is here. You can go right up here. Just make sure, Brian, we could, let's just check, make sure the camera that the people at home can see them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(283)">4:43</a>
+  <p>When you're ready when you're ready.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(305)">5:05</a>
+  <p>Oh, I know what it is. Yeah, it's because you have the slide up. Okay, no problem. Just go ahead. We have this slide. Thank you both. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(313)">5:13</a>
+  <p>Good evening. My name is Susan Blackwell. I live in CBC. But for the past 13 years, I've been working in CBA, specifically in the gardens around the dog runs and Andrew Haswell-Bring Park just the 59th Street Bridge. I joined that group. in the wake of Hurricane Sandy. And over the years that garden has gone from being a real mess to being a mostly native plant pollinator garden. And we've been, as I said, we've been doing that for like 13 years. And then a few years. Sorry, can we go to the next slide? Oh, sorry. Thanks. So 2013, 2016, we were recognized as a Monart Way Station or they endangered minor butterflies. More recently, we became part of the pollinator pathway, which is a national organization, create habitat for pollinators. And even more recently, we've applied for a very rigorous designation from the parts of pollinator place, and we're still awaiting their decision on that. We have always done native plants. We were kind of the first people on the east side to do that. And I don't know, a few years ago, they created a beautiful garden culture. That's the Cthia Street, the Alice Accus Favilion. And before long, mudwort took over and it was a real mess. And because I can't leave any weed unpooled, I started doing that. And Frederica, who's online joined me. And we did that for a couple of years. And then last year, I found out that the beautiful East Midtown Greenway between 53rd and 60th was losing its professional landscaping. And it was going to become the responsibly like the Park Department, which has no Maloneyy. They lose personnel all the time. So I recruited this one, and Lisa, let's get some volunteers together and do this. And we've been doing that ever since. And I'm going to let Lisa talk to you a little bit about that. I'll say one thing first. We have since last year become a nonprofit. We are physically sponsored by City Parks Foundation, partnership for parks. we've always worked with their wonderful sport. So voila, so Lisa.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(491)">8:11</a>
+  <p>I'm sorry, this came to leave it's PDF for some reason, so sorry about that. I don't know what that happened. But so as Emilyita DeVito, Parks Committee might know me from my frequent comments. And like Susan, there's a park that needs something. I can't say no. In July, as Susan mentioned, the park went back to the parks department. And if you just scroll up a little bit, just to kind of show you, this may look like green to you, but this is a tree that's covered by weeds. You couldn't see the trees anymore. This, again, is a tree. This is all weeds, right? So we really wanted to do something about it. We would pass it every day as we're going off to volunteer or you're just going for a walk on the greenway. really tried to get together. So if you go to the next one, I guess scroll down. We started in September 25, which is just last year, but this slide here is the same place as the previous one. So we cleared all this, just to give you an idea. We cleared all that, planted some new things there. That had all been beautifully planted by the landscape designers that part's hired, but unfortunately didn't seem to last. So you can keep going. I'll just show you some volunteer pictures, but as Susan mentioned, we've worked extensively with partnership or parks and with the parks department. Um, you guys might know rather to clean this shining face in the photo. Um, and that's Ralph from, uh, partnership for parks. And, you know, we started getting some tools and different things from them. And if you go, going down, um, we have really worked with local residents businesses and school groups. So this is a group from, a school on the east side that came out there were our first group in September of last year and they did a massive job reading. We shot in some portrait groups coming out and built our robust volunteer group in the meantime. Next slide. Or scroll down please. And we just really want to highlight that since September, we've had over 20 sessions. We've had 300 volunteers come through and logged over 650 volunteer hours. And that results in 250 bags full of weeds. Not too much trash. It's pretty pretty great. But just to give me an idea of the type of overgrowth. So we're really committed to this. Green Park Arbages is kind of like a known entity in CB8, but we really want to introduce ourselves now that we're down working in CB6 as well. And maybe you'll hear from us more in the future. And then I think we have a kind of. Yeah, so we're also doing monthly volunteer sessions. So we typically volunteer on Fridays, but we're doing monthly weekends. So you might see some flyers around. If you do, please join us. Our next one is May 17th, and then we're doing the spring planting June 6th. Yeah. And that is one of our Saturday sessions. So you see a lot of neighbors come by and folks from all over the city that love the Greenway as much as you do.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(679)">11:19</a>
+  <p>Okay, thank you. We are here just to let you know we're here. We're happy to be working in the C-Vesis and anybody who wants to come out. Join us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(692)">11:32</a>
+  <p>I think that's very nice. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(701)">11:41</a>
+  <p>Right. So we will go to number two on the agenda. Thank you so much. Thank you. We'll go to number two on the agenda discussion regarding field access at St. Barton Park. And I didn't want to say your last name. I wasn't sure.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(732)">12:12</a>
+  <p>My name is Jessible Boy. Okay. I'm here today as VP and Chair of Quality of Life at the Murray Hill Neighborhood Association. And I just wanted to talk to the committee members a bit about the St. Barton Park athletic field and the fact that the kids are not getting a fair share of it. I want to talk a little bit about how we even got here today. And before 2021, the space we're talking about was an open It was a cement slab, but it was open. It was free for the most part for the community to come and enjoy unstructured activities. In 2021, AstroTurf was installed, and the community thought that it was an investment in the community. They immediately started using it for gatherings and activities. Later in 21 and maybe early 22, permits completely took over all the way till now, and that's what we're here for. The upgrade for the AstroTurf we found out was, sorry, was the, it was in getting ready to sell permits. So the neighborhood children already were left out of that plan and there were complaints, but they were able to make it work because there was a playground right next door. Today the playground is closed for a year and permits are available every day from 8 a.m. to 8 p.m. And almost all of the kid-friendly hours are booked. And families more recently have inundated the Mariel Neighborhood Association asking for help. So on this slide, we're looking at total kid-friendly hours. That's just the hours that our kids are able to actually use the park, which would be about 3 p.m. to 7 p.m. or so on weekdays and on the weekends all day, but I capped it at 7 p.m. just to keep it clean. Altogether total, there are 42 hours a week that kids could possibly use the green space. The schedule on the left is showing this current week that we're in. This was the past weekend that we just finished. And this is Monday through Friday right here. As you can see, the entire thing is taken up with permits except these two hours. This is by half hours. So these are two hours from two to four on Sunday. Um, they were, it was free time. This coming week that we're looking at, we're looking at, um, Saturday, May 9th and Sunday, May 10th, uh, that whole weekend is still. There's not one hour that is left for the kids. And Monday through Friday, there's an hour at five on Monday. There's an hour at three on Wednesday. And so you can see this week and next week, there's a total of two hours available that kids can actually make it to the park. Next slide, please. What does this tell us that out of all the time that children have available outside of school hours, there are only two hours per week that they have access to this part, which means they have less than 5% access to the park while organized teams and other activities have around 95% access to the only times that kids are available. And it also showed that on most days kids have zero access. Next slide, please. This is a double crisis for the neighborhood kids. The playground being under construction is one thing in itself. And the athletic field being permitted all day, every day during the hours that kids are not, that during the hours that kids are able to make it, they should have been worked together. And it should, they should have thought of what was going to happen with the green space, maybe pull back on the permits leading up to the construction of the playground. But this is where we are today. Next slide. So I just want to get in there that this is more than just sports. This is a public health issue. The World Health Organization says 60 minutes of daily activity for kids. It's not just about organized sports, children who are not on teams and who want to move their bodies and kick a ball with friends, practice a sport or a skill or play a pickup game. They are not able to do that. And unstructured free play is essential for healthy development. And it's been almost eliminated at this field. Next night, please. So I looked into what kind of rules New York City Parks has. And if they actually have, if they're actually able to make some changes here. Number one, the city stated goal. It says the rules aim for greater equity and fair access for local community residents. And if the local children can't access the neighborhood, their neighborhood field at all, then the system is failing its own stated goal. The next thing is they are allowed to leave unpermitted time. Parks reserves the right to leave time unpermitted for other unpermitted activity. This flexibility exists in policy, but it's not reflected in this schedule. The field is 100% permitted at times and 0% community access many times. Youth priority does not equal neighborhood kids. And this is a very important part because I heard people say, yes, but We, they prioritize the youth organized leagues, but not every kid is on a team or in working with an organized league. This means that someone, a child that's on a travel team is able to come in and use the field, but a child that lives next door is not. Parks actively manages this field and it means they determine appropriate use, They can reject permits. They can leave time unpermitted. They can also cancel permits and they can reschedule to another field if they deem it necessary. Because it's a managed system. It's not set and it should be adjusted to reflect community needs and it should have been done before this leading up to this. Next slide. So what we're asking for. We understand that there are many users of this field and we're not asking to eliminate permits. We are asking for equity. Number one, we would like guaranteed free play windows, protected time blocks after school, three to seven on weekdays, and weekends should have a block in the morning and in the afternoon, reserved for unpermitted activity built into the schedule, not just left over from organized leagues that don't need that time. Number two, create more half field permits. When organizations do book the field, the majority of things can be played on half the field while letting the community have access to the other half. Number three, install athletic field, field lights now. Permanent lighting we hear is going up in the fall, but that does not help us now and that doesn't help us over the summer. Put up temporary lights now that can help push the adult games too late to later in the evenings. And number four, continue access to the community after the playground opens. There should be a discussion about what this field looks like when the playground does reopen. Field access should be more open for the community during this time. But it should never go back to giving the community no access. And last slide. Just states that this park belongs to everyone, even the kids who live here. No one's asking to take the field away from organized leaves where we are asking for a fair share. Children in this neighborhood deserve more than limited leftover access to their own part and that this is an urgent issue and it calls for thoughtful action immediately. Thank you. Thank you for this opportunity.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1211)">20:11</a>
+  <p>Thank you. Thank you for this opportunity.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1222)">20:22</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1224)">20:24</a>
+  <p>So I think we have Sheena. Sheena there? Yes. Yes. Yes. Yes. Oh, okay. I think Ken Conyers is on the line. And he can explain the permitting system. Just, you know, before Ken comes on and speak, we did visit this area and we spoke about it. When I first got a complaint regarding the field, it was requested that they have the space from seven to three. And that was something that we, that I went back and I asked them to block out that time from seven to three and that the organized sports can happen after three. And I understand it. Great presentation. I do understand how the neighborhood feels. But a lot of the permits were already in place. It took some time, we were going a little back and forth with the starting of the renovation of the playground. So that delayed it. But the organized sports kind of came into play with if we were going to start the playground or not and the leagues had to get in place um and we they had to you know get their games together get the fields together and get the people together and then we got the okay that the playground was going to close for one year so i as i do understand this um, situation that, you know, that a lot of people, you know, are complaining about, um, we did push for, um, them to open up the field from seven to three, um, throughout the, um, throughout the week.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1349)">22:29</a>
+  <p>Um, okay, one second.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1363)">22:43</a>
+  <p>Keep going, Sheena. Okay, one second. Keep going, Sheena.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1369)">22:49</a>
+  <p>All right. So, so we, you know, so we, we, we looked at it. And this is when Ken, where Ken comes in. But we also opened up the garden area and the front. And we opened it up seven days a week. except for an inclement weather. But other than that, if the weather is great and good, we're keeping it open seven days a week. For all times, up into the park closes. So to give some more added space, green space. And I do recognize that District 6 has some of the least green space you know throughout the borough so it's it's it's i we understand you know don't think that we don't understand and trying to please everyone it's very very difficult um so this is where ken comes in to help out to see what we can work out hey everybody um i'm very thrown off by sheena's</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1440)">24:00</a>
+  <p>picture with no no face in it but um so my name is Ken Conyers I've been before community board six before for oh I hear myself she know maybe okay um and my name is Ken I'm the citywide director of athletic permits and policy for New York City so I oversee all field in court permitting um athletic events and policies around them So first of all, thanks for the presentation and really appreciate it and agree with much of what's in there. And, you know, there is opportunity here. I think after the fact, after we got to my office about some of the challenges, especially with the playground going under construction, I think we were well past the permitting. We start permitting for spring and summer in November. Much of it is done by January, February time, but a lot of it's done November, December. Um, so that was part of the challenges is, is we've already permitted a lot of it. So, but I recognize there's a need here and there's a desire and in a local kids want to play. So there's a couple of things from your recommendations, um, about community time, you know, definitely looking into that and we, are working on something around that, around dedicated community time. The second thing you talked about half fields and permitting only half the field, right, definitely looking at that as well and how we can utilize that as a method of permitting the space balanced and equitably. I recognize that the seven to three is on school hours. I think everybody's like what, that makes no sense. Kids are in school. Thank you for giving that to us, but they're in school. So I think that there's two challenges right now is one is, we've done a lot of the permitting and it's not easy just to take permitted time away after you have issued it because people have planned their activities and there's lots of things around that but i guess you know all i can say i mean i know neil i know kevin i know you know other members of community board six i think you know from a parks department from myself who's held various roles in the agency um i i hear you loud and clear and i like i've said to steve steve and she and i have been tremendous advocates on your behalf and i've put this in front of me numerous times and so i guess all i can say today is that i'm i'm working on things as much like the recommendations that you had put forth um to make this a better situation and not just for today but going forward right i mean there there is a way to to balance it all and take care of community at the same time of take care in the demands of sports and organize activity. It is a science and it is a balance that we have to strike. And we could do a better job at that. So all I can say today is that I am committed to working with Bochina, Steve, the commissioner to do that. And more to come soon. I don't have any details or documents to share with you today or any specific times, but just know I'm on it and I'm working on it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1631)">27:11</a>
+  <p>There are nice follow-up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1633)">27:13</a>
+  <p>Thank you, Ken. I appreciate you understanding how important this is for the community and for kids. I just want to make sure I'm clear when I go back and share with the community, am I telling them that they have 0% access to this field this weekend, Saturday, Sunday, and the rest of Monday through Friday today?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1652)">27:32</a>
+  <p>Well, I think that's what the permitting system has at the moment. That is the permits at the moment. I wouldn't say it's zero access. I would say a lot of the user groups there don't use the entire space and there is the other side of the space open. I think that's one of the areas I immediately need to look at and determine if there's a better way to represent that and a better way to represent when there is space available on the opposite side. So I just need a little bit more time to dig into current i already have a plan with the permitting team that i'm working on for a future and you know we haven't permitted fall which is september october november just yet we're working on that right now um there's some opportunity to institute some of this for that time um so i mean there's brighter times ahead and but i just i i can't say enough that You know, I really appreciated the presentation. I appreciated the recommendations. You know, they're not the only park or indoor facility that I've worked with the community and others to get to a better place permitting wise. And we'll get there. We'll do it. So just give me a little bit and I'll circle back with the right people and we'll see where we land.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1730)">28:50</a>
+  <p>Okay, so should we expect to So I think he is much with him ourselves.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1734)">28:54</a>
+  <p>So Steve Simon has his hand out. Great. We can recognize Steve and Steve may have more to share.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1741)">29:01</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1743)">29:03</a>
+  <p>Thank you. Steve, I'm Ms. Pergo with the phones. Where? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1756)">29:16</a>
+  <p>Set the bottom. I have the smallest number of our neighbors here tonight waiting to speak and say something.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1778)">29:38</a>
+  <p>You should be over at you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1784)">29:44</a>
+  <p>All right. Is this working? Yeah, we can hear. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1787)">29:47</a>
+  <p>I can't hear anything.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1790)">29:50</a>
+  <p>Well, is that lady Simon?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1793)">29:53</a>
+  <p>No relation to you, Steve, but I love you. I can't hear it. Now I hear you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1797)">29:57</a>
+  <p>Oh, okay. Well, I was going to say it was okay if you can't hear me.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1801)">30:01</a>
+  <p>That's true. Bye-bye. Do your best.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1804)">30:04</a>
+  <p>Okay, thank you. You always do. Okay, so there are a few points that I want to make. I mean, in terms of the history that we've shown, one thing that needs to be appreciated is that is that we built this field or we converted it into a synthetic turf. And by the way, it's not AstroTurf. That's a brand we stopped using years and years ago. I would prefer that you not refer to AstroTurf. But we installed the synthetic turf here at this location and at two or three others in order to compensate for the loss of all of the fields in East River Park during the current major project that's still underway the Eastside Coastal Resiliency Project in which we lost I believe eight to eight fields now but in terms of In terms of the long run, as you indicate in your presentation that you want to see more community access in the long term, I think that's something we can almost definitely assure you of because once the Eastside Coastal Resiliency Project is completed and we regain the full use of Eastmover Park. a lot of the current users are going to be moved back over to East River Park, and we should be able to free up a lot more time here to St. Varden. So in terms of the long view, I think there are great possibilities down the road. I want to mention that And I was surprised it wasn't mentioned in the presentation that we did agree to open the garden. You know, there's a large open space right off of First Avenue at the entrance of the park. We agreed to open it seven days a week, I believe 10 hours a day. So there is an opportunity there for unstructured play. kids can run around after school. There are no permits issued for that space whatsoever. So, you know, that's a space, which as far as I know, kids are taking advantage of. And so, you know, we, you know, that was one major step we took to try to, uh, uh, satisfy this demand. Um, now we, we, we are taking a close look at the permits. We're going to do as Ken mentioned. I expect we're going to be able to free up some more time. Uh, and, uh, uh, we, we are not, um, uh, oblivious to this particular issue. May follow?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1974)">32:54</a>
+  <p>Hi, Steve. It's nice to meet you and I, some really great things about you, honestly. And I just want to clarify that the little garden, as much as it's probably appreciated by some parents and people in the community, it is not for active play. It is not for playing pick up soccer or for running around and ruining the grass. So that's one thing. And the other thing was, I'm curious, do you have how many more years the East Post Resiliency Project is supposed to last before we can get the park back?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2009)">33:29</a>
+  <p>Well, I believe the entire project will be completed. It's being completed in stages. I believe the entire project should be completed by the, oh gosh, Ken is at the end of this year or the end of next year?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2023)">33:43</a>
+  <p>I believe it's the end of next year.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2025)">33:45</a>
+  <p>Next year. Okay. But, and Ken, you would agree with me that at that point, we're definitely going to be able to free up a lot more time?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2035)">33:55</a>
+  <p>I agree that there would be less of a demand and people would be moving over to the newer facilities. It doesn't mean there would be no permitting, but the demand we're seeing would definitely be less.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2046)">34:06</a>
+  <p>No, I certainly wouldn't suggest that we no permitting. But it's also a fact, and maybe this was alluded to in the presentation. It's not as though People from District 6 are not making use of these fields. Many of the teams have made up of kids from the community. We're not like trucking in people from out of town.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2076)">34:36</a>
+  <p>So speaking to that, yes, people do come in from the neighborhood, at least to enjoy the park that our children are not able to. There is one group coming in from Queens. There's, I think the district attorney's office is coming in for a softball game tomorrow. A friend of mine has her son's baseball tryouts. She doesn't live in the neighborhood. Yet the children in the neighborhood are not welcome there. So I just want to point out, and I feel like we could like really go back and forth about this, but we know that you have the power to change things. We know that you think that the permits are, you know, the people who bought the permits are, would have a hard time, and they plan their games and everything around it. But our children also are having a hard time. They have no playground. They have no green space. The nearest other green space is also permitted. I don't know if it's just as much, but it's too far for me to go to one of school day. And the closest playground for us is over 10 blocks away. And when your kid gets out of school at 3 and dinner is at 5, that's a lot. So like get all your kids, get your stroller, get your things over there and back in time for supper. When you have a space right across the street or within a couple of blocks of your own community, where all your friends come and meet after school and you've been going to school together for many years now, I think that please don't forget about the kids. Please don't tell us that fall and next year is going to be when we get the access back. when these kids aren't even done with school this year. I can't imagine what all the parents are going to do with their kids in their little New York City apartments through the summer. Not everyone goes away on vacation. And I just, please don't forget about the children.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2184)">36:24</a>
+  <p>I mean, that's not possible for us to forget about the children because we deal with them and serve them every single day of the year.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2196)">36:36</a>
+  <p>Yes, but please remember that just because you sell permits to youth organizations. I'm sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2204)">36:44</a>
+  <p>Did you say that we sell permits?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2206)">36:46</a>
+  <p>Oh, were there no charge now?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2211)">36:51</a>
+  <p>There's no charge for permits for youth organizations.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2217)">36:57</a>
+  <p>Oh, that are not for profit. Yeah, that not for profit youth organizations receive a fee waiver for hourly fees. That's correct.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2226)">37:06</a>
+  <p>Okay. That's, that's, you know, one thing, but again, not every kid is on a team. Not every kid is on a travel team. Not every kid is in youth sports and they still need to get out there. And, you know, we have this park that's right here and they still need to get out there and move their bodies and they or even practice for a team that they are on. That's like a school team. Um, but it's just, it's not the same to say that you prioritize youth when really you just prioritize the youth permits for organizations. And I, and I say this with respect, I, but I just really want you to understand that it's not the same.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2264)">37:44</a>
+  <p>So I, okay. So we're fine now. Okay. Um, so I think, you know, the question then would be for Ken, is that we understand, I guess, short term, it's going to be very difficult because they already have the permits and that's in place, right? But it was noted the potential of having the teams that have the permits that maybe they would only play on one half of the field. I know that there. Right, so it would just have to be soccer then we can't have base, yeah, the safety issue. I know that there was the one group, NYC footy, I believe that they allow, oh, hey, how are you? But they're a really good partner that they did allow the kids to play on one half. Yeah. And so would that be something that we could look into with, I guess like leagues or teams that already have permits? We'll say just soccer, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2327)">38:47</a>
+  <p>Yeah, that's so. That is the case for a lot of the permits that are there. And I know a lot of organizations use one side and then local people that are coming to the park use the other side. So I know that's happening with a lot more organizations. Because they tell me about it. Like, hey, we're not using the whole thing. So they go up to the permit office. But I'm just going to do a little more research of where we can improve on that and how to best display it. But I do believe that there's Yes, it is going to be harder right now because we already permitted, like you alluded to Neil, but I think there's opportunity for ensuring one side is open during some play. Like people said, baseball, softball, ball flying, outfielders, it's a lot more difficult. But just give me a little bit longer to understand that. But like New York footy, New York City, and many other soccer groups, they typically use one side of it. And there's also some communication I need to do with permit holders around this as well. Oh, can we, I'm sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2392)">39:52</a>
+  <p>So I just was going to say, if you look on the permit website to see if there is half a field open or not, it almost always is a permit that takes up the entire field. So if parents are looking from blocks away and thinking that it's all taken up, but it's only half taken up, I feel like more, better communication needs to be out there. Maybe even at the park, you know, these are the hours. These are the games, you know, these are the games that will be playing half field. Yesterday, two days ago, Sunday morning, I thought over to the park and somebody had the permit from I think 8 a.m. to 2 p.m. Do you know I walked over there twice and there was no baseball? I don't know if I missed it, but like it wasn't even there. So like some of my friends who asked me and I said, no, no, the parks, it's permitted all day. It was open, but they didn't get to enjoy it because we didn't, they just didn't show up for their permit.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-20">SPEAKER_20</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2446)">40:46</a>
+  <p>Well, could you do us a favor when that happens, could you please inform us? Because if people are not using their permits, we shouldn't be issuing permits to them. I mean, you know, so I would I would like to know that, that Ken should know that if somebody's taking a permit and then it's reflected on our website that the field is being used when in fact it's not being used. That's something we should address.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2478)">41:18</a>
+  <p>Yeah, to add, maybe they don't intend to use anything. I can clear out that time. So yeah, definitely let us know if that, if you do run into that so that we could be helpful in cleaning that up. Some of the other stuff they were talking about as far as half field and stuff like that, that's some of the stuff I have to work on. On my end, it's, you know, things have to happen in the back system, the map, GIS, other things to display some of it that way. So that's what I'm looking at now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2505)">41:45</a>
+  <p>Oh, I think we could do this then. We could work with Ken to find out, you know, with the permits, the teams, the leagues that have them, which ones like with soccer, where we can split the field in half, right? And then once we find that out, we can put it, we can have the community board that can send blast about that so that everyone will know when that's going on. So I think that's like a short term, something we can look at. And I think long term, we start looking at, I guess, the times of when the permits are. And I think finally, it looks like with the coastal resiliency, with that plan, you know, wrapping up, I know it sounds like sometime from now, you know, there probably should be lighter, you know, permits required. The playground also, I guess, what was it projected April of, next year which i imagine it means it could go you know longer hopefully it does not maybe shorter i mean we're hoping right but uh but i but i do think i think like the main mode we should focus on right now we could continue i think it's she knows so let's do this let's continue the conversation with pen let's say if we can like you know, the field where it's only soccer or any type of sport where there isn't any danger involved like softball or baseball or something like that. And then we'll take it from there. We can blast it out with the community board. If you do see when the field is open, but there has been a permit, right? You can email Brian, you can put me on copy right away. And then we could contact the parks department and then that's something that they can note. And then, you know, I don't know what they'll do. with the, you know, the blue for the league, but that's a bunch of makers.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2614)">43:34</a>
+  <p>They are not supposed to sell a permit to them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2616)">43:36</a>
+  <p>Okay. So it'll be three times. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2618)">43:38</a>
+  <p>But I'm a full time working mom. So I don't.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2622)">43:42</a>
+  <p>Yeah. So that's for anyone, that's for anyone that would say it. All you want to have to do is just email CB6. And, you know, we can just take it from there. And we can note that and we can let parks know. So, you know, Brian's really good with this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2638)">43:58</a>
+  <p>had suggested yes why can you be a posted rule that says if you have a permit for this field and you don't show up within a half hour of when you're supposed to be there it's sacrifice well the only issue that we have then is that if the party does show up 35 minutes late or 40 minutes late you know how do we</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2661)">44:21</a>
+  <p>you know, regulate that, like who kind of steps in? Who's the arbitrator?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2664)">44:24</a>
+  <p>Seriously, like not to book like a six hour time and they will, and they only need four hours. Maybe that would just encourage them to really pick the time that their teams are going to show up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2674)">44:34</a>
+  <p>Again, what do you think about that? I mean, is that something that could be taken into consideration?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2679)">44:39</a>
+  <p>Which part? There was two separate.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2683)">44:43</a>
+  <p>So I think you're saying the part about if someone is late, do they forfeits their time on the field?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2690)">44:50</a>
+  <p>So that, The New York City rules don't call for that. So groups do pay for an hour, two hours, whatever it is, if it's adults, if it's for-profit youth. They technically should be using the entirety of the permit. And it's not just on you as community members to walk by field and report to us. We also, throughout PEP officers, throughout permit coordinators, we do our own inspections, right? This is a big part of what we do, permit enforcement wise. We want people that take permits to use them, and we want that map to be very clear for the public that a space is either open and not open. So not only am I going to look at, you know, the half-court thing. I'm also going to look at the people that are using it and make sure people are using it as intended and as permitted.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2738)">45:38</a>
+  <p>Okay. So that's the next step to what thing, right? Kind of, I guess like seeing which teams, you know, sports that we can use the other half of the field.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2749)">45:49</a>
+  <p>And so we can make it clear so we can like share with people who. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2754)">45:54</a>
+  <p>Can, is that something, you know, we'll shoot you on email and then we can start correspondence with that?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-22">SPEAKER_22</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2759)">45:59</a>
+  <p>Yeah, it's a little bit of a process to change that, but, but that's what I'm working on now. You know, so give me a little bit. It's a change in the way the field gets permitted. It's a change in the way the back office. It's not an easy one, but it's one that I'm working on and I'm sure we'll find a solution to it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2777)">46:17</a>
+  <p>All right. Thanks, Ken. Sure. I'm Harargo and I see, buddy. Thank you for all that presentation. I totally agree. I think we brought to a lot really you know, a lack of space for all of us to use and share together. And I, I know Kevin, you know, conservative city letter earlier. Some solutions can test on the table, we didn't talk about them on lighting. And that's a really big opportunity for us all.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2804)">46:44</a>
+  <p>So I think like with Kevin, so Kevin, who's also president, obviously, well, just one second, we have another member of the community with like, is.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-23">SPEAKER_23</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2823)">47:03</a>
+  <p>Hello, my name is Daniel Martin, and I'm 10 years old and I'm here to share my experience with St. Martin's Park. And almost all the time that I go to St. Barton's Market is completely full with adults, softball or soccer. And I've been giving kids a very small area on the sidelines. actually play or run around and i when i go with my sister who's older than me we go to the park and it is filled and we can't go to any other parks that are closer because uh we're younger and yeah we're younger and we can't really go alone and when i'm with parents or substitutes we either go to Roosevelt Islands or Brooklyn, which is, well, where we take the ferry to, which you can imagine is quite far away compared to our local parks and gardens, or to a parking or Leland, which also has many games such as softball and soccer. And also to my experience, in my experience, I don't, or most of the soccer games take up the whole fields. So there's only half fields where we can put.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2922)">48:42</a>
+  <p>Right. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2929)">48:49</a>
+  <p>Okay. So people will do now, we'll have Kevin O'Kee, was also a member of Community Board 6, President of St. Martin Carr.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2940)">49:00</a>
+  <p>I don't like titles, but I'll take that. Hi, I am Kevin O'Kee. Daniel Martin, where did you go? Buddy. I have three kids that were raised in St. Barton Park. There are teenagers now. They don't spend as much time there. So I feel exactly what you're the value. You look a little bit like my son. I did make. So I really, yeah, really did itch me. I have a little bit of a PowerPoint. And Jessica, thank you as well. And I look at least in Suzanne are still here. They work that they do with gardening is incredible, and I applaud that as well. Yes, Steve, by the way, it's great that Steve and Kevin on here. We have a great relationship in Sheena, who never gets enough credit, one of the hardest working people in the parks department. We launched four years ago this week, actually, St. Barton Park Conservancy. We did it in the sync with the opening of the garden. It was actually locked for more than 20 years, if you could believe that. So we got it open, working with people like Steve. And at the press conference where we opened it on May 9, 2022, the commissioner William Castro, the commissioner apart from Manhattan, we have this discussion about what's going to happen to the field use when the playground closest, because the playground had already been budgeted. They had a lot of Blasio and then city council member Keith Powers had already budgeted that Maloneyy. It's been, it's been almost eight years. We knew this was going to happen. And like Ken articulated, we just didn't, or the Parks Department didn't know when they were going to break around the playground. There's a lot of things that go into that. They have to work with the city. So the permits were already were issued. I'm in support. If I had my way, it would just be open all the time for our community to play. But Parks Department has a lot to balance. But we did a lot of help again with the Parks Department. Normally the garden is open five days a week. two days of rest, something that the parks had requested that we do. And we're open. The only time it's closed and when it's raining and right after rain just because they wanted to be safe. We go the next slide. So we started last year a campaign called open Murray Hill space because we knew again that we were going to have a crunch for field time when the playground was going to close. This is our senator, Kristen Gonzalez, who helped us kick off the campaign. I would go to the next slide. So the campaign, one of it was an open street. Now in 2020, we actually had trial open street between the tunnel approach to first avenue. It was also successful. This is a Halloween event that we had, but we had everything from pick a ball to tennis lessons and free bike lessons. It was wonderful. The city completely signed off on it. And again, shout out to Steve Simon, who gave us the support of the parks department and the commissioner, DOT said yes. Everybody in the city said yes, but then the state jumped in, which is the MTA and said, we don't like that you're so close to the tunnel. Why is another use street? Why can't we have a successful trial? Ultimately the MTA said no, but we're still fighting that. Go the next slide. Because that would open up obviously a lot of free space. The other thing is there's an MTA green triangle. You may know that's between 36 and 37th Street on the west side of First Avenue. We've been fighting with all the elected officials. Every single one on the board from the federal level of Jerry Nadler down to our state and city elected officials. Why is that closed? Again, it's MTA space. Go to the next slide. We found out a couple of weeks ago that they said, no, you can't have that. In fact, we're going to turn it into a construction preparation site and they poured gravel over the beautiful green brass that happened last week. We're not happy about that. Concernancy is quite the antithesis of what happened. We go the next slide. The other thing is last year, Mayor Adams agreed that we need more space in the area. So he announced a program, uh, school yards to playgrounds that only one school in all of Manhattan would be part of that program. That was PS 116, which is four blocks south apart. That means that the playground area, the courtyard would be open when the kids are in school or after school so that people can play. That hasn't happened yet. And Steve, I don't know because it's a change of mayors or not, but That is in the pipeline right now to open, hopefully very soon, so that we'll have a space for four blocks playground, like looking four blocks apart. You mean, you put on the spot there, Steve, but if you do want to any update on that. We think it's really important to have an education campaign. Yes, we love, we know that St. Martin Park has turned into the village green at Murray Hill. We'd like to take a small part in that conservancy. We're really proud of that, but we also know there's other places around that people aren't aware I was talking today to the CB 6 chair, Sandy McKee, and she said, you know, would be good idea. Put up a map at the entrance to St. Garden Park, because people don't necessarily know where these close parks are. So you have, go the next slide. Good. So seven blocks away is the Vincent F L. Albion here in your playground. It was just under a year-long reconstruction, so it's a lot nicer. Not only does have the playground equipment, but also has an open space where kids can kick soccer balls and run around, right then the heart of tip stay. So we've been sending out, we have a very robust newsletter. We have almost 5,000 people that subscribe to it. And we get this word out there and obviously social media that really rely on our newsletter to make sure people aware of it. That's part of the education campaign. Mary O'Connor playground in Tudor City is also seven blocks away. Again, playground equipment. Next slide. And yes, Jessica, thank you. If you actually took this picture the day that the turf was laid down in 2021. We do know that they have permits, obviously they have basketball courts and other areas behind us. But we want to fight too, like you said, to make sure that that's OK. So this is the big opportunity. After a lot of advocating and people like Keith Powers and the city council member, and he's now a state assembly member, we got in the city budget Maloneyy for lights. It's actually gone through committee and it still has to go through a vote for the full council, but as part of a massive infrastructure, a budget for the entire city. So permanent lights will be coming to the field that will allow us to go to at least nine o'clock to play ball. and for more community time, certainly. So we're proud that we thought that fight along with the elected officials. The other thing about the lights is Rebecca Weber is here. Rebecca, you may know, she's on the executive board of PS2 at the 11th door across the street from the park. She's been very outspoken about a lot of things that the concerns the others should be advocating for. She is now on board as our community advisor. They hear more from her. We want to make sure that we're more connected to the community and what truly are. So Rebecca's going to be playing a bigger role and hopefully be the conduit between the conservancy and any issues that Marri Hill Labor Association, Alliance for Kips Bay, and all the other groups in the area that care about Marri Hill and Kis Bay. So thank you. Anyway, Rebecca and I were on a meeting, a virtual meeting with actually your CEO and co-founder, Tariq of NYC Footy. NYC Footy has 60,000 members. Most of them can't play because they're in waiting list. They can't find field space. So what Tariq told us on the call, which was nice saying, until the permanent lights come in, he will pay for, set up, supply, maintain lights for St. Martin Park starting. It probably takes three days. We can have them up in three days if you like. So thank you, Rebecca, who's very much on that call, as was I. And thank you to NYC Footy for doing that. Also part of that meeting, NYC Footy said, you know, would be good is to have community time. And this is someone who wants the field and has a waiting list. Three hours a day, from four to seven, it would be community time. NYC Footy is behind that. You might want to check out a story a couple of days ago in Balthamist where it talks about NIC and getting lights. And we're happy to be having those discussions. So that's the light situation. If we go to the next slide, again, I, the Conservatives have nothing to do with the permits. We actually are agreement with the parks department. Every part of the park is touched on except for the field. We don't have any say, although we do advise as much as we can. There's only one permit that we really spoke up for, we promoted, and that's a challenge. If you're familiar, Pete Simon's Little League has a baseball league for those with physical in intellectual challenges. And so again, we also know that when they play those games, they encourage everybody to come on the field as the basis and such. So it's a really great community event. That's the only permit that I know that we've, in our four years, we've ever advocated for. So we're guilty on that one, but we think it's a really good addition to the park. And I'm happy to answer questions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3503)">58:23</a>
+  <p>So I think, thank you, Kevin. We know your dedication to the park. So I think with the discussion that we had with the community with Jessica, so what we should, I think what we should do, if you can act as like the point person that you can work with Ken and the parks department to see, I guess like how we can look into that or how that could be solved with the splitting of the field. You know, I know you've worked with the park and you're very invested. I mean, obviously, St. Barton, you know, really revitalized it. And you also work closely with the elected officials. So you'll also, you know, you'll be able to understand like the budget. So I think that's, I think that's probably the best way to go. Do you have Ken's contact information?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3553)">59:13</a>
+  <p>Yeah, Ken and I have known each other for over eight years now. And we actually, when I was chair of this actual committee, Ken be come on to address permits. And since then, a lot of changes have been made. For example, the for profit, we have to pay more than the others And there's some of the things that have happened to really fight against what we were advocating, fight for what we were advocating for. And I can't thank you enough for those rule changes. When we had that discussion in February 2022, the only rules in place, and correct me if I'm wrong, Ken, was that if you put an advocate, you only had to check adult or youth. There was really no other, right, drill down. Now there definitely is to make sure they're making wise decisions. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3598)">59:58</a>
+  <p>So you have Ken's contact information. And that's because you have Kevin's contact information.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-16">SPEAKER_16</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3605)">1:00:05</a>
+  <p>Yeah, then I have Ken's all of them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3607)">1:00:07</a>
+  <p>Okay. So if the three you can get together and you can work with that and you're going to address and discuss this evening and hoping you find, you know, feel soon as possible.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3619)">1:00:19</a>
+  <p>And we'll get Rebecca's contact information out too. Really. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3624)">1:00:24</a>
+  <p>And can I just add something or say something, which is, you know, I'm. all for what everyone has been saying here. Jessica's presentation was amazing. And I'm very grateful to hear that everyone's kind of looking for solutions. But I did just want to plant the idea that, you know, even going forward in the future when the playground is back and you know, this will be a little less intense. You know, there's more and more buildings are going up in Murray Hill. There's more housing coming here. There's more people going to be moving in. And everyone does need green space. I just hope that going forward there's a real thoughtfulness about like, if this is to be the only green space available for everybody who lives within, you know, 10 or 15 blocks of it, like doesn't really make sense to put permits on this field. If so, perhaps it should be like a much more limited like one game a day and one youth organization a day type of thing because everyone needs exercise, play, they want to picnic Sunday, gather. in their communities and we need this third space, which are just, you know, vanishingly rare in the city and in our community in particular. And then I would just add one more thing about like, you know, there's always shifting demand. And I believe that there's like greater and greater demanding is for soccer, but for what I understand, softball and baseball sort of get priority in permits for softball and baseball get priority. I've seen a child hit by a softball. I've seen balls go over the gate and onto tunnel traffic. To me, the St. Bartonfield in particular, for something as potentially dangerous as baseball and softball, you know, it just, it just doesn't sit right. We've got Robert Moses right, right, a few blocks away, and that seems potentially a little safer. I think there's a lot of competing demands and I know going forward there's probably going to be more and more adult adult needs for permit. So it's this is I'm sure going to be an ongoing conversation. I just want to have those thoughts.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3750)">1:02:30</a>
+  <p>Right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3751)">1:02:31</a>
+  <p>Thank you. Well, yeah. One question. I know it was mentioned that non-profit organizations have marine service. If we were to apply through the PS2 and one piece there is a 501 C3, um, If that's something we can do and block off. So high first shoulder.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3772)">1:02:52</a>
+  <p>Yeah, but I know PS2, we want to have the field day there and have other events that they have done there. They've gone fabulously. We always look at any liability. So yeah, but you've already been improved through that type line of the permits.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3787)">1:03:07</a>
+  <p>Great. Yeah. Well, I think, yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3790)">1:03:10</a>
+  <p>Um, I think last year, was it autumn? They were talking about like a pocket park in, uh, by the river. And I see like nothing here and I won't buy the other day and there's like nothing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3801)">1:03:21</a>
+  <p>I want to that one, what, 34th Street? Yeah. Yeah. So that one is in the work. So if you want, we can wrap this up because we know what the steps are going forward. And then next up is the Parks Department report. And so you can ask, if parks, right, she'll have an answer.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3820)">1:03:40</a>
+  <p>So all right, well, thank you everyone. You have to be, you want me to ask? Yeah. All right. All right. So we'll move on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3841)">1:04:01</a>
+  <p>All right. So we will move on to all right. So we will move on to all page. Yeah. Page.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3849)">1:04:09</a>
+  <p>Yeah. Page. Yeah. Page. Yeah. Okay. Sorry. Sorry. Right, sorry. Right. Okay, now we're here. Okay, now we're here. Okay, now we're here. Okay. Since the beginning of the thing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3880)">1:04:40</a>
+  <p>Since the beginning of this thing. Since the beginning of this thing. Can I go on? The thing is that these people are complaining about not having enough things to the children to play. Within three blocks, there are other playgrounds. You've got two and two to the city, and you've got one a block north of that at Robert Moses. And for a temporary playground being closed, I don't think the whole park has to be reconstructed because it's for everybody. It's just not for children. I love children, but can anybody hear me or have you cut me off entirely? No, we can hear you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3931)">1:05:31</a>
+  <p>My baby's too young for the Tudor CD1, for example.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3936)">1:05:36</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-19">SPEAKER_19</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3939)">1:05:39</a>
+  <p>For a walking city and you know, I understand it's hard with children, but for something that is a temporary thing that has to be done, I don't know why people can't walk around, work around it. The people from the Parks Department work so diligently to accommodate everybody. And here, everybody is trying to tell them what to do. That's really annoying.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3967)">1:06:07</a>
+  <p>Thank you, Paige. Okay, Sheena? You're still with us?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3977)">1:06:17</a>
+  <p>Hello. I'm here. I'm still here. Okay. Okay. Yeah. Right. So at the end of this rainbow, St. Bartons is going to be beautiful. So just to let everybody know, it's going to be beautiful. And then we'll start working on the basketball court. I'm sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4002)">1:06:42</a>
+  <p>Yeah, this is going to be beautiful. But just one thing, the same varley again. We have a parent here had a question that opened on everything.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4014)">1:06:54</a>
+  <p>This reverb in your sound.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4017)">1:06:57</a>
+  <p>Yeah, I don't know what it is. How about now? Okay. So we have a parent here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4027)">1:07:07</a>
+  <p>She has a question about the. Yeah, there's something where. I don't know, you know, and Bryce?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4037)">1:07:17</a>
+  <p>I didn't hear you, your question.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4041)">1:07:21</a>
+  <p>Right, but there's, right, but there's, right. So, do you just walk? Can you drop us? I can you drop us? I can. I can. I can. I can. I can. I can. I can.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4058)">1:07:38</a>
+  <p>I can.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4058)">1:07:38</a>
+  <p>I can.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4059)">1:07:39</a>
+  <p>I can. I can. I can really hear you now. Right. Can you? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4066)">1:07:46</a>
+  <p>How about now?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4069)">1:07:49</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4069)">1:07:49</a>
+  <p>I mean, can you hear me? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4071)">1:07:51</a>
+  <p>Yeah. Can you try to turn your video wall?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4074)">1:07:54</a>
+  <p>Try to turn your video wall?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4077)">1:07:57</a>
+  <p>All right. Let me see. Can you hear me? Yes. Yes. You hear me now? Be there. You can hear me.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4092)">1:08:12</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4094)">1:08:14</a>
+  <p>You can hear me.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4095)">1:08:15</a>
+  <p>Yes. Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4099)">1:08:19</a>
+  <p>Okay. What was your question? Okay. So we have a parent here. She has a question about the park that will be opening on 34th. She wanted to know what the status was. You wanted to know what the status was.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4111)">1:08:31</a>
+  <p>Your thing when it was announced that it was.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4117)">1:08:37</a>
+  <p>So yeah, her understanding was that it would be open by the spring.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4125)">1:08:45</a>
+  <p>Yeah, you're talking about on 34th Street? Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4127)">1:08:47</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4129)">1:08:49</a>
+  <p>Is that the park? They're still working. I was there today. They're still working. We have a meeting next week for them to give us a status on how far, you know, how far they've come. they're going to um and we're still long and when is they go when they're open it's not going to be this extravaganza thing it's really a simple sitting area with tables and weightlifting that's what's going to be so no greener no no No, it wasn't intended for any greenery as of now. So no, not that particular area. Not on 34th Street. Okay, so I do have a few updates.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4193)">1:09:53</a>
+  <p>Thank you. Thank you. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4197)">1:09:57</a>
+  <p>So I do have a few updates going into the positive zone. Augusta St. Gardens bids are currently being solicited out. And if we get an acceptable, if we receive acceptable bid, we would probably start construction late summer or fall for Augusta St. Gardens. which is great. And the school has sent me an email saying that early July, they will be finished with their building and that they're going to restore the basketball court back to good use. And then that part of the open during the time that the playground will be reconstructed. And that's for Augusta St. Gardens. There was some, I received a couple of reports about Bellevue, South Park. The dog went in particular. They were asking to close it down for like a calm down moment. We just can't do that, right? I know there's some issues there with some park patrons and their dogs. with other park patients and other dogs, you know, that's really adult issue, right? And that if it gets too out of line like it has become, then it is referred to NYPD. that's something that grown adults need to work out it's really really sad and to see and hear the disgusting things that's been happening and taking place inside the dog run um it's a is a new dog run it's um and it's it's a new area and people are not getting along because other people are antagonizing them when they come in inside the dog run. But that's a NYPD issue, that they're currently aware of the situation. And hopefully with their presence, you know, this will, you know, subside. But closing the dog run is not something that we are going to do. So I just wanted to get that out there. The Tudor Grove playground, it is currently close for now. It's still closed because the building structure still hasn't been fully repaired. We're in talks with them now to hopefully get a concrete answer on when they'll be finished with the area on the side of the park. So as soon as I get that answer, Neil, I'll send it to you so you can put a blast out to let everyone know when we're going to reopen it. But as of now, we can't reopen it because of the building structure that's taking place that's over the park, over where the playground area is at inside to the Grove. You know, I do apologize for that, but we have to keep it close for the safety of everybody because they're working. The building is pretty high and something falling and, you know, hurt, injuring someone is just something that we don't need at this time. Um. And we're replanting now, from now up until June, Tralevi Park. Therese, the regional manager, Teresa, was able to come up with a great plan. And at the end of this, Tralevi should look amazing. She was able to get the funding to restore the area back. So when it first went out after we, it came out of construction a few years ago. So that's something that we are excited about. And by the end or the middle of June, we should see some great improvements at that area. Besides St. Barton, is there any other questions anyone else have?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4494)">1:14:54</a>
+  <p>There's a room 10. Penn is on to this. Period. Origin. Series. Can you should be able to underneath? Can you?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4521)">1:15:21</a>
+  <p>Can you hear me?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4522)">1:15:22</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4524)">1:15:24</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4525)">1:15:25</a>
+  <p>Yes, I can hear you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4527)">1:15:27</a>
+  <p>Hi. So this is Pam Zanzis. I'm with Suttony Community and I had a request for an exemption and I'm not sure if this is the time in the meeting where I would request this. If you, Sheena, you asked if there were any other questions or comments. I'm not sure if you would go on to another subject, but it doesn't have to do with St. Barton's Park.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4546)">1:15:46</a>
+  <p>It doesn't have to do with St. Barton's Park. Okay, we can actually, exemption for, for, What's the question?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4555)">1:15:55</a>
+  <p>So my question, my question or my request is that we are asking, um, we are asking, um, Sutton area community is asking for an exemption for tree grades along first avenue from 52nd to 59th. Um, there is, we understand your policy. I'm not recommending tree grades. Specifically, this is for high, a high traffic corridor on first avenue between 52nd and 59th, as I said. We understand the reasons behind parks policy, protecting soil health, ensuring proper water infiltration. and supporting long-term tree vitality. Our request is not a blanket to change policy. It is a narrow exception for a corridor with unique conditions. Extraordinary pedestrian volume and narrow sidewalks is in this area. Persistent sanitation challenges, including litter, accumulation, and pet waste. in open pits documented safety concerns particularly for citizens and of seniors and strollers and mobility devices and ongoing maintenance the ongoing maintenance burden to burden despite regular private cleaning and stewardship which we do privately despite our effort Open tree pits remain a recurring issue for cleanliness, safety, and accessibility, and we're proposing just a thoughtful parks aligned approach. We want ADA compliant parks approved tree grades. We will provide proper installation to protect roots and allow water and air exchange. Coordination with parks arBorests and ongoing SAC maintenance commitment. Our goal is to protect the trees while also improving safety and sanitation. We respectfully ask the committee, but also parks to create an exemption for this pilot installation that the state has funded.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4688)">1:18:08</a>
+  <p>Okay, any questions?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4694)">1:18:14</a>
+  <p>So on the parks website website, right? There is an area for that you can apply for tree grades.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4708)">1:18:28</a>
+  <p>Okay, and so they would, that is also an exemption area as well?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4714)">1:18:34</a>
+  <p>So you will have to go through the application process.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4720)">1:18:40</a>
+  <p>Okay, so there's a tree grade.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4722)">1:18:42</a>
+  <p>Okay, I want to evaluate.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4725)">1:18:45</a>
+  <p>Okay, I did not realize it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4728)">1:18:48</a>
+  <p>Okay, I did not realize. Yeah, it's on the, it's on the park's department website. Go under tree. Once you go to the park site, go under tree. Okay. Then it list all of the, um, um, it, it, it, I can't remember it offhand or, but I know it's in that area in the tree area.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4747)">1:19:07</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4747)">1:19:07</a>
+  <p>Area you can apply. okay okay because we did already we did apply yeah so it's a process that you run you do it okay it is you know you follow through the process i don't know the process because i don't um i don't take care of that particular sort of area um that's a little in our um our tree area. Within parks, I do. And the only time we do add in the tree grades is when we upkeep a park, you know, when we do a park over or someone else is applying it for it. So when you can apply for it, and then they'll let you know if it could be, can be done along that street or streets that you mentioned. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4803)">1:20:03</a>
+  <p>Shane, I'm sorry. So, um, her group uh sac they have received they have received new york state and so they do have to purchase the uh the tree grades and so the question is that who would they speak to</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4827)">1:20:27</a>
+  <p>um parks to have the tree so once they go through the so once they go through the process right they have to go through the application process so it's a process to that um though it should give them once you apply it should give them our contact there um And it's a contact on there. Because I remember one day I clicked it. It's a contact on there. Okay. Once you start the process.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4867)">1:21:07</a>
+  <p>Pam, do we have that? Yeah. I got it. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4873)">1:21:13</a>
+  <p>Yeah. I mean, I have the information to go online in the tree area. There's a, there's a place that you can apply for tree grades and a possible exemption.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4884)">1:21:24</a>
+  <p>And you should be in contact as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4887)">1:21:27</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4887)">1:21:27</a>
+  <p>Yeah. Okay. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4894)">1:21:34</a>
+  <p>That's what I wanted to know because that was what my questions were.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4898)">1:21:38</a>
+  <p>That was what my questions were.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4902)">1:21:42</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4904)">1:21:44</a>
+  <p>Okay. Thank you, Sheena. And thank you, Neil.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4907)">1:21:47</a>
+  <p>Okay. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4908)">1:21:48</a>
+  <p>You're welcome. You're welcome. Thank you. Bye.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4913)">1:21:53</a>
+  <p>Brian. Could there be attention to the sky. Brian, could there be attention to the skept? Sorry, scaffolding had a third question. All right. The first question had a third question. The worst question to the QB. So they, uh, yeah, so. So they, uh, yeah, so we know when the scaffolding, I'm sorry, Barclos is, I know, when the scaffolding, I'm sorry, Do we know when the scaffolding in 45 Tudor City, they're friends are you talking about over Ralph Bunch? Friends at Ralph Bunch?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4959)">1:22:39</a>
+  <p>Yes. You're talking about overall? They're still working there. They're still working. I was there today as well. I was still to there as well. They're still working on it. I don't have a timeframe. of when this when the scaffolding and the work is going to be done to the adjacent building um i don't but but they they followed all proper protocol and they've been working i'm gonna say at a lot of the areas that i see that we have scaffolding that um this particular area has been working um non-stop um so they're probably closer to the end you know then than the beginning or the middle. I'll look into that. I'll look into that one. But I'm sure they have been working from the time they apply for the permit. They've been working.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5027)">1:23:47</a>
+  <p>Earlier discussion, it's heard. I guess if it would be possible to invest in Parkview Live, which can provide a cost to the use of the fields looks like. I didn't hear the question. So the question was could Park Park? I didn't hear the question. Invest in Parkview Live, which can provide a cost of it. What is why we can provide a cost for the public and parks for the single parts of the fields of the field of the field oh's slide. I'm not sure if I think Ken probably would. I think Ken probably would it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5101)">1:25:01</a>
+  <p>I'm not sure if you're not sure. I don't I don't think we have reached that level yet. But it's a great idea. I can see. I just don't think we have reached that area yet of that in technology. But it's a good, it's great. it would be great i don't know if we um it's it's probably costly as well but at at this present time note there isn't nothing in the works i'm sure probably down the line something will probably come because our world is going very technical so you know i'm sure but it will be great if we can have something like that We can get a better understanding of, you know, who's using the field when they use it with time they came and things like that. But at this present time, no.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5156)">1:25:56</a>
+  <p>Right. Well, thank you, Sheena. And thank you, Sheena. Have a good night. Have a good night.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5165)">1:26:05</a>
+  <p>Okay. Good night. I'll get you the response about Ralph Bunch. Okay. Fantastic.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5174)">1:26:14</a>
+  <p>Okay, fantastic.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-17">SPEAKER_17</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5176)">1:26:16</a>
+  <p>Okay, good night. Good night.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5182)">1:26:22</a>
+  <p>Right, number four, presentation regarding an upcoming art installation on construction fencing at 10, 11, 1st Avenue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5199)">1:26:39</a>
+  <p>Hi, everyone. I'm Steven, Executive Director at Art Bridge. Thanks for having me. Do we still want to do this after such a long evening you've been through? You got it. OK. Floor is yours. Sure. So first of all, thanks for having me and thanks for doing what you do. I used to be on CB2 in Brooklyn for many a year. So I know how impactful the work is that you do and how thankless it often is. So given how over time we are, I'll try to compress my intended five minutes into about a minute and a half. But I'm presenting because I run a public art nonprofit that transforms construction fences and sheds into canvases for local artists. And we're installing one in your district in the coming weeks, about 20 blocks north of St. Barton on 55th and 1st. So you're running through these fast.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5264)">1:27:44</a>
+  <p>Um, slow down, slow down. Yeah, please.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5269)">1:27:49</a>
+  <p>Yeah, if you don't mind if I can just direct the four.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5272)">1:27:52</a>
+  <p>I mean, yeah, you know, we're not that much of a rush.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5275)">1:27:55</a>
+  <p>Yeah, I get the picture though. Yeah, it's a.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5278)">1:27:58</a>
+  <p>No, no, no, take your time. Take your time. You patiently waited and we appreciate you being here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5283)">1:28:03</a>
+  <p>Yeah, so Art Bridge's founding mission is to transform the city's ungodly amount of construction, I think last count 340 miles, linear miles of it, into exhibition space for local artists. It's hard to be an artist in the city. And the premise of Art Bridge is that by putting artists in the public realm in large scale, you're doing a great service to their careers, and hopefully many of you feel that the city has served well also. So we've been doing this with various nebulous levels of legality over the years for better and often worse. Finally in 2019, we put together a pilot program with the city and that was deemed a success. We were able to put legislation through the city council a couple years ago to permanently codify this program. So we've been implementing this in all five boroughs. This is an exhibition recently in Battery Park. Next one. Go through you super quick. Upper East Side with New York City Health and Hospitals and residents of a local NYCHA site. Next, an exhibition we did to the public school in Lower Manhattan, partnered a local artist with school children, fifth graders. Next, please. um sorry this is you can go past this but um a major part of what we do is i'd say about half of our programs are partnerships with public housing developments i think cv6 is one of the few community boards of no nature developments in your district is that right no we have uh bellevue south strass housing we have strals housing 340 40 so i believe we have three Okay, good to know, hopefully someday. So the idea in these exhibitions is we spend months and months working with the community to find ways for art to amplify the voices of those residents. And if you can keep turning, we'll go really fast. Just spin through these, it's fine. Strange. Last summer, we installed the largest mural ever in Brooklyn in Brownsville and the largest mural ever in Queens, the next one. And then just so you can skip through these, but a few exhibitions at other nature sites throughout the city. Wherever we try to go, we try to work with local artists, artists from that neighborhood. And the exhibition coming up at 101 First Avenue is no different. We'll be exhibiting the works of an oil painter, Luis Lopez Sewarda, who has lived two blocks away from the site for the last, let's call it, over 30 years. We'll be installing her works in about a month, I would say, and they'll be up for the length that the construction is up, which is probably another eight to 10 months. So that's our bridge. We'd love to do more work in your district. I know construction impacts everybody. We all have artists we love who aren't getting enough love. So we'd love to hear from you. And if Louisa is here, Louisa, are you here? Do you want to talk?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5491)">1:31:31</a>
+  <p>I don't see her?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5497)">1:31:37</a>
+  <p>Thank you. Just very quickly, I would like to express my really helpful gratitude to everybody here, especially to Art Bridge. This is a wonderful opportunity to bring art into our dear neighborhood. It's been my neighborhood since over 30 years that I came from Spain when I was born thanks to a Fulbright. And always very important for my neighbors to feel welcome to my studio, which is located at home on 52nd and 1st Avenue. And thanks to our bridge, I'll be able to share the landscapes. However, I also like to paint abstract, which I have found a very deep source of healing for me. And this is what is becoming like a passion for me to share. the therapeutic effects of creating art. And I just want all my neighbors and everybody here to feel welcome to my studio. I feel very fortunate to be able to share my art. And I just hope that this is not only an introduction, but the beginning of many shared moments to art. Thank you to all of you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5569)">1:32:49</a>
+  <p>Well, thank you for coming. We have some questions from the committee, Elvi.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-18">SPEAKER_18</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5573)">1:32:53</a>
+  <p>Yeah, Stephen, thank you for that. presentation, I just want to know are the artists getting paid?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5580)">1:33:00</a>
+  <p>Yes, we absolutely pay artists and we pay them well. We never believe that simply promotion is enough. Hard to pay rent in the city and we always pay artists. Nobody will get rich working with us, but you'll make enough to feel valued.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5597)">1:33:17</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5598)">1:33:18</a>
+  <p>Larry?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5599)">1:33:19</a>
+  <p>Yes. I live across the street from the site, and I welcome artwork there, and your artwork has a very calming effect. Is that kind of the genre that you're going to be working in? And you say from 55th to 56th Street, is it a long First Avenue, or where is it going exactly?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5623)">1:33:43</a>
+  <p>Yeah, thank you for that question. And it's going to be throughout the entire site. So 55th, 1st Avenue and 56th Street. And yes, I'm sorry. I'm sure the site is a real nuisance to you, the noise. I'm sorry, I can't do anything about that. That's okay. I'm not complaining. Hopefully this can provide some kind of element of small joy amongst the chaos.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5649)">1:34:09</a>
+  <p>One hopes and it's welcome.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5651)">1:34:11</a>
+  <p>Thank you. I appreciate that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5655)">1:34:15</a>
+  <p>So part of my question was answered by the earlier question that LV asked, but I just wanted to say thank you so much, Stephen, for this presentation, but also wanting to do something to beautify our community and promote artists. This is really great and let us know how we can support you in this work.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5674)">1:34:34</a>
+  <p>I really appreciate that. I would say if there's ever any construction fencing that you see that you think is proMenint and annoying or you have local artists you think needs and love, send me an email, particularly if you have developers who you can introduce us to as well. We work with city agencies. We'll work with any site, but interest the developers are often the quickest path.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5707)">1:35:07</a>
+  <p>Thank you. So I have a question with this. Is the art, is it ever done on site? Like, does the artist come in and do the work right there? I asked that because there was a mural off of Second Avenue that was an honor of the people of Ukraine. And this was done in 2022. And what was really nice with this beautiful mural is that to start it, people from the neighborhood were actually able to participate. I mean, of course, they had to follow with the artists told them. But it was a very nice event. Is that something that you ever do or some of the artists do or something they would consider doing?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5753)">1:35:53</a>
+  <p>yeah it's great question um absolutely you know louise's work is these are reproductions of oil paintings so um unfortunately not an opportunity there but if you want to scroll up about seven or eight images uh for example the one we did with a public school uh we had 25 children out there painting with us for almost a whole week and you're right there's a ownership that takes place when when people are involved not only in the design process but in the execution. And that one there too, at the, we painted 52 portraits of NYCHA residents at Chelsea houses in Chelsea. And after the exhibition came down, we cut them up and gave them out to the residence, which is a really lovely moment.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5805)">1:36:45</a>
+  <p>You keep scrolling up, I think it said the school, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5812)">1:36:52</a>
+  <p>One more. One more up. That one there. Yeah, PS 143 and Lower Manhattan.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5825)">1:37:05</a>
+  <p>Okay. Yeah, maybe that's something we could follow up with. I think that would be really cool. I'm sure the kids would enjoy that. It was, I mean, you already know, it's a very nice event where you get everyone together.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5838)">1:37:18</a>
+  <p>Absolutely. And one sort of small tangent in that regard, we've never been able to do these on public school construction sheds before. This was across the street from a school on private property. But I'm actually meeting with DOE lawyers this week and next to try to unlock that. So hopefully as of next month, we'll be able to work at public schools as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5861)">1:37:41</a>
+  <p>Well, that's great. That's fantastic. Right? I think that maybe it. So thank you for your patience and we'll certainly follow up.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5874)">1:37:54</a>
+  <p>Sure, if I don't know who does this, but if someone can share my email with the board, I would love that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5882)">1:38:02</a>
+  <p>Yeah, we could do that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-21">SPEAKER_21</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5883)">1:38:03</a>
+  <p>All right. Thank you, everybody.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5886)">1:38:06</a>
+  <p>All right. Let's see. Chair's report. I mean, I'll just add one thing. Alex Bores, who is the assembly member for the upper east side area. It doesn't stretch all the way to hear Keith Powers is the assembly member where we are right now. But he had a shredding event at Sutton Place Parks and over 150 people attended, which, you know, it's very impressive. And, you know, of course, other officials and Kevin has worked with council member, Epsteinin to do this, but, you know, 150 people, it's pretty impressive. So I just wanted to note that old, new business, I don't have anything. So that's it adjourned. Is Sarah still there? Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5944)">1:39:04</a>
+  <p>Sorry, Sarah. You can unmute it. Now it's, all right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5958)">1:39:18</a>
+  <p>Yeah, I unmuted myself. Thank you very much. And I appreciate this was a very eventful meeting. And thank you all for coming and wish you would have loved.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5973)">1:39:33</a>
+  <p>Enjoy Paris, phone week.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5976)">1:39:36</a>
+  <p>Yeah, yeah, so we say, yes, but me, I fide borreve. For me, you're still, you know, early for you guys.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5987)">1:39:47</a>
+  <p>All right, well, thank you so much. We'll see you soon. And that's it, adjourned 8-11. Thank you. All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-24">SPEAKER_24</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(5996)">1:39:56</a>
+  <p>Thank you.</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://www.youtube.com/watch?v=2-yWCsUF4LA" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function seekTo(seconds) {
+      const iframe = document.getElementById('ytplayer');
+      if (iframe) {
+        iframe.src = 'https://www.youtube.com/embed/2-yWCsUF4LA?start=' + seconds + '&autoplay=1&enablejsapi=1';
+      }
+    }
+  </script>
+</body>
+</html>
