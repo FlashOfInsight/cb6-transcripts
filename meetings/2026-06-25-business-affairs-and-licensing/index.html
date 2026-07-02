@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Affairs & Licensing - June 25, 2026 | CB6 Transcripts</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg-alt);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    header { background: var(--primary); color: white; padding: 1.5rem 2rem; }
+    header .container { padding: 0; }
+    header .header-nav { margin-bottom: 0.5rem; }
+    header .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; }
+    header .header-nav a:hover { color: white; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; font-weight: 600; }
+
+    /* Breadcrumb navigation */
+    .breadcrumb { margin-bottom: 0.75rem; font-size: 0.85rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb a:hover { color: white; text-decoration: underline; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.5); margin: 0 0.5rem; }
+    .meta { opacity: 0.9; font-size: 0.95rem; }
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    /* Homepage styles */
+    .hero { text-align: center; padding: 2rem 0; }
+    .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+    .search-container { max-width: 500px; margin: 0 auto; }
+    .section-heading { font-size: 1.1rem; color: var(--text-light); margin: 2rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Meeting cards on homepage */
+    .meeting-card {
+      display: block;
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s;
+    }
+    .meeting-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .meeting-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .meeting-type { font-size: 0.7rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meeting-date { font-size: 0.85rem; color: var(--text-light); }
+    .meeting-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .meeting-topics { font-size: 0.9rem; color: var(--text-light); }
+    .meeting-topics strong { color: var(--text); }
+
+    /* Meeting page - agenda sections */
+    .meeting-summary { background: white; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .agenda-section { background: white; border-radius: 8px; margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .agenda-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-alt);
+      border-bottom: 1px solid transparent;
+    }
+    .agenda-section.expanded .agenda-header { border-bottom-color: var(--border); }
+    .agenda-header:hover { background: #edf2f7; }
+    .agenda-header-left { display: flex; align-items: center; gap: 1rem; }
+    .agenda-header-right { display: flex; align-items: center; gap: 1rem; }
+    .section-type { font-size: 0.65rem; font-weight: 600; color: var(--accent); background: #ebf8ff; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .agenda-header h3 { font-size: 1rem; font-weight: 600; color: var(--primary); }
+    .chapter-count { font-size: 0.8rem; color: var(--text-light); }
+    .timestamp { font-size: 0.8rem; color: var(--accent); font-family: monospace; }
+    .expand-icon { font-size: 0.7rem; color: var(--text-light); transition: transform 0.2s; }
+    .agenda-section.expanded .expand-icon { transform: rotate(180deg); }
+
+    .agenda-chapters { display: none; padding: 0; }
+    .agenda-chapters.expanded { display: block; padding: 0.5rem 1rem 1rem; }
+
+    /* Agenda items (from Airtable) */
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.25rem;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      gap: 0.5rem;
+    }
+    .agenda-item:hover { background: #e2e8f0; }
+    .agenda-item:last-child { margin-bottom: 0; }
+    .agenda-item-letter {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .agenda-item-title {
+      flex: 1;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .agenda-item-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .no-items {
+      padding: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Chapter cards inside agenda sections */
+    .chapter-card {
+      display: block;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--accent);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .chapter-card:hover { background: #edf2f7; }
+    .chapter-card:last-child { margin-bottom: 0; }
+    .chapter-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .chapter-category { font-size: 0.65rem; font-weight: 600; color: white; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; }
+    .chapter-timing { font-size: 0.8rem; color: var(--text-light); font-family: monospace; }
+    .chapter-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 0.4rem; }
+    .chapter-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin: 0; }
+    .no-chapters { padding: 1rem; color: var(--text-light); font-style: italic; }
+
+    /* Chapter detail page */
+    .chapter-category-header { display: inline-block; font-size: 0.7rem; font-weight: 600; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .video-container { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; aspect-ratio: 16/9; }
+    .video-container iframe { width: 100%; height: 100%; border: none; }
+    .video-fallback { text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light); }
+    .video-fallback a { color: var(--accent); }
+
+    .content-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .transcript-header { padding: 1rem 1.5rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .transcript-header h3 { font-size: 1rem; color: var(--primary); margin: 0; }
+    .transcript-header .transcript-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; margin: 0; }
+    .transcript-content { padding: 1.5rem; max-height: 500px; overflow-y: auto; }
+    .transcript-content p { margin-bottom: 1rem; line-height: 1.6; }
+    .transcript-time { font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+    .no-transcript { color: var(--text-light); font-style: italic; }
+
+    .nav-links { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { text-decoration: underline; }
+
+    /* Speaker labels (WhisperX diarization) */
+    .transcript-paragraph { margin-bottom: 1rem; }
+    .transcript-paragraph p { margin: 0.25rem 0 0 0; line-height: 1.6; }
+    .speaker-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      background: #64748b;
+    }
+    /* Distinct colors per speaker */
+    .speaker-speaker-00 { background: #2563eb; }
+    .speaker-speaker-01 { background: #059669; }
+    .speaker-speaker-02 { background: #dc2626; }
+    .speaker-speaker-03 { background: #7c3aed; }
+    .speaker-speaker-04 { background: #ea580c; }
+    .speaker-speaker-05 { background: #0891b2; }
+    .speaker-speaker-06 { background: #ca8a04; }
+    .speaker-speaker-07 { background: #be185d; }
+    .speaker-speaker-08 { background: #4f46e5; }
+    .speaker-speaker-09 { background: #0d9488; }
+
+    /* Transcript source badge */
+    .transcript-source-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: #ebf8ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Full transcript view (no height limit) */
+    .transcript-full { max-height: none; overflow: visible; }
+</style>
+</head>
+<body data-pagefind-meta="meeting:Business Affairs & Licensing - June 25, 2026">
+  <header>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../../index.html">All Meetings</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color: white;">Business Affairs & Licensing - June 25, 2026</span>
+      </nav>
+      <h1 data-pagefind-meta="title">Business Affairs & Licensing</h1>
+      <div class="meta">June 25, 2026 · Manhattan Community Board 6</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="video-container">
+      <iframe id="ytplayer" src="https://www.youtube.com/embed/0jOmomkieVs?enablejsapi=1" referrerpolicy="no-referrer-when-downgrade"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <p class="video-fallback">
+      Video not loading? <a href="https://www.youtube.com/watch?v=0jOmomkieVs" target="_blank">Watch on YouTube</a>
+    </p>
+
+    <div class="content-card" data-pagefind-body>
+      <div class="transcript-header">
+        <h3>Full Transcript</h3>
+        <span class="transcript-source-badge">WhisperX + Speaker Diarization</span>
+      </div>
+      <div class="transcript-content transcript-full">
+        <div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(20)">0:20</a>
+  <p>Okay. Hi. Welcome to the June 25th to 26 meeting of the Business Affairs Licensing Committee. My name is Anton Malmour and I'm the chair of the committee. Tonight we are joined by community coordinator Brian Lafferty. It's been called to order at 644. I apologize for the late start. As a reminder, New York State law requires all committee members who are not able to attend the meeting in person to have their cameras on and their first and last name is displayed from the time the meeting is called to order until the time the meeting is adjourned. Members of the public who are attending virtually, you can raise any questions or comments that you have for the Q&A feature of Zoom. Members of the public who are here in person, you can raise any questions that you have by raising your hand. If there's time following the committee's discussion, We will feel questions from the public. Sarah Woodington has volunteered to take minutes this evening. Thank you, Sarah. We will now take attendance by roll call. Brian and Offerbie will conduct the roll call.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(89)">1:29</a>
+  <p>Thanks, Anton committee members. When I call your name, please indicate to this. Page, Judge. Present. Thank you. John Keller. Present. Open. Anton Malden.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(112)">1:52</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(114)">1:54</a>
+  <p>And Seligand. Thank you. Sarah Whittington.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(121)">2:01</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(122)">2:02</a>
+  <p>Thank you. Pat Pallaro.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(125)">2:05</a>
+  <p>Present.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(127)">2:07</a>
+  <p>Thank you. We have the board.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(129)">2:09</a>
+  <p>Thank you. The agenda for night's meeting was distributed ahead of time by the board offices and reflected on the screen before you. If there is no objection, we will adopt the agenda. Members of the committee for the agenda, please raise your hand. Seeing no objections, the agenda for tonight's meeting is adopted. The minutes from the June 3rd, 2026 meeting in the February 26th, 2026 meetings were distributed ahead of time by the board office. If there is no objection, we will adopt the minutes as drafted. Members of the committee, if you object to adopting the minutes, please raise your hand and indicate which set of minutes you object to. Seeing no objections, the minutes from the June 3rd, 2026 meeting and the February 26th, 2026 meeting are adopted. They will soon be available on the CBC, that CB6 website. Okay, some ground rules. We're going to conduct an efficient meeting, let's observe a few ground rules. No one may speak until granted the floor. Committee members who are here in person, if you have a question about committee business or wish to make a motion, please raise your hand and I will identify you so you can speak. Committee members are unable to attend a person. If you have a question about committee business, you raise your hand through Zoom, and I will identify you so you can speak. All committee members, extremely important that only one person speak at a time so that members of the public watching at home can understand what is being said by each committee member. The chat function for committee members present via Zoom should not be used for committee business or questions about agenda topics. All such remarks should be made on the record by raising your hand through Zoom. Chat should only be used to alert us to any tentacle difficulties you are having or to state writing information like an email address that was already stated aloud on the record during the meeting. Tonight's agenda item number one, dining out New York City application for sidewalk cafe for your license for corner 26 NY LLC doing business as buddies at 354 3rd Avenue. And so a representative available.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(286)">4:46</a>
+  <p>Hi, good evening, Michael Kelly, representing the applicants.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(289)">4:49</a>
+  <p>Who's this, Mr. Flynn?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(291)">4:51</a>
+  <p>Michael. Oh, sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(293)">4:53</a>
+  <p>Okay, I just had one question. On the DOT application of your food service establishment permit seems that expired October 7th, 2025. I'm going to make an assumption this was renewed?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(313)">5:13</a>
+  <p>It's a new health permit. They haven't been inspected yet. So that's basically the data was filed. So it's good until they get inspected, but it wouldn't, it would expire October 2026. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(328)">5:28</a>
+  <p>All right, now this sidewalk seating, the enclosed sidewalk seating, as I can see, has been there at least since 2009. And I understand, I believe DOT is trying to regularize these things. Is that the situation here?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(345)">5:45</a>
+  <p>Yes, it's an enclosed cafe that's existed. I believe a lot longer than 2009.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(352)">5:52</a>
+  <p>Okay. Google map only go back to 2009. Anyway, Are there any comments from members of the committee regarding this?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(364)">6:04</a>
+  <p>I just had a, I noted that there was no contact information for the manager.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(369)">6:09</a>
+  <p>I can send that to the community bullet. Great. Thanks, Michael. No problem.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(381)">6:21</a>
+  <p>Yeah, I mean, honestly, I couldn't make sense of any of the schematics and like the, like the clearances or anything, but I sort of understood it to be a grandfathering situation, so it's in some ways not really relevant. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(400)">6:40</a>
+  <p>Are there any comments from members of the community?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(404)">6:44</a>
+  <p>Members of the community, if you'd like to speak, please raise your head. I won't see any way.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(414)">6:54</a>
+  <p>Okay. Okay. We're going to entertain a motion of no approval, actually, because this is a DFT situation from the committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(424)">7:04</a>
+  <p>Some lose. Second. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(427)">7:07</a>
+  <p>All right. Any objections? Seeing no objections, the motion is passed unanimously. Thank you very much, sir.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(439)">7:19</a>
+  <p>Hey, thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(440)">7:20</a>
+  <p>Have a good night, everyone. Good? Okay. Okay. Item number two, class change on-premises liquor license for Libby's Midtown, LLC, doing business as rubies at 442 Third Avenue. Also, item number seven. Well, don't know, a new one or so. Yeah, seven. It's eight now. Oh, I added Ryan at the bottom. And a new application, item number eight, new application for temporary retail permit for on-premises liquor license for Ruby's Midtown LLC doing business as Ruby's at 444 3rd Avenue. I read both of these and is there a representative for Ruby's available?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(499)">8:19</a>
+  <p>Yes, I'm here, Blair Papagney.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(504)">8:24</a>
+  <p>All right, the SLA application for the class change requires that you addend an explanatory memorandum explaining why you want the class change. I didn't see that. Or even what the class change is. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(522)">8:42</a>
+  <p>The class change is going from beer and wine, which they've had for the last 10 years, to a full on-premise liquor license. The hours are not changing. It's still 9 a.m. to 11 p.m. I think it's really a combination of financial reasons for wanting to be able to offer liquor. And then also, I think, especially for brunch, what patrons are saying they would like.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(553)">9:13</a>
+  <p>Okay. Again, are there two different establishments, one at 442 and 1 at 444?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(562)">9:22</a>
+  <p>Yes, so for 444, they are taking over what used to be Hummus Kitchen, and it's going to be a new application for an on-premise license.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(576)">9:36</a>
+  <p>All right. Okay, do you have sidewalk seating in front of these establishments?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(588)">9:48</a>
+  <p>Yeah, they both have existing roadway. Alex, who is the manager, is on here also, and he can definitely speak to any specifics of the business outside of the license, probably better than I can.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(603)">10:03</a>
+  <p>Okay, my question is, if you have outdoor seating.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(609)">10:09</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(610)">10:10</a>
+  <p>Have you gotten the DOT permits?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(611)">10:11</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(612)">10:12</a>
+  <p>For 442, yes, they do. 444 already had it existing. And I would assume that we will need to come in front of you guys again for approval.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(626)">10:26</a>
+  <p>All right. Does you have a question?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(630)">10:30</a>
+  <p>It's just a really small one. So is one of them going to be Ruby is Midtown and the other is Little Ruby? Or is it going to be a sort of a combined establishment?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(641)">10:41</a>
+  <p>Alex, can you speak to what the vision is for you guys?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(645)">10:45</a>
+  <p>Yeah, sure. Hi, I'm Alex McDonald. I'm the director of operations for Little Ruby's. Yeah, it will be, there will be separate venues, as in there, they're divided by a residential hallway in the middle, but it'll essentially be two storefronts of the same name.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(664)">11:04</a>
+  <p>And sort of like same menu? Is it going to be like sort of the same servers or?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(670)">11:10</a>
+  <p>It'll be operated. It would be the same menu. We have, we have five locations, five dining locations throughout the city. So, so we've, we've got a fair few at this point. And yeah, it'll be the same menu.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(684)">11:24</a>
+  <p>Okay. But, but they are like, is in like two different kitchens? I mean, I'm just trying to. get a sense of what the feel is there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(692)">11:32</a>
+  <p>Yeah, we're still kind of working out the best operational sense and what's allowed with, with, you know, multiple health permits and combining the space. I'd say for the most part, they will effectively operate as two separate restaurants. There'll be different teams working on both sides. There'll be a kitchen and a bar. That's still kind of we're working out the best operational point to land on with that. But I'd say, yeah, generally speaking.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(718)">11:58</a>
+  <p>Is it going to have a common kitchen?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(722)">12:02</a>
+  <p>No, they'll be separate kitchens or maybe a larger kitchen in one side and a smaller kitchen in the other.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(728)">12:08</a>
+  <p>Okay. Now, I'm going back to a little history. You did present to the committee sidewalk and roadway cafes, which request, which we did send the DOT and we approved it. Now, since that's the case, we should be expecting an SLA alteration.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(754)">12:34</a>
+  <p>Yes, I would agree if we're doing a class change that you would be expecting that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(761)">12:41</a>
+  <p>Okay, so we're going to be getting an SLA alteration application in the future?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(766)">12:46</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(771)">12:51</a>
+  <p>All right, I just, you know, we saw, I saw both of these. One said 442 and we said 444. What was going on?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(779)">12:59</a>
+  <p>Yeah, she said they're right next to each other. I know it's not really common to have two of almost the same things right next to each other, but I think the operators feel like there's enough of a demand and that being able to have their resources really localized their two businesses right next to each other will work for them. But I understand where there would be confusion there.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(801)">13:21</a>
+  <p>Okay. I see Kat has her hand raised. Okay, Kat.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(806)">13:26</a>
+  <p>It's not about this. We have a member of the community that was asking a question for Bubbies. It's in the Q and A, Brian. Oh, I'm just going to flag it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(823)">13:43</a>
+  <p>Don't go.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(826)">13:46</a>
+  <p>It's, I can read it out. It says, I think it's from Tomas and Moot. He says, so. Is this seating into the area existing bar space? I think it was for the permanent sidewalk cafe structure for puppies, but we can get back to it after this one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(851)">14:11</a>
+  <p>Yeah, I don't know if Mr. Kelly is still with us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(856)">14:16</a>
+  <p>He just, I guess.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(857)">14:17</a>
+  <p>Yeah, he is here. He is here. Mr. Gallant, would you like to speak?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(877)">14:37</a>
+  <p>Hello? Yes. I'm sorry, I just actually came back up to do something. What application is this? Is this Oasis Cafe?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(888)">14:48</a>
+  <p>No. So there was a question actually, sorry to I didn't see the question in the chat earlier. But this is about buddies. Yes. Question. I'll read it again. So a member of the public asked, is this just adding seating into the already existing bar space?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(912)">15:12</a>
+  <p>Is it already existing enclosed cafe? You can't get a new one anymore. They're not issuing any new licenses for enclosed cafes. So the only ones you go in to see are the ones that have existed prior to COVID that had a license.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(929)">15:29</a>
+  <p>I think Brian, just to, because this is something that I think I heard from someone else in the community not during this meeting. And for Michael Kelly, I think this is just specification. I think the community member was referring to actually having seats in that space because it currently does not. If you go into the actual place, that structure does not have bar stool seating or any seating. So I think that might have been what they were referring to.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(958)">15:58</a>
+  <p>So I'll explain why. So they applied for a public assembly permit and that permit didn't include the seating in the enclosed section. So they finally got the inside public assembly permit and the enclosed seating is being added on. The Department of Buildings wouldn't let them do them together for whatever reason. I don't know. That's why I stay away from doing Department of Buildings work. Doesn't make sense to me.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(990)">16:30</a>
+  <p>Maybe it was because the structure was not regularized. I'm sorry. I said maybe it's because the structure wasn't regularized.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(999)">16:39</a>
+  <p>Okay. Any more questions or comments from members of the committee? I'd like to take item two and item eight together. There'll be two resolutions because there are two different premises. But basically, one's an alteration. One is a class change and one's a new. And the other one is a new application. Do I hear a motion for item two for the class change and for item eight for the new application temporary retail permit?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1046)">17:26</a>
+  <p>No objection. Second. Second. All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1052)">17:32</a>
+  <p>Members of the committee, do I hear any objection to the no objection resolution for Ruby's 442 and Ruby's 444? There are no objections. Resolutions case anonymously.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1068)">17:48</a>
+  <p>Thank you very much.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1071)">17:51</a>
+  <p>Thank you. Good luck.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1073)">17:53</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1075)">17:55</a>
+  <p>Alex, can I just have your last name for the resolution?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-00">SPEAKER_00</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1078)">17:58</a>
+  <p>Yes, it's McDonald, MCD-O-N-A-L-D. Thank you. Thanks.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-01">SPEAKER_01</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1087)">18:07</a>
+  <p>Thanks, everyone. Have a great night. Thank you. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1090)">18:10</a>
+  <p>Thank you. Thank you. Okay. Item number three, we received the request from the applicant to move this to a better part of the agenda because they are</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1104)">18:24</a>
+  <p>So I think that they've got to follow it. Yeah, there you are. Mr. Dumay? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1115)">18:35</a>
+  <p>Now is fine. I got back to the office better than I expected if that's okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1121)">18:41</a>
+  <p>Right. Anyway, item number three is a new application and temporary retail permit for wine, beer and soda license for Midtown Kitchen LLC doing business as Slate Cafe. And who was the representative there?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1137)">18:57</a>
+  <p>Ashley Jaffe is the owner. She's here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1142)">19:02</a>
+  <p>Hello there. All right. This was laid over from the last meeting. You know, the application, the SLA says, no licensed sidewalk seating. And I don't see a DOT application, but I do know you guys have sidewalk seating. I walked by about 45 minutes ago.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1164)">19:24</a>
+  <p>Right. So the answer, I'm sorry.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1168)">19:28</a>
+  <p>Have you submitted a DOT application? We haven't.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1171)">19:31</a>
+  <p>And we got, I received and responded to some emails from the community board. The answer to the question matches the answer is given by at least the last two applicants. There was allowed outdoor seating and dining under the old rules. Things transitioned. My client tells me that there's a pending application for outdoor dining. in order to stay well within the lines, the liquor license application is not going to ask, pardon me, for service outside unless and until that application is approved.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1208)">20:08</a>
+  <p>Well, you have to have two applications approved, one from the DOT and one from the SLA called an alteration application.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1217)">20:17</a>
+  <p>So those are all going to be done. the DOT application process, which is pending.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1226)">20:26</a>
+  <p>When was the application submitted to the DOT?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1229)">20:29</a>
+  <p>I believe, Ashley, if you... Yeah, quite some time ago, almost a year ago now. What? So I was just asking my attorney if I messed up reading something about being able to, since we had our permits pre-COVID, during COVID, I was a little confused, so David's going to help me follow up and make sure that I'm in line with everything.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1254)">20:54</a>
+  <p>Just so we're clear, I didn't know Ashley when these.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1258)">20:58</a>
+  <p>No, I just met him. He was not part of that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1260)">21:00</a>
+  <p>Right. So to make the board happy, we're more than happy to stipulate or agree in a way that makes you comfortable that there won't be any alcohol liquor service until those applications are completed.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1274)">21:14</a>
+  <p>I think that's my concern. I'm not so worried, even though it's not.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1280)">21:20</a>
+  <p>uh really permitted but you have the sidewalk seating but you should be serving alcohol period outside right that that was our original statement there's not going to be outdoor alcohol service and it's not if the licenses and you're going to ask for outdoor service until the DOT and the all the DOT application is completed well</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1307)">21:47</a>
+  <p>Okay, now, yeah, are you going to have live music? That's going to be inside, I presume.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1316)">21:56</a>
+  <p>No, no live music.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1320)">22:00</a>
+  <p>What kind of live music? None. Oh. I have my notes here, revised application. The only change was the edition of recorded in live music.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1336)">22:16</a>
+  <p>Right. So I think there were two 30-day notices. The first one, I believe, contained live music. Then it was reserved because that was an error.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1346)">22:26</a>
+  <p>The other way around.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1348)">22:28</a>
+  <p>Yeah, it's actually, we received that one after. Yeah. Okay. The one of the live music reviews on the 28th. The one without the live music was first. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1362)">22:42</a>
+  <p>Ashley, just if you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1364)">22:44</a>
+  <p>Sorry about that. No, definitely no live music.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1366)">22:46</a>
+  <p>Okay, so recorded. So recorded only or no music?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-08">SPEAKER_08</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1372)">22:52</a>
+  <p>Yeah, we have some recorded music quietly playing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1374)">22:54</a>
+  <p>I will submit a revised 30-8 notice early next week for recorded music only. Okay. And no live music.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1384)">23:04</a>
+  <p>All right. Do we hear any comments or questions from members of the committee?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1390)">23:10</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1392)">23:12</a>
+  <p>Okay. Are there any comments or questions from members of the community?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1400)">23:20</a>
+  <p>Members of the community, you'd like to speak. Please raise your hand. Or you can also put a question in the chat for the Q&A rather. We'll make sure I have that open so they don't listen. I don't see any raised hands or questions.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1421)">23:41</a>
+  <p>I'll entertain a motion of no objection. Motion of no objection. I'll second back. Thank you, Craig.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1429)">23:49</a>
+  <p>Thank you very much.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1431)">23:51</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-10">SPEAKER_10</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1431)">23:51</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1437)">23:57</a>
+  <p>Okay. Item four, that's laid over again for the second month. We're not going to go through that. Item number five, new application of temporary retail permit for on-premises liquor license for Ka K-KKAM-Rae D. Incorporated doing business as Bon Tai at 519 3rd Avenue. Is there a representative available?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1465)">24:25</a>
+  <p>Yes, it's me. Checker-Wang-Pah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1469)">24:29</a>
+  <p>Good evening. Hi. I have a question. Just you said, you sent to the community board some pictures, one of them including a picture of a flyer. And it says 62024. There was another picture of a flyer which was not eligible. I couldn't see it. Did that have the correct June 25th, 26th state?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1504)">25:04</a>
+  <p>Yeah, June, June. What was your question, sir?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1509)">25:09</a>
+  <p>Yeah, that's an old, except an old fly.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1515)">25:15</a>
+  <p>But there's a, I couldn't read that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1521)">25:21</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1522)">25:22</a>
+  <p>Oops.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1529)">25:29</a>
+  <p>But if anyone stand, if you want to go to the right, nice, so. Yeah. So. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1542)">25:42</a>
+  <p>Okay. Other than that, you know, I don't really have any questions or issues here. You're not going to have any outdoor seating.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1555)">25:55</a>
+  <p>No, reason you don't have.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1561)">26:01</a>
+  <p>Yeah. If you tried, you only have space for one table and went over the sidewalk service area. The cellar door. Anyway, okay, I don't have any questions. I think it's pretty straightforward. And many members of the committee? Okay. Any member of the community?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1599)">26:39</a>
+  <p>Members of the committee. Okay. Any member of the community?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1606)">26:46</a>
+  <p>Motion of motion about objection.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1613)">26:53</a>
+  <p>Second.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1618)">26:58</a>
+  <p>We just need another good tire restaurant.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1620)">27:00</a>
+  <p>Thank you. Thank you. Okay. And I'm under the committee object to no objection. Saying no objection to the no objection. If the resolution passes unanimously. Thank you very much, sir. Good luck with your restaurant.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-11">SPEAKER_11</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1639)">27:19</a>
+  <p>Thank you. See you now, guys. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1641)">27:21</a>
+  <p>Bye. Okay. Item number six, new application and temporary retail permit for on-premises liquor license for Cicalis LLC doing business Orion Diner and Drill at 395 Second Avenue. You guys, is there a representative available?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1669)">27:49</a>
+  <p>Yes, hi. My name is Andrew, I'm from ABC License, here to represent Takalas LLC.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1677)">27:57</a>
+  <p>Okay. Okay. You guys came before the committee last April 2025, and you come back to us, you're operating under a new LLC. Is that my understanding?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1691)">28:11</a>
+  <p>Yes, so 20.5, we were operating under Fisgariel Inc. And in that corporation, there are two partners. For the LLC, there will be only one partner. So rather than filing a corporate change, we decided to just file with a new company, a fresh start. And additionally, we want to get a full liquor license, which the SLA is giving us a hard time because of the school across the street, which is a mixed use building and temporary closed and does not meet in the 200 feet guidelines. But other than that, everything will remain the same. It will be a 24-hour diner, same owners, same employees, same business. And once everything is established, we will apply for another sidewalk cafe permit under Secalis LLC.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1741)">29:01</a>
+  <p>Question. This is the SLA application as a number of boxes to be ticked. One of them is corporate change. Isn't this a corporate change?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1750)">29:10</a>
+  <p>No, no, we're filing under with a new company, so it's a new application.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1754)">29:14</a>
+  <p>Wouldn't they, you said they're giving you a hard time about getting a liquor license. Wouldn't they be less likely to give you a hard time if you were filing as a corporate change?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1763)">29:23</a>
+  <p>No, because the SLA, we got, there was a representative from the SLA who said that because there was a denial history for the upgrade, she's going to stick with that denial and not approved the application.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1777)">29:37</a>
+  <p>So you're better off starting starting from change.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1781)">29:41</a>
+  <p>Okay, so let me understand there were two partners, now there's only one.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1785)">29:45</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1789)">29:49</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1790)">29:50</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1793)">29:53</a>
+  <p>Question, did we get a DOT application for the outdoor dining?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1797)">29:57</a>
+  <p>Under Fisgardo Inc. Once everything, yes, so once the call us starts to kick in, we will apply for another one. We notify the committee board and come back next time for the sidewalk.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1811)">30:11</a>
+  <p>And we under Calus LLC? Yes. All right. Okay, I have no further questions. Any member of the committee?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1821)">30:21</a>
+  <p>I wonder that on the And the questionnaire said, well, under type of establishment was both restaurant and other. And I just wondered what the other.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1831)">30:31</a>
+  <p>It's a 24-hour diner. So some commute boards separate restaurant classification and diner classification. But it's going to be a restaurant diner. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1844)">30:44</a>
+  <p>And then also you did an outreach to upstairs neighbors.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1849)">30:49</a>
+  <p>Yeah, so we did the postings and we had no complaints and it's going to be the same establishment that's always been there. It's just different company, but everything else was the previous.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1861)">31:01</a>
+  <p>Frankly, I think we're... Yeah, frankly, I think it should be a great asset to have a 24-hour diners downstairs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1872)">31:12</a>
+  <p>I wouldn't complain. Do I see any... Raised hands? Raised hand? Okay, Kat.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1879)">31:19</a>
+  <p>Yeah, someone who lives literally around the block, this is very tempting now that you're making it even more official for 24-hour. Stop reminding me, Anne. But I didn't know, just putting this on record, you guys have windows that open. I had no idea.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1896)">31:36</a>
+  <p>Yes, we do. I have openable windows, but they're rarely used.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1904)">31:44</a>
+  <p>Yeah, no, but I'm just expecting, like, when you said the sidewalk cafe that you have, which looks lovely, by the way, you put a lot of work into it. I can imagine the opening the structures of those doors because I think it's like floor to ceiling. It says it on the survey. That's why I'm bringing it out. I was like, oh, I didn't know that they have the capacity to do that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1935)">32:15</a>
+  <p>As a general rule, If you open windows, they have to be closed by 10 p.m.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1940)">32:20</a>
+  <p>Yes, we agree to that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1943)">32:23</a>
+  <p>Okay. Members of the general public, any questions or comments?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1952)">32:32</a>
+  <p>Are the members of the public who are with us if you'd like to raise your hands or something in the Q&A?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1967)">32:47</a>
+  <p>Okay, entertain a motion of no objection.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1972)">32:52</a>
+  <p>Motion of no objection.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(1973)">32:53</a>
+  <p>Second. Any member of the committee have any objection to this? No objection resolution? Seeing no objection, resolution is passed unanimously. Thank you very much, sir. Thank you. I've eaten there. Food is pretty good. Okay. Next item, new application and temporary retail permit for wine, beer, insider license for Cathetonea NYC LLC doing business as Catheto NYC at 211 East 14th Street. Okay, is a representative available?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2019)">33:39</a>
+  <p>Yes, this one's also one of my applications. I'm back again.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2025)">33:45</a>
+  <p>ABC license, huh? A quick question. We asked that a picture of the flyer.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2042)">34:02</a>
+  <p>Yeah, they did do it?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2044)">34:04</a>
+  <p>When did they do this? It was not when I looked.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2049)">34:09</a>
+  <p>I believe we got the picture and Yeah, it should have it this afternoon.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2060)">34:20</a>
+  <p>It must be happy because it wasn't seen. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2063)">34:23</a>
+  <p>So there's added a couple days ago. Oh, really?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2067)">34:27</a>
+  <p>Okay. All right. No issues. I don't have any questions. No substantive issues for my part, members of the committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2081)">34:41</a>
+  <p>Yeah, I mean, there's nothing substantive too. I didn't notice that there. The answer about, the question about doors and windows being opened wasn't answered and there wasn't any residential outreach, but the hours are really limited. So I feel like it's not a problem. Okay. Yeah. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2102)">35:02</a>
+  <p>What is their latest closing?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2104)">35:04</a>
+  <p>Six? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2105)">35:05</a>
+  <p>It's a day time. Seven days. Yeah. It doesn't mean. Okay. It's a coffee. It's a cafe.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2113)">35:13</a>
+  <p>It's a, you know, so.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2114)">35:14</a>
+  <p>Okay. Any members of the community? Sorry, Kat.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2121)">35:21</a>
+  <p>That's okay. I know. I'm not in the room, so it's easy to miss. Hi, Andrew again, part two. So I've noticed a trend in our district with some cafes now becoming like, cool night scene with like the and they're coming to the board with these these licenses but I noticed you guys are only open till six and just to use an example there's one up in the 20s or maybe it's 30 something that they do a trade-off of selling liquor-based drinks past 5 p.m. So I was just curious if you guys were thinking about expanding it to something else or just strictly sticking with the cafe.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-07">SPEAKER_07</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2169)">36:09</a>
+  <p>So one of the owners of this establishment, his name is Hatham, and he actually operates another similar establishment in Uptown in Washington Heights. It's called Five Flies Coffee. It's basically the same type of establishment. It's a cafe with alcohol and they close at five. And so right now, the proposed hours, proposed method of operation is to continue to operate as a cafe coffee shop establishment with the option of wine and beer and closing until six. If we ever decide to change from that and want to extend our hours, we will always come back for method of operations. But as it stands right now, we're going to stay coffee shop.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2209)">36:49</a>
+  <p>People can have a shot with their shot, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2214)">36:54</a>
+  <p>That's what I was thinking. I was like, oh, you could have one of those, like, A little alcoholic. Yes, exactly. And exactly.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2222)">37:02</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2223)">37:03</a>
+  <p>All right.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2225)">37:05</a>
+  <p>Going back again, members of the public community, any questions?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2232)">37:12</a>
+  <p>Members of the public would like to speak, please raise your hand or even for something in the Q&A. Nope. No, no raise hands.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2242)">37:22</a>
+  <p>Okay. You all hear a motion with no objection?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2247)">37:27</a>
+  <p>Motion with no objection.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2249)">37:29</a>
+  <p>Second.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2249)">37:29</a>
+  <p>Yeah, you got to be quick here.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2253)">37:33</a>
+  <p>I know. Well, you guys keep going so quickly.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2259)">37:39</a>
+  <p>Do I hear any no objection to this resolution from members of the committee? Seeing no objection, the resolution passes unanimously. Thank you. I've been at. Okay, thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2276)">37:56</a>
+  <p>Good day. Good luck.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2277)">37:57</a>
+  <p>Thank you. Okay. We did eight already. Nine, new application and temporary retail permit for on-premises liquor license for DOI hospitality group LLC doing business as to be determined at 622 Third Avenue. Is there a representative available?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2304)">38:24</a>
+  <p>Yes, good evening, everyone. Aurelia Tavares here for Doi Hospitality Group. It's a privilege to present, thank you guys for saying so late in your service. It's a privilege to present this licensee before you. Amit is, sorry. Amit, can you hear me? Can you guys hear me? Yes, we can hear you. Great, great, I'm sorry about that. Amid Upadai, or I call him, Anmi Kumar, is an accomplished restaurateur, entrepreneur, investor with a proven track record of developing and operating successful hospitality businesses across the United States. He has an extensive. least negotiations, but in operations is where his specialty is. He had three restaurants, Farsi, Farsi Cafe, Bellevue, Bananas, Dili, and Fugia, India, a meet overseas, all aspect of business strategy. finance and development and operations. He has handled liquor licenses with no disciplinaries. And I just want to, while I'm speaking to, if you can enable me, I have my presentation so that you could see the images of the location that we're proposing for the site. If you can, on the second, I'm signed in twice, one where I'm speaking, and the other one for my computer so that I can, if you can enable me as a panelist to upload a file, I'll go through the images if that, if you. What are your presentation is this? It's just a three or four page images of what we propose in the location, the interior, what the city. I guess it just would be so much more open to this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2404)">40:04</a>
+  <p>How did we receive your materials like more than a half an hour before the meeting?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2410)">40:10</a>
+  <p>Well, this, we actually just signed the lease. So we wanted to get it before the board. You know, I don't know if this board goes on vacation in the summer or I just want to make sure that we got it in this meeting so that we could introduce the site. If you want us to follow up again, we can follow up again and another meeting with a presentation with all of the information. We also posted yesterday like a day and a half ago, but we didn't get all the information we needed on a time on a basis from the applicant. So for that, I have to apologize.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2445)">40:45</a>
+  <p>This applicant runs other establishments. I would think that they would be more than set up to be able to give information so that we've received more than half an hour before our meeting starts.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2461)">41:01</a>
+  <p>Would it be better to come next month? I have no problem with it. I just wanted to make sure that you guys had a presentation. You saw it. We're prepared to come to go this evening before you. We have the materials. And if you're so interested in what the location looks like, I think this is a great opportunity to see it and if it's not satisfactory, we come back next month. No, I mean, it's not really about that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2483)">41:23</a>
+  <p>It's really about whatever. I'll do whatever the committee wants. Yeah, I just assume.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2490)">41:30</a>
+  <p>I think we should lay it over. Yeah, over, yeah. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2498)">41:38</a>
+  <p>Yeah, just just to name on record, is it a really? Yes, it's a real, yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2503)">41:43</a>
+  <p>Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2504)">41:44</a>
+  <p>All right. Nice to meet you. Um, just, just on a recommendation, because I assume that, uh, Mr. Umar is familiar with, uh, if he has establishments, you mentioned he has establishment, but I'm not sure if they're in New York. Um, but if he has, he's probably already worked with the community borough system. Yes. Um, so we, we do encourage them to actually come to the meeting in, in addition to representatives. Oh, okay, great. Great. He's in.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2536)">42:16</a>
+  <p>He's in the meeting. He's in the meeting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2539)">42:19</a>
+  <p>He's in the meeting. Don't be shy. Yeah, I would always. I'm here. Hello, everyone. That they make a comment. Yes. But it's a beautiful location. I'm going to echo my fellow members and just to really make it a point and on the record, since you're in this district, we don't take a break. We're one of the few committees on this board that takes us seriously because there are a lot of constraints. and short timelines that we need to have the efficacy of showing up for the businesses. And that's why we're harping on the fact that if we had received this information prior to an hour, within an hour, it would have been helpful so that we could have facilitated this. So I'm looking forward to a more robust conversation next month. But I just wanted to give you some more insight. But thank you for coming to this meeting anyway.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2604)">43:24</a>
+  <p>Yes, we didn't want to, you know, she mentioned that you needed to be here, so we made sure we were here with the information that we have. So what I'm going to do is I'm going to email you the complete packet with the posting, and then I guess we have to change the date on the posting. If you could email me a posting with the next month's meeting date, and we'll be sure you have all the information you need.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2626)">43:46</a>
+  <p>Thank you. Okay, I think the contestant of the committee, this gets laid over until our next meeting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2632)">43:52</a>
+  <p>And is that? It's July 30th.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2635)">43:55</a>
+  <p>July 30th. Okay. Okay. Okay. Thank you very much. Look forward. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2641)">44:01</a>
+  <p>Ladies and gentlemen, I appreciate it. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2646)">44:06</a>
+  <p>Yeah, it's great location. Right. My, nice. Well, isn't it?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-09">SPEAKER_09</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2650)">44:10</a>
+  <p>No, but he sees a plive. Kinds are gorgeous. Good night, everyone.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2656)">44:16</a>
+  <p>I don't know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2659)">44:19</a>
+  <p>Yeah. Okay. That takes care of that. Next item for discussion is all new news are certain handbooks. The handbook. Yeah. I see people have been putting their comments into the handbook on the Google. What do they call it? Google Doc, Google Doc. And I appreciate those who have done that. If there's anybody else, I would like them also to put their two cents or maybe 10 cents. And I hope this by the 30th, we can actually put it up on screen and say, okay, we're getting there. Now, I have to say that I am at fault because I should have asked that the, how should I call it, the sheets that and prepared in terms of what to look for for both the DOT applications and SLA applications should be included. Well, I copy and pasted this afternoon. Okay. Oh, good.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2740)">45:40</a>
+  <p>Okay. But I mean, they're kind of there and sort of a void. And I also put in just a few comments that I had at the beginning. One is to echo John's question at the beginning. I think it would be useful to say, you know, for DOT applications, it's a motion of no objection and for SLA, you know, like, we'll have that down. Right. Right. Right. Right. So, but I think it would be useful. That's the kind of thing I think would be useful to have captured there. And the other thing is I have been asking for this and I don't understand why. it's not happening is if we could just get numbers on the questionnaire. I mean, it's like you guys do so much.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2797)">46:37</a>
+  <p>Like seriously. And it's not, it's like it shouldn't like I will make the changes if you give me editing like it's going to take somebody 10 minutes to do this, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2809)">46:49</a>
+  <p>That's a lot easier to say item number six.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2811)">46:51</a>
+  <p>Yes, thank you. So I put a note in about that as well. Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2820)">47:00</a>
+  <p>Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2821)">47:01</a>
+  <p>Um, and I think Pat has your family.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2825)">47:05</a>
+  <p>So cat, yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2827)">47:07</a>
+  <p>Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-unknown">UNKNOWN</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2828)">47:08</a>
+  <p>Um,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2829)">47:09</a>
+  <p>There's a lot of great content here and it feels highly collaborative, which is always a great goal to achieve. I just have a functional operational question, like how maybe it's also borders administrative. How is this actually going to be like presented visually? Because right now it has all of our commentary, but it's not like a, like having an appendix and then like referring to Ann's point about the, it's something different from the handbook, but numerically and being able to follow something, just knowing that we have 12 new members on the board, some might be assigned to bulk. This would have been something that I would have used as a Holy Grail. and really referred to it intimately for a lot of different reference points. So I'm just curious how it's going to be compiled in a format that is a little bit synchronized.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2898)">48:18</a>
+  <p>This is very much a rough draft. I think of it as a rough draft that needs knitting.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2903)">48:23</a>
+  <p>And actually there is a template that is out there someplace. I saw it. all the handbooks, bulk, transportation, parks, whatever, it should be following generally.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2922)">48:42</a>
+  <p>Well, I don't mind. I'm just going to volunteer myself if and when we get to that point, I don't mind helping to, with the format, if that's, if that's something. I'm happy to work with you on that as well.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2936)">48:56</a>
+  <p>Okay. Um, sort of structural. There is a, There is a template and I saw my emails when I was scrolling through. I think perhaps maybe this could be sent to members of the committee so that we're all on the same page.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2956)">49:16</a>
+  <p>Sure. Kat, I'm not sure if you heard that, but I'm happy to work with you on that and sort of the structural editing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2964)">49:24</a>
+  <p>I don't take a plan.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2966)">49:26</a>
+  <p>Okay. I mean, word adding to that.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2972)">49:32</a>
+  <p>Okay. There's report. I really don't have anything to report. I think there's an issue that came up. Two issues that came up. One, Flintstone, apparently is doing something, legal signage. Am I understand this correctly?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(2996)">49:56</a>
+  <p>Well, certainly they're advertising their bus advertising is illegal. And it's so appalling to me that when we saw Pascal in, was that, like, February? Yes. And we said he came and, like, knew he was being reported and lied about it, you know, bragged about lying. And she said, oh, I'll look into it. And here we are five months, four months later. I think it was April. April. Yeah. the time. I went to so many OCM things. That's right. But I actually, so I stopped in there on my way here and sort of wandered the store a little bit and was not asked for ID. And which, I mean, Like, clearly I am of age, but still, you know, you're supposed to ask, you know, whatever. You're supposed to ask. I mean, they have somebody sitting at the front desk there. That's basically their job, right? And so I wandered around a little bit. And then I asked one of the staff members, I said, oh, I saw the sign about the lounge. Like, does that mean, you know, like you can consume, you know, on premises? She's like, no, it's not federally legal. So we're, you know, we can't do that. It was like, that's not the reason, but it was the right answer at least. So I was like, oh, it's going to be like Amsterdam. You know, I was sort of joking about it.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3091)">51:31</a>
+  <p>Well, we do know that in Flintstone, Syracuse location, that's exactly what they do. They have a separate consumption area, I believe it's upstairs, just like this is. So, whether or not they'll stick to the law that they can't have any on-premises consumption or when they turn their eyes and look another way i don't know we don't know unless the ocm sends an inspector or does some kind of like yeah i do you notice that on the sign it says is only for</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3136)">52:16</a>
+  <p>customers. It was not just only for customers, but it was for some, you know, it's like the gold card. It was something like a... So, it's not like anybody can just come in, I think. Ambassador, it's something wrong.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3155)">52:35</a>
+  <p>Well, here it says access granted to customers, only to customers only to customers only. Oh, maybe. And then it says, thank you for being apart. singular word. Is that Flintstone or Smith?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3172)">52:52</a>
+  <p>Well, so it's only for customers and somebody's bought something downstairs. They're going to go out? I don't understand this. Anyway.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3186)">53:06</a>
+  <p>But they should be asking for ID. I mean, the place that I've gone to on 50A Street, you can't get past the door without scanning an ID.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3196)">53:16</a>
+  <p>Yeah, I do, yeah. And like I said, I walked around, you know, and like actually spoke to somebody.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3201)">53:21</a>
+  <p>I think the stone's establishing plays fast and loose with the regulations. Yeah. And now I know that we are looking at this from another angle. Jesus is not here this evening, but we'll continue to do that. And hopefully some resolution will be available or by the end of the summer.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-04">SPEAKER_04</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3228)">53:48</a>
+  <p>Inshallah. Okay. All right, the other thing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3234)">53:54</a>
+  <p>Would that be, Anton, would that be in our purview to create that resolution?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3242)">54:02</a>
+  <p>I'm sorry, it would be?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3244)">54:04</a>
+  <p>You mentioned a resolution, so I'm just curious who would be written?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3248)">54:08</a>
+  <p>Oh, do you mean resolution? No, no, not in a sense of a written resolution, but an outcome.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3253)">54:13</a>
+  <p>An outcome for.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3255)">54:15</a>
+  <p>Oh, got it. Got it, got it. Got your community board a hat on.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3264)">54:24</a>
+  <p>Can you tell tonight? Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3268)">54:28</a>
+  <p>Okay, and just keep the committee up to date. Was it today or yesterday we received the complaint about Candela and another establishment next door appears that Candela is using a liquor license that belongs to Candle.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3287)">54:47</a>
+  <p>The Turkish restaurant. The allegation is that candle moved next door into what used to be Turkish kitchen.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3300)">55:00</a>
+  <p>Oh, on third and like in the 30 someplace. Yeah, it's on 28th Street. So they moved in and they're, but they're still using their old. That's the allegation. Yeah. Well, they haven't come before us. Have they heard for a legal license of the new location?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3321)">55:21</a>
+  <p>No. No, we haven't received an application for candle. However, the Turkish kitchen did apply for the new or sent as a 30-day notice for the new one. Oh. Requested actually a waiver of the 30-day notice because they said do an administrative oversight. They're within the window. They actually. currently lost their license. It lapsed, essentially.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3353)">55:53</a>
+  <p>Now, if they add a little bit more flavor, it's a lens that candle is in bankruptcy right now.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3361)">56:01</a>
+  <p>It's all from one source.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3364)">56:04</a>
+  <p>That would be no. They file for vendor.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3371)">56:11</a>
+  <p>Okay. It's unfortunate to hear that because I've been to candle both their places. I love the food. Anyway, any other old new business? Okay.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3385)">56:25</a>
+  <p>Hey again.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3387)">56:27</a>
+  <p>Yes.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3389)">56:29</a>
+  <p>I just sent, sorry Brian, but I thought it would be fresh in your inbox. I just sent some pictures I took within the last few weeks with three three business members in our district, mainly on the southern side of our district closer to me. The first was Leszita Pizzeria, which I think they had applied for a liquor license recently in the last six months. I remember a representative coming here. They have a string of weight that seems particularly low. And I'm not very, a series of gates. light like a string of light that are hanging from the the um like where the signage is uh-huh yeah you can't really see it but it's low enough that i my mom was with me she was five two i'm five seven it wasn't that much further from my head um So that's the taller end, Brian. The area is like where it lowers down the sidewalk. Yeah. Well, you don't have to zoom in. But like it when you're under it, it's pretty low. Um, so I just wanted to, I wasn't sure if that's something that we monitor or it's DOT or something, but. Considering they were recently at this committee for a license, I was like, oh, let me just bring it up to the committee.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3488)">58:08</a>
+  <p>I would start by just- Just walk again. Yeah, just pointing it out to them.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3493)">58:13</a>
+  <p>Yeah. That doesn't work because 311 in the Department of Buildings.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3499)">58:19</a>
+  <p>Okay, the same is, and there's another picture of Trinoyas on third. It's an Irish. It's Irish. Um, they had the same situation. The lights were really, really low. And they have, unlike Lesotheta, they have a, um, a sidewalk cafe, uh, and a roadway cafe and a very narrow window of sidewalk as it is. And so it just seems like it's a bit you really sort of boxed out. Carious. Yeah, you see what I mean. Um, And I don't know if they're like, because they weren't, these situations recently happened. So I don't know if it's because they're trying to get more people to come during the World Cup so that the area is more illuminated for larger stretches of the evening when it's night. But yeah, so I will take the committee's advice and just go into the establishments and ask them, you know, what's the jail there?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3567)">59:27</a>
+  <p>The DOT, if you put up umbrellas, they have to be, what, seven feet? I think so, yeah. Seven feet so people don't bang into them. I don't believe there's any regulation regarding lights. Don't remember that on the other. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3585)">59:45</a>
+  <p>That's why I was like, I'm not sure where this fits in and the jurisdiction of committee work. And then the last one, Brian, is... seating outside of Mado Expresso. It's on the east side of 3rd Avenue between East 26th Street and East 25th Street. There was a new expansion of the sidewalk. And there's a tree there and they just arbitrarily put out two chair, two tables. and two sets of chairs. And to the question Anton made at one of the folks that was here tonight saying, are you serving out there with the, I think it was slate. You asked the question, Anton, are they going to be serving? So this is just a concern because I'm like, I don't know they've come to the committee. I don't recall in my tenure in the last year that they did. And they also have those bar schools. So I'm just, it's just a question mark and I have no idea.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3650)">1:00:50</a>
+  <p>Well, it comes back. I know Mateo was basically a coffee and the Danish shop alcohol, but it doesn't exempt them for going to the DOT to use the outdoor space, public space, for their tables and chairs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3670)">1:01:10</a>
+  <p>Right. And since the expansion literally just happened within the last two weeks, there was a lot of construction in this area. for a few months. It just seems a bit an overstretch to just start putting property in the area.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3688)">1:01:28</a>
+  <p>Yeah. But, you know, I think we should address a larger issue. I know we all walk around the neighborhood and we see places like Mateo and other coffee shops where they set out tables and chairs and I don't recall ever seeing them come through the committee for with DOT applications. So my larger question is, who was policing this? I mean, this, our job is at the police sidewalks. Something is egregious. I think we should bring into the attention.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3723)">1:02:03</a>
+  <p>Shouldn't it be DOT?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3724)">1:02:04</a>
+  <p>Yeah, DOT should be doing this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3727)">1:02:07</a>
+  <p>Right, but. But we're also like facilitating some of the concerns that we hear from the community. So that's why I thought it is a great issue to raise Anton that like who is at the end of the day like really responsible for these efforts. But I also want to lay the groundwork for this committee to be facilitating equity of like if this business is doing this and this is not correct and other businesses are coming to us. in good faith and doing what they need to do, which takes a lot of energy in time. I don't think they should be exempt. And I didn't see this as policing. I was just genuinely, Anton, like, I didn't know. I didn't know what the protocol was. So I wanted to bring it to the committee's attention.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3773)">1:02:53</a>
+  <p>I want to second what Katz sang. We had Latara in here a few weeks ago. It's a very nice Italian restaurant. And they had that seating arrangement that was sort of bizarre. Yeah, yeah. And my wife and I went out a lovely dinner there a week ago if they don't have the seating. They just took it down. So the point is that people are responsive, so we shouldn't call people out.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3800)">1:03:20</a>
+  <p>Well, that's like the casual drink. Also, it's our same thing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3804)">1:03:24</a>
+  <p>They responded immediately.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3808)">1:03:28</a>
+  <p>But, you know, should we be reporting this to the office and the office follows up with the DOT.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3816)">1:03:36</a>
+  <p>That's the question. Yeah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3819)">1:03:39</a>
+  <p>Then it becomes the responsible of the DOT to follow up. So hopefully, hopefully coming from the CB6 office, that would be something to intensify their inspection process.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3835)">1:03:55</a>
+  <p>So just on process. So DOT will, and they have in the case of the casualty, issue that, what they call. I think it's a blanking on the actual terminology, but essentially they provide notice to those who do not have sidewalk seating permits or to those who are not in compliance. And then if they're found to be not in compliance again, then they can issue fines.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3881)">1:04:41</a>
+  <p>Well, I got to say, I mean, I walk by and not only are the tables there now, they're in front of the empty storefront next door. And to go exactly to what Kat was saying, like, I want them to succeed. I don't really have a problem with them having tables out there, but everybody else is following the rules and so should they. Yeah, absolutely.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3901)">1:05:01</a>
+  <p>And I'm a little... I'm sorry, Anne. And I'm a little incensed because I consider myself a serial pedestrian. And this is such a great expansion of sidewalk. And I was like a little frustrated that after a few months of construction in that area, where it's a bottleneck already of a lot of different factors, that they just arbitrarily did this without like considering all the factors. That was just, that was part of it as a community, not as a board member. It's just a lot.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3936)">1:05:36</a>
+  <p>And as I think of it, I know there's a restaurant near me and I won't mention the name of it that has tables that I know for a fact they haven't come before us. I was thinking of just walking in, in a very friendly way, saying, you know, you're putting yourself at risk because your insurance won't cover you if something happens when you have any illegal.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3955)">1:05:55</a>
+  <p>That's a good point. I should say that. Because like I said, I've stopped into the casual brief. There's never a manager there. Or they always say there's not a manager.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3966)">1:06:06</a>
+  <p>So with the casual brief, since they're... investigated multiple times in violation. They did issue a summons. Oh, right. So okay. Right now, I guess they're in a second stage. My understanding is that if they get enough summons, then they won't be able to ever apply, essentially, for.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3991)">1:06:31</a>
+  <p>Are these summons, these fines escalating? Yeah, they do escalate?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(3999)">1:06:39</a>
+  <p>Well, it's incentive to do the right thing. Well, maybe I'll stop by again tomorrow, make a phone caller, call and call and say, you know.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4008)">1:06:48</a>
+  <p>Because, I mean, I do...</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4009)">1:06:49</a>
+  <p>The place I'm thinking, I don't want to mention the name, but they have a cellar door too. And I'm wondering.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4015)">1:06:55</a>
+  <p>These are over the cellar door. Yeah, I was going to say that too. I've seen a lot of tables on the cellar doors, especially on those establishments on 2nd Avenue.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4025)">1:07:05</a>
+  <p>Yeah. And that is permitted as long as they're reinforced. There's something.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-13">SPEAKER_13</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4032)">1:07:12</a>
+  <p>Yeah, exactly. But how do we know? Yeah. It's just another question of us.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4036)">1:07:16</a>
+  <p>You're actually doing them a favor. if they're smart to regularize it. Because if I was an insurance company, I wouldn't cover anything that happened.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4048)">1:07:28</a>
+  <p>Yeah. Yeah. But actually, so I'm looking now, they were actually, the casual brief was issued two summonses.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4058)">1:07:38</a>
+  <p>The span of two weeks. And what's the process to initiate one of those summons? Is there a form online or something?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4068)">1:07:48</a>
+  <p>You can report it's a 3-1-1. Okay. But, yeah, if you can loop me in, that way I can... Better for you. Go to DOT and say, you know, that you file this.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4085)">1:08:05</a>
+  <p>That way I can... Somebody actually does inspect. They might actually listen to you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-06">SPEAKER_06</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4091)">1:08:11</a>
+  <p>That's my only other question. And Brian, I'm not sure, or Anton, I'm not sure if anybody knows. In other committees for different reasons, the conversation of like surveying and accessing feedback, whether that's promoting it digitally through the, through our website as a board or and or the newsletter, but also maybe a more concentrated effort and what would that look like? I'm just curious, is that something that the office is able to do? Is that something that we've done for businesses specifically of letting them know, hey, there are options if you're interested in expanding surface on sidewalk or roadways, if you haven't already heard of it yet. You know, like I don't, I just don't know if some businesses, because they get inundated with a lot of resources to support their journey.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4152)">1:09:12</a>
+  <p>I think the restaurants, most of these establishments know that you have to have a license use, public property for private use. Well, certainly if you had a couple of summits, you know. And I think many of these places are running on very thin margins. They, you know, to hire a lawyer to have the forms filled out. Sometimes it's beyond their expertise. They're restaurateurs. They're not lawyers. They're not people, architects, fill out diagrams. And I can see that. So do I blame them for not getting a license? No, but I think that, you know, they should be incented somehow.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4207)">1:10:07</a>
+  <p>Yeah, I mean, I think this committee for 10 years. I think we'd bend over backwards to try to be pro-business. Yes. I mean, so there's nothing we're saying here. If anybody's listening to this, people. And he just wanted to be a fair playing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4223)">1:10:23</a>
+  <p>Yeah, yes. So just pulling up DOT's dining at a RC website, pursuant to the administrative code, restaurants that are repeatedly found to be non-compliant, DOT may suspend or revoke a license in order to the removal of a sidewalk over a cafe after an opportunity to be heard. And then for unlicensed setups, restaurants that operate outdoor dining without a license and evocable consent may be subject to the following penalties and or ordered by D.R. T2 and the director of signing set up 500 for the first offense, 1,000 for the second and subsequent offenses. And sorry, this is what I was trying to mention before. Restaurants operating unlicensed outdoor dining setups receive a penalty, not CAR on the first offense. So that's, um,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4280)">1:11:20</a>
+  <p>So they do get a fine.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4283)">1:11:23</a>
+  <p>They do get a fine on the first time. Yeah. I think I was complaining if they have a license and assign a compliance, then they'll give them an opportunity to correct.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4295)">1:11:35</a>
+  <p>They don't have a license.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4296)">1:11:36</a>
+  <p>So they've already, so theoretically, they've already at least been billed 50, the degree, the casualty, it's $1,500. Yeah. And like, that's a lot of revenue from six little table. Yeah, like, it's like three, two jobs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4307)">1:11:47</a>
+  <p>I think, I think, perhaps when it becomes,</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4310)">1:11:50</a>
+  <p>financially impossible to keep paying fines, then they'll... Yeah, and I do know in extreme circumstances, D or two will actually go out and confiscate the tables and chairs.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4319)">1:11:59</a>
+  <p>You should actually go out and watch.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-03">SPEAKER_03</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4321)">1:12:01</a>
+  <p>Confiscate the table. Really?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-15">SPEAKER_15</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4324)">1:12:04</a>
+  <p>Yes, when they're break room, burn your breaks, right?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4333)">1:12:13</a>
+  <p>Right. Okay. I don't have any other business members of the committee. Any further business? Okay, seeing no further business, the meeting is a lot of it. If there are no objections, we'll adjourn the meeting. Okay. Now just meeting is adjourned at 7.55 T.A. Amazing.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-02">SPEAKER_02</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4358)">1:12:38</a>
+  <p>Sarah, thanks again. Yes, thank Sarah.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4362)">1:12:42</a>
+  <p>You're welcome. Thanks, folks. Thank you. Are you in Paris?</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4365)">1:12:45</a>
+  <p>No, I'm in New Haven with my older daughter.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-12">SPEAKER_12</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4369)">1:12:49</a>
+  <p>She needs mine.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-14">SPEAKER_14</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4373)">1:12:53</a>
+  <p>I appreciate being able to be on Zoom. Thank you.</p>
+</div>
+<div class="transcript-paragraph">
+  <span class="speaker-label speaker-speaker-05">SPEAKER_05</span>
+  <a class="transcript-time" href="javascript:void(0)" onclick="seekTo(4377)">1:12:57</a>
+  <p>Good. Thank you for taking the minutes. I appreciate that.</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Transcripts auto-generated from <a href="https://www.youtube.com/watch?v=0jOmomkieVs" target="_blank">CB6 YouTube</a>.</p>
+  </footer>
+
+  <script>
+    function seekTo(seconds) {
+      const iframe = document.getElementById('ytplayer');
+      if (iframe) {
+        iframe.src = 'https://www.youtube.com/embed/0jOmomkieVs?start=' + seconds + '&autoplay=1&enablejsapi=1';
+      }
+    }
+  </script>
+</body>
+</html>
